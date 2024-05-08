@@ -487,4 +487,57 @@ const getPatternDescription = (type: DarkPatternType): string => {
     default:
       return 'A manipulative design pattern that can deceive users.';
   }
+};
+
+/**
+ * Analyzes text for manipulation techniques and dark patterns
+ * @param text The text content to analyze
+ * @returns A ManipulationAnalysis object with score and techniques
+ */
+export const analyzeManipulation = async (text: string): Promise<{
+  score: number;
+  techniques: string[];
+  explanation: string;
+}> => {
+  try {
+    // Create simple HTML wrapper for the text to use with detectDarkPatterns
+    const html = `<div>${text}</div>`;
+    
+    // Detect dark patterns in the text
+    const darkPatterns = detectDarkPatterns(html);
+    
+    // Calculate manipulation score based on number and confidence of patterns
+    let score = 0;
+    if (darkPatterns.length > 0) {
+      // Calculate weighted average of confidence scores
+      const totalConfidence = darkPatterns.reduce((sum, pattern) => sum + pattern.confidence, 0);
+      score = Math.min(0.9, (totalConfidence / darkPatterns.length) * (0.3 + (darkPatterns.length * 0.1)));
+    } else {
+      score = 0.1; // Base score when no patterns detected
+    }
+    
+    // Extract techniques from detected patterns (remove duplicates)
+    const techniques = Array.from(new Set(darkPatterns.map(pattern => pattern.type)));
+    
+    // Generate explanation
+    let explanation = '';
+    if (darkPatterns.length === 0) {
+      explanation = 'No manipulative techniques detected in the content.';
+    } else {
+      explanation = `Detected ${darkPatterns.length} potential manipulative techniques in the content.`;
+    }
+    
+    return {
+      score,
+      techniques,
+      explanation
+    };
+  } catch (error) {
+    logger.error('Error in analyzeManipulation:', error);
+    return {
+      score: 0.1,
+      techniques: [],
+      explanation: 'Unable to analyze manipulation techniques due to an error.'
+    };
+  }
 }; 

@@ -19,7 +19,16 @@ export const HF_CONFIG = {
     SENTIMENT: 'distilbert-base-uncased-finetuned-sst-2-english',
     
     // Toxicity detection model
-    TOXICITY: 'michellejieli/albert_toxicity_classifier'
+    TOXICITY: 'michellejieli/albert_toxicity_classifier',
+    
+    // Political bias detection model
+    POLITICAL_BIAS: 'bucketresearch/politicalBiasBERT',
+    
+    // Entity recognition model
+    ENTITY: 'dslim/bert-base-NER',
+    
+    // Text summarization model for better metadata extraction
+    SUMMARIZATION: 'facebook/bart-large-cnn'
   },
   
   // Request settings

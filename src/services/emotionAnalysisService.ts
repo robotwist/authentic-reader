@@ -198,6 +198,6 @@ class EmotionAnalysisService {
 export const emotionAnalysisService = new EmotionAnalysisService();
 
 // Direct export of the emotion analysis function for easier import
-export async function analyzeEmotions(text: string): Promise<EmotionAnalysisResult> {
+export const analyzeEmotions = async (text: string): Promise<EmotionAnalysisResult> => {
   return emotionAnalysisService.analyzeEmotions(text);
-} 
+}; 

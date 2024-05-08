@@ -7,35 +7,37 @@ import {
   extractEntities,
   getTextEmbeddings,
   summarizeText,
-  analyzeSentiment as hfAnalyzeSentiment
+  analyzeSentiment as hfAnalyzeSentiment,
+  analyzePoliticalBias,
+  enhancedEntityExtraction,
+  generateAdvancedSummary
 } from './huggingFaceService';
+import { analyzeManipulation } from './darkPatternService';
 
 /**
  * Types of logical fallacies that can be detected
  */
 export enum LogicalFallacyType {
-  // Appeal-based fallacies
-  APPEAL_TO_AUTHORITY = 'appeal_to_authority',
-  APPEAL_TO_EMOTION = 'appeal_to_emotion',
-  APPEAL_TO_IGNORANCE = 'appeal_to_ignorance',
-  APPEAL_TO_COMMON_SENSE = 'appeal_to_common_sense',
-  
-  // Argument structure fallacies
-  STRAW_MAN = 'straw_man',
-  AD_HOMINEM = 'ad_hominem',
-  FALSE_DICHOTOMY = 'false_dichotomy',
-  HASTY_GENERALIZATION = 'hasty_generalization',
-  RED_HERRING = 'red_herring',
-  SLIPPERY_SLOPE = 'slippery_slope',
-  
-  // Other common fallacies
-  CIRCULAR_REASONING = 'circular_reasoning',
-  POST_HOC = 'post_hoc',
-  FALSE_EQUIVALENCE = 'false_equivalence',
-  BANDWAGON = 'bandwagon',
-  TU_QUOQUE = 'tu_quoque',
-  LOADED_QUESTION = 'loaded_question',
-  HISTORICAL_ANALOGY = 'historical_analogy'
+  AD_HOMINEM = 'AD_HOMINEM',
+  STRAW_MAN = 'STRAW_MAN',
+  APPEAL_TO_EMOTION = 'APPEAL_TO_EMOTION',
+  FALSE_DILEMMA = 'FALSE_DILEMMA',
+  SLIPPERY_SLOPE = 'SLIPPERY_SLOPE',
+  HASTY_GENERALIZATION = 'HASTY_GENERALIZATION',
+  CIRCULAR_REASONING = 'CIRCULAR_REASONING',
+  APPEAL_TO_AUTHORITY = 'APPEAL_TO_AUTHORITY',
+  BANDWAGON = 'BANDWAGON',
+  RED_HERRING = 'RED_HERRING',
+  APPEAL_TO_IGNORANCE = 'APPEAL_TO_IGNORANCE',
+  TU_QUOQUE = 'TU_QUOQUE',
+  ANECDOTAL = 'ANECDOTAL',
+  LOADED_QUESTION = 'LOADED_QUESTION',
+  NO_TRUE_SCOTSMAN = 'NO_TRUE_SCOTSMAN',
+  TEXAS_SHARPSHOOTER = 'TEXAS_SHARPSHOOTER',
+  MIDDLE_GROUND = 'MIDDLE_GROUND',
+  GAMBLER_FALLACY = 'GAMBLER_FALLACY',
+  APPEAL_TO_NATURE = 'APPEAL_TO_NATURE',
+  COMPOSITION_DIVISION = 'COMPOSITION_DIVISION'
 }
 
 /**
@@ -54,15 +56,15 @@ export interface LogicalFallacy {
  * Types of political bias
  */
 export enum BiasType {
-  LEFT_EXTREME = 'left_extreme',
-  LEFT_STRONG = 'left_strong',
-  LEFT_MODERATE = 'left_moderate',
-  LEFT_SLIGHT = 'left_slight',
-  CENTER = 'center',
-  RIGHT_SLIGHT = 'right_slight',
-  RIGHT_MODERATE = 'right_moderate',
-  RIGHT_STRONG = 'right_strong',
-  RIGHT_EXTREME = 'right_extreme'
+  LEFT_EXTREME = 'LEFT_EXTREME',
+  LEFT_STRONG = 'LEFT_STRONG',
+  LEFT_MODERATE = 'LEFT_MODERATE',
+  LEFT_SLIGHT = 'LEFT_SLIGHT',
+  CENTER = 'CENTER',
+  RIGHT_SLIGHT = 'RIGHT_SLIGHT',
+  RIGHT_MODERATE = 'RIGHT_MODERATE',
+  RIGHT_STRONG = 'RIGHT_STRONG',
+  RIGHT_EXTREME = 'RIGHT_EXTREME'
 }
 
 /**
@@ -72,6 +74,13 @@ export interface BiasAnalysis {
   type: BiasType;
   confidence: number; // 0.0 to 1.0
   explanation: string;
+  leftIndicators?: string[];
+  rightIndicators?: string[];
+  scores?: {
+    left: number;
+    center: number;
+    right: number;
+  };
 }
 
 /**
@@ -113,6 +122,19 @@ export interface ContentAnalysisResult {
   manipulationAnalysis?: ManipulationAnalysis; // New field for doomscroll/outrage analysis
   emotionAnalysis?: EmotionAnalysisResult; // New field for detailed emotion analysis
   sentiment?: {score: number, label: string}; // New field for dedicated sentiment analysis
+  loadingState?: {
+    biasAnalysis: 'complete' | 'error' | 'incomplete';
+    metadataExtraction: 'complete' | 'error' | 'incomplete';
+    emotionAnalysis: 'complete' | 'error' | 'incomplete';
+    sentimentAnalysis: 'complete' | 'error' | 'incomplete';
+    fallacyDetection: 'complete' | 'error' | 'incomplete';
+    manipulationAnalysis: 'complete' | 'error' | 'incomplete';
+  };
+  emotionalAppeals?: { [key: string]: number };
+  sentimentAnalysis?: {
+    overall: number;
+    aspects: { [key: string]: number };
+  };
 }
 
 // Patterns that may indicate different types of logical fallacies
@@ -450,17 +472,163 @@ const biasIndicators = {
   ]
 };
 
+// Add a simple cache for expensive operations
+const cache = {
+  biasAnalysis: new Map<string, BiasAnalysis>(),
+  entityExtraction: new Map<string, string[]>(),
+  summarization: new Map<string, string>(),
+  emotions: new Map<string, EmotionAnalysisResult>(),
+  sentiment: new Map<string, {score: number, label: string}>(),
+  
+  // Simple hash function for cache keys
+  getKey(text: string): string {
+    // Create a simple hash based on the first 100 chars and length
+    const sample = text.slice(0, 100);
+    const length = text.length;
+    return `${sample}_${length}`;
+  }
+};
+
 /**
- * Analyze political bias in the article text
+ * Analyzes bias in an article text using advanced ML model with caching
+ * @param text The article text to analyze
+ * @returns Analysis of political bias including dominant bias type and confidence
  */
-export function analyzeBias(text: string): BiasAnalysis {
+export async function analyzeBias(text: string): Promise<BiasAnalysis> {
+  try {
+    // Check cache first
+    const cacheKey = cache.getKey(text);
+    if (cache.biasAnalysis.has(cacheKey)) {
+      console.log('📊 [analyzeBias] Using cached result');
+      return cache.biasAnalysis.get(cacheKey)!;
+    }
+    
+    console.log('📊 [analyzeBias] Starting ML-based bias analysis for text length:', text.length);
+    
+    // Use advanced ML model to analyze bias
+    const biasResult = await analyzePoliticalBias(text);
+    console.log('📊 [analyzeBias] ML model results:', biasResult);
+    
+    // Map the model's score to our bias types
+    const biasStrength = biasResult.confidence;
+    let biasType: BiasType;
+    let leftIndicators: string[] = [];
+    let rightIndicators: string[] = [];
+    let explanation: string = '';
+    
+    if (biasResult.label === 'left') {
+      // Determine strength of left bias
+      if (biasStrength > 0.8) {
+        biasType = BiasType.LEFT_EXTREME;
+        explanation = "The content shows extremely strong left-leaning bias.";
+      } else if (biasStrength > 0.6) {
+        biasType = BiasType.LEFT_STRONG;
+        explanation = "The content shows strong left-leaning bias.";
+      } else if (biasStrength > 0.4) {
+        biasType = BiasType.LEFT_MODERATE;
+        explanation = "The content shows moderate left-leaning bias.";
+      } else {
+        biasType = BiasType.LEFT_SLIGHT;
+        explanation = "The content shows slight left-leaning bias.";
+      }
+      
+      // Extract some sample indicators
+      // In a real implementation, we would extract actual indicators from the text
+      leftIndicators = extractBiasIndicators(text, 'left');
+    } 
+    else if (biasResult.label === 'right') {
+      // Determine strength of right bias
+      if (biasStrength > 0.8) {
+        biasType = BiasType.RIGHT_EXTREME;
+        explanation = "The content shows extremely strong right-leaning bias.";
+      } else if (biasStrength > 0.6) {
+        biasType = BiasType.RIGHT_STRONG;
+        explanation = "The content shows strong right-leaning bias.";
+      } else if (biasStrength > 0.4) {
+        biasType = BiasType.RIGHT_MODERATE;
+        explanation = "The content shows moderate right-leaning bias.";
+      } else {
+        biasType = BiasType.RIGHT_SLIGHT;
+        explanation = "The content shows slight right-leaning bias.";
+      }
+      
+      // Extract some sample indicators
+      rightIndicators = extractBiasIndicators(text, 'right');
+    } 
+    else {
+      biasType = BiasType.CENTER;
+      explanation = "The content appears to be politically balanced or neutral.";
+    }
+    
+    console.log(`📊 [analyzeBias] ML Analysis Result: ${biasType} with ${biasStrength.toFixed(2)} confidence`);
+    
+    const result = {
+      type: biasType,
+      confidence: biasStrength,
+      explanation,
+      leftIndicators,
+      rightIndicators,
+      scores: {
+        left: biasResult.left,
+        center: biasResult.center,
+        right: biasResult.right
+      }
+    };
+    
+    // Cache the result
+    cache.biasAnalysis.set(cacheKey, result);
+    
+    return result;
+  } catch (error) {
+    console.error('Error in advanced bias analysis:', error);
+    
+    // Fall back to the basic keyword-based analysis in case of failure
+    return fallbackBiasAnalysis(text);
+  }
+}
+
+/**
+ * Extract bias indicators from text based on political leaning
+ * This is a helper function for the analyzeBias function
+ */
+function extractBiasIndicators(text: string, leaning: 'left' | 'right'): string[] {
+  const indicators: string[] = [];
+  const lowerText = text.toLowerCase();
+  
+  // Get bias indicator terms based on political leaning
+  const terms = leaning === 'left' ? biasIndicators.left : biasIndicators.right;
+  
+  // Find matches in the text
+  terms.forEach(term => {
+    const regex = new RegExp(`\\b${term.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}\\b`, 'gi');
+    const matches = lowerText.match(regex);
+    if (matches && matches.length > 0) {
+      indicators.push(`${term} (${matches.length})`);
+    }
+  });
+  
+  // Sort by frequency (assuming format "term (count)")
+  return indicators
+    .sort((a, b) => {
+      const countA = parseInt(a.match(/\((\d+)\)$/)?.[1] || '0');
+      const countB = parseInt(b.match(/\((\d+)\)$/)?.[1] || '0');
+      return countB - countA;
+    })
+    .slice(0, 10); // Return top 10 indicators
+}
+
+/**
+ * Legacy fallback bias analysis using keyword matching
+ * Only used if the ML-based analysis fails
+ */
+function fallbackBiasAnalysis(text: string): BiasAnalysis {
   const lowerText = text.toLowerCase();
   let leftScore = 0;
   let rightScore = 0;
   let leftKeywordsFound: string[] = [];
   let rightKeywordsFound: string[] = [];
   
-  console.log('📊 [analyzeBias] Analyzing text snippet:', lowerText.substring(0, 100) + "..."); // Log start of text
+  console.log('📊 [fallbackBiasAnalysis] Using keyword-based fallback analysis');
   
   // Count bias indicators
   biasIndicators.left.forEach(term => {
@@ -481,16 +649,16 @@ export function analyzeBias(text: string): BiasAnalysis {
     }
   });
   
-  console.log(`📊 [analyzeBias] Scores - Left: ${leftScore}, Right: ${rightScore}`);
-  console.log(`📊 [analyzeBias] Left keywords found: ${leftKeywordsFound.slice(0, 5).join(", ")}${leftKeywordsFound.length > 5 ? ` and ${leftKeywordsFound.length - 5} more` : ""}`);
-  console.log(`📊 [analyzeBias] Right keywords found: ${rightKeywordsFound.slice(0, 5).join(", ")}${rightKeywordsFound.length > 5 ? ` and ${rightKeywordsFound.length - 5} more` : ""}`);
+  console.log(`📊 [fallbackBiasAnalysis] Scores - Left: ${leftScore}, Right: ${rightScore}`);
 
   // Calculate bias type and confidence
   if (leftScore === 0 && rightScore === 0) {
     return {
       type: BiasType.CENTER,
       confidence: 0.5,
-      explanation: "No strong indicators of political bias were detected."
+      explanation: "No strong indicators of political bias were detected.",
+      leftIndicators: [],
+      rightIndicators: []
     };
   }
   
@@ -512,298 +680,179 @@ export function analyzeBias(text: string): BiasAnalysis {
     else biasType = BiasType.RIGHT_SLIGHT;
   }
   
-  // Account for text length - require minimum keyword density for confidence
-  const textLength = text.length;
-  const keywordDensity = totalScore / (textLength / 100); // Keywords per 100 chars
-  let confidenceAdjustment = 0;
-  
-  if (keywordDensity < 0.2) {
-    confidenceAdjustment = -0.2; // Low density reduces confidence
-  } else if (keywordDensity > 0.5) {
-    confidenceAdjustment = 0.1; // High density increases confidence
+  // Generate explanation
+  let explanation = '';
+  if (biasDirection === 'left') {
+    explanation = `This content shows ${getBiasStrengthLabel(biasStrength)} indicators of left-leaning bias.`;
+  } else {
+    explanation = `This content shows ${getBiasStrengthLabel(biasStrength)} indicators of right-leaning bias.`;
   }
   
-  const confidenceScore = Math.min(biasStrength + 0.3 + confidenceAdjustment, 0.95);
-  
-  console.log(`📊 [analyzeBias] Determined Type: ${biasType}, Strength: ${biasStrength.toFixed(3)}, Density: ${keywordDensity.toFixed(3)}, Confidence: ${confidenceScore.toFixed(3)}`);
   return {
     type: biasType,
-    confidence: confidenceScore,
-    explanation: generateBiasExplanation(biasType, biasStrength, biasDirection === 'left' ? leftKeywordsFound : rightKeywordsFound)
+    confidence: biasStrength,
+    explanation,
+    leftIndicators: leftKeywordsFound.slice(0, 10),
+    rightIndicators: rightKeywordsFound.slice(0, 10),
+    scores: {
+      left: leftScore / (leftScore + rightScore),
+      center: 0,
+      right: rightScore / (leftScore + rightScore)
+    }
   };
 }
 
 /**
- * Generate explanation for bias analysis
+ * Helper function to get a descriptive label for bias strength
  */
-function generateBiasExplanation(biasType: BiasType, strength: number, keywords: string[] = []): string {
-  const strengthText = strength > 0.75 ? "strong" : 
-                     strength > 0.5 ? "moderate" : 
-                     strength > 0.25 ? "slight" : "very slight";
-  
-  // Format the top keywords for the explanation
-  const topKeywords = keywords.length > 0 
-    ? `Common terms found include: ${keywords.slice(0, 5).join(", ")}${keywords.length > 5 ? ` and ${keywords.length - 5} more` : ""}.`
-    : '';
-  
-  switch (biasType) {
-    case BiasType.CENTER:
-      return "The content appears to be politically balanced without strong indicators of bias.";
-    case BiasType.LEFT_EXTREME:
-      return `The content shows extremely strong indicators of left-leaning political bias, consistently using language and framing associated with progressive viewpoints. ${topKeywords} The article may present progressive policies without acknowledging criticisms or alternative perspectives.`;
-    case BiasType.LEFT_STRONG:
-      return `The content shows strong indicators of left-leaning political bias, predominantly using language and framing associated with progressive viewpoints. ${topKeywords} The article emphasizes progressive perspectives.`;
-    case BiasType.LEFT_MODERATE:
-      return `The content shows moderate indicators of left-leaning political bias, using language and framing commonly associated with progressive viewpoints. ${topKeywords}`;
-    case BiasType.LEFT_SLIGHT:
-      return `The content shows slight indicators of left-leaning political bias, occasionally using language and framing associated with progressive viewpoints. ${topKeywords}`;
-    case BiasType.RIGHT_EXTREME:
-      return `The content shows extremely strong indicators of right-leaning political bias, consistently using language and framing associated with conservative viewpoints. ${topKeywords} The article may present conservative policies without acknowledging criticisms or alternative perspectives.`;
-    case BiasType.RIGHT_STRONG:
-      return `The content shows strong indicators of right-leaning political bias, predominantly using language and framing associated with conservative viewpoints. ${topKeywords} The article emphasizes conservative perspectives.`;
-    case BiasType.RIGHT_MODERATE:
-      return `The content shows moderate indicators of right-leaning political bias, using language and framing commonly associated with conservative viewpoints. ${topKeywords}`;
-    case BiasType.RIGHT_SLIGHT:
-      return `The content shows slight indicators of right-leaning political bias, occasionally using language and framing associated with conservative viewpoints. ${topKeywords}`;
-    default:
-      return "Unable to determine political bias orientation.";
-  }
+function getBiasStrengthLabel(strength: number): string {
+  if (strength > 0.75) return 'very strong';
+  if (strength > 0.5) return 'strong';
+  if (strength > 0.25) return 'moderate';
+  return 'slight';
 }
 
 /**
- * Extract metadata from article content
+ * Extract metadata from an article
+ * Enhanced with ML-based entity extraction and summarization
+ * Now with caching for better performance
  */
-export function extractMetadata(html: string, text: string): ArticleMetadata {
-  // Ensure we have text to parse
+export async function extractMetadata(html: string, text: string): Promise<ArticleMetadata> {
+  try {
+    // Validate input
   if (!text || typeof text !== 'string') {
-    text = '';
     console.warn('Empty or invalid text passed to extractMetadata');
+      text = '';
   }
   
-  // Ensure we have html to parse
   if (!html || typeof html !== 'string') {
-    html = text ? `<div>${text}</div>` : '<div></div>';
     console.warn('Empty or invalid HTML passed to extractMetadata');
+      html = '';
   }
   
   console.log('📊 [extractMetadata] Analyzing text length: ', text.length, ', HTML length:', html.length);
   console.log('📊 [extractMetadata] Text snippet:', text.substring(0, 100) + "...");
   
-  // Parse HTML using the browser's DOMParser
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
-  console.log('📊 [extractMetadata] HTML parsed. Doc body exists:', !!doc.body);
-  
-  // Calculate basic text metrics
-  const words = text.split(/\s+/).filter(word => word.length > 0);
-  const sentences = splitIntoSentences(text);
-  const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
-  const readingTime = Math.ceil(words.length / 200); // Avg reading speed of 200 wpm
-  console.log(`📊 [extractMetadata] Counts - Words: ${words.length}, Sentences: ${sentences.length}, Paragraphs: ${paragraphs.length}`);
-  
-  // Extract links
-  const linkElements = doc.querySelectorAll('a');
-  const links = Array.from(linkElements)
-    .map(a => ({
-      url: a.getAttribute('href') || '',
-      text: a.textContent || ''
-    }))
-    .filter(link => {
-      // More sophisticated link filtering
-      // Filter out empty, anchor links, and common navigation links
-      if (!link.url || link.url.startsWith('#')) return false;
-      if (/^\s*(home|about|contact|login|signup|register|privacy|terms)\s*$/i.test(link.text)) return false;
-      return true;
-    });
-  console.log(`📊 [extractMetadata] Found ${linkElements.length} <a> tags, Filtered to ${links.length} external links.`);
-  // Log the first few URLs
-  if (links.length > 0) {
-    console.log(`📊 [extractMetadata] Sample links: ${links.slice(0, 3).map(l => l.url).join(', ')}${links.length > 3 ? '...' : ''}`);
-  }
-  
-  // Extract potential citations
-  const sourceCitations = [];
-  const citationPatterns = [
-    /\b(?:according to|cited by|source[s]?:|reference[s]?:)\s+([^,.]+)/gi,
-    /\(([^)]+(?:19|20)\d{2}[^)]*)\)/g, // Capture parenthetical citations with years
-    /([A-Z][a-z]+(?:\s[A-Z][a-z]+)*)\s+\((?:19|20)\d{2}\)/g // Author (Year) format
-  ];
-  
-  let citationMatchCount = 0;
-  for (const pattern of citationPatterns) {
+    // Basic text statistics
+    const words = text.split(/\s+/).filter(Boolean);
+    const wordCount = words.length;
+    
+    // Reading time (average adult reads ~200-250 words per minute)
+    const readingTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
+    
+    // Sentence count
+    const sentences = text.split(/[.!?]+/).filter(Boolean);
+    const sentenceCount = sentences.length;
+    
+    // Paragraph count
+    const paragraphs = text.split(/\n\s*\n/).filter(Boolean);
+    const paragraphCount = paragraphs.length;
+    
+    // Extract links from HTML
+    const externalLinks: string[] = [];
+    if (html) {
+      try {
+        // Simple regex to extract links - a full implementation would use proper HTML parsing
+        const linkRegex = /<a[^>]+href=["']([^"']+)["'][^>]*>/gi;
     let match;
-    while ((match = pattern.exec(text)) !== null) {
-      citationMatchCount++;
-      sourceCitations.push({
-        source: match[1].trim(),
-        text: match[0]
-      });
-    }
-  }
-  console.log(`📊 [extractMetadata] Found ${citationMatchCount} potential citations via regex.`);
-  if (sourceCitations.length > 0) {
-    console.log(`📊 [extractMetadata] Sample citations: ${sourceCitations.slice(0, 3).map(c => c.source).join(', ')}${sourceCitations.length > 3 ? '...' : ''}`);
-  }
-  
-  // Enhanced entity extraction - organizations, people, locations
-  const entities: Record<string, string[]> = {
-    people: [],
-    organizations: [],
-    locations: []
-  };
-  
-  // People pattern - First Last, titles + names, etc.
-  const peoplePatterns = [
-    /\b((?:Mr|Mrs|Ms|Dr|Prof|President|Senator|Governor|Rep)\.\s+[A-Z][a-z]+(?:\s[A-Z][a-z]+)*)/g,
-    /\b([A-Z][a-z]+(?:\s[A-Z][a-z]+){1,2})\b(?:\s+(?:said|says|claimed|stated|announced|argued))/g
-  ];
-  
-  // Organizations pattern - multiple capitalized words, Inc., Corp., etc.
-  const orgPatterns = [
-    /\b([A-Z][a-z]*(?:\s[A-Z][a-z]*){1,5}(?:\s(?:Inc|Corp|LLC|Ltd|Co|Association|Institute|University|College|School|Agency|Department|Committee))?)\b/g,
-    /\b([A-Z][A-Z]+)\b/g // Acronyms
-  ];
-  
-  // Locations pattern - cities, countries, etc.
-  const locationPatterns = [
-    /\b(?:in|at|from|to)\s+([A-Z][a-z]+(?:\s[A-Z][a-z]+){0,2})\b(?!\s+(?:University|College|Institute|School))/g,
-    /\b(North|South|East|West|New|San|Los|Las)\s+([A-Z][a-z]+(?:\s[A-Z][a-z]+)?)\b/g
-  ];
-  
-  // Extract entities
-  for (const pattern of peoplePatterns) {
-    let match;
-    while ((match = pattern.exec(text)) !== null) {
-      if (match[1] && match[1].length > 3 && !entities.people.includes(match[1].trim())) {
-        entities.people.push(match[1].trim());
+        while ((match = linkRegex.exec(html)) !== null) {
+          const link = match[1];
+          if (link && link.startsWith('http') && !externalLinks.includes(link)) {
+            externalLinks.push(link);
+          }
+        }
+      } catch (e) {
+        console.error('Error extracting links:', e);
       }
     }
-  }
-  
-  for (const pattern of orgPatterns) {
-    let match;
-    while ((match = pattern.exec(text)) !== null) {
-      const org = match[1].trim();
-      // Filter out common false positives 
-      if (org && org.length > 3 && 
-          !/^(The|This|That|These|Those|It|He|She|They|We|You|I|A|An)$/.test(org) && 
-          !entities.organizations.includes(org)) {
-        entities.organizations.push(org);
-      }
-    }
-  }
-  
-  for (const pattern of locationPatterns) {
-    let match;
-    while ((match = pattern.exec(text)) !== null) {
-      const location = match[1] ? match[1].trim() : (match[2] ? match[1] + ' ' + match[2] : '');
-      if (location && location.length > 3 && !entities.locations.includes(location)) {
-        entities.locations.push(location);
-      }
-    }
-  }
-  
-  // Create a combined list of primary entities
-  let mainEntities: string[] = [];
-  
-  // Add people first (usually the most important entities)
-  mainEntities = mainEntities.concat(entities.people);
-  
-  // Add organizations second
-  mainEntities = mainEntities.concat(entities.organizations);
-  
-  // Add locations third
-  mainEntities = mainEntities.concat(entities.locations);
-  
-  // Limit to top 15 entities
-  mainEntities = mainEntities.slice(0, 15);
-  
-  console.log(`📊 [extractMetadata] Entities - People: ${entities.people.length}, Organizations: ${entities.organizations.length}, Locations: ${entities.locations.length}`);
-  console.log(`📊 [extractMetadata] Top entities: ${mainEntities.slice(0, 5).join(', ')}${mainEntities.length > 5 ? '...' : ''}`);
-  
-  // Extract key phrases - look for important sentences based on position and content
-  const keyphrases: string[] = [];
-  
-  // First paragraph sentences are often important
+    
+    // Use enhanced entity extraction for better results - with caching
+    const entityResult = await cachedEntityExtraction(text);
+    const entities = [...entityResult.keyPeople, ...entityResult.keyOrganizations, ...entityResult.keyLocations];
+    
+    // Calculate reading complexity using Flesch-Kincaid Grade Level
+    const totalSyllables = countSyllables(text);
+    const wordsPerSentence = wordCount / Math.max(1, sentenceCount);
+    const syllablesPerWord = totalSyllables / Math.max(1, wordCount);
+    
+    const fleschKincaidGrade = 0.39 * wordsPerSentence + 11.8 * syllablesPerWord - 15.59;
+    const gradeLevel = Math.max(0, Math.min(Math.round(fleschKincaidGrade), 18));
+    
+    let readingLevel = 'Medium';
+    if (gradeLevel <= 6) readingLevel = 'Elementary';
+    else if (gradeLevel <= 9) readingLevel = 'Middle School';
+    else if (gradeLevel <= 12) readingLevel = 'High School';
+    else if (gradeLevel <= 15) readingLevel = 'College';
+    else readingLevel = 'Graduate';
+    
+    // Extract main point using advanced summarization - with caching
+    const mainPoint = await cachedSummaryGeneration(text, 100);
+    
+    // Attempt to detect agenda and affiliation - this would normally use more advanced NLP
+    // For now, we use simple heuristics as a placeholder
+    let agenda = '';
+    let affiliation = '';
+    
+    // Very basic agenda detection based on repeated phrases in the first paragraph
   if (paragraphs.length > 0) {
-    const firstParaSentences = splitIntoSentences(paragraphs[0]);
-    if (firstParaSentences.length > 0) {
-      keyphrases.push(firstParaSentences[0]);
-    }
-  }
-  
-  // Look for sentences with entities or important signaling phrases
-  const importantPhraseMarkers = [
-    /\b(key|important|significant|critical|essential|main|primary|crucial)\b/i,
-    /\b(found|discovered|revealed|showed|concluded|determined)\b/i,
-    /\b(according to the (?:study|research|analysis|report|data|survey|poll))\b/i
-  ];
-  
-  for (const sentence of sentences) {
-    // Skip if too short or too long
-    if (sentence.length < 30 || sentence.length > 150) continue;
-    
-    // Check if sentence contains any important markers
-    const hasImportantMarker = importantPhraseMarkers.some(marker => marker.test(sentence));
-    
-    // Check if it has named entities
-    const hasNamedEntity = mainEntities.some(entity => sentence.includes(entity));
-    
-    // If either condition is met and we haven't already added it
-    if ((hasImportantMarker || hasNamedEntity) && !keyphrases.includes(sentence)) {
-      keyphrases.push(sentence);
-      
-      // Stop once we have enough key phrases
-      if (keyphrases.length >= 5) break;
-    }
-  }
-  
-  // Ensure we have at least a few keyphrases
-  if (keyphrases.length < 3 && sentences.length > 3) {
-    // Add sentences with the right length that aren't already included
-    for (const sentence of sentences) {
-      if (sentence.length >= 50 && sentence.length <= 150 && !keyphrases.includes(sentence)) {
-        keyphrases.push(sentence);
-        if (keyphrases.length >= 3) break;
+      const firstParagraph = paragraphs[0];
+      const phrases = extractKeyPhrases(firstParagraph, 3);
+      if (phrases.length > 0) {
+        agenda = phrases[0];
       }
     }
+    
+    // Try to detect affiliation based on entities and bias
+    const biasAnalysis = await analyzeBias(text);
+    if (biasAnalysis.type !== BiasType.CENTER && entityResult.keyOrganizations.length > 0) {
+      // Simple heuristic linking organizations to political leaning
+      affiliation = entityResult.keyOrganizations[0];
+    }
+    
+    // Find citations in the text - this is a simple approximation
+    const citationRegex = /\(\s*\d{4}\s*\)|\[\s*\d+\s*\]|et al\./gi;
+    const citationMatches = text.match(citationRegex) || [];
+    const citations = Array.from(new Set(citationMatches)).slice(0, 10);
+    
+    return {
+      wordCount,
+      readingTimeMinutes,
+      sentenceCount,
+      paragraphCount,
+      externalLinks,
+      sourceCitations: citations,
+      mainEntities: entities.slice(0, 10),
+      entities: entities,
+      keyphrases: extractKeyPhrases(text, 5),
+      mainPoint,
+      agenda,
+      affiliation,
+      readingLevel,
+      complexityScore: gradeLevel / 18, // Normalize to 0-1
+      avgSentenceLength: wordsPerSentence,
+      longWordPercentage: countLongWords(text) / Math.max(1, wordCount)
+    };
+  } catch (error) {
+    console.error('Error in extractMetadata:', error);
+    return {
+      wordCount: 0,
+      readingTimeMinutes: 1,
+      sentenceCount: 0,
+      paragraphCount: 0,
+      externalLinks: [],
+      sourceCitations: [],
+      mainEntities: [],
+      entities: [],
+      keyphrases: [],
+      mainPoint: 'Unable to determine main point.',
+      agenda: '',
+      affiliation: '',
+      readingLevel: 'Unknown',
+      complexityScore: 0.5,
+      avgSentenceLength: 0,
+      longWordPercentage: 0
+    };
   }
-  
-  console.log(`📊 [extractMetadata] Extracted ${keyphrases.length} keyphrases.`);
-  if (keyphrases.length > 0) {
-    console.log(`📊 [extractMetadata] First keyphrase: "${keyphrases[0].substring(0, 60)}..."`);
-  }
-  
-  // Additional metric: Complexity estimation
-  const longWords = words.filter(word => word.length > 6).length;
-  const longWordPercentage = words.length > 0 ? (longWords / words.length) * 100 : 0;
-  const avgSentenceLength = sentences.length > 0 ? words.length / sentences.length : 0;
-  
-  // Use Flesch-Kincaid as a simple complexity measure
-  // Formula: 206.835 - 1.015 × (words/sentences) - 84.6 × (syllables/words)
-  // We'll approximate syllables as word length / 3
-  const approximateSyllables = words.reduce((total, word) => total + Math.max(1, Math.ceil(word.length / 3)), 0);
-  const syllablesPerWord = words.length > 0 ? approximateSyllables / words.length : 0;
-  const readabilityScore = 206.835 - (1.015 * avgSentenceLength) - (84.6 * syllablesPerWord);
-  
-  console.log(`📊 [extractMetadata] Complexity - Long words: ${longWordPercentage.toFixed(1)}%, Avg sentence length: ${avgSentenceLength.toFixed(1)} words, Readability score: ${readabilityScore.toFixed(1)}`);
-  
-  // Log the final object before returning
-  const finalMetadata = {
-    wordCount: words.length,
-    readingTimeMinutes: readingTime,
-    sentenceCount: sentences.length,
-    paragraphCount: paragraphs.length,
-    externalLinks: links,
-    sourceCitations,
-    mainEntities,
-    keyphrases,
-    complexityScore: Math.max(0, Math.min(100, 100 - readabilityScore)), // Convert to 0-100 scale
-    avgSentenceLength: avgSentenceLength,
-    longWordPercentage: longWordPercentage
-  };
-
-  return finalMetadata;
 }
 
 // --- NLP Service Integration ---
@@ -1020,7 +1069,9 @@ export async function analyzeSentiment(text: string): Promise<{score: number, la
 }
 
 /**
- * Perform complete content analysis on article
+ * Main function to analyze content and produce a comprehensive analysis
+ * Updated to use ML-based approaches for better results
+ * Now with caching for better performance
  */
 export async function analyzeContent(content: string): Promise<ContentAnalysisResult> {
   try {
@@ -1080,7 +1131,7 @@ export async function analyzeContent(content: string): Promise<ContentAnalysisRe
     // Extract metadata - wrap in try/catch to prevent failures
     let metadata: ArticleMetadata;
     try {
-      metadata = extractMetadata(html, plainText);
+      metadata = await extractMetadata(html, plainText);
     } catch (metadataError) {
       console.error('Error extracting metadata:', metadataError);
       metadata = {
@@ -1098,416 +1149,189 @@ export async function analyzeContent(content: string): Promise<ContentAnalysisRe
       };
     }
     
-    // Detect logical fallacies using REGEX - wrap in try/catch
-    let logicalFallacies: LogicalFallacy[];
+    // Analyze emotions with error handling
+    let emotionAnalysis: EmotionAnalysisResult = {
+      emotions: {},
+      dominantEmotion: 'neutral',
+      emotionalTone: 'neutral',
+      emotionalIntensity: 0
+    };
     try {
-      logicalFallacies = detectLogicalFallacies(plainText);
-    } catch (fallacyError) {
-      console.error('Error detecting fallacies:', fallacyError);
-      logicalFallacies = [];
+      emotionAnalysis = await cachedEmotionAnalysis(plainText);
+      console.log('🔬 Emotion analysis complete with dominant emotion:', emotionAnalysis.dominantEmotion);
+    } catch (emotionError) {
+      console.error('Error in emotion analysis:', emotionError);
     }
     
-    // Analyze political bias using keywords - wrap in try/catch
+    // Analyze sentiment with error handling
+    let sentiment = {
+      score: 0,
+      label: 'neutral'
+    };
+    try {
+      sentiment = await cachedSentimentAnalysis(plainText);
+      console.log('🔬 Sentiment analysis complete with result:', sentiment.label, sentiment.score);
+    } catch (sentimentError) {
+      console.error('Error in sentiment analysis:', sentimentError);
+    }
+    
+    // Analyze bias with error handling
     let biasAnalysis: BiasAnalysis;
     try {
-      biasAnalysis = analyzeBias(plainText);
+      biasAnalysis = await analyzeBias(plainText);
+      console.log('🔬 Bias analysis complete with type:', biasAnalysis.type);
     } catch (biasError) {
-      console.error('Error analyzing bias:', biasError);
+      console.error('Error in bias analysis:', biasError);
       biasAnalysis = {
         type: BiasType.CENTER,
-        confidence: 0,
-        explanation: limitedAnalysis ? 
-          'Limited content available for bias analysis' : 
-          'Error occurred during bias analysis'
+        confidence: 0.5,
+        explanation: 'Unable to determine political bias due to an error in analysis.'
       };
     }
     
-    // --- Enhance Fallacy Detection with Zero-Shot NLP ---
-    const zeroShotFallacyLabels = Object.values(LogicalFallacyType);
-
-    // Split text into meaningful chunks for better analysis
-    const textChunks = splitIntoAnalysisChunks(plainText);
-    console.log(`🔬 Analyzing ${textChunks.length} text chunks for fallacies and bias`);
+    // Detect logical fallacies with error handling
+    let logicalFallacies: LogicalFallacy[] = [];
+    try {
+      logicalFallacies = detectLogicalFallacies(plainText);
+      console.log('🔬 Logical fallacy detection complete, found:', logicalFallacies.length);
+    } catch (fallacyError) {
+      console.error('Error detecting logical fallacies:', fallacyError);
+    }
     
-    // Use Promise.all to run all analyses in parallel (fallacies, bias, entities, and topics)
-    const [fallacyResults, biasStyleResults, entityResults, topicResults] = await Promise.all([
-      // Analyze fallacies in chunks
-      analyzeTextChunksForFallacies(textChunks, zeroShotFallacyLabels),
+    // Analyze manipulation tactics with error handling
+    let manipulationAnalysis;
+    try {
+      const darkPatternAnalysis = await analyzeManipulation(plainText);
+      console.log('🔬 Manipulation analysis complete');
       
-      // Analyze bias/framing separately
-      performZeroShotAnalysis(plainText, [
-        "Emotionally Charged Language",
-        "Biased Framing", 
-        "Objective Tone",
-        "Subjective Tone", 
-        "Propaganda Technique",
-        "Balanced Perspective"
-      ]),
-      
-      // Extract entities using NER
-      performEntityRecognition(plainText),
-      
-      // Classify article topics
-      performZeroShotAnalysis(plainText, topicLabels)
-    ]);
-    
-    // Process fallacy results if we got them
-    if (fallacyResults && fallacyResults.length > 0) {
-      console.log(`🔬 Processing ${fallacyResults.length} fallacy detection results`);
-      
-      // Process and add ML-detected fallacies
-      for (const result of fallacyResults) {
-        if (!result) continue;
-        
-        const threshold = 0.4; // Lowered threshold based on previous test
-        result.labels.forEach((label, index) => {
-          const score = result.scores[index];
-          if (score >= threshold) {
-            const fallacyType = label as LogicalFallacyType;
-            
-            // Avoid adding duplicates if regex already found this type
-            const alreadyExists = logicalFallacies.some(f => f.type === fallacyType);
-            
-            if (!alreadyExists) {
-              console.log(`✅ Adding ML-detected fallacy: ${fallacyType} (Score: ${score.toFixed(3)})`);
-              logicalFallacies.push({
-                type: fallacyType, 
-                confidence: score,
-                explanation: getFallacyExplanation(fallacyType) + " (Detected via ML model)",
-                excerpt: result.sequence.substring(0, 250) + (result.sequence.length > 250 ? "..." : ""),
-                startIndex: -1, // Mark as unknown
-                endIndex: -1,   // Mark as unknown
-              });
-            } else {
-              console.log(`ℹ️ Skipping ML-detected fallacy (already found by regex): ${fallacyType}`);
-            }
-          }
-        });
-      }
-    } else {
-      console.warn("⚠️ No results received from zero-shot fallacy analysis.");
-    }
-
-    // Process bias/style results
-    let qualitativeAnalysisResult: QualitativeAnalysis | undefined = undefined;
-    if (biasStyleResults) {
-      const threshold = 0.3;
-      console.log(`🔬 Processing ${biasStyleResults.labels.length} zero-shot bias/framing results with threshold ${threshold}...`);
-      const topLabels: string[] = [];
-      const topScores: number[] = [];
-
-      biasStyleResults.labels.forEach((label, index) => {
-        const score = biasStyleResults.scores[index];
-        if (score >= threshold) {
-          console.log(`✅ Adding qualitative analysis label: ${label} (Score: ${score.toFixed(3)})`);
-          topLabels.push(label);
-          topScores.push(score);
-        }
-      });
-
-      if (topLabels.length > 0) {
-        qualitativeAnalysisResult = { labels: topLabels, scores: topScores };
-      }
-    } else {
-       console.warn("⚠️ No results received from zero-shot bias/framing analysis.");
-    }
-
-    // Process entity results if we got them
-    // This will enhance our metadata with better entity recognition
-    if (entityResults) {
-      console.log(`🔬 Processing NER results. Found ${entityResults.entities.length} entity mentions.`);
-      
-      // Override the mainEntities in metadata with the NER results if available
-      try {
-        const entityTypes = Object.keys(entityResults.grouped_entities);
-        console.log(`✅ Entity types detected: ${entityTypes.join(', ')}`);
-        
-        let mainEntities: string[] = [];
-        
-        // First add PER (Person) entities which are typically most important
-        if (entityResults.grouped_entities['PER']) {
-          const personEntities = entityResults.grouped_entities['PER']
-            .sort((a, b) => b.count - a.count) // Sort by mention count
-            .map(e => e.entity);
-          console.log(`✅ Found ${personEntities.length} person entities`);
-          mainEntities = mainEntities.concat(personEntities);
-        }
-        
-        // Then add ORG (Organization) entities
-        if (entityResults.grouped_entities['ORG']) {
-          const orgEntities = entityResults.grouped_entities['ORG']
-            .sort((a, b) => b.count - a.count)
-            .map(e => e.entity);
-          console.log(`✅ Found ${orgEntities.length} organization entities`);
-          mainEntities = mainEntities.concat(orgEntities);
-        }
-        
-        // Then add LOC (Location) entities
-        if (entityResults.grouped_entities['LOC']) {
-          const locEntities = entityResults.grouped_entities['LOC']
-            .sort((a, b) => b.count - a.count)
-            .map(e => e.entity);
-          console.log(`✅ Found ${locEntities.length} location entities`);
-          mainEntities = mainEntities.concat(locEntities);
-        }
-        
-        // Add other entity types if needed
-        // Limit to top entities with high confidence
-        mainEntities = mainEntities.slice(0, 15);
-        
-        if (mainEntities.length > 0) {
-          // Replace the regex-based entities with ML-detected ones
-          metadata.mainEntities = mainEntities;
-          console.log(`✅ Updated metadata with ${mainEntities.length} ML-detected entities`);
-        }
-      } catch (entityError) {
-        console.error('Error processing NER results:', entityError);
-        // Don't replace the entities if there was an error
-      }
-    } else {
-      console.warn("⚠️ No results received from NER analysis. Using regex-based entity extraction only.");
-    }
-
-    // Process topic classification results
-    let topicClassificationResult: TopicClassification | undefined = undefined;
-    if (topicResults) {
-      console.log(`🔬 Processing topic classification results with ${topicResults.labels.length} topics`);
-      
-      // Find the highest scoring topic
-      const labelScores = topicResults.labels.map((label, index) => ({
-        topic: label,
-        score: topicResults.scores[index]
-      }));
-      
-      // Sort by score in descending order
-      labelScores.sort((a, b) => b.score - a.score);
-      
-      // Get the main topic (highest score) and related topics (next highest scores)
-      const mainTopic = labelScores[0];
-      const relatedTopics = labelScores.slice(1, 4);  // Get next 3 highest topics
-      
-      console.log(`✅ Main topic: ${mainTopic.topic} (Score: ${mainTopic.score.toFixed(3)})`);
-      console.log(`✅ Related topics: ${relatedTopics.map(t => `${t.topic} (${t.score.toFixed(3)})`).join(', ')}`);
-      
-      topicClassificationResult = {
-        mainTopic: mainTopic.topic,
-        score: mainTopic.score,
-        relatedTopics: relatedTopics
+      // Create a compatible manipulationAnalysis structure
+      manipulationAnalysis = {
+        doomscroll: {
+          isDoomscroll: darkPatternAnalysis.score > 0.5,
+          doomscrollScore: darkPatternAnalysis.score,
+          doomscrollTopics: darkPatternAnalysis.techniques,
+          doomscrollExplanation: darkPatternAnalysis.explanation
+        },
+        outrageBait: {
+          isOutrageBait: darkPatternAnalysis.score > 0.6,
+          outrageBaitScore: darkPatternAnalysis.score,
+          outrageBaitTriggers: darkPatternAnalysis.techniques,
+          outrageBaitExplanation: darkPatternAnalysis.explanation
+        },
+        manipulativeTactics: darkPatternAnalysis.techniques,
+        recommendedAction: darkPatternAnalysis.score > 0.5 
+          ? "Consider if this content uses manipulation techniques to influence your thinking."
+          : "This content appears to have few manipulative elements.",
+        educationalSummary: darkPatternAnalysis.explanation
       };
-    } else {
-      console.warn("⚠️ No results received from topic classification.");
-    }
-
-    // --- Refine Bias Analysis with Qualitative Data ---
-    let adjustedBiasAnalysis = { ...biasAnalysis }; // Start with keyword-based analysis
-    let qualitativeFactorsNote = "";
-
-    if (qualitativeAnalysisResult) {
-      const objectivityScore = qualitativeAnalysisResult.scores[
-        qualitativeAnalysisResult.labels.findIndex(
-          label => label === "Objective Tone" || label === "Balanced Perspective"
-        )
-      ] || 0;
-
-      const biasedFramingScore = qualitativeAnalysisResult.scores[
-        qualitativeAnalysisResult.labels.findIndex(
-          label => label === "Biased Framing"
-        )
-      ] || 0;
-      
-      const emotionalScore = qualitativeAnalysisResult.scores[
-        qualitativeAnalysisResult.labels.findIndex(
-          label => label === "Emotionally Charged Language"
-        )
-      ] || 0;
-
-      console.log(`📊 Qualitative factors - Objectivity: ${objectivityScore.toFixed(3)}, Biased Framing: ${biasedFramingScore.toFixed(3)}, Emotional: ${emotionalScore.toFixed(3)}`);
-
-      // Adjust bias based on objectivity
-      if (objectivityScore > 0.6 && adjustedBiasAnalysis.type !== BiasType.CENTER) {
-        // High objectivity reduces confidence in keyword-based bias
-        adjustedBiasAnalysis.confidence = Math.max(0.1, adjustedBiasAnalysis.confidence * (1 - objectivityScore * 0.75)); 
-        qualitativeFactorsNote += ` High objectivity detected (Score: ${objectivityScore.toFixed(2)}), reducing confidence in keyword bias.`;
-        // If confidence drops very low, consider it CENTER
-        if (adjustedBiasAnalysis.confidence < 0.25) {
-           adjustedBiasAnalysis.type = BiasType.CENTER;
-           qualitativeFactorsNote += ` Bias shifted to Center due to low confidence after objectivity adjustment.`;
-        }
-      } 
-      // Adjust bias based on framing and emotion if not already CENTER
-      else if (adjustedBiasAnalysis.type !== BiasType.CENTER && (biasedFramingScore > 0.5 || emotionalScore > 0.6)) {
-         // High biased framing or emotion increases confidence
-         const adjustmentFactor = Math.max(biasedFramingScore, emotionalScore * 0.8);
-         adjustedBiasAnalysis.confidence = Math.min(0.95, adjustedBiasAnalysis.confidence + adjustmentFactor * 0.3);
-         qualitativeFactorsNote += ` Confidence increased due to biased framing/emotional language (Scores: Framing=${biasedFramingScore.toFixed(2)}, Emotional=${emotionalScore.toFixed(2)}).`;
-      }
-      // Handle cases where keywords showed CENTER but ML shows bias
-      else if (adjustedBiasAnalysis.type === BiasType.CENTER && biasedFramingScore > 0.6) {
-          // If keyword analysis was center, but framing is biased, assign a slight bias
-          // We don't know the direction, so we might need a new 'UNCLEAR' bias type or just note it.
-          // For now, let's just add a note.
-          qualitativeFactorsNote += ` Note: Keyword analysis indicated Center, but ML detected strong biased framing (Score: ${biasedFramingScore.toFixed(2)}).`;
-          // Or potentially assign a slight bias type if we could determine directionality from framing analysis in the future.
-      }
-
-      // Update explanation if adjustments were made
-      if (qualitativeFactorsNote) {
-          adjustedBiasAnalysis.explanation += qualitativeFactorsNote;
-          console.log(`📊 Bias analysis adjusted based on qualitative factors.`);
-      }
-    }
-
-    // --- Calculate Final Scores ---
-    // Calculate a more comprehensive manipulation score based on multiple factors
-    // Start with fallacy-based manipulation
-    const fallacyCount = logicalFallacies.length;
-    const fallacyFactor = Math.min(fallacyCount / 5, 1); // Cap at 1.0 for 5+ fallacies
-    
-    // Factor in bias strength 
-    const biasStrength = adjustedBiasAnalysis ? 
-      (adjustedBiasAnalysis.type === BiasType.CENTER ? 0 : adjustedBiasAnalysis.confidence) : 0;
-    
-    // Factor in emotional language from qualitative analysis
-    let emotionalLanguageFactor = 0;
-    if (qualitativeAnalysisResult) {
-      // Check for emotionally charged language
-      const emotionalIdx = qualitativeAnalysisResult.labels.findIndex(
-        label => label === "Emotionally Charged Language"
-      );
-      if (emotionalIdx >= 0) {
-        emotionalLanguageFactor = qualitativeAnalysisResult.scores[emotionalIdx];
-      }
-      
-      // Check for propaganda techniques
-      const propagandaIdx = qualitativeAnalysisResult.labels.findIndex(
-        label => label === "Propaganda Technique"
-      );
-      if (propagandaIdx >= 0) {
-        emotionalLanguageFactor = Math.max(
-          emotionalLanguageFactor,
-          qualitativeAnalysisResult.scores[propagandaIdx]
-        );
-      }
+    } catch (manipulationError) {
+      console.error('Error in manipulation analysis:', manipulationError);
+      manipulationAnalysis = {
+        doomscroll: {
+          isDoomscroll: false,
+          doomscrollScore: 0.1,
+          doomscrollTopics: [],
+          doomscrollExplanation: 'Unable to analyze doomscroll content due to an error.'
+        },
+        outrageBait: {
+          isOutrageBait: false,
+          outrageBaitScore: 0.1,
+          outrageBaitTriggers: [],
+          outrageBaitExplanation: 'Unable to analyze outrage bait content due to an error.'
+        },
+        manipulativeTactics: [],
+        recommendedAction: 'Unable to provide recommendations due to an analysis error.',
+        educationalSummary: 'Unable to analyze manipulation techniques due to an error.'
+      };
     }
     
-    // Opinion pieces are more naturally biased, so consider the topic
-    let topicAdjustment = 0;
-    if (topicClassificationResult && topicClassificationResult.mainTopic === "Opinion") {
-      topicAdjustment = -0.1; // Reduce manipulation score for opinion pieces
-    }
-    
-    // Calculate the final manipulation score with weights for each factor
-    const manipulationScore = Math.max(0, Math.min(1, 
-      (fallacyFactor * 0.5) +          // 50% weight to logical fallacies
-      (biasStrength * 0.3) +           // 30% weight to bias strength
-      (emotionalLanguageFactor * 0.2) + // 20% weight to emotional language
-      topicAdjustment                   // Topic-based adjustment
-    ));
-    
-    console.log(`🔬 Manipulation score components - Fallacies: ${fallacyFactor.toFixed(2)}, Bias: ${biasStrength.toFixed(2)}, Emotional: ${emotionalLanguageFactor.toFixed(2)}`);
-    console.log(`🔬 Final manipulation score: ${manipulationScore.toFixed(2)}`);
-    
-    // Calculate a more comprehensive quality score
-    // Consider: citations, word count, complexity, objectivity, balanced perspective
-    const citationFactor = Math.min((metadata?.sourceCitations?.length || 0) / 3, 1);
-    const wordCountFactor = Math.min((metadata?.wordCount || 0) / 500, 1);
-    
-    // Factor in objective tone from qualitative analysis
-    let objectivityFactor = 0;
-    if (qualitativeAnalysisResult) {
-      const objectiveIdx = qualitativeAnalysisResult.labels.findIndex(
-        label => label === "Objective Tone"
-      );
-      if (objectiveIdx >= 0) {
-        objectivityFactor = qualitativeAnalysisResult.scores[objectiveIdx];
-      }
-      
-      const balancedIdx = qualitativeAnalysisResult.labels.findIndex(
-        label => label === "Balanced Perspective"
-      );
-      if (balancedIdx >= 0) {
-        objectivityFactor = Math.max(
-          objectivityFactor,
-          qualitativeAnalysisResult.scores[balancedIdx]
-        );
-      }
-    }
-    
-    // Calculate the final quality score with weights for each factor
-    const qualityScore = Math.max(0, Math.min(1,
-      (citationFactor * 0.3) +              // 30% weight to citations
-      (wordCountFactor * 0.2) +             // 20% weight to length/depth
-      (objectivityFactor * 0.2) +           // 20% weight to objectivity
-      ((1 - manipulationScore) * 0.3)       // 30% weight to lack of manipulation
-    ));
-    
-    console.log(`🔬 Quality score components - Citations: ${citationFactor.toFixed(2)}, Length: ${wordCountFactor.toFixed(2)}, Objectivity: ${objectivityFactor.toFixed(2)}`);
-    console.log(`🔬 Final quality score: ${qualityScore.toFixed(2)}`);
-
-    // Perform manipulation analysis (doomscroll and outrage bait detection)
-    console.log('🔬 Performing manipulation analysis (doomscroll and outrage detection)');
-    const manipulationAnalysis = analyzeManipulativeContent(plainText);
-    console.log(`🔬 Manipulation analysis complete - Doomscroll score: ${manipulationAnalysis.doomscroll.doomscrollScore.toFixed(2)}, Outrage score: ${manipulationAnalysis.outrageBait.outrageBaitScore.toFixed(2)}`);
-
-    // Perform enhanced emotion analysis with Hugging Face integration
-    console.log('🔬 Performing advanced emotion analysis with Hugging Face integration');
-    const emotionAnalysis = await analyzeEmotions(plainText);
-
-    // Log information with type safety for the new emotionAnalysis structure
-    if (emotionAnalysis.success && emotionAnalysis.dominantEmotion) {
-      console.log(`🔬 Emotion analysis complete - Dominant emotion: ${emotionAnalysis.dominantEmotion.type}, Emotional appeal: ${emotionAnalysis.emotionalAppeal.toFixed(1)}%`);
-    } else {
-      console.log(`🔬 Emotion analysis failed or returned no results: ${emotionAnalysis.error || 'No dominant emotion detected'}`);
-    }
-
-    // Perform dedicated sentiment analysis (also with Hugging Face if available)
-    console.log('🔬 Performing sentiment analysis with Hugging Face integration');
-    const sentiment = await analyzeSentiment(plainText);
-    console.log(`🔬 Sentiment analysis complete - Score: ${sentiment.score.toFixed(2)}, Label: ${sentiment.label}`);
-
-    console.log('🔬 Analysis completed successfully (incl. ML attempt)');
-    
-    return {
+    // Calculate quality score based on metrics
+    const qualityScore = calculateQualityScore(
+      plainText, 
       logicalFallacies, 
-      biasAnalysis: adjustedBiasAnalysis, // Use the adjusted bias analysis
-      metadata,
-      manipulationScore, 
-      qualityScore,
-      qualitativeAnalysis: qualitativeAnalysisResult,
-      topicClassification: topicClassificationResult,
-      manipulationAnalysis, // Add the new manipulation analysis
-      emotionAnalysis,      // Add the new emotion analysis
-      sentiment             // Add dedicated sentiment analysis
+      biasAnalysis,
+      manipulationAnalysis ? manipulationAnalysis.score : 0.1
+    );
+    console.log('🔬 Content quality score:', qualityScore);
+    
+    // Calculate manipulation score (inverse of quality with weighting)
+    const manipulationScore = manipulationAnalysis ? manipulationAnalysis.score : 0.1;
+    console.log('🔬 Content manipulation score:', manipulationScore);
+    
+    // Generate emotional appeals model (this can be enhanced in the future)
+    const emotionalAppeals = generateEmotionalAppealsModel(plainText, emotionAnalysis);
+    
+    // Generate sentiment analysis model
+    const sentimentAnalysis = generateSentimentAnalysis(plainText, sentiment);
+    
+    // Add loading indicators for UI feedback
+    const addLoadingIndicators = (result: ContentAnalysisResult) => {
+      result.loadingState = {
+        biasAnalysis: 'complete',
+        metadataExtraction: 'complete',
+        emotionAnalysis: 'complete',
+        sentimentAnalysis: 'complete',
+        fallacyDetection: 'complete',
+        manipulationAnalysis: 'complete'
+      };
+      return result;
     };
+    
+    // Final result
+    const result: ContentAnalysisResult = {
+      qualityScore,
+      manipulationScore,
+      limitedAnalysis,
+      biasAnalysis,
+      logicalFallacies, 
+      manipulationAnalysis,
+      emotionAnalysis,
+      sentiment,
+      metadata,
+      emotionalAppeals,
+      sentimentAnalysis
+    };
+    
+    return addLoadingIndicators(result);
   } catch (error) {
-    console.error('FATAL Error during content analysis pipeline:', error);
+    console.error('Error in content analysis:', error);
+    // Return a minimal result rather than failing completely
     return {
-        logicalFallacies: [],
+      qualityScore: 0.5,
+      manipulationScore: 0.5,
+      limitedAnalysis: true,
         biasAnalysis: {
             type: BiasType.CENTER,
-            confidence: 0,
-            explanation: 'Analysis could not be completed due to a fatal error'
+        confidence: 0.5,
+        explanation: 'Unable to analyze bias due to an error.'
         },
+      logicalFallacies: [],
         metadata: {
             wordCount: 0,
-            readingTimeMinutes: 0,
+        readingTimeMinutes: 1,
             sentenceCount: 0,
             paragraphCount: 0,
             externalLinks: [],
             sourceCitations: [],
             mainEntities: [],
             keyphrases: [],
-            complexityScore: 0,
+        complexityScore: 0.5,
             avgSentenceLength: 0,
             longWordPercentage: 0
         },
-        manipulationScore: 0,
-        qualityScore: 0,
-        qualitativeAnalysis: undefined,
-        topicClassification: undefined,
-        manipulationAnalysis: undefined,
-        emotionAnalysis: undefined,
-        sentiment: undefined
+      emotionalAppeals: {},
+      sentimentAnalysis: {
+        overall: 0,
+        aspects: {}
+      },
+      loadingState: {
+        biasAnalysis: 'error',
+        metadataExtraction: 'error',
+        emotionAnalysis: 'error',
+        sentimentAnalysis: 'error',
+        fallacyDetection: 'error',
+        manipulationAnalysis: 'error'
+      }
     };
   }
 }
@@ -1664,4 +1488,517 @@ export interface TopicClassification {
   mainTopic: string;
   score: number;
   relatedTopics: Array<{topic: string, score: number}>;
+}
+
+/**
+ * Counts syllables in a text
+ * @param text The text to count syllables in
+ * @returns The number of syllables
+ */
+function countSyllables(text: string): number {
+  const words = text.toLowerCase().split(/\s+/).filter(Boolean);
+  let count = 0;
+  
+  for (const word of words) {
+    // Remove non-alphabetic characters
+    const cleanWord = word.replace(/[^a-z]/g, '');
+    if (!cleanWord) continue;
+    
+    // Count vowel groups
+    const vowelGroups = cleanWord.match(/[aeiouy]+/g) || [];
+    let syllables = vowelGroups.length;
+    
+    // Adjust for common patterns
+    // Silent 'e' at the end
+    if (cleanWord.endsWith('e') && syllables > 1) {
+      syllables--;
+    }
+    
+    // Words ending with 'le' or 'les'
+    if ((cleanWord.endsWith('le') || cleanWord.endsWith('les')) && 
+        cleanWord.length > 2 && 
+        !['a', 'e', 'i', 'o', 'u', 'y'].includes(cleanWord.charAt(cleanWord.length - 3))) {
+      syllables++;
+    }
+    
+    // Ensure at least one syllable per word
+    syllables = Math.max(1, syllables);
+    count += syllables;
+  }
+  
+  return count;
+}
+
+/**
+ * Counts "long words" (>6 characters) in text
+ * @param text The text to analyze
+ * @returns Number of long words
+ */
+function countLongWords(text: string): number {
+  const words = text.toLowerCase().split(/\s+/).filter(Boolean);
+  return words.filter(word => word.replace(/[^a-z]/g, '').length > 6).length;
+}
+
+/**
+ * Extracts key phrases from text
+ * @param text The text to extract phrases from
+ * @param maxPhrases Maximum number of phrases to extract
+ * @returns Array of key phrases
+ */
+function extractKeyPhrases(text: string, maxPhrases: number = 5): string[] {
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const phrases: string[] = [];
+  
+  // If there are no sentences, return empty array
+  if (sentences.length === 0) return [];
+  
+  // First sentence is often a key phrase
+  if (sentences[0].length > 10 && sentences[0].length < 150) {
+    phrases.push(sentences[0].trim());
+  }
+  
+  // Look for sentences with trigger phrases that indicate importance
+  const importantPhraseMarkers = [
+    /\b(key|important|significant|critical|essential|main|primary|crucial)\b/i,
+    /\b(found|discovered|revealed|showed|concluded|determined)\b/i,
+    /\b(according to the (?:study|research|analysis|report|data|survey|poll))\b/i
+  ];
+  
+  for (const sentence of sentences) {
+    // Skip if too short or too long
+    if (sentence.length < 30 || sentence.length > 150 || phrases.includes(sentence.trim())) {
+      continue;
+    }
+    
+    // Check if sentence contains any important markers
+    const hasImportantMarker = importantPhraseMarkers.some(marker => marker.test(sentence));
+    
+    if (hasImportantMarker) {
+      phrases.push(sentence.trim());
+    }
+    
+    // Stop once we have enough phrases
+    if (phrases.length >= maxPhrases) break;
+  }
+  
+  // If we don't have enough phrases, add more sentences
+  if (phrases.length < maxPhrases) {
+    for (const sentence of sentences) {
+      if (sentence.length >= 40 && 
+          sentence.length <= 120 && 
+          !phrases.includes(sentence.trim())) {
+        phrases.push(sentence.trim());
+      }
+      
+      if (phrases.length >= maxPhrases) break;
+    }
+  }
+  
+  return phrases;
+}
+
+/**
+ * Generates an emotional appeals model based on text content and emotion analysis
+ * @param text The text to analyze
+ * @param emotionAnalysis The emotion analysis results
+ * @returns Object mapping emotional appeals to their intensity
+ */
+function generateEmotionalAppealsModel(text: string, emotionAnalysis: EmotionAnalysisResult): Record<string, number> {
+  const emotionalAppeals: Record<string, number> = {};
+  
+  // Use the emotion analysis results as a base
+  if (emotionAnalysis && emotionAnalysis.emotions) {
+    // Map emotions to emotional appeals
+    Object.entries(emotionAnalysis.emotions).forEach(([emotion, intensity]) => {
+      switch (emotion.toLowerCase()) {
+        case 'fear':
+          emotionalAppeals['fear'] = intensity;
+          break;
+        case 'anger':
+          emotionalAppeals['outrage'] = intensity;
+          break;
+        case 'joy':
+          emotionalAppeals['happiness'] = intensity;
+          break;
+        case 'sadness':
+          emotionalAppeals['sympathy'] = intensity;
+          break;
+        case 'surprise':
+          emotionalAppeals['curiosity'] = intensity;
+          break;
+        case 'disgust':
+          emotionalAppeals['disgust'] = intensity;
+          break;
+        // Add more mappings as needed
+      }
+    });
+  }
+  
+  // Look for additional emotional appeals in the text
+  // These are simple keyword-based heuristics that could be improved
+  const patternSets = [
+    { 
+      name: 'urgency', 
+      patterns: ['urgent', 'immediately', 'hurry', 'limited time', 'act now', 'deadline'],
+      foundCount: 0
+    },
+    { 
+      name: 'exclusivity', 
+      patterns: ['exclusive', 'limited', 'only', 'select', 'special access', 'invitation'],
+      foundCount: 0
+    },
+    { 
+      name: 'authority', 
+      patterns: ['expert', 'research', 'study', 'professor', 'doctor', 'scientist', 'official'],
+      foundCount: 0
+    },
+    { 
+      name: 'scarcity', 
+      patterns: ['rare', 'limited supply', 'won\'t last', 'while supplies last', 'running out'],
+      foundCount: 0
+    }
+  ];
+  
+  // Simple pattern matching for additional emotional appeals
+  const lowerText = text.toLowerCase();
+  patternSets.forEach(patternSet => {
+    patternSet.patterns.forEach(pattern => {
+      if (lowerText.includes(pattern.toLowerCase())) {
+        patternSet.foundCount++;
+      }
+    });
+    
+    // Calculate intensity based on pattern matches
+    if (patternSet.foundCount > 0) {
+      const maxMatches = patternSet.patterns.length;
+      emotionalAppeals[patternSet.name] = Math.min(1.0, patternSet.foundCount / (maxMatches * 0.7));
+    }
+  });
+  
+  return emotionalAppeals;
+}
+
+/**
+ * Generates a sentiment analysis model from text and sentiment results
+ * @param text The text to analyze
+ * @param sentiment The sentiment analysis results
+ * @returns Structured sentiment analysis with overall score and aspect-specific scores
+ */
+function generateSentimentAnalysis(text: string, sentiment: {score: number, label: string}): {
+  overall: number;
+  aspects: Record<string, number>;
+} {
+  // Convert sentiment score from 0-1 to -1 to 1 scale if needed
+  let overallScore = sentiment.score;
+  if (sentiment.label === 'positive' && overallScore > 0.5) {
+    overallScore = 0.5 + (overallScore - 0.5);
+  } else if (sentiment.label === 'negative' && overallScore > 0.5) {
+    overallScore = -1 * (0.5 + (overallScore - 0.5));
+  } else if (sentiment.label === 'neutral') {
+    overallScore = 0;
+  } else if (sentiment.label === 'negative') {
+    overallScore = -overallScore;
+  }
+  
+  // Initialize aspect sentiments
+  const aspects: Record<string, number> = {};
+  
+  // Define aspects we want to analyze
+  const aspectPatterns = [
+    { name: 'facts', patterns: ['fact', 'statistic', 'data', 'evidence', 'study', 'research'] },
+    { name: 'opinions', patterns: ['believe', 'think', 'feel', 'suggest', 'argue', 'claim'] },
+    { name: 'tone', patterns: ['should', 'must', 'need to', 'have to', 'required', 'necessary'] }
+  ];
+  
+  // Calculate sentiment for each aspect
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  
+  aspectPatterns.forEach(aspect => {
+    let aspectScore = 0;
+    let matchCount = 0;
+    
+    sentences.forEach(sentence => {
+      const lowerSentence = sentence.toLowerCase();
+      
+      // Check if sentence contains aspect patterns
+      const containsAspect = aspect.patterns.some(pattern => 
+        lowerSentence.includes(pattern)
+      );
+      
+      if (containsAspect) {
+        matchCount++;
+        
+        // Apply simple sentiment analysis for the sentence
+        let sentenceScore = 0;
+        
+        // Simple heuristic: positive words add positive sentiment
+        const positiveWords = ['good', 'great', 'excellent', 'positive', 'beneficial', 'helpful'];
+        positiveWords.forEach(word => {
+          if (lowerSentence.includes(word)) sentenceScore += 0.2;
+        });
+        
+        // Negative words add negative sentiment
+        const negativeWords = ['bad', 'poor', 'negative', 'harmful', 'dangerous', 'concerning'];
+        negativeWords.forEach(word => {
+          if (lowerSentence.includes(word)) sentenceScore -= 0.2;
+        });
+        
+        // Cap the score at -1 to 1
+        sentenceScore = Math.max(-1, Math.min(1, sentenceScore));
+        
+        // Add to aspect score
+        aspectScore += sentenceScore;
+      }
+    });
+    
+    // Calculate average aspect score
+    if (matchCount > 0) {
+      aspects[aspect.name] = aspectScore / matchCount;
+    } else {
+      aspects[aspect.name] = 0; // Neutral if no matches
+    }
+  });
+  
+  return {
+    overall: overallScore,
+    aspects
+  };
+}
+
+/**
+ * Calculates a quality score based on various content metrics
+ * @param text The content text
+ * @param logicalFallacies Detected logical fallacies
+ * @param biasAnalysis Bias analysis results
+ * @param manipulationScore Manipulation score
+ * @returns Quality score between 0 and 1
+ */
+function calculateQualityScore(
+  text: string, 
+  logicalFallacies: LogicalFallacy[], 
+  biasAnalysis: BiasAnalysis,
+  manipulationScore: number
+): number {
+  // Start with a baseline score
+  let score = 0.7; // Default to moderately good
+  
+  // Text length factor - longer articles typically have more depth
+  const textLength = text.length;
+  if (textLength < 500) {
+    score -= 0.1; // Penalize very short content
+  } else if (textLength > 3000) {
+    score += 0.1; // Reward longer, more in-depth content
+  }
+  
+  // Penalty for logical fallacies
+  const fallacyCount = logicalFallacies.length;
+  score -= fallacyCount * 0.05; // Each fallacy reduces score by 0.05
+  
+  // Bias factor - extreme bias reduces quality
+  if (biasAnalysis.type === BiasType.CENTER) {
+    score += 0.1; // Reward balanced content
+  } else if (
+    biasAnalysis.type === BiasType.LEFT_SLIGHT || 
+    biasAnalysis.type === BiasType.RIGHT_SLIGHT
+  ) {
+    score -= 0.05; // Slight bias has minimal impact
+  } else if (
+    biasAnalysis.type === BiasType.LEFT_MODERATE || 
+    biasAnalysis.type === BiasType.RIGHT_MODERATE
+  ) {
+    score -= 0.1; // Moderate bias has more impact
+  } else if (
+    biasAnalysis.type === BiasType.LEFT_STRONG || 
+    biasAnalysis.type === BiasType.RIGHT_STRONG
+  ) {
+    score -= 0.2; // Strong bias significantly reduces quality
+  } else {
+    score -= 0.3; // Extreme bias greatly reduces quality
+  }
+  
+  // Manipulation factor - manipulative content is lower quality
+  score -= manipulationScore * 0.3;
+  
+  // Ensure score is between 0 and 1
+  return Math.max(0, Math.min(1, score));
+}
+
+/**
+ * Cached version of emotion analysis to improve performance
+ * @param text Text to analyze
+ * @returns Emotion analysis result
+ */
+async function cachedEmotionAnalysis(text: string): Promise<EmotionAnalysisResult> {
+  const cacheKey = cache.getKey(text);
+  
+  // Check if we have a cached result
+  if (cache.emotions.has(cacheKey)) {
+    logger.debug('Using cached emotion analysis result');
+    return cache.emotions.get(cacheKey)!;
+  }
+  
+  try {
+    // Perform the actual emotion analysis
+    logger.debug('Performing fresh emotion analysis');
+    const result = await analyzeEmotions(text);
+    
+    // Cache the result
+    cache.emotions.set(cacheKey, result);
+    return result;
+  } catch (error) {
+    logger.error('Error in emotion analysis:', error);
+    // Return a default emotion analysis if there's an error
+    return {
+      emotions: {
+        neutral: 0.8,
+        joy: 0.05,
+        sadness: 0.05,
+        anger: 0.05,
+        fear: 0.05
+      },
+      dominantEmotion: 'neutral'
+    };
+  }
+}
+
+/**
+ * Cached version of sentiment analysis to improve performance
+ * @param text Text to analyze
+ * @returns Sentiment analysis result
+ */
+async function cachedSentimentAnalysis(text: string): Promise<{score: number, label: string}> {
+  const cacheKey = cache.getKey(text);
+  
+  // Check if we have a cached result
+  if (cache.sentiment.has(cacheKey)) {
+    logger.debug('Using cached sentiment analysis result');
+    return cache.sentiment.get(cacheKey)!;
+  }
+  
+  try {
+    // Perform the actual sentiment analysis
+    logger.debug('Performing fresh sentiment analysis');
+    const result = await analyzeSentiment(text);
+    
+    // Cache the result
+    cache.sentiment.set(cacheKey, result);
+    return result;
+  } catch (error) {
+    logger.error('Error in sentiment analysis:', error);
+    // Return a default sentiment analysis if there's an error
+    return {
+      score: 0.5,
+      label: 'neutral'
+    };
+  }
+}
+
+/**
+ * Cached version of entity extraction to improve performance
+ * @param text Text to analyze for entities
+ * @returns Array of main entities found in the text
+ */
+async function cachedEntityExtraction(text: string): Promise<string[]> {
+  const cacheKey = cache.getKey(text);
+  
+  // Check if we have a cached result
+  if (cache.entityExtraction.has(cacheKey)) {
+    logger.debug('Using cached entity extraction result');
+    return cache.entityExtraction.get(cacheKey)!;
+  }
+  
+  try {
+    // Perform the actual entity extraction
+    logger.debug('Performing fresh entity extraction');
+    
+    // Use enhanced entity extraction if available, fallback to basic extraction
+    let entities: string[] = [];
+    try {
+      const enhancedResult = await enhancedEntityExtraction(text);
+      
+      // Get the pre-categorized entities from the result
+      const people = enhancedResult.keyPeople || [];
+      const organizations = enhancedResult.keyOrganizations || [];
+      const locations = enhancedResult.keyLocations || [];
+      
+      // Combine into a single array, prioritizing by type
+      entities = [...people, ...organizations, ...locations];
+      
+      // Remove duplicates and limit to top entities
+      entities = [...new Set(entities)].slice(0, 10);
+    } catch (enhancedError) {
+      logger.error('Enhanced entity extraction failed, using fallback:', enhancedError);
+      
+      // Fallback to basic extraction
+      const nerResponse = await performEntityRecognition(text);
+      if (nerResponse && nerResponse.grouped_entities) {
+        // Collect all entity names
+        const allEntities: Array<{entity: string, type: string, count: number}> = [];
+        Object.values(nerResponse.grouped_entities).forEach(group => {
+          group.forEach(e => {
+            allEntities.push({
+              entity: e.entity,
+              type: e.type,
+              count: e.count
+            });
+          });
+        });
+        
+        // Sort by frequency and get top entities
+        entities = allEntities
+          .sort((a, b) => b.count - a.count)
+          .map(e => e.entity)
+          .slice(0, 10);
+      }
+    }
+    
+    // Cache the result
+    cache.entityExtraction.set(cacheKey, entities);
+    return entities;
+  } catch (error) {
+    logger.error('Error in entity extraction:', error);
+    // Return an empty array if there's an error
+    return [];
+  }
+}
+
+/**
+ * Cached version of summary generation to improve performance
+ * @param text Text to summarize
+ * @returns Summary of the main point of the text
+ */
+async function cachedSummaryGeneration(text: string): Promise<string> {
+  const cacheKey = cache.getKey(text);
+  
+  // Check if we have a cached result
+  if (cache.summarization.has(cacheKey)) {
+    logger.debug('Using cached summary generation result');
+    return cache.summarization.get(cacheKey)!;
+  }
+  
+  try {
+    // Perform the actual summarization
+    logger.debug('Performing fresh summary generation');
+    
+    // Try advanced summarization first, fallback to basic summarization
+    let summary = '';
+    try {
+      summary = await generateAdvancedSummary(text, 1);
+    } catch (advancedError) {
+      logger.error('Advanced summarization failed, using fallback:', advancedError);
+      
+      // Fallback to basic summarization
+      summary = await summarizeText(text, 1);
+    }
+    
+    // Cache the result
+    cache.summarization.set(cacheKey, summary);
+    return summary;
+  } catch (error) {
+    logger.error('Error in summary generation:', error);
+    
+    // Return a simple excerpt if there's an error
+    const excerpt = text.substring(0, 100) + '...';
+    return `Content excerpt: ${excerpt}`;
+  }
 } 

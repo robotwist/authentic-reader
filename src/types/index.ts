@@ -140,53 +140,39 @@ export interface ArticleFilters {
  * Content analysis result
  */
 export interface ContentAnalysisResult {
-  logicalFallacies: any[];
-  biasAnalysis: {
-    type: any; // BiasType enum
-    confidence: number;
-    explanation: string;
-  };
-  metadata: {
-    wordCount: number;
-    readingTimeMinutes: number;
-    sentenceCount: number;
-    paragraphCount: number;
-    externalLinks: Array<{url: string, text: string}>;
-    sourceCitations: Array<{source: string, text: string}>;
-    mainEntities: string[];
-    keyphrases: string[];
-    complexityScore: number;
-    avgSentenceLength: number;
-    longWordPercentage: number;
-  };
-  manipulationScore: number; // 0.0 to 1.0
   qualityScore: number; // 0.0 to 1.0
-  manipulationAnalysis?: ManipulationAnalysis;
-  emotionAnalysis?: EmotionAnalysisResult;
+  manipulationScore: number; // 0.0 to 1.0
+  limitedAnalysis?: boolean; // Set to true if the analysis was limited by content size
+  biasAnalysis: {
+    type: string; // Political bias type (e.g., 'left_strong', 'center', 'right_moderate')
+    confidence: number; // 0.0 to 1.0
+    explanation: string;
+    leftIndicators?: string[];
+    rightIndicators?: string[];
+    scores?: {
+      left: number;
+      center: number;
+      right: number;
+    };
+  };
+  logicalFallacies: Array<{
+    type: string;
+    explanation: string;
+    excerpt?: string;
+    confidence: number; // 0.0 to 1.0
+  }>;
+  manipulationAnalysis?: ManipulationAnalysis; // From darkPatternService
+  metadata: ArticleMetadata;
+  emotionalAppeals?: Record<string, number>; // e.g., { 'fear': 0.7, 'hope': 0.3 }
+  sentimentAnalysis?: {
+    overall: number; // -1.0 to 1.0
+    aspects: Record<string, number>; // Sentiment for specific aspects
+  };
+  emotionAnalysis?: EmotionAnalysisResult; // From emotionAnalysisService
   sentiment?: {
     score: number;
     label: string;
   };
-  qualitativeAnalysis?: {
-    labels: string[];
-    scores: number[];
-  };
-  topicClassification?: {
-    topics: string[];
-    scores: number[];
-  };
-  
-  // Legacy fields for backward compatibility
-  summary?: string;
-  topics?: string[];
-  readabilityScore?: number;
-  factualityScore?: number;
-  politicalBias?: {
-    score: number;
-    label: 'left' | 'center-left' | 'center' | 'center-right' | 'right';
-  };
-  keyPoints?: string[];
-  createdAt?: string;
 }
 
 /**
@@ -443,4 +429,24 @@ export interface VirgileSession {
   messages: VirgileMessage[];
   created: number;
   updated: number;
+}
+
+// Article metadata type
+export interface ArticleMetadata {
+  wordCount: number;
+  readingTimeMinutes: number;
+  sentenceCount: number;
+  paragraphCount: number;
+  externalLinks: string[] | { url: string; text: string }[];
+  sourceCitations: string[] | { source: string; text: string }[];
+  mainEntities: string[];
+  entities?: string[];
+  keyphrases: string[];
+  complexityScore: number; // 0.0 to 1.0
+  avgSentenceLength: number;
+  longWordPercentage: number;
+  mainPoint?: string; // Summarized main point of the article
+  agenda?: string; // Detected agenda or purpose
+  affiliation?: string; // Detected political/organization affiliation
+  readingLevel?: string; // Text reading level (Elementary, Middle School, etc.)
 } 
