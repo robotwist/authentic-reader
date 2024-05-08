@@ -14,7 +14,6 @@ import {
   savePreference, 
   getPreference, 
   saveSources,
-  initDB,
   getUserPreferences,
   saveUserPreferences
 } from './services/storageService';

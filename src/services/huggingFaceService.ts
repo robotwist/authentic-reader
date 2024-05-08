@@ -15,6 +15,7 @@ import {
   RhetoricAnalysis,
   RhetoricType
 } from '../types';
+import { HF_CONFIG } from '../config/huggingFaceConfig';
 
 // Environment variables and configuration
 const HF_API_TOKEN = import.meta.env.VITE_HF_API_TOKEN || '';
@@ -546,5 +547,229 @@ export async function generateAnalysisExplanation(
     }
     
     return explanation;
+  }
+}
+
+/**
+ * Analyzes political bias in a text using a specialized model
+ * @param text The text to analyze for political bias
+ * @returns Object with bias scores for different political leanings
+ */
+export async function analyzePoliticalBias(text: string): Promise<{
+  left: number;
+  center: number;
+  right: number;
+  confidence: number;
+  label: 'left' | 'center' | 'right';
+}> {
+  try {
+    // Enforce the length limit
+    const truncatedText = text.length > HF_CONFIG.REQUEST.MAX_INPUT_LENGTH 
+      ? text.substring(0, HF_CONFIG.REQUEST.MAX_INPUT_LENGTH) 
+      : text;
+
+    const response = await fetchWithRetry(
+      `${HF_CONFIG.INFERENCE_API_URL}/${HF_CONFIG.MODELS.POLITICAL_BIAS}`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${HF_CONFIG.API_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ inputs: truncatedText }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Political bias analysis failed with status ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    // Process the response - this will depend on the model's output format
+    // The model should return scores for different political leanings
+    // We'll normalize and extract the relevant information
+    
+    // Format expected from politicalBiasBERT
+    // Extract scores for each political leaning
+    const scores = {
+      left: 0,
+      center: 0,
+      right: 0
+    };
+    
+    // Process response data based on model output format
+    if (Array.isArray(data) && data.length > 0) {
+      data[0].forEach((item: any) => {
+        const label = item.label.toLowerCase();
+        if (label.includes('left') || label === 'liberal' || label === 'democrat') {
+          scores.left = item.score;
+        } else if (label.includes('right') || label === 'conservative' || label === 'republican') {
+          scores.right = item.score;
+        } else if (label.includes('center') || label === 'neutral' || label === 'moderate') {
+          scores.center = item.score;
+        }
+      });
+    }
+    
+    // If the model returns different format, handle it appropriately
+    // This is a fallback in case the model format changes
+    if (scores.left === 0 && scores.right === 0 && scores.center === 0) {
+      console.warn('Unexpected political bias model output format:', data);
+      
+      // Try to extract in a different format
+      if (Array.isArray(data)) {
+        data.forEach((item: any) => {
+          if (typeof item === 'object') {
+            Object.entries(item).forEach(([key, value]) => {
+              const label = key.toLowerCase();
+              if (label.includes('left') || label === 'liberal' || label === 'democrat') {
+                scores.left = Number(value);
+              } else if (label.includes('right') || label === 'conservative' || label === 'republican') {
+                scores.right = Number(value);
+              } else if (label.includes('center') || label === 'neutral' || label === 'moderate') {
+                scores.center = Number(value);
+              }
+            });
+          }
+        });
+      }
+    }
+    
+    // Determine the dominant bias and confidence
+    let dominantLabel: 'left' | 'center' | 'right' = 'center';
+    let confidence = 0;
+    
+    if (scores.left > scores.right && scores.left > scores.center) {
+      dominantLabel = 'left';
+      confidence = scores.left;
+    } else if (scores.right > scores.left && scores.right > scores.center) {
+      dominantLabel = 'right';
+      confidence = scores.right;
+    } else {
+      dominantLabel = 'center';
+      confidence = scores.center;
+    }
+
+    return {
+      ...scores,
+      confidence,
+      label: dominantLabel
+    };
+  } catch (error) {
+    console.error('Political bias analysis error:', error);
+    // Return default values in case of error
+    return {
+      left: 0.1,
+      center: 0.8,
+      right: 0.1,
+      confidence: 0.5,
+      label: 'center'
+    };
+  }
+}
+
+/**
+ * Enhanced entity extraction that provides better entity analysis using NER model
+ * @param text The text to extract entities from
+ * @returns A detailed array of entities with their types and confidence scores
+ */
+export async function enhancedEntityExtraction(text: string): Promise<{
+  entities: Array<{ entity: string; type: string; score: number }>;
+  keyPeople: string[];
+  keyOrganizations: string[];
+  keyLocations: string[];
+}> {
+  try {
+    const entityResults = await extractEntities(text);
+    
+    // Categorize entities by type
+    const keyPeople: string[] = [];
+    const keyOrganizations: string[] = [];
+    const keyLocations: string[] = [];
+    
+    entityResults.forEach(entity => {
+      if (entity.type.includes('PER') && entity.score > 0.7) {
+        // Add only if not already in the list
+        if (!keyPeople.includes(entity.entity)) {
+          keyPeople.push(entity.entity);
+        }
+      } else if (entity.type.includes('ORG') && entity.score > 0.7) {
+        if (!keyOrganizations.includes(entity.entity)) {
+          keyOrganizations.push(entity.entity);
+        }
+      } else if ((entity.type.includes('LOC') || entity.type.includes('GPE')) && entity.score > 0.7) {
+        if (!keyLocations.includes(entity.entity)) {
+          keyLocations.push(entity.entity);
+        }
+      }
+    });
+    
+    return {
+      entities: entityResults,
+      keyPeople,
+      keyOrganizations,
+      keyLocations
+    };
+  } catch (error) {
+    console.error('Enhanced entity extraction error:', error);
+    return {
+      entities: [],
+      keyPeople: [],
+      keyOrganizations: [],
+      keyLocations: []
+    };
+  }
+}
+
+/**
+ * Generate a concise summary of a text using an advanced NLP model
+ * @param text The text to summarize
+ * @param maxLength The maximum length of the summary
+ * @returns A concise summary of the text
+ */
+export async function generateAdvancedSummary(text: string, maxLength: number = 150): Promise<string> {
+  try {
+    // Ensure text is not too long for the model
+    const truncatedText = text.length > 1024 ? text.substring(0, 1024) : text;
+    
+    const response = await fetchWithRetry(
+      `${HF_CONFIG.INFERENCE_API_URL}/${HF_CONFIG.MODELS.SUMMARIZATION}`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${HF_CONFIG.API_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          inputs: truncatedText,
+          parameters: {
+            max_length: maxLength,
+            min_length: 30,
+            do_sample: false
+          }
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Summary generation failed with status ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    // Extract summary from the response
+    if (data && Array.isArray(data) && data.length > 0 && data[0].summary_text) {
+      return data[0].summary_text;
+    } else if (typeof data === 'object' && data.summary_text) {
+      return data.summary_text;
+    } else {
+      console.warn('Unexpected summary response format:', data);
+      return summarizeText(text); // Fall back to the basic summarizer
+    }
+  } catch (error) {
+    console.error('Advanced summary generation error:', error);
+    // Fall back to the basic summarizer
+    return summarizeText(text);
   }
 } 
