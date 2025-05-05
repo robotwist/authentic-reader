@@ -1,0 +1,333 @@
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import './App.css'
+import Header from './components/Header'
+import FeedContainer from './components/FeedContainer'
+import UserProfile from './components/UserProfile';
+import AdminDashboard from './components/AdminDashboard';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { 
+  initializeDB, 
+  getAllSources, 
+  savePreference, 
+  getPreference, 
+  saveSources 
+} from './services/storageService';
+import { articlesApi, sourcesApi } from './services/apiService';
+
+// Default RSS feeds to load on first run
+const DEFAULT_SOURCES = [
+  { 
+    id: 'npr',
+    name: 'NPR News',
+    url: 'https://feeds.npr.org/1001/rss.xml',
+    category: 'news', 
+    biasRating: 'center-left',
+    reliability: 'high'
+  },
+  {
+    id: 'reuters',
+    name: 'Reuters',
+    url: 'https://feeds.reuters.com/reuters/topNews',
+    category: 'news',
+    biasRating: 'center',
+    reliability: 'high'
+  },
+  {
+    id: 'bbc',
+    name: 'BBC News',
+    url: 'http://feeds.bbci.co.uk/news/world/rss.xml',
+    category: 'news',
+    biasRating: 'center',
+    reliability: 'high'
+  },
+  {
+    id: 'techcrunch',
+    name: 'TechCrunch',
+    url: 'https://techcrunch.com/feed/',
+    category: 'technology',
+    biasRating: 'center',
+    reliability: 'medium'
+  }
+];
+
+// Protected route wrapper
+const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+  const { isLoggedIn, loading } = useAuth();
+  
+  if (loading) {
+    return <div className="loader">
+      <div className="loader-spinner"></div>
+      <p>Loading...</p>
+    </div>;
+  }
+  
+  return isLoggedIn ? children : <Navigate to="/" />;
+};
+
+// Admin-only route
+const AdminRoute = ({ children }: { children: JSX.Element }) => {
+  const { isLoggedIn, loading, user } = useAuth();
+  
+  if (loading) {
+    return <div className="loader">
+      <div className="loader-spinner"></div>
+      <p>Loading...</p>
+    </div>;
+  }
+  
+  if (!isLoggedIn) {
+    return <Navigate to="/" />;
+  }
+  
+  return user?.isAdmin ? children : (
+    <div className="container">
+      <h2>Unauthorized</h2>
+      <p>You don't have permission to access this page.</p>
+    </div>
+  );
+};
+
+function App() {
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [userPreferences, setUserPreferences] = useState({
+    muteOutrage: true,
+    blockDoomscroll: true,
+    darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches
+  });
+
+  // Initialize the application
+  useEffect(() => {
+    const setupApp = async () => {
+      try {
+        // Initialize the database with a timeout to prevent hanging
+        const dbInitPromise = initializeDB();
+        
+        // Add a timeout to prevent the initialization from hanging
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Database initialization timed out')), 10000);
+        });
+        
+        try {
+          // Race between normal initialization and timeout
+          await Promise.race([dbInitPromise, timeoutPromise]);
+          console.log('Database initialized successfully');
+        } catch (dbError) {
+          console.warn('Database initialization failed:', dbError);
+          // Continue anyway
+        }
+        
+        // Load sources with error handling
+        let sourcesLoaded = false;
+        try {
+          // Wrap in a timeout to prevent getting stuck
+          const sourcesPromise = sourcesApi.getAllSources();
+          const sourcesTimeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => reject(new Error('Sources fetch timed out')), 10000);
+          });
+          
+          // Race between normal fetch and timeout
+          const sources = await Promise.race([sourcesPromise, sourcesTimeoutPromise]);
+          
+          if (sources && sources.length > 0) {
+            console.log('Backend is available, using server sources');
+            sourcesLoaded = true;
+          } else {
+            console.warn('No sources returned from backend');
+          }
+        } catch (error) {
+          console.warn('Backend not available or error fetching sources:', error);
+        }
+        
+        // If server sources didn't load, try local storage
+        if (!sourcesLoaded) {
+          try {
+            // Check if we have any sources stored
+            const storedSources = await getAllSources();
+            
+            // If no sources are stored, add the default ones
+            if (!storedSources || storedSources.length === 0) {
+              console.log('No sources in storage, adding defaults');
+              await saveSources(DEFAULT_SOURCES);
+            } else {
+              console.log('Using sources from local storage');
+            }
+          } catch (storageError) {
+            console.error('Error accessing local storage:', storageError);
+            // Continue anyway
+          }
+        }
+        
+        // Get user preferences
+        try {
+          const prefsMuteOutrage = await getPreference('muteOutrage');
+          const prefsBlockDoomscroll = await getPreference('blockDoomscroll');
+          const prefsDarkMode = await getPreference('darkMode');
+          
+          const prefs = {
+            muteOutrage: prefsMuteOutrage !== null ? prefsMuteOutrage : userPreferences.muteOutrage,
+            blockDoomscroll: prefsBlockDoomscroll !== null ? prefsBlockDoomscroll : userPreferences.blockDoomscroll,
+            darkMode: prefsDarkMode !== null ? prefsDarkMode : userPreferences.darkMode
+          };
+          
+          setUserPreferences(prefs);
+          
+          // If preferences were not in storage, save the defaults
+          if (prefsMuteOutrage === null) {
+            await savePreference('muteOutrage', userPreferences.muteOutrage);
+          }
+          if (prefsBlockDoomscroll === null) {
+            await savePreference('blockDoomscroll', userPreferences.blockDoomscroll);
+          }
+          if (prefsDarkMode === null) {
+            await savePreference('darkMode', userPreferences.darkMode);
+          }
+        } catch (prefsError) {
+          console.warn('Error loading preferences:', prefsError);
+          // Continue with default preferences
+        }
+        
+      } catch (error) {
+        console.error('Failed to initialize app:', error);
+        // Log detail for debugging
+        if (error instanceof Error) {
+          console.error('Error details:', error.message, error.stack);
+        }
+      } finally {
+        // Always set initialized to true to ensure UI renders
+        setIsInitialized(true);
+      }
+    };
+    
+    setupApp();
+    
+    // Apply dark mode based on user preference
+    if (userPreferences.darkMode) {
+      document.documentElement.classList.add('dark-mode');
+    } else {
+      document.documentElement.classList.remove('dark-mode');
+    }
+  }, []);
+  
+  // Update preferences in storage when they change
+  useEffect(() => {
+    if (isInitialized) {
+      const savePreferences = async () => {
+        try {
+          await savePreference('muteOutrage', userPreferences.muteOutrage);
+          await savePreference('blockDoomscroll', userPreferences.blockDoomscroll);
+          await savePreference('darkMode', userPreferences.darkMode);
+        } catch (error) {
+          console.error('Failed to save preferences:', error);
+        }
+      };
+      
+      savePreferences();
+      
+      // Apply dark mode
+      if (userPreferences.darkMode) {
+        document.documentElement.classList.add('dark-mode');
+      } else {
+        document.documentElement.classList.remove('dark-mode');
+      }
+    }
+  }, [userPreferences, isInitialized]);
+  
+  // Toggle dark mode
+  const toggleDarkMode = () => {
+    setUserPreferences(prev => ({
+      ...prev,
+      darkMode: !prev.darkMode
+    }));
+  };
+  
+  // Update quality filters
+  const handleQualityFilterChange = (filters: { muteOutrage: boolean; blockDoomscroll: boolean }) => {
+    setUserPreferences(prev => ({
+      ...prev,
+      muteOutrage: filters.muteOutrage,
+      blockDoomscroll: filters.blockDoomscroll
+    }));
+  };
+
+  return (
+    <AuthProvider>
+      <Router>
+        <div className={`app ${userPreferences.darkMode ? 'dark-mode' : ''}`}>
+          <Header darkMode={userPreferences.darkMode} onToggleDarkMode={toggleDarkMode} />
+          <main className="main-content">
+            <Routes>
+              <Route 
+                path="/" 
+                element={
+                  <FeedContainer 
+                    isInitialized={isInitialized}
+                    qualityFilters={userPreferences}
+                    onQualityFilterChange={handleQualityFilterChange}
+                  />
+                } 
+              />
+              <Route 
+                path="/profile" 
+                element={
+                  <ProtectedRoute>
+                    <UserProfile />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/sources" 
+                element={
+                  <div className="container">
+                    <h2>My Sources</h2>
+                    <p>Source management coming soon...</p>
+                  </div>
+                } 
+              />
+              <Route 
+                path="/saved" 
+                element={
+                  <ProtectedRoute>
+                    <div className="container">
+                      <h2>Saved Articles</h2>
+                      <p>Saved articles feature coming soon...</p>
+                    </div>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin" 
+                element={
+                  <AdminRoute>
+                    <AdminDashboard />
+                  </AdminRoute>
+                } 
+              />
+              <Route 
+                path="*" 
+                element={
+                  <div className="container">
+                    <h2>Page Not Found</h2>
+                    <p>The page you're looking for doesn't exist.</p>
+                  </div>
+                } 
+              />
+            </Routes>
+          </main>
+          <footer className="app-footer">
+            <div className="footer-content">
+              <p>Authentic Reader &copy; {new Date().getFullYear()} - Content that respects your intelligence</p>
+              <p>
+                <a href="#privacy">Privacy Policy</a> | 
+                <a href="#terms">Terms of Service</a> | 
+                <a href="#about">About Us</a>
+              </p>
+            </div>
+          </footer>
+        </div>
+      </Router>
+    </AuthProvider>
+  )
+}
+
+export default App

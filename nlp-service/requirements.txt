@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+transformers[torch]
+pydantic>=2.0.0
+python-multipart
+# NER requires tokenizers
+tokenizers
+# For better text processing
+spacy>=3.0.0
+# Or use transformers[tf] if you prefer TensorFlow 

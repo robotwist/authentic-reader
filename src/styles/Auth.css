@@ -1,0 +1,213 @@
+/* Auth Styles */
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+  padding: 20px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.modal-close-btn:hover {
+  color: var(--text-primary);
+}
+
+.modal-content {
+  padding: 10px 0;
+}
+
+/* Auth Form Styles */
+.auth-form-container {
+  padding: 10px;
+}
+
+.auth-form-container h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.auth-error {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: var(--color-error);
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.form-group input {
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
+  outline: none;
+}
+
+.form-group small {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.auth-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.auth-actions button {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--bg-hover);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-links {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.auth-links p {
+  margin-bottom: 8px;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.link-button:hover {
+  color: var(--primary-dark);
+}
+
+/* Nav Button Styles */
+.nav-button {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 8px 12px;
+  font-size: 1rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.nav-button:hover {
+  background-color: var(--bg-hover);
+}
+
+.nav-button.primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.nav-button.primary:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Dark mode adjustments */
+.dark-mode .auth-form-container {
+  color: var(--text-primary);
+}
+
+.dark-mode .form-group input {
+  background-color: var(--input-bg-dark);
+  border-color: var(--border-color-dark);
+}
+
+.dark-mode .btn-secondary {
+  border-color: var(--border-color-dark);
+} 
