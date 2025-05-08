@@ -768,7 +768,9 @@ export async function extractMetadata(html: string, text: string): Promise<Artic
     
     // Use enhanced entity extraction for better results - with caching
     const entityResult = await cachedEntityExtraction(text);
-    const entities = [...entityResult.keyPeople, ...entityResult.keyOrganizations, ...entityResult.keyLocations];
+    
+    // entityResult is a string array, not an object with keyPeople, etc.
+    const entities = entityResult || [];
     
     // Calculate reading complexity using Flesch-Kincaid Grade Level
     const totalSyllables = countSyllables(text);
@@ -804,9 +806,9 @@ export async function extractMetadata(html: string, text: string): Promise<Artic
     
     // Try to detect affiliation based on entities and bias
     const biasAnalysis = await analyzeBias(text);
-    if (biasAnalysis.type !== BiasType.CENTER && entityResult.keyOrganizations.length > 0) {
+    if (biasAnalysis.type !== BiasType.CENTER && entities.length > 0) {
       // Simple heuristic linking organizations to political leaning
-      affiliation = entityResult.keyOrganizations[0];
+      affiliation = entities[0];
     }
     
     // Find citations in the text - this is a simple approximation
