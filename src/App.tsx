@@ -13,9 +13,20 @@ import {
   getAllSources, 
   savePreference, 
   getPreference, 
-  saveSources 
+  saveSources,
+  initDB,
+  getUserPreferences,
+  saveUserPreferences
 } from './services/storageService';
 import { articlesApi, sourcesApi } from './services/apiService';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import LibraryPage from './pages/LibraryPage';
+import SettingsPage from './pages/SettingsPage';
+import ArticlePage from './pages/ArticlePage';
+import AnalysisPage from './pages/AnalysisPage';
+import { UserPreferences } from './types';
+import { logger } from './utils/logger';
 
 // Default RSS feeds to load on first run
 const DEFAULT_SOURCES = [
@@ -132,10 +143,14 @@ const AdminRoute = ({ children }: { children: JSX.Element }) => {
 
 function App() {
   const [isInitialized, setIsInitialized] = useState(false);
-  const [userPreferences, setUserPreferences] = useState({
-    muteOutrage: true,
-    blockDoomscroll: true,
-    darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches
+  const [userPreferences, setUserPreferences] = useState<UserPreferences>({
+    textSize: 'medium',
+    darkMode: true, // Always use dark mode
+    theme: 'default',
+    focusMode: false,
+    dyslexicFont: false,
+    autoSaveHighlights: true,
+    notificationsEnabled: true
   });
 
   // Initialize the application
@@ -202,28 +217,17 @@ function App() {
         
         // Get user preferences
         try {
-          const prefsMuteOutrage = await getPreference('muteOutrage');
-          const prefsBlockDoomscroll = await getPreference('blockDoomscroll');
-          const prefsDarkMode = await getPreference('darkMode');
-          
-          const prefs = {
-            muteOutrage: prefsMuteOutrage !== null ? prefsMuteOutrage : userPreferences.muteOutrage,
-            blockDoomscroll: prefsBlockDoomscroll !== null ? prefsBlockDoomscroll : userPreferences.blockDoomscroll,
-            darkMode: prefsDarkMode !== null ? prefsDarkMode : userPreferences.darkMode
-          };
-          
-          setUserPreferences(prefs);
-          
-          // If preferences were not in storage, save the defaults
-          if (prefsMuteOutrage === null) {
-            await savePreference('muteOutrage', userPreferences.muteOutrage);
+          const prefs = await getUserPreferences();
+          if (prefs) {
+            // Always use dark mode
+            setUserPreferences({ ...prefs, darkMode: true });
+            console.log('User preferences loaded');
+          } else {
+            // Create default preferences if none exist
+            await saveUserPreferences(userPreferences);
+            console.log('Default preferences saved');
           }
-          if (prefsBlockDoomscroll === null) {
-            await savePreference('blockDoomscroll', userPreferences.blockDoomscroll);
-          }
-          if (prefsDarkMode === null) {
-            await savePreference('darkMode', userPreferences.darkMode);
-          }
+          
         } catch (prefsError) {
           console.warn('Error loading preferences:', prefsError);
           // Continue with default preferences
@@ -243,60 +247,35 @@ function App() {
     
     setupApp();
     
-    // Apply dark mode based on user preference
-    if (userPreferences.darkMode) {
-      document.documentElement.classList.add('dark-mode');
-    } else {
-      document.documentElement.classList.remove('dark-mode');
-    }
+    // Always apply dark mode
+    document.documentElement.classList.add('dark-mode');
   }, []);
   
-  // Update preferences in storage when they change
+  // Save user preferences when they change
   useEffect(() => {
     if (isInitialized) {
-      const savePreferences = async () => {
-        try {
-          await savePreference('muteOutrage', userPreferences.muteOutrage);
-          await savePreference('blockDoomscroll', userPreferences.blockDoomscroll);
-          await savePreference('darkMode', userPreferences.darkMode);
-        } catch (error) {
-          console.error('Failed to save preferences:', error);
-        }
-      };
+      saveUserPreferences(userPreferences)
+        .then(() => logger.debug('User preferences saved'))
+        .catch(err => logger.error('Error saving user preferences:', err));
       
-      savePreferences();
-      
-      // Apply dark mode
-      if (userPreferences.darkMode) {
-        document.documentElement.classList.add('dark-mode');
-      } else {
-        document.documentElement.classList.remove('dark-mode');
-      }
+      // Always ensure dark mode is applied
+      document.documentElement.classList.add('dark-mode');
     }
   }, [userPreferences, isInitialized]);
   
-  // Toggle dark mode
-  const toggleDarkMode = () => {
+  // Update user preferences
+  const handlePreferenceChange = (key: keyof UserPreferences, value: any) => {
     setUserPreferences(prev => ({
       ...prev,
-      darkMode: !prev.darkMode
-    }));
-  };
-  
-  // Update quality filters
-  const handleQualityFilterChange = (filters: { muteOutrage: boolean; blockDoomscroll: boolean }) => {
-    setUserPreferences(prev => ({
-      ...prev,
-      muteOutrage: filters.muteOutrage,
-      blockDoomscroll: filters.blockDoomscroll
+      [key]: value
     }));
   };
 
   return (
     <AuthProvider>
       <Router>
-        <div className={`app ${userPreferences.darkMode ? 'dark-mode' : ''}`}>
-          <Header darkMode={userPreferences.darkMode} onToggleDarkMode={toggleDarkMode} />
+        <div className="app dark-mode">
+          <Header />
           <main className="main-content">
             <Routes>
               <Route 
@@ -305,7 +284,7 @@ function App() {
                   <FeedContainer 
                     isInitialized={isInitialized}
                     qualityFilters={userPreferences}
-                    onQualityFilterChange={handleQualityFilterChange}
+                    onQualityFilterChange={handlePreferenceChange}
                   />
                 } 
               />
@@ -352,6 +331,35 @@ function App() {
               <Route 
                 path="/env-test" 
                 element={<EnvTest />} 
+              />
+              <Route 
+                path="/home" 
+                element={<HomePage />} 
+              />
+              <Route 
+                path="/about" 
+                element={<AboutPage />} 
+              />
+              <Route 
+                path="/library" 
+                element={<LibraryPage />} 
+              />
+              <Route 
+                path="/article/:id" 
+                element={<ArticlePage />} 
+              />
+              <Route 
+                path="/settings" 
+                element={
+                  <SettingsPage 
+                    preferences={userPreferences} 
+                    onPreferenceChange={handlePreferenceChange}
+                  />
+                } 
+              />
+              <Route 
+                path="/analysis" 
+                element={<AnalysisPage />} 
               />
               <Route 
                 path="*" 

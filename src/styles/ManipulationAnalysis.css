@@ -1,16 +1,16 @@
 .manipulation-analysis {
-  background-color: #f8f9fa;
+  background-color: #1e2030;
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .manipulation-analysis h2 {
-  color: #333;
+  color: #e0e0e0;
   margin-top: 0;
   margin-bottom: 20px;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid #3d3d3d;
   padding-bottom: 10px;
 }
 
@@ -19,24 +19,26 @@
 }
 
 .recommendation-banner {
-  background-color: #f1f8e9;
-  border-left: 4px solid #7cb342;
+  background-color: #1a2e14;
+  border-left: 4px solid #4a7023;
   padding: 10px 15px;
   margin-bottom: 20px;
   border-radius: 4px;
+  color: #e0e0e0;
 }
 
 .manipulation-overview {
-  background-color: #e8eaf6;
+  background-color: #252a41;
   border-radius: 6px;
   padding: 15px;
   margin-bottom: 20px;
-  border: 1px solid #c5cae9;
+  border: 1px solid #373e5a;
+  color: #e0e0e0;
 }
 
 .manipulation-overview h3 {
   margin-top: 0;
-  color: #3f51b5;
+  color: #8c9eff;
   margin-bottom: 10px;
 }
 
@@ -47,7 +49,7 @@
 }
 
 .explanation-toggle {
-  background-color: #3f51b5;
+  background-color: #5c6bc0;
   color: white;
   border: none;
   border-radius: 4px;
@@ -59,16 +61,17 @@
 }
 
 .explanation-toggle:hover {
-  background-color: #303f9f;
+  background-color: #7986cb;
 }
 
 .educational-explanation {
-  background-color: #f5f5f5;
+  background-color: #252525;
   border-radius: 6px;
   padding: 15px;
   margin-top: 15px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #3d3d3d;
   animation: fadeIn 0.3s ease-in-out;
+  color: #e0e0e0;
 }
 
 @keyframes fadeIn {
@@ -78,7 +81,7 @@
 
 .educational-explanation h3, 
 .educational-explanation h4 {
-  color: #303f9f;
+  color: #8c9eff;
   margin-top: 0;
 }
 
@@ -105,11 +108,13 @@
 }
 
 .doomscroll-metric {
-  background-color: #e3f2fd;
+  background-color: #1a2737;
+  color: #e0e0e0;
 }
 
 .outrage-metric {
-  background-color: #fff3e0;
+  background-color: #32281e;
+  color: #e0e0e0;
 }
 
 .high-risk {
@@ -128,13 +133,14 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background-color: white;
+  background-color: #2d3142;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 10px auto;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   position: relative;
+  color: #e0e0e0;
 }
 
 .score-circle::after {
@@ -164,20 +170,20 @@
 }
 
 .risk-label.high-risk {
-  background-color: rgba(244, 67, 54, 0.2);
-  color: #f44336;
+  background-color: rgba(244, 67, 54, 0.3);
+  color: #ff8a80;
   border-left: none;
 }
 
 .risk-label.medium-risk {
-  background-color: rgba(255, 152, 0, 0.2);
-  color: #ff9800;
+  background-color: rgba(255, 152, 0, 0.3);
+  color: #ffcc80;
   border-left: none;
 }
 
 .risk-label.low-risk {
-  background-color: rgba(76, 175, 80, 0.2);
-  color: #4caf50;
+  background-color: rgba(76, 175, 80, 0.3);
+  color: #a5d6a7;
   border-left: none;
 }
 
@@ -188,7 +194,7 @@
 }
 
 .infobox {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   margin-top: 20px;
   text-align: left;
@@ -196,10 +202,8 @@
 }
 
 .infobox-header {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.15);
   padding: 8px 12px;
-  font-weight: 600;
-  font-size: 14px;
 }
 
 .infobox-content {
@@ -211,9 +215,10 @@
 .manipulation-tactics {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #fafafa;
+  background-color: #232323;
   border-radius: 6px;
-  border: 1px solid #eeeeee;
+  border: 1px solid #3d3d3d;
+  color: #e0e0e0;
 }
 
 .tactics-list {
@@ -226,10 +231,11 @@
 }
 
 .tactic-item {
-  background-color: #ffebee;
+  background-color: #3c1f1f;
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 14px;
+  color: #ffb3b3;
 }
 
 .topic-indicators {
@@ -240,10 +246,11 @@
 
 .topics-column {
   flex: 1;
-  background-color: #fafafa;
+  background-color: #232323;
   border-radius: 6px;
   padding: 15px;
-  border: 1px solid #eeeeee;
+  border: 1px solid #3d3d3d;
+  color: #e0e0e0;
 }
 
 .topics-list {
@@ -257,16 +264,7 @@
 }
 
 .psychological-impact {
-  background-color: #f3e5f5;
-  padding: 15px;
-  border-radius: 6px;
-  margin-top: 20px;
-}
-
-.psychological-impact h3 {
-  color: #6a1b9a;
-  margin-top: 0;
-  margin-bottom: 15px;
+  color: #e0e0e0;
 }
 
 .impact-grid {
@@ -276,10 +274,11 @@
 }
 
 .impact-item {
-  background-color: white;
+  background-color: #232323;
   border-radius: 6px;
   padding: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-color: #3d3d3d;
 }
 
 .impact-item h4 {
@@ -309,4 +308,117 @@
   .impact-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* The following dark mode classes are kept for backward compatibility but are no longer needed */
+/* 
+.dark-mode .manipulation-analysis {
+  background-color: #1e2030;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .manipulation-analysis h2 {
+  color: #e0e0e0;
+  border-bottom-color: #3d3d3d;
+}
+
+.dark-mode .recommendation-banner {
+  background-color: #1a2e14;
+  border-left-color: #4a7023;
+  color: #e0e0e0;
+}
+
+.dark-mode .manipulation-overview {
+  background-color: #252a41;
+  border-color: #373e5a;
+  color: #e0e0e0;
+}
+
+.dark-mode .manipulation-overview h3 {
+  color: #8c9eff;
+}
+
+.dark-mode .explanation-toggle {
+  background-color: #5c6bc0;
+}
+
+.dark-mode .explanation-toggle:hover {
+  background-color: #7986cb;
+}
+
+.dark-mode .educational-explanation {
+  background-color: #252525;
+  border-color: #3d3d3d;
+  color: #e0e0e0;
+}
+
+.dark-mode .educational-explanation h3, 
+.dark-mode .educational-explanation h4 {
+  color: #8c9eff;
+}
+
+.dark-mode .doomscroll-metric {
+  background-color: #1a2737;
+  color: #e0e0e0;
+}
+
+.dark-mode .outrage-metric {
+  background-color: #32281e;
+  color: #e0e0e0;
+}
+
+.dark-mode .score-circle {
+  background-color: #2d3142;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  color: #e0e0e0;
+}
+
+.dark-mode .risk-label.high-risk {
+  background-color: rgba(244, 67, 54, 0.3);
+  color: #ff8a80;
+}
+
+.dark-mode .risk-label.medium-risk {
+  background-color: rgba(255, 152, 0, 0.3);
+  color: #ffcc80;
+}
+
+.dark-mode .risk-label.low-risk {
+  background-color: rgba(76, 175, 80, 0.3);
+  color: #a5d6a7;
+}
+
+.dark-mode .infobox {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .infobox-header {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark-mode .manipulation-tactics {
+  background-color: #232323;
+  border-color: #3d3d3d;
+  color: #e0e0e0;
+}
+
+.dark-mode .tactic-item {
+  background-color: #3c1f1f;
+  color: #ffb3b3;
+}
+
+.dark-mode .topics-column {
+  background-color: #232323;
+  border-color: #3d3d3d;
+  color: #e0e0e0;
+}
+
+.dark-mode .psychological-impact {
+  color: #e0e0e0;
+}
+
+.dark-mode .impact-item {
+  background-color: #232323;
+  border-color: #3d3d3d;
 } 
+*/ 

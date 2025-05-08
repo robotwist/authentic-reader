@@ -143,3 +143,56 @@
     grid-template-columns: 1fr;
   }
 } 
+
+/* Dark Mode Styles */
+.dark-mode .emotion-analysis {
+  background-color: #1e2030;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .emotion-analysis h3 {
+  color: #e0e0e0;
+  border-bottom-color: #3d3d3d;
+}
+
+.dark-mode .emotion-analysis h4 {
+  color: #c0c0c0;
+}
+
+.dark-mode .emotional-appeal, 
+.dark-mode .dominant-emotion, 
+.dark-mode .sentiment-summary {
+  background-color: #2a2c3c;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .emotion-value {
+  color: #b0b0b0;
+}
+
+/* Appeal value colors don't need to change as they're already colorful */
+
+.dark-mode .numeric-value {
+  color: #aaa;
+}
+
+.dark-mode .emotion-explanation {
+  background-color: #2a2c3c;
+}
+
+.dark-mode .emotion-explanation p {
+  color: #c0c0c0;
+}
+
+.dark-mode .emotion-analysis.empty {
+  color: #888;
+}
+
+/* Ensure emotion bars have sufficient contrast in dark mode */
+.dark-mode .emotion-bar {
+  opacity: 0.85; /* Slightly reduce opacity to make colors less harsh */
+}
+
+.dark-mode .emotion-name {
+  color: #e0e0e0;
+} 

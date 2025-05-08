@@ -50,6 +50,7 @@
 /* Auth Form Styles */
 .auth-form-container {
   padding: 10px;
+  color: var(--text-primary);
 }
 
 .auth-form-container h2 {
@@ -90,8 +91,9 @@
   border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 16px;
-  background-color: var(--input-bg);
+  background-color: var(--input-bg-dark);
   color: var(--text-primary);
+  border-color: var(--border-color-dark);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -135,7 +137,7 @@
 .btn-secondary {
   background-color: transparent;
   color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-color-dark);
 }
 
 .btn-secondary:hover:not(:disabled) {
@@ -198,7 +200,7 @@ button:disabled {
   background-color: var(--primary-dark);
 }
 
-/* Dark mode adjustments */
+/* Maintaining these selectors for backward compatibility */
 .dark-mode .auth-form-container {
   color: var(--text-primary);
 }
