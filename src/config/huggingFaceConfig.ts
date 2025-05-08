@@ -5,7 +5,7 @@ export const HF_CONFIG = {
   // API token from environment variables
   API_TOKEN: import.meta.env?.VITE_HF_API_TOKEN || 
              window.env?.REACT_APP_HF_API_TOKEN ||
-             'your_huggingface_token_here', // Fallback to the token provided in .env
+             'YOUR_HUGGING_FACE_TOKEN_HERE', // Fallback placeholder (replace with your token)
   
   // Base URL for Hugging Face Inference API
   INFERENCE_API_URL: 'https://api-inference.huggingface.co/models',
