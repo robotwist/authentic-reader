@@ -72,6 +72,29 @@ const withRetry = async (fn: () => Promise<any>, maxRetries = 3, delay = 1000) =
   }
 };
 
+/**
+ * Utility for fetching from Hugging Face API with retry logic
+ */
+const fetchWithRetry = async (url: string, options: RequestInit, maxRetries = 3, delay = 1000) => {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const response = await fetch(url, options);
+      return response;
+    } catch (error: any) {
+      // Only retry on network errors or rate limits
+      if (attempt < maxRetries) {
+        const waitTime = delay * Math.pow(2, attempt);
+        logger.warn(`API request failed, waiting ${waitTime}ms before retry ${attempt}`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+      } else {
+        throw error;
+      }
+    }
+  }
+  // Fallback if we somehow get here
+  throw new Error('Failed to fetch after retries');
+};
+
 // Fallback to local analysis when API is unavailable
 const localFallback = (task: string, input: string) => {
   logger.warn(`Using local fallback for ${task}`);
