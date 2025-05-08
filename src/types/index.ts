@@ -1,4 +1,6 @@
 // Central type definitions file for the application
+import { ManipulationAnalysis } from '../services/doomscrollAnalysisService';
+import { EmotionAnalysisResult } from '../services/emotionAnalysisService';
 
 /**
  * Union type for GUID which can be either a string or an object with _ property
@@ -138,11 +140,44 @@ export interface ArticleFilters {
  * Content analysis result
  */
 export interface ContentAnalysisResult {
-  summary?: string;
+  logicalFallacies: any[];
+  biasAnalysis: {
+    type: any; // BiasType enum
+    confidence: number;
+    explanation: string;
+  };
+  metadata: {
+    wordCount: number;
+    readingTimeMinutes: number;
+    sentenceCount: number;
+    paragraphCount: number;
+    externalLinks: Array<{url: string, text: string}>;
+    sourceCitations: Array<{source: string, text: string}>;
+    mainEntities: string[];
+    keyphrases: string[];
+    complexityScore: number;
+    avgSentenceLength: number;
+    longWordPercentage: number;
+  };
+  manipulationScore: number; // 0.0 to 1.0
+  qualityScore: number; // 0.0 to 1.0
+  manipulationAnalysis?: ManipulationAnalysis;
+  emotionAnalysis?: EmotionAnalysisResult;
   sentiment?: {
     score: number;
-    label: 'positive' | 'negative' | 'neutral';
+    label: string;
   };
+  qualitativeAnalysis?: {
+    labels: string[];
+    scores: number[];
+  };
+  topicClassification?: {
+    topics: string[];
+    scores: number[];
+  };
+  
+  // Legacy fields for backward compatibility
+  summary?: string;
   topics?: string[];
   readabilityScore?: number;
   factualityScore?: number;

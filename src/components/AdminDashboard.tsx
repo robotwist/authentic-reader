@@ -51,6 +51,7 @@ const AdminDashboard: React.FC = () => {
       
       try {
         setLoading(true);
+        setError(null);
         
         // Fetch users
         const usersResponse = await fetch('/api/admin/users', {
@@ -59,8 +60,20 @@ const AdminDashboard: React.FC = () => {
           }
         });
         
+        // Handle authentication errors
+        if (usersResponse.status === 401 || usersResponse.status === 403) {
+          const errorData = await usersResponse.json().catch(() => ({ message: 'Authentication failed' }));
+          throw new Error(errorData.message || 'Your session has expired. Please log in again.');
+        }
+        
         if (!usersResponse.ok) {
           throw new Error('Failed to fetch users');
+        }
+        
+        // Check if response is JSON (not HTML)
+        const contentType = usersResponse.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Received invalid response format from server');
         }
         
         const usersData = await usersResponse.json();
@@ -73,15 +86,41 @@ const AdminDashboard: React.FC = () => {
           }
         });
         
+        // Handle authentication errors for sources request too
+        if (sourcesResponse.status === 401 || sourcesResponse.status === 403) {
+          const errorData = await sourcesResponse.json().catch(() => ({ message: 'Authentication failed' }));
+          throw new Error(errorData.message || 'Your session has expired. Please log in again.');
+        }
+        
         if (!sourcesResponse.ok) {
           throw new Error('Failed to fetch sources');
+        }
+        
+        // Check if response is JSON (not HTML)
+        const sourcesContentType = sourcesResponse.headers.get('content-type');
+        if (!sourcesContentType || !sourcesContentType.includes('application/json')) {
+          throw new Error('Received invalid response format from server');
         }
         
         const sourcesData = await sourcesResponse.json();
         setSources(sourcesData);
         
       } catch (error) {
-        setError(error instanceof Error ? error.message : 'An unknown error occurred');
+        console.error('Dashboard error:', error);
+        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+        setError(errorMessage);
+        
+        // If there's an authentication error, redirect to login
+        if (
+          errorMessage.includes('expired') || 
+          errorMessage.includes('log in') || 
+          errorMessage.includes('Authentication')
+        ) {
+          // Clear auth session
+          localStorage.removeItem('auth_token');
+          localStorage.removeItem('current_user');
+          window.location.href = '/login'; // Redirect to login page
+        }
       } finally {
         setLoading(false);
       }

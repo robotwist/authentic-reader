@@ -7,6 +7,7 @@ import { HiOutlineDocumentText } from 'react-icons/hi';
 import { Badge } from './ui/Badge';
 import { getArticleTypeIcon } from '../utils/articleUtils';
 import defaultImage from '../assets/default-article.svg';
+import { logger } from '../utils/logger';
 
 interface ArticleCardProps {
   article: Article;
