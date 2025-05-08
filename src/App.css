@@ -5,16 +5,16 @@
   --primary-dark: #2563eb;
   --secondary-color: #0f172a;
   --accent-light: #7dd3fc;
-  --background-color: #f8fafc;
-  --bg-color: #fff;
-  --bg-hover: #f1f5f9;
-  --text-color: #0f172a;
-  --text-primary: #0f172a;
-  --text-secondary: #64748b;
-  --border-color: #e2e8f0;
+  --background-color: #0f172a;
+  --bg-color: #1e293b;
+  --bg-hover: #334155;
+  --text-color: #f8fafc;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --border-color: #334155;
   --border-color-dark: #334155;
-  --input-bg: #fff;
-  --input-bg-dark: #1e293b;
+  --input-bg: #1e293b;
+  --input-bg-dark: #0f172a;
   --rounded-sm: 0.125rem;
   --rounded-md: 0.375rem;
   --rounded-lg: 0.5rem;
@@ -25,7 +25,7 @@
   --color-error: #dc2626;
 }
 
-/* Dark Mode Variables */
+/* Dark Mode Variables - Kept for backwards compatibility */
 .dark-mode {
   --background-color: #0f172a;
   --bg-color: #1e293b;
@@ -64,9 +64,6 @@ body {
   display: flex;
   flex-direction: column;
   transition: background-color 0.3s, color 0.3s;
-}
-
-.app.dark-mode {
   background-color: var(--background-color);
   color: var(--text-color);
 }

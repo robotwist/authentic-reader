@@ -55,10 +55,19 @@ cd ..
 
 3. Set up environment variables:
 
-Create a `.env` file in the project root and another in the `server` directory with the following variables:
+Create a `.env` file in the project root based on the `.env.example` template:
+
+```bash
+cp .env.example .env
+```
+
+Then edit the `.env` file to add your own API keys:
 
 ```
 # Root .env
+REACT_APP_HF_API_TOKEN=your_hugging_face_token_here
+VITE_HF_API_TOKEN=your_hugging_face_token_here
+VITE_LOG_LEVEL=info
 VITE_API_URL=http://localhost:3000
 
 # server/.env
@@ -66,6 +75,23 @@ PORT=3000
 DATABASE_URL=postgresql://username:password@localhost:5432/portfolio
 JWT_SECRET=your_jwt_secret
 ```
+
+### Hugging Face API Integration
+
+Authentic Reader uses the Hugging Face Inference API for content analysis features:
+
+1. **Get an API Token**: Visit [Hugging Face](https://huggingface.co/settings/tokens) to create an account and generate an API token.
+
+2. **Add to Environment Variables**: Add your token to the `.env` file as shown above.
+
+3. **Test the Integration**: Use the "Env Test" page in the application to verify your token is loaded correctly, then try the "Analysis Tool" to test the API connection.
+
+4. **Models Used**:
+   - Emotion Analysis: `j-hartmann/emotion-english-distilroberta-base`
+   - Sentiment Analysis: `distilbert-base-uncased-finetuned-sst-2-english`
+   - Toxicity Detection: `michellejieli/albert_toxicity_classifier`
+
+**Note**: Be aware of Hugging Face API rate limits and costs for your token.
 
 ## Quick Start
 
