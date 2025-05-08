@@ -3,7 +3,7 @@ const { validationResult } = require('express-validator');
 const axios = require('axios');
 const xml2js = require('xml2js');
 const { Op } = require('sequelize');
-const { fetchAndExtractArticle } = require('../../src/services/contentExtractionService');
+const { fetchAndExtractArticle } = require('../services/contentExtractionService');
 
 // Save article for a user
 exports.saveArticle = async (req, res) => {
