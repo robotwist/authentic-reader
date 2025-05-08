@@ -1,5 +1,13 @@
-import { huggingFaceService, HFEmotionResponse } from './huggingFaceService';
+import { analyzeEmotions as hfAnalyzeEmotions } from './huggingFaceService';
 import { logger } from '../utils/logger';
+
+/**
+ * Interface for the emotion response from Hugging Face
+ */
+interface HFEmotionResponse {
+  label: string;
+  score: number;
+}
 
 /**
  * Standardized emotions mapped from various models
@@ -103,21 +111,21 @@ class EmotionAnalysisService {
       }
       
       // Use Hugging Face service to get emotion predictions
-      const response = await huggingFaceService.analyzeEmotions(text);
+      const response = await hfAnalyzeEmotions(text);
       
-      if (!response.success || !response.data) {
-        logger.error('Failed to get emotion analysis from Hugging Face', response.error);
+      if (!response || response.length === 0) {
+        logger.error('Failed to get emotion analysis from Hugging Face');
         return {
           emotions: [],
           dominantEmotion: null,
           emotionalAppeal: 0,
           success: false,
-          error: response.error
+          error: 'Failed to analyze emotions'
         };
       }
       
       // Map and normalize the emotions
-      const mappedEmotions: EmotionData[] = response.data
+      const mappedEmotions: EmotionData[] = response
         .map((result: HFEmotionResponse) => {
           const type = emotionMapping[result.label] || 'neutral';
           return {
@@ -187,4 +195,9 @@ class EmotionAnalysisService {
 }
 
 // Export a singleton instance
-export const emotionAnalysisService = new EmotionAnalysisService(); 
+export const emotionAnalysisService = new EmotionAnalysisService();
+
+// Direct export of the emotion analysis function for easier import
+export async function analyzeEmotions(text: string): Promise<EmotionAnalysisResult> {
+  return emotionAnalysisService.analyzeEmotions(text);
+} 

@@ -589,6 +589,29 @@
 /* Dark mode adjustments */
 .dark-mode .article-analysis {
   background-color: var(--bg-color);
+  color: #e0e0e0;
+}
+
+.dark-mode .analysis-header h2 {
+  color: #f0f0f0;
+}
+
+.dark-mode .source-info {
+  color: #b0b0b0;
+}
+
+.dark-mode .analysis-tabs button {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #b0b0b0;
+}
+
+.dark-mode .analysis-tabs button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .analysis-tabs button.active {
+  color: #f0f0f0;
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .dark-mode .fallacy-item,
@@ -597,10 +620,63 @@
   border-color: var(--border-color-dark);
 }
 
+.dark-mode .fallacy-type {
+  color: #e0e0e0;
+}
+
+.dark-mode .fallacy-explanation {
+  color: #c0c0c0;
+}
+
 .dark-mode .fallacy-excerpt {
   background-color: rgba(var(--primary-color-rgb), 0.1);
+  color: #e0e0e0;
+  border-left-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark-mode .fallacy-confidence {
+  color: #a0a0a0;
+}
+
+.dark-mode .bias-explanation h3,
+.dark-mode .metrics-column h3 {
+  color: #e0e0e0;
+}
+
+.dark-mode .bias-explanation p,
+.dark-mode .metrics-column p {
+  color: #c0c0c0;
+}
+
+.dark-mode .bias-confidence {
+  color: #b0b0b0;
 }
 
 .dark-mode .bias-marker {
   border-color: var(--text-primary);
+}
+
+.dark-mode .spectrum-bar {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark-mode .metric-label {
+  color: #b0b0b0;
+}
+
+.dark-mode .metric-value {
+  color: #e0e0e0;
+}
+
+.dark-mode .entity-tag {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+}
+
+.dark-mode .emotion-track {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .emotion-label {
+  color: #c0c0c0;
 } 

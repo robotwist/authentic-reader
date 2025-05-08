@@ -1,8 +1,14 @@
 import axios from 'axios';
 import { logger } from '../utils/logger';
 import { analyzeManipulativeContent, ManipulationAnalysis } from './doomscrollAnalysisService';
-import { analyzeEmotions, EmotionAnalysisResult, emotionAnalysisService } from './emotionAnalysisService';
-import { huggingFaceService } from './huggingFaceService';
+import { analyzeEmotions, EmotionAnalysisResult } from './emotionAnalysisService';
+import {
+  classifyText,
+  extractEntities,
+  getTextEmbeddings,
+  summarizeText,
+  analyzeSentiment as hfAnalyzeSentiment
+} from './huggingFaceService';
 
 /**
  * Types of logical fallacies that can be detected
@@ -924,33 +930,12 @@ async function performEntityRecognition(text: string): Promise<NERResponse | nul
 }
 
 /**
- * Analyzes the emotional content of text
- * @param text The text to analyze
- * @returns Emotion analysis results
- */
-export async function analyzeEmotions(text: string): Promise<EmotionAnalysisResult> {
-  try {
-    // Use the new emotion analysis service for modern AI-based analysis
-    return await emotionAnalysisService.analyzeEmotions(text);
-  } catch (error) {
-    console.error('Error in emotion analysis:', error);
-    return {
-      emotions: [],
-      dominantEmotion: null,
-      emotionalAppeal: 0,
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
-    };
-  }
-}
-
-/**
  * Analyze text specifically for sentiment (positive/negative/neutral)
  */
 export async function analyzeSentiment(text: string): Promise<{score: number, label: string}> {
   try {
     // First try to use HuggingFace for sentiment analysis
-    const response = await huggingFaceService.analyzeSentiment(text);
+    const response = await hfAnalyzeSentiment(text);
     
     if (response.success && response.data && response.data.length > 0) {
       const sentimentResult = response.data[0];

@@ -1,0 +1,395 @@
+/* Interactive Article View Styles */
+
+.interactive-article-container {
+  background-color: #121212;
+  color: #e0e0e0;
+  padding: 1rem;
+  border-radius: 8px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Article header */
+.article-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 1rem;
+}
+
+.article-header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+  color: #fff;
+}
+
+.article-author {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  color: #aaa;
+}
+
+.article-date {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+
+.article-source {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+
+.reading-time {
+  font-size: 0.9rem;
+  color: #666;
+  display: inline-block;
+  background-color: #1e1e1e;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+/* Analysis progress */
+.analysis-progress {
+  margin-bottom: 1.5rem;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: #333;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-indicator {
+  height: 100%;
+  background-color: #4a90e2;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #999;
+  text-align: center;
+}
+
+/* Main content layout */
+.content-analysis-container {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 1.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .content-analysis-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Article content */
+.article-content {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #ccc;
+}
+
+.article-passage {
+  position: relative;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background-color: rgba(30, 30, 30, 0.6);
+}
+
+.article-passage:hover {
+  background-color: #1e1e1e;
+}
+
+.article-passage.analyzed {
+  border-left: 3px solid #555;
+}
+
+.article-passage.selected {
+  background-color: #2c2c2c;
+  border-left-color: #4a90e2;
+}
+
+.article-passage p {
+  margin: 0;
+}
+
+/* Passage indicators */
+.passage-indicators {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.bias-indicator,
+.rhetoric-indicator,
+.manipulation-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Bias indicator colors */
+.bias-left-strong {
+  background-color: #3498db;
+}
+
+.bias-left-moderate {
+  background-color: #7fb3d5;
+}
+
+.bias-neutral {
+  background-color: #27ae60;
+}
+
+.bias-right-moderate {
+  background-color: #f39c12;
+}
+
+.bias-right-strong {
+  background-color: #e74c3c;
+}
+
+/* Rhetoric indicator colors */
+.rhetoric-ethos {
+  background-color: #9b59b6;
+}
+
+.rhetoric-pathos {
+  background-color: #e84393;
+}
+
+.rhetoric-logos {
+  background-color: #3498db;
+}
+
+.rhetoric-kairos {
+  background-color: #f39c12;
+}
+
+/* Manipulation indicator colors */
+.manipulation-low {
+  background-color: #27ae60;
+}
+
+.manipulation-medium {
+  background-color: #f39c12;
+}
+
+.manipulation-high {
+  background-color: #e74c3c;
+}
+
+/* Analysis sidebar */
+.analysis-sidebar {
+  background-color: #1e1e1e;
+  padding: 1.5rem;
+  border-radius: 8px;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+}
+
+.analysis-sidebar.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #888;
+}
+
+.analysis-sidebar h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #333;
+  color: #fff;
+}
+
+.analysis-section {
+  margin-bottom: 1.5rem;
+}
+
+.analysis-section h4 {
+  color: #ccc;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.analysis-section h5 {
+  color: #bbb;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Bias meter */
+.bias-meter {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.bias-label {
+  font-size: 0.8rem;
+  width: 40px;
+}
+
+.bias-label.left {
+  text-align: right;
+  color: #3498db;
+}
+
+.bias-label.right {
+  text-align: left;
+  color: #e74c3c;
+}
+
+.bias-bar {
+  flex-grow: 1;
+  height: 8px;
+  background-color: #333;
+  border-radius: 4px;
+  margin: 0 0.5rem;
+  position: relative;
+}
+
+.bias-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: left 0.3s ease;
+}
+
+.bias-dimensions {
+  margin-top: 1rem;
+}
+
+.bias-dimension {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.bias-dimension span:first-child {
+  color: #999;
+}
+
+/* Rhetoric styles */
+.rhetoric-type {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.rhetoric-techniques ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  font-size: 0.9rem;
+  color: #bbb;
+}
+
+.rhetoric-techniques li {
+  margin-bottom: 0.25rem;
+}
+
+/* Manipulation score */
+.manipulation-score {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.manipulation-explanation {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-top: 0.5rem;
+}
+
+/* Virgil button */
+.virgil-button {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #1c2c44;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.virgil-button:hover {
+  background-color: #2c3e50;
+}
+
+/* Virgil modal */
+.virgil-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.virgil-modal {
+  background-color: #1e1e1e;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.virgil-modal h3 {
+  margin-top: 0;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.virgil-content {
+  color: #ccc;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.close-button {
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.close-button:hover {
+  background-color: #444;
+} 

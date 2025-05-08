@@ -4,12 +4,9 @@ import '../styles/Header.css';
 import { useAuth } from '../contexts/AuthContext';
 import AuthModal from './AuthModal';
 
-interface HeaderProps {
-  darkMode?: boolean;
-  onToggleDarkMode?: () => void;
-}
+interface HeaderProps {}
 
-const Header = ({ darkMode = false, onToggleDarkMode }: HeaderProps) => {
+const Header = ({}: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authModalView, setAuthModalView] = useState<'login' | 'register'>('login');
@@ -47,15 +44,6 @@ const Header = ({ darkMode = false, onToggleDarkMode }: HeaderProps) => {
           <p className="tagline">Content that respects your intelligence</p>
         </div>
         <nav className={`nav-menu ${isMenuOpen ? 'open' : ''}`}>
-          <div className="theme-toggle">
-            <button 
-              className={`theme-button ${darkMode ? 'dark' : 'light'}`} 
-              onClick={onToggleDarkMode}
-              aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
-              {darkMode ? '☀️' : '🌙'}
-            </button>
-          </div>
           <button 
             className="menu-toggle" 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -73,7 +61,14 @@ const Header = ({ darkMode = false, onToggleDarkMode }: HeaderProps) => {
               <Link to="/sources" className={isActive('/sources') ? 'active' : ''}>My Sources</Link>
             </li>
             <li>
-              <Link to="/analysis-test" className={isActive('/analysis-test') ? 'active' : ''}>Analysis Tool</Link>
+              <Link to="/reader" className="nav-link">
+                Reader
+              </Link>
+            </li>
+            <li>
+              <Link to="/analysis" className="nav-link">
+                Analysis
+              </Link>
             </li>
             <li>
               <Link to="/env-test" className={isActive('/env-test') ? 'active' : ''}>Env Test</Link>

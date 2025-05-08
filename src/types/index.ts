@@ -299,13 +299,148 @@ export function toRSSArticle(article: APIArticle | any): RSSArticle {
 }
 
 /**
- * Result from content extraction API
+ * Extracted content from an article source
  */
 export interface ExtractedContent {
-  title: string; 
-  content: string; 
-  textContent: string; 
-  length: number; 
-  excerpt: string; 
-  byline: string | null;
+  id?: string;
+  content: string;
+  metadata?: {
+    title?: string;
+    byline?: string;
+    siteName?: string;
+    date?: string;
+    url?: string;
+    excerpt?: string;
+    imageUrl?: string;
+  };
+  darkPatterns?: any[];
+  timestamp?: number;
+}
+
+// Add new types for multi-dimensional bias analysis
+
+// Enhanced bias dimensions for more nuanced analysis
+export enum BiasDimension {
+  POLITICAL = 'political',
+  ECONOMIC = 'economic',
+  SOCIAL = 'social',
+  IDENTITY = 'identity',
+  GEOPOLITICAL = 'geopolitical',
+  EPISTEMOLOGICAL = 'epistemological'
+}
+
+// Existing BiasType (for backward compatibility)
+export enum BiasType {
+  LEFT_STRONG = 'LEFT_STRONG',
+  LEFT_MODERATE = 'LEFT_MODERATE',
+  CENTER = 'CENTER',
+  RIGHT_MODERATE = 'RIGHT_MODERATE',
+  RIGHT_STRONG = 'RIGHT_STRONG'
+}
+
+// Multi-dimensional bias rating system
+export interface BiasRating {
+  value: number; // -1.0 to 1.0 scale where 0 is neutral
+  confidence: number; // 0.0 to 1.0
+  evidence: string[]; // Text evidence for this rating
+}
+
+// Complete multi-dimensional bias analysis
+export interface MultidimensionalBias {
+  political: BiasRating; // Traditional left-right spectrum
+  economic: BiasRating; // State intervention vs free market
+  social: BiasRating; // Progressive vs traditional
+  identity: BiasRating; // Identity politics sensitivity
+  geopolitical: BiasRating; // International relations perspective
+  epistemological: BiasRating; // How sources of truth are treated
+  overallBias: BiasType; // Legacy compatibility
+  confidence: number; // Overall confidence in the analysis
+}
+
+// Dark pattern detection
+export enum DarkPatternType {
+  FORCED_CONTINUITY = 'forced_continuity',
+  HIDDEN_COSTS = 'hidden_costs',
+  TRICK_QUESTIONS = 'trick_questions',
+  MISDIRECTION = 'misdirection',
+  CONFIRMSHAMING = 'confirmshaming',
+  DISGUISED_ADS = 'disguised_ads',
+  SCARCITY = 'scarcity',
+  SOCIAL_PROOF = 'social_proof',
+  URGENCY = 'urgency',
+  ROACH_MOTEL = 'roach_motel'
+}
+
+export interface DarkPatternDetection {
+  type: DarkPatternType;
+  confidence: number;
+  description: string;
+  elementType?: string;
+  location?: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+  screenshot?: string;
+}
+
+export interface DarkPatternAnalysisResult {
+  patternCount: number;
+  patterns: DarkPatternDetection[];
+  manipulationScore: number;
+  feedbackRequired: boolean;
+}
+
+// Rhetoric and persuasion techniques
+export enum RhetoricType {
+  ETHOS = 'ethos', // Appeal to authority/credibility
+  PATHOS = 'pathos', // Appeal to emotion
+  LOGOS = 'logos', // Appeal to logic
+  KAIROS = 'kairos' // Appeal to timeliness/opportunity
+}
+
+export interface RhetoricAnalysis {
+  primary: RhetoricType;
+  secondary?: RhetoricType;
+  techniques: string[];
+  effectiveness: number; // 0.0 to 1.0
+  examples: string[];
+}
+
+// Passage-level analysis
+export interface ArticlePassage {
+  text: string;
+  element?: string; // HTML element type (p, h1, blockquote, etc)
+  startIndex: number;
+  endIndex: number;
+  analyses: PassageAnalysis | null;
+}
+
+export interface PassageAnalysis {
+  bias?: MultidimensionalBias;
+  rhetoric?: RhetoricAnalysis;
+  manipulation?: {
+    score: number;
+    tactics: string[];
+  };
+  darkPatterns?: DarkPatternDetection[];
+  keyEntities?: string[];
+}
+
+// "Virgil" AI chat system for guiding users through analysis
+export interface VirgileMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+  timestamp: number;
+  relatedPassage?: string;
+  relatedAnalysis?: any;
+}
+
+export interface VirgileSession {
+  id: string;
+  articleId: string;
+  messages: VirgileMessage[];
+  created: number;
+  updated: number;
 } 
