@@ -1,0 +1,145 @@
+.emotion-analysis {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.emotion-analysis h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #333;
+  font-size: 1.4rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.emotion-analysis h4 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: #555;
+  font-size: 1rem;
+}
+
+.emotion-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.emotional-appeal, .dominant-emotion, .sentiment-summary {
+  flex: 1;
+  min-width: 150px;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.appeal-value, .dominant-value, .sentiment-value-summary {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.emotions-container {
+  margin-bottom: 20px;
+}
+
+.emotions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.emotion-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.emotion-name {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.emotion-bar {
+  height: 10px;
+  border-radius: 5px;
+  margin-bottom: 4px;
+  transition: width 0.3s ease;
+}
+
+.emotion-value {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* Appeal value classes */
+.appeal-value.very-high {
+  color: #F44336;
+}
+
+.appeal-value.high {
+  color: #FF9800;
+}
+
+.appeal-value.moderate {
+  color: #FFC107;
+}
+
+.appeal-value.low {
+  color: #8BC34A;
+}
+
+.appeal-value.very-low {
+  color: #4CAF50;
+}
+
+.numeric-value {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-left: 6px;
+  color: #777;
+}
+
+.emotion-explanation {
+  background-color: #f9f9f9;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 16px;
+}
+
+.emotion-explanation p {
+  margin: 8px 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #555;
+}
+
+.emotion-analysis.empty {
+  color: #999;
+  text-align: center;
+  padding: 24px;
+  font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .emotion-summary {
+    flex-direction: column;
+  }
+  
+  .emotional-appeal, .dominant-emotion, .sentiment-summary {
+    margin-bottom: 10px;
+  }
+  
+  .emotions-grid {
+    grid-template-columns: 1fr;
+  }
+} 

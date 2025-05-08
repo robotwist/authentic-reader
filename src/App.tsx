@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import './App.css'
 import Header from './components/Header'
 import FeedContainer from './components/FeedContainer'
 import UserProfile from './components/UserProfile';
 import AdminDashboard from './components/AdminDashboard';
+import AnalysisTest from './components/AnalysisTest';
+import EnvTest from './components/EnvTest';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { 
   initializeDB, 
@@ -65,6 +67,41 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   return isLoggedIn ? children : <Navigate to="/" />;
 };
 
+// Admin validation wrapper
+const AdminValidator = () => {
+  const { isLoggedIn, user, token } = useAuth();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    // Validate admin status with a backend check
+    const validateAdmin = async () => {
+      if (isLoggedIn && user?.isAdmin && token) {
+        try {
+          const response = await fetch('/api/admin/stats', {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          
+          if (!response.ok) {
+            console.error('Admin validation failed:', response.status);
+            // Clear auth if token is invalid
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('current_user');
+            navigate('/');
+          }
+        } catch (error) {
+          console.error('Admin validation error:', error);
+        }
+      }
+    };
+    
+    validateAdmin();
+  }, [isLoggedIn, user, token, navigate]);
+  
+  return null; // This component doesn't render anything
+};
+
 // Admin-only route
 const AdminRoute = ({ children }: { children: JSX.Element }) => {
   const { isLoggedIn, loading, user } = useAuth();
@@ -80,7 +117,12 @@ const AdminRoute = ({ children }: { children: JSX.Element }) => {
     return <Navigate to="/" />;
   }
   
-  return user?.isAdmin ? children : (
+  return user?.isAdmin ? (
+    <>
+      <AdminValidator />
+      {children}
+    </>
+  ) : (
     <div className="container">
       <h2>Unauthorized</h2>
       <p>You don't have permission to access this page.</p>
@@ -302,6 +344,14 @@ function App() {
                     <AdminDashboard />
                   </AdminRoute>
                 } 
+              />
+              <Route 
+                path="/analysis-test" 
+                element={<AnalysisTest />} 
+              />
+              <Route 
+                path="/env-test" 
+                element={<EnvTest />} 
               />
               <Route 
                 path="*" 

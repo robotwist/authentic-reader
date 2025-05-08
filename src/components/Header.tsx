@@ -72,6 +72,12 @@ const Header = ({ darkMode = false, onToggleDarkMode }: HeaderProps) => {
             <li>
               <Link to="/sources" className={isActive('/sources') ? 'active' : ''}>My Sources</Link>
             </li>
+            <li>
+              <Link to="/analysis-test" className={isActive('/analysis-test') ? 'active' : ''}>Analysis Tool</Link>
+            </li>
+            <li>
+              <Link to="/env-test" className={isActive('/env-test') ? 'active' : ''}>Env Test</Link>
+            </li>
             
             {isLoggedIn ? (
               <>

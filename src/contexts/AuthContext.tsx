@@ -4,6 +4,7 @@ import { authApi, User, clearAuth, getCurrentUser, isAuthenticated } from '../se
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
+  token: string | null;
   login: (credentials: { email?: string; username?: string; password: string }) => Promise<void>;
   register: (username: string, email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -16,6 +17,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   isLoggedIn: false,
+  token: null,
   login: async () => {},
   register: async () => {},
   logout: () => {},
@@ -30,6 +32,7 @@ export const useAuth = () => useContext(AuthContext);
 // Auth Provider component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,21 +43,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setLoading(true);
         if (isAuthenticated()) {
           const currentUser = getCurrentUser();
-          if (currentUser) {
+          const storedToken = localStorage.getItem('auth_token');
+          
+          if (currentUser && storedToken) {
             try {
-              // Optionally verify token validity by calling an API
-              // const profile = await authApi.getProfile();
-              // setUser(profile);
-              setUser(currentUser);
+              // Verify token validity by calling an API
+              const profile = await authApi.getProfile();
+              setUser(profile);
+              setToken(storedToken);
             } catch (error) {
               console.error('Session expired or invalid token:', error);
               clearAuth();
               setUser(null);
+              setToken(null);
             }
           }
         }
       } catch (err) {
         console.error('Error checking auth status:', err);
+        clearAuth();
+        setUser(null);
+        setToken(null);
       } finally {
         setLoading(false);
       }
@@ -70,6 +79,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setError(null);
       const userData = await authApi.login(credentials);
       setUser(userData);
+      setToken(localStorage.getItem('auth_token'));
     } catch (error: any) {
       setError(error.message || 'Failed to login');
       throw error;
@@ -85,6 +95,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setError(null);
       const userData = await authApi.register(username, email, password);
       setUser(userData);
+      setToken(localStorage.getItem('auth_token'));
     } catch (error: any) {
       setError(error.message || 'Failed to register');
       throw error;
@@ -97,6 +108,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     authApi.logout();
     setUser(null);
+    setToken(null);
   };
 
   // Update user handler
@@ -117,6 +129,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const value = {
     user,
     isLoggedIn: !!user,
+    token,
     login,
     register,
     logout,

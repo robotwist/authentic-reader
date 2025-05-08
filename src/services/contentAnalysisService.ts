@@ -1,4 +1,8 @@
 import axios from 'axios';
+import { logger } from '../utils/logger';
+import { analyzeManipulativeContent, ManipulationAnalysis } from './doomscrollAnalysisService';
+import { analyzeEmotions, EmotionAnalysisResult, emotionAnalysisService } from './emotionAnalysisService';
+import { huggingFaceService } from './huggingFaceService';
 
 /**
  * Types of logical fallacies that can be detected
@@ -100,6 +104,9 @@ export interface ContentAnalysisResult {
   qualityScore: number; // 0.0 to 1.0
   qualitativeAnalysis?: QualitativeAnalysis; // Add optional field
   topicClassification?: TopicClassification; // New optional field for topic classification
+  manipulationAnalysis?: ManipulationAnalysis; // New field for doomscroll/outrage analysis
+  emotionAnalysis?: EmotionAnalysisResult; // New field for detailed emotion analysis
+  sentiment?: {score: number, label: string}; // New field for dedicated sentiment analysis
 }
 
 // Patterns that may indicate different types of logical fallacies
@@ -917,6 +924,117 @@ async function performEntityRecognition(text: string): Promise<NERResponse | nul
 }
 
 /**
+ * Analyzes the emotional content of text
+ * @param text The text to analyze
+ * @returns Emotion analysis results
+ */
+export async function analyzeEmotions(text: string): Promise<EmotionAnalysisResult> {
+  try {
+    // Use the new emotion analysis service for modern AI-based analysis
+    return await emotionAnalysisService.analyzeEmotions(text);
+  } catch (error) {
+    console.error('Error in emotion analysis:', error);
+    return {
+      emotions: [],
+      dominantEmotion: null,
+      emotionalAppeal: 0,
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
+/**
+ * Analyze text specifically for sentiment (positive/negative/neutral)
+ */
+export async function analyzeSentiment(text: string): Promise<{score: number, label: string}> {
+  try {
+    // First try to use HuggingFace for sentiment analysis
+    const response = await huggingFaceService.analyzeSentiment(text);
+    
+    if (response.success && response.data && response.data.length > 0) {
+      const sentimentResult = response.data[0];
+      
+      // Convert label to lowercase for consistency
+      const label = sentimentResult.label.toLowerCase();
+      
+      // Convert score to a -1 to 1 range where -1 is negative, 1 is positive
+      let score = sentimentResult.score;
+      if (label === 'negative') {
+        score = -score;
+      } else if (label === 'neutral') {
+        score = 0;
+      }
+      
+      return { 
+        score, 
+        label: label === 'positive' ? 'positive' : 
+               label === 'negative' ? 'negative' : 'neutral' 
+      };
+    }
+    
+    // If HuggingFace fails, fallback to keyword-based approach
+    console.info('Falling back to keyword-based sentiment analysis');
+    
+    const sentimentWords = {
+      positive: [
+        'good', 'great', 'excellent', 'wonderful', 'amazing', 'fantastic',
+        'terrific', 'outstanding', 'superb', 'brilliant', 'awesome', 'fabulous',
+        'impressive', 'exceptional', 'marvelous', 'splendid', 'remarkable',
+        'love', 'happy', 'joy', 'delight', 'pleased', 'glad', 'enjoy',
+        'beneficial', 'positive', 'success', 'win', 'triumph', 'achieve'
+      ],
+      negative: [
+        'bad', 'terrible', 'awful', 'horrible', 'dreadful', 'poor', 'appalling',
+        'atrocious', 'inferior', 'inadequate', 'unacceptable', 'disappointing',
+        'hate', 'dislike', 'angry', 'sad', 'upset', 'unhappy', 'miserable',
+        'unfortunate', 'tragic', 'dire', 'grim', 'bleak', 'severe', 'serious',
+        'negative', 'problem', 'issue', 'trouble', 'fail', 'disaster', 'crisis'
+      ]
+    };
+     
+    const lowerText = text.toLowerCase();
+    let positiveCount = 0;
+    let negativeCount = 0;
+     
+    // Check for positive words
+    for (const word of sentimentWords.positive) {
+      const regex = new RegExp(`\\b${word}\\b`, 'gi');
+      const matches = lowerText.match(regex) || [];
+      positiveCount += matches.length;
+    }
+     
+    // Check for negative words
+    for (const word of sentimentWords.negative) {
+      const regex = new RegExp(`\\b${word}\\b`, 'gi');
+      const matches = lowerText.match(regex) || [];
+      negativeCount += matches.length;
+    }
+     
+    // Calculate sentiment score (-1 to 1 range)
+    const total = positiveCount + negativeCount;
+    let score = 0;
+     
+    if (total > 0) {
+      score = (positiveCount - negativeCount) / total;
+    }
+     
+    // Determine sentiment label
+    let label = 'neutral';
+    if (score > 0.1) {
+      label = 'positive';
+    } else if (score < -0.1) {
+      label = 'negative';
+    }
+     
+    return { score, label };
+  } catch (error) {
+    console.error('Error in sentiment analysis:', error);
+    return { score: 0, label: 'neutral' };
+  }
+}
+
+/**
  * Perform complete content analysis on article
  */
 export async function analyzeContent(content: string): Promise<ContentAnalysisResult> {
@@ -1341,6 +1459,27 @@ export async function analyzeContent(content: string): Promise<ContentAnalysisRe
     console.log(`🔬 Quality score components - Citations: ${citationFactor.toFixed(2)}, Length: ${wordCountFactor.toFixed(2)}, Objectivity: ${objectivityFactor.toFixed(2)}`);
     console.log(`🔬 Final quality score: ${qualityScore.toFixed(2)}`);
 
+    // Perform manipulation analysis (doomscroll and outrage bait detection)
+    console.log('🔬 Performing manipulation analysis (doomscroll and outrage detection)');
+    const manipulationAnalysis = analyzeManipulativeContent(plainText);
+    console.log(`🔬 Manipulation analysis complete - Doomscroll score: ${manipulationAnalysis.doomscroll.doomscrollScore.toFixed(2)}, Outrage score: ${manipulationAnalysis.outrageBait.outrageBaitScore.toFixed(2)}`);
+
+    // Perform enhanced emotion analysis with Hugging Face integration
+    console.log('🔬 Performing advanced emotion analysis with Hugging Face integration');
+    const emotionAnalysis = await analyzeEmotions(plainText);
+
+    // Log information with type safety for the new emotionAnalysis structure
+    if (emotionAnalysis.success && emotionAnalysis.dominantEmotion) {
+      console.log(`🔬 Emotion analysis complete - Dominant emotion: ${emotionAnalysis.dominantEmotion.type}, Emotional appeal: ${emotionAnalysis.emotionalAppeal.toFixed(1)}%`);
+    } else {
+      console.log(`🔬 Emotion analysis failed or returned no results: ${emotionAnalysis.error || 'No dominant emotion detected'}`);
+    }
+
+    // Perform dedicated sentiment analysis (also with Hugging Face if available)
+    console.log('🔬 Performing sentiment analysis with Hugging Face integration');
+    const sentiment = await analyzeSentiment(plainText);
+    console.log(`🔬 Sentiment analysis complete - Score: ${sentiment.score.toFixed(2)}, Label: ${sentiment.label}`);
+
     console.log('🔬 Analysis completed successfully (incl. ML attempt)');
     
     return {
@@ -1350,7 +1489,10 @@ export async function analyzeContent(content: string): Promise<ContentAnalysisRe
       manipulationScore, 
       qualityScore,
       qualitativeAnalysis: qualitativeAnalysisResult,
-      topicClassification: topicClassificationResult
+      topicClassification: topicClassificationResult,
+      manipulationAnalysis, // Add the new manipulation analysis
+      emotionAnalysis,      // Add the new emotion analysis
+      sentiment             // Add dedicated sentiment analysis
     };
   } catch (error) {
     console.error('FATAL Error during content analysis pipeline:', error);
@@ -1377,7 +1519,10 @@ export async function analyzeContent(content: string): Promise<ContentAnalysisRe
         manipulationScore: 0,
         qualityScore: 0,
         qualitativeAnalysis: undefined,
-        topicClassification: undefined
+        topicClassification: undefined,
+        manipulationAnalysis: undefined,
+        emotionAnalysis: undefined,
+        sentiment: undefined
     };
   }
 }

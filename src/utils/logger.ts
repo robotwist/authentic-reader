@@ -2,7 +2,22 @@
 // Allows for potential future enhancements like sending logs to a server,
 // different log levels based on environment, etc.
 
-const LOG_LEVEL = import.meta.env.VITE_LOG_LEVEL || 'info'; // Default to info
+// Get log level from environment variables with fallbacks
+// Handle both Vite and browser window.env formats
+const getLogLevel = (): string => {
+  try {
+    if (typeof import.meta !== 'undefined' && import.meta.env) {
+      return import.meta.env.VITE_LOG_LEVEL || 'info';
+    } else if (typeof window !== 'undefined' && window.env) {
+      return window.env.REACT_APP_LOG_LEVEL || 'info';
+    }
+  } catch (e) {
+    console.warn('Error accessing environment variables:', e);
+  }
+  return 'info'; // Default fallback
+};
+
+const LOG_LEVEL = getLogLevel();
 
 const levels: { [key: string]: number } = {
   debug: 0,
