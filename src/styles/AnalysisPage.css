@@ -149,4 +149,143 @@
     flex: 1;
     text-align: center;
   }
+}
+
+/* Analysis Hub Page Styles */
+.analysis-hub-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.page-header h1 {
+  margin: 0 0 10px 0;
+  color: var(--text-primary);
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.page-description {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Analysis Tabs */
+.analysis-tabs {
+  display: flex;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--background-tertiary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tab-button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: background-color 0.3s, color 0.3s;
+  border-right: 1px solid var(--border-color);
+}
+
+.tab-button:last-child {
+  border-right: none;
+}
+
+.tab-button.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.tab-button:hover:not(.active) {
+  background-color: var(--background-hover);
+}
+
+.tab-icon {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.tab-button span {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Sample Text Controls */
+.sample-text-controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.sample-text-button {
+  background-color: var(--background-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.sample-text-button:hover {
+  background-color: var(--background-hover);
+  transform: translateY(-1px);
+}
+
+/* Analysis Content */
+.analysis-content {
+  position: relative;
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 768px) {
+  .analysis-tabs {
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .tab-button {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 12px 15px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .tab-button:last-child {
+    border-bottom: none;
+  }
+  
+  .tab-icon {
+    margin-bottom: 0;
+    margin-right: 15px;
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .page-description {
+    font-size: 1rem;
+  }
 } 

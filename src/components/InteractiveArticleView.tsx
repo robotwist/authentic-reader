@@ -1,428 +1,206 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { analyzeMultidimensionalBias, analyzeRhetoric, extractEntities, generateAnalysisExplanation } from '../services/huggingFaceService';
-import { savePassageAnalyses } from '../services/storageService';
-import { logger } from '../utils/logger';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { FiArrowLeft, FiBookmark, FiShare2, FiDownload, FiInfo } from 'react-icons/fi';
 import '../styles/InteractiveArticleView.css';
 
-interface PassageAnalysis {
-  id?: string;
-  passageId?: string;
-  bias?: any;
-  rhetoric?: any;
-  manipulation?: {
-    score: number;
-    techniquesDetected?: string[];
-  };
-  entities?: any[];
-  darkPatterns?: any[];
-  createdAt?: string;
-}
-
-interface ArticlePassage {
-  id?: string;
-  text: string;
-  startIndex: number;
-  endIndex: number;
-  element?: string;
-  analyses: PassageAnalysis | null;
-}
-
-interface ExtractedContent {
-  id?: string;
+interface ArticleContent {
+  title: string;
   content: string;
-  metadata?: {
-    title?: string;
-    byline?: string;
-    siteName?: string;
-    date?: string;
-    url?: string;
-    excerpt?: string;
-    imageUrl?: string;
-  };
-  darkPatterns?: any[];
-  timestamp?: number;
+  source?: string;
+  author?: string;
+  publishedDate?: string;
+  imageUrl?: string;
 }
 
-interface InteractiveArticleViewProps {
-  content: ExtractedContent;
-  passages: ArticlePassage[];
-  onAnalysisComplete?: () => void;
-}
-
-const InteractiveArticleView: React.FC<InteractiveArticleViewProps> = ({
-  content,
-  passages,
-  onAnalysisComplete
-}) => {
-  const [analysisInProgress, setAnalysisInProgress] = useState<boolean>(false);
-  const [currentPassage, setCurrentPassage] = useState<number>(0);
-  const [analysisResults, setAnalysisResults] = useState<Record<string, PassageAnalysis>>({});
-  const [selectedAnalysis, setSelectedAnalysis] = useState<string | null>(null);
-  const [showVirgil, setShowVirgil] = useState<boolean>(false);
-  const [virgilExplanation, setVirgilExplanation] = useState<string>('');
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  // Initialize the analysis process when component mounts
+const InteractiveArticleView: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [article, setArticle] = useState<ArticleContent | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [activeHighlights, setActiveHighlights] = useState<string[]>(['bias', 'rhetoric', 'fallacy']);
+  
   useEffect(() => {
-    if (passages.length > 0 && Object.keys(analysisResults).length === 0) {
-      startAnalysis();
-    }
-  }, [passages]);
-
-  // Scroll to highlighted passage when selected
-  useEffect(() => {
-    if (selectedAnalysis && contentRef.current) {
-      const passageElement = document.getElementById(`passage-${selectedAnalysis}`);
-      if (passageElement) {
-        passageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }
-  }, [selectedAnalysis]);
-
-  // Start analyzing all passages
-  const startAnalysis = async () => {
-    if (analysisInProgress || passages.length === 0) return;
-    
-    setAnalysisInProgress(true);
-    
-    try {
-      // Analyze passages sequentially to avoid rate limiting
-      for (let i = 0; i < passages.length; i++) {
-        setCurrentPassage(i);
-        await analyzePassage(passages[i], i);
-      }
-      
-      logger.info('All passages analyzed successfully');
-      if (onAnalysisComplete) {
-        onAnalysisComplete();
-      }
-    } catch (error) {
-      logger.error('Error during passage analysis:', error);
-    } finally {
-      setAnalysisInProgress(false);
-      setCurrentPassage(0);
-    }
-  };
-
-  // Analyze a single passage
-  const analyzePassage = async (passage: ArticlePassage, index: number) => {
-    try {
-      // Create a unique ID for this passage if not already present
-      const passageId = passage.id || `passage-${index}`;
-      
-      // Skip if already analyzed
-      if (analysisResults[passageId]) {
-        return;
-      }
-      
-      // Analyze bias, rhetoric, and entities in parallel
-      const [biasAnalysis, rhetoricAnalysis, entities] = await Promise.all([
-        analyzeMultidimensionalBias(passage.text),
-        analyzeRhetoric(passage.text),
-        extractEntities(passage.text)
-      ]);
-      
-      // Create the passage analysis
-      const analysis: PassageAnalysis = {
-        id: `analysis-${passageId}`,
-        passageId,
-        bias: biasAnalysis,
-        rhetoric: rhetoricAnalysis,
-        manipulation: {
-          score: calculateManipulationScore(biasAnalysis, rhetoricAnalysis),
-          techniquesDetected: []
-        },
-        entities,
-        darkPatterns: [],
-        createdAt: new Date().toISOString()
-      };
-      
-      // Save to state and database
-      setAnalysisResults(prev => ({
-        ...prev,
-        [passageId]: analysis
-      }));
-      
-      await savePassageAnalyses(content.id || 'article', {
-        articleId: content.id || 'article',
-        passages: passages.map((p, i) => {
-          const pid = p.id || `passage-${i}`;
-          return {
-            ...p,
-            id: pid,
-            analyses: pid === passageId ? analysis : p.analyses
+    const fetchArticle = async () => {
+      try {
+        setLoading(true);
+        
+        // This would be replaced with your actual API call
+        // For now, we'll simulate loading an article
+        setTimeout(() => {
+          // Placeholder article data - in production, this would be fetched from your API
+          const articleData: ArticleContent = {
+            title: "Understanding Media Bias in the Digital Age",
+            content: `
+              <p>In today's media landscape, <span class="highlight bias" data-type="bias" data-info="Loaded language suggesting media intentionally manipulates">consumers are constantly bombarded</span> with information from countless sources, making it increasingly difficult to distinguish fact from opinion.</p>
+              
+              <p>Many news organizations <span class="highlight rhetoric" data-type="rhetoric" data-info="Appeal to authority - citing unnamed experts">according to experts</span>, have shifted from objective reporting to opinion-based content that caters to specific audiences. This shift has led to <span class="highlight bias" data-type="bias" data-info="Emotional language to evoke strong reactions">dangerous echo chambers</span> where readers only consume content that confirms their existing beliefs.</p>
+              
+              <p>The consequences of this trend <span class="highlight fallacy" data-type="fallacy" data-info="Slippery slope fallacy">will inevitably lead to a complete breakdown of societal cohesion</span> if left unchecked. Research shows that media bias affects how people perceive events and <span class="highlight rhetoric" data-type="rhetoric" data-info="Appeal to fear">threatens the very foundations of democracy</span>.</p>
+              
+              <p>Conservative outlets <span class="highlight bias" data-type="bias" data-info="Generalization about a group">always prioritize</span> economic concerns, while liberal publications <span class="highlight bias" data-type="bias" data-info="Generalization about a group">focus exclusively</span> on social justice issues. This divide creates a scenario where <span class="highlight fallacy" data-type="fallacy" data-info="False dichotomy">Americans must choose between economic prosperity and social progress</span>.</p>
+              
+              <p>To combat media bias, readers should <span class="highlight rhetoric" data-type="rhetoric" data-info="Appeal to common sense">obviously consume content from multiple sources</span> and develop critical thinking skills. However, this solution <span class="highlight fallacy" data-type="fallacy" data-info="Hasty generalization">cannot work for most Americans who lack the time and education necessary</span> to thoroughly analyze news content.</p>
+              
+              <p>The rise of fact-checking organizations represents a <span class="highlight bias" data-type="bias" data-info="Subjective claim presented as fact">positive development</span> in countering misinformation, though critics argue these organizations <span class="highlight bias" data-type="bias" data-info="Attribution bias">themselves harbor biases</span>.</p>
+              
+              <p>What remains clear is that media literacy has become <span class="highlight rhetoric" data-type="rhetoric" data-info="Appeal to importance">one of the most essential skills</span> for navigating the modern information environment. Without it, citizens <span class="highlight fallacy" data-type="fallacy" data-info="Appeal to consequences">will be unable to make informed decisions about the issues that affect their lives</span>.</p>
+            `,
+            source: "Authentic Reader Analysis",
+            author: "Research Team",
+            publishedDate: new Date().toDateString(),
+            imageUrl: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
           };
-        }),
-        timestamp: Date.now()
-      });
-      
-    } catch (error) {
-      logger.error(`Error analyzing passage:`, error);
-    }
-  };
-
-  // Calculate a manipulation score based on bias strength and rhetoric effectiveness
-  const calculateManipulationScore = (
-    bias: any, 
-    rhetoric: { primary: string; effectiveness: number }
-  ): number => {
-    // Bias strength (stronger bias in any direction increases manipulation score)
-    const biasStrength = [
-      Math.abs(bias.political?.value || 0),
-      Math.abs(bias.economic?.value || 0),
-      Math.abs(bias.social?.value || 0),
-      Math.abs(bias.identity?.value || 0)
-    ].reduce((a, b) => Math.max(a, b), 0);
-    
-    // Rhetoric effectiveness
-    const rhetoricEffectiveness = rhetoric.effectiveness;
-    
-    // Combine for overall score (0-1)
-    return Math.min(0.95, (biasStrength * 0.5) + (rhetoricEffectiveness * 0.5));
-  };
-
-  // Generate a Virgil explanation for the selected passage
-  const generateVirgil = async (passageId: string) => {
-    const analysis = analysisResults[passageId];
-    const passage = passages.find(p => p.id === passageId || (p.id === undefined && passageId === `passage-${passages.indexOf(p)}`));
-    
-    if (!analysis || !passage) return;
-    
-    setShowVirgil(true);
-    setVirgilExplanation('Generating analysis explanation...');
-    
-    try {
-      const explanation = await generateAnalysisExplanation(passage.text, {
-        bias: analysis.bias,
-        rhetoric: analysis.rhetoric
-      });
-      
-      setVirgilExplanation(explanation);
-    } catch (error) {
-      logger.error('Error generating Virgil explanation:', error);
-      setVirgilExplanation('Sorry, I couldn\'t generate an explanation right now.');
-    }
-  };
-
-  // Get CSS class based on bias strength
-  const getBiasClass = (biasValue: number): string => {
-    const absValue = Math.abs(biasValue);
-    if (absValue < 0.2) return 'bias-neutral';
-    if (absValue < 0.5) return biasValue < 0 ? 'bias-left-moderate' : 'bias-right-moderate';
-    return biasValue < 0 ? 'bias-left-strong' : 'bias-right-strong';
-  };
-
-  // Get CSS class based on rhetoric type
-  const getRhetoricClass = (type: string): string => {
-    switch (type) {
-      case 'ethos': return 'rhetoric-ethos';
-      case 'pathos': return 'rhetoric-pathos';
-      case 'logos': return 'rhetoric-logos';
-      case 'kairos': return 'rhetoric-kairos';
-      default: return '';
-    }
-  };
-
-  // Get CSS class based on manipulation score
-  const getManipulationClass = (score: number): string => {
-    if (score < 0.3) return 'manipulation-low';
-    if (score < 0.7) return 'manipulation-medium';
-    return 'manipulation-high';
-  };
-
-  // Create sidebar analysis component
-  const AnalysisSidebar = () => {
-    if (!selectedAnalysis || !analysisResults[selectedAnalysis]) {
-      return (
-        <div className="analysis-sidebar empty">
-          <h3>Article Analysis</h3>
-          <p>Select a passage to view its analysis.</p>
-        </div>
-      );
-    }
-    
-    const analysis = analysisResults[selectedAnalysis];
-    
-    return (
-      <div className="analysis-sidebar">
-        <h3>Passage Analysis</h3>
-        
-        <div className="analysis-section">
-          <h4>Bias Analysis</h4>
-          <div className="bias-meter">
-            <div className="bias-label left">Left</div>
-            <div className="bias-bar">
-              <div 
-                className="bias-indicator" 
-                style={{ 
-                  left: `${(analysis.bias.political.value + 1) * 50}%`,
-                  backgroundColor: analysis.bias.political.value < -0.2 ? '#3498db' : 
-                                  analysis.bias.political.value > 0.2 ? '#e74c3c' : '#27ae60'
-                }}
-              />
-            </div>
-            <div className="bias-label right">Right</div>
-          </div>
           
-          <div className="bias-dimensions">
-            <div className="bias-dimension">
-              <span>Political:</span>
-              <span className={getBiasClass(analysis.bias.political.value)}>
-                {analysis.bias.political.value < -0.2 ? 'Left-leaning' : 
-                 analysis.bias.political.value > 0.2 ? 'Right-leaning' : 'Centrist'}
-              </span>
-            </div>
-            <div className="bias-dimension">
-              <span>Economic:</span>
-              <span className={getBiasClass(analysis.bias.economic.value)}>
-                {analysis.bias.economic.value < -0.2 ? 'Pro-regulation' : 
-                 analysis.bias.economic.value > 0.2 ? 'Free-market' : 'Balanced'}
-              </span>
-            </div>
-            <div className="bias-dimension">
-              <span>Social:</span>
-              <span className={getBiasClass(analysis.bias.social.value)}>
-                {analysis.bias.social.value < -0.2 ? 'Progressive' : 
-                 analysis.bias.social.value > 0.2 ? 'Traditional' : 'Moderate'}
-              </span>
-            </div>
-          </div>
-        </div>
+          setArticle(articleData);
+          setLoading(false);
+        }, 1500);
         
-        <div className="analysis-section">
-          <h4>Rhetoric Analysis</h4>
-          <div className={`rhetoric-type ${getRhetoricClass(analysis.rhetoric.primary)}`}>
-            Primary: {analysis.rhetoric.primary === 'ethos' ? 'Appeal to Authority' :
-                     analysis.rhetoric.primary === 'pathos' ? 'Appeal to Emotion' :
-                     analysis.rhetoric.primary === 'logos' ? 'Appeal to Logic' : 'Appeal to Timeliness'}
-          </div>
-          
-          {analysis.rhetoric.techniques && analysis.rhetoric.techniques.length > 0 && (
-            <div className="rhetoric-techniques">
-              <h5>Techniques:</h5>
-              <ul>
-                {analysis.rhetoric.techniques.map((technique: string, i: number) => (
-                  <li key={i}>{technique}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-        
-        <div className="analysis-section">
-          <h4>Manipulation Score</h4>
-          <div className={`manipulation-score ${getManipulationClass(analysis.manipulation.score)}`}>
-            {(analysis.manipulation.score * 100).toFixed(0)}%
-          </div>
-          <p className="manipulation-explanation">
-            {analysis.manipulation.score < 0.3 ? 'Low manipulation potential. This content appears to be mostly factual and balanced.' :
-             analysis.manipulation.score < 0.7 ? 'Moderate manipulation potential. The content uses some persuasive techniques.' :
-             'High manipulation potential. The content uses strong persuasive techniques and may show significant bias.'}
-          </p>
-        </div>
-        
-        <button 
-          className="virgil-button" 
-          onClick={() => generateVirgil(selectedAnalysis)}
-        >
-          Ask Virgil to Explain
-        </button>
-      </div>
+      } catch (err) {
+        setError("Failed to load article. Please try again.");
+        setLoading(false);
+      }
+    };
+    
+    fetchArticle();
+  }, [id]);
+  
+  const goBack = () => {
+    navigate(-1);
+  };
+  
+  const toggleHighlight = (type: string) => {
+    setActiveHighlights(prev => 
+      prev.includes(type) 
+        ? prev.filter(t => t !== type) 
+        : [...prev, type]
     );
   };
-
+  
+  if (loading) {
+    return (
+      <div className="interactive-article-container">
+        <div className="loading-container">
+          <div className="loader"></div>
+          <p>Loading interactive article...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (error || !article) {
+    return (
+      <div className="interactive-article-container">
+        <div className="error-container">
+          <h2>Error</h2>
+          <p>{error || "Unable to load article"}</p>
+          <button onClick={goBack} className="back-button">
+            <FiArrowLeft /> Go Back
+          </button>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <div className="interactive-article-container">
-      {/* Article metadata */}
-      <div className="article-header">
-        <h1>{content.metadata?.title || 'Untitled Article'}</h1>
-        {content.metadata?.byline && <p className="article-author">By {content.metadata.byline}</p>}
-        {content.metadata?.date && (
-          <p className="article-date">
-            Published: {new Date(content.metadata.date).toLocaleDateString()}
-          </p>
-        )}
-        <div className="article-source">Source: {content.metadata?.siteName || 'Unknown'}</div>
+      <div className="article-tools">
+        <button onClick={goBack} className="tool-button" title="Go back">
+          <FiArrowLeft />
+        </button>
+        <div className="highlight-toggles">
+          <button 
+            className={`toggle-button ${activeHighlights.includes('bias') ? 'active' : ''} bias`} 
+            onClick={() => toggleHighlight('bias')}
+            title="Toggle bias highlights"
+          >
+            Bias
+          </button>
+          <button 
+            className={`toggle-button ${activeHighlights.includes('rhetoric') ? 'active' : ''} rhetoric`} 
+            onClick={() => toggleHighlight('rhetoric')}
+            title="Toggle rhetorical techniques"
+          >
+            Rhetoric
+          </button>
+          <button 
+            className={`toggle-button ${activeHighlights.includes('fallacy') ? 'active' : ''} fallacy`} 
+            onClick={() => toggleHighlight('fallacy')}
+            title="Toggle logical fallacies"
+          >
+            Fallacies
+          </button>
+        </div>
+        <div className="article-actions">
+          <button className="tool-button" title="Save article">
+            <FiBookmark />
+          </button>
+          <button className="tool-button" title="Share article">
+            <FiShare2 />
+          </button>
+          <button className="tool-button" title="Download analysis">
+            <FiDownload />
+          </button>
+        </div>
       </div>
       
-      {/* Analysis progress indicator */}
-      {analysisInProgress && (
-        <div className="analysis-progress">
-          <div className="progress-bar">
-            <div 
-              className="progress-indicator" 
-              style={{ width: `${(currentPassage / passages.length) * 100}%` }}
-            />
+      <div className="article-content-wrapper">
+        <div className={`article-content ${activeHighlights.join(' ')}`}>
+          {article.imageUrl && (
+            <div className="article-image">
+              <img src={article.imageUrl} alt={article.title} />
+            </div>
+          )}
+          
+          <div className="article-meta">
+            {article.source && <span className="article-source">{article.source}</span>}
+            {article.publishedDate && <span className="article-date">{article.publishedDate}</span>}
           </div>
-          <div className="progress-text">
-            Analyzing article... {currentPassage + 1} of {passages.length} passages
-          </div>
-        </div>
-      )}
-      
-      {/* Main content and analysis area */}
-      <div className="content-analysis-container">
-        {/* Article content with interactive passages */}
-        <div className="article-content" ref={contentRef}>
-          {passages.map((passage, index) => {
-            const passageId = passage.id || `passage-${index}`;
-            const analysis = analysisResults[passageId];
-            const isSelected = selectedAnalysis === passageId;
-            
-            return (
-              <div
-                id={`passage-${passageId}`}
-                key={passageId}
-                className={`article-passage ${isSelected ? 'selected' : ''} ${analysis ? 'analyzed' : ''}`}
-                onClick={() => {
-                  if (analysis) {
-                    setSelectedAnalysis(passageId);
-                    setShowVirgil(false);
-                  }
-                }}
-              >
-                <p>{passage.text}</p>
-                
-                {analysis && (
-                  <div className="passage-indicators">
-                    <span 
-                      className={`bias-indicator ${getBiasClass(analysis.bias.political.value)}`}
-                      title={`Political bias: ${analysis.bias.political.value < -0.2 ? 'Left-leaning' : 
-                             analysis.bias.political.value > 0.2 ? 'Right-leaning' : 'Centrist'}`}
-                    />
-                    <span 
-                      className={`rhetoric-indicator ${getRhetoricClass(analysis.rhetoric.primary)}`}
-                      title={`Primary rhetoric: ${analysis.rhetoric.primary}`}
-                    />
-                    <span 
-                      className={`manipulation-indicator ${getManipulationClass(analysis.manipulation.score)}`}
-                      title={`Manipulation score: ${(analysis.manipulation.score * 100).toFixed(0)}%`}
-                    />
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          
+          <h1 className="article-title">{article.title}</h1>
+          
+          {article.author && <p className="article-author">By {article.author}</p>}
+          
+          <div 
+            className="article-body"
+            dangerouslySetInnerHTML={{ __html: article.content }} 
+          />
         </div>
         
-        {/* Analysis sidebar */}
-        <AnalysisSidebar />
-      </div>
-      
-      {/* Virgil explanation modal */}
-      {showVirgil && (
-        <div className="virgil-overlay" onClick={() => setShowVirgil(false)}>
-          <div className="virgil-modal" onClick={(e) => e.stopPropagation()}>
-            <h3>Virgil's Analysis</h3>
-            <div className="virgil-content">
-              {virgilExplanation || 'Loading analysis...'}
+        <div className="analysis-info-panel">
+          <div className="info-header">
+            <FiInfo /> <h3>Analysis Information</h3>
+          </div>
+          <p>
+            This interactive view highlights potentially problematic elements in the text. 
+            Hover over highlighted sections to see detailed explanations.
+          </p>
+          <div className="analysis-legend">
+            <div className="legend-item">
+              <span className="legend-color bias"></span>
+              <span className="legend-label">Bias - Potential instances of media bias</span>
             </div>
-            <button className="close-button" onClick={() => setShowVirgil(false)}>
-              Close
-            </button>
+            <div className="legend-item">
+              <span className="legend-color rhetoric"></span>
+              <span className="legend-label">Rhetoric - Persuasive techniques</span>
+            </div>
+            <div className="legend-item">
+              <span className="legend-color fallacy"></span>
+              <span className="legend-label">Fallacies - Logical reasoning errors</span>
+            </div>
+          </div>
+          <div className="analysis-stats">
+            <div className="stat-item">
+              <span className="stat-value">7</span>
+              <span className="stat-label">Highlighted Items</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-value">Medium</span>
+              <span className="stat-label">Overall Bias Level</span>
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

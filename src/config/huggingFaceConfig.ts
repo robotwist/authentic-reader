@@ -32,7 +32,19 @@ export const HF_CONFIG = {
     ENTITY: 'dslim/bert-base-NER',
     
     // Text summarization model for better metadata extraction
-    SUMMARIZATION: 'facebook/bart-large-cnn'
+    SUMMARIZATION: 'facebook/bart-large-cnn',
+    
+    // Zero-shot classification model
+    ZERO_SHOT: 'facebook/bart-large-mnli',
+    
+    // Text embeddings model
+    EMBEDDINGS: 'sentence-transformers/all-MiniLM-L6-v2',
+    
+    // Question answering model
+    QA: 'deepset/roberta-base-squad2',
+    
+    // Text generation model
+    TEXT_GENERATION: 'gpt2'
   },
   
   // Request settings
