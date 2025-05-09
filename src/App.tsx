@@ -27,6 +27,7 @@ import AnalysisPage from './pages/AnalysisPage';
 import { UserPreferences } from './types';
 import { logger } from './utils/logger';
 import NLPBenchmark from './components/NLPBenchmark';
+import Summarizer from './components/Summarizer';
 
 // Default RSS feeds to load on first run
 const DEFAULT_SOURCES = [
@@ -364,6 +365,10 @@ function App() {
               <Route 
                 path="/benchmark" 
                 element={<NLPBenchmark />} 
+              />
+              <Route 
+                path="/summarize" 
+                element={<Summarizer />} 
               />
               <Route 
                 path="*" 
