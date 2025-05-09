@@ -19,6 +19,7 @@ Authentic Reader is a powerful news aggregation platform designed to enhance you
 - [Testing](#testing)
 - [Deployment](#deployment)
 - [Architecture](#architecture)
+- [Security](#security)
 - [Contributing](#contributing)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
@@ -55,10 +56,19 @@ cd ..
 
 3. Set up environment variables:
 
-Create a `.env` file in the project root and another in the `server` directory with the following variables:
+Create a `.env` file in the project root based on the `.env.example` template:
+
+```bash
+cp .env.example .env
+```
+
+Then edit the `.env` file to add your own API keys:
 
 ```
 # Root .env
+REACT_APP_HF_API_TOKEN=your_hugging_face_token_here
+VITE_HF_API_TOKEN=your_hugging_face_token_here
+VITE_LOG_LEVEL=info
 VITE_API_URL=http://localhost:3000
 
 # server/.env
@@ -66,6 +76,29 @@ PORT=3000
 DATABASE_URL=postgresql://username:password@localhost:5432/portfolio
 JWT_SECRET=your_jwt_secret
 ```
+
+### Hugging Face API Integration
+
+Authentic Reader uses the Hugging Face Inference API for content analysis features:
+
+1. **Get an API Token**: Visit [Hugging Face](https://huggingface.co/settings/tokens) to create an account and generate an API token.
+
+2. **Create a Fine-Grained Token**: For improved security, we recommend using a fine-grained token with minimal permissions:
+   - Select "Read" access only
+   - Enable only the "Inference" permission
+   - Optionally restrict to only the specific models we use (listed below)
+
+3. **Add to Environment Variables**: Add your token to the `.env` file as shown above. Never commit this file to version control.
+
+4. **Test the Integration**: Use the "Env Test" page in the application to verify your token is loaded correctly, then try the "Analysis Tool" to test the API connection.
+
+5. **Models Used**:
+   - Emotion Analysis: `j-hartmann/emotion-english-distilroberta-base`
+   - Sentiment Analysis: `distilbert-base-uncased-finetuned-sst-2-english`
+   - Entity Detection: `dslim/bert-base-NER`
+   - Summarization: `facebook/bart-large-cnn`
+
+**Security Note**: Keep your API tokens secure. See our [Security Guidelines](#security) for best practices.
 
 ## Quick Start
 
@@ -210,6 +243,27 @@ The compiled JavaScript will be in the `dist` directory. Deploy to a Node.js hos
 ## Architecture
 
 For detailed information about the application architecture, see [ARCHITECTURE.md](ARCHITECTURE.md).
+
+## Security
+
+Authentic Reader takes security seriously, especially regarding API token management and secure coding practices.
+
+### API Token Security
+
+- **Use Fine-Grained Tokens**: Always use fine-grained tokens with minimal permissions
+- **Never Commit Tokens**: Store tokens only in `.env` files excluded from git
+- **Regularly Rotate Tokens**: Create new tokens periodically (recommended every 90 days)
+
+### Security Tools
+
+The project includes several security-focused tools:
+
+```bash
+# Check for exposed tokens in the codebase
+node scripts/check-tokens.js
+```
+
+For comprehensive security guidelines, see [SECURITY.md](SECURITY.md).
 
 ## Contributing
 
