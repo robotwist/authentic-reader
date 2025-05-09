@@ -71,6 +71,11 @@ const Header = ({}: HeaderProps) => {
               </Link>
             </li>
             <li>
+              <Link to="/benchmark" className={isActive('/benchmark') ? 'active' : ''}>
+                Benchmark
+              </Link>
+            </li>
+            <li>
               <Link to="/env-test" className={isActive('/env-test') ? 'active' : ''}>Env Test</Link>
             </li>
             
