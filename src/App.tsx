@@ -28,6 +28,16 @@ import { UserPreferences } from './types';
 import { logger } from './utils/logger';
 import NLPBenchmark from './components/NLPBenchmark';
 import Summarizer from './components/Summarizer';
+import BiasDetection from './components/BiasDetection';
+import RhetoricalAnalysis from './components/RhetoricalAnalysis';
+import EntityRelationship from './components/EntityRelationship';
+import DarkPatternDetection from './components/DarkPatternDetection';
+import EnhancedArticleView from './components/EnhancedArticleView';
+import InteractiveArticleView from './components/InteractiveArticleView';
+import ArticleImporter from './components/ArticleImporter';
+import Login from './components/Login';
+import Register from './components/Register';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 // Default RSS feeds to load on first run
 const DEFAULT_SOURCES = [
@@ -272,128 +282,152 @@ function App() {
     }));
   };
 
+  if (!isInitialized) {
+    return (
+      <div className="app-loader">
+        <div className="loader-spinner"></div>
+        <h2>Authentic Reader</h2>
+        <p>Loading your personalized reading experience...</p>
+      </div>
+    );
+  }
+
   return (
-    <AuthProvider>
-      <Router>
-        <div className="app dark-mode">
-          <Header />
-          <main className="main-content">
-            <Routes>
-              <Route 
-                path="/" 
-                element={
-                  <FeedContainer 
-                    isInitialized={isInitialized}
-                    qualityFilters={userPreferences}
-                    onQualityFilterChange={handlePreferenceChange}
-                  />
-                } 
-              />
-              <Route 
-                path="/profile" 
-                element={
-                  <ProtectedRoute>
-                    <UserProfile />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/sources" 
-                element={
-                  <div className="container">
-                    <h2>My Sources</h2>
-                    <p>Source management coming soon...</p>
-                  </div>
-                } 
-              />
-              <Route 
-                path="/saved" 
-                element={
-                  <ProtectedRoute>
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <div className="app dark-mode">
+            <Header />
+            <main className="main-content">
+              <Routes>
+                <Route 
+                  path="/" 
+                  element={
+                    <FeedContainer 
+                      isInitialized={isInitialized}
+                      qualityFilters={userPreferences}
+                      onQualityFilterChange={handlePreferenceChange}
+                    />
+                  } 
+                />
+                <Route 
+                  path="/profile" 
+                  element={
+                    <ProtectedRoute>
+                      <UserProfile />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/sources" 
+                  element={
                     <div className="container">
-                      <h2>Saved Articles</h2>
-                      <p>Saved articles feature coming soon...</p>
+                      <h2>My Sources</h2>
+                      <p>Source management coming soon...</p>
                     </div>
+                  } 
+                />
+                <Route 
+                  path="/saved" 
+                  element={
+                    <ProtectedRoute>
+                      <div className="container">
+                        <h2>Saved Articles</h2>
+                        <p>Saved articles feature coming soon...</p>
+                      </div>
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/admin" 
+                  element={
+                    <AdminRoute>
+                      <AdminDashboard />
+                    </AdminRoute>
+                  } 
+                />
+                <Route 
+                  path="/analysis-test" 
+                  element={<AnalysisTest />} 
+                />
+                <Route 
+                  path="/env-test" 
+                  element={<EnvTest />} 
+                />
+                <Route 
+                  path="/home" 
+                  element={<HomePage />} 
+                />
+                <Route 
+                  path="/about" 
+                  element={<AboutPage />} 
+                />
+                <Route 
+                  path="/library" 
+                  element={
+                    <ProtectedRoute>
+                      <LibraryPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/article/:id" 
+                  element={<ArticlePage />} 
+                />
+                <Route 
+                  path="/settings" 
+                  element={
+                    <SettingsPage 
+                      preferences={userPreferences} 
+                      onPreferenceChange={handlePreferenceChange}
+                    />
+                  } 
+                />
+                {/* Analysis Routes */}
+                <Route path="/analysis" element={<AnalysisPage />} />
+                <Route path="/analysis/bias" element={<BiasDetection />} />
+                <Route path="/analysis/rhetorical" element={<RhetoricalAnalysis />} />
+                <Route path="/analysis/entity" element={<EntityRelationship />} />
+                <Route path="/analysis/darkpattern" element={<DarkPatternDetection />} />
+                
+                {/* Legacy Analysis Routes */}
+                <Route path="/benchmark" element={<NLPBenchmark />} />
+                <Route path="/summarize" element={<Summarizer />} />
+                
+                <Route path="/interactive/:id" element={<InteractiveArticleView />} />
+                <Route path="/import" element={
+                  <ProtectedRoute>
+                    <ArticleImporter />
                   </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/admin" 
-                element={
-                  <AdminRoute>
-                    <AdminDashboard />
-                  </AdminRoute>
-                } 
-              />
-              <Route 
-                path="/analysis-test" 
-                element={<AnalysisTest />} 
-              />
-              <Route 
-                path="/env-test" 
-                element={<EnvTest />} 
-              />
-              <Route 
-                path="/home" 
-                element={<HomePage />} 
-              />
-              <Route 
-                path="/about" 
-                element={<AboutPage />} 
-              />
-              <Route 
-                path="/library" 
-                element={<LibraryPage />} 
-              />
-              <Route 
-                path="/article/:id" 
-                element={<ArticlePage />} 
-              />
-              <Route 
-                path="/settings" 
-                element={
-                  <SettingsPage 
-                    preferences={userPreferences} 
-                    onPreferenceChange={handlePreferenceChange}
-                  />
-                } 
-              />
-              <Route 
-                path="/analysis" 
-                element={<AnalysisPage />} 
-              />
-              <Route 
-                path="/benchmark" 
-                element={<NLPBenchmark />} 
-              />
-              <Route 
-                path="/summarize" 
-                element={<Summarizer />} 
-              />
-              <Route 
-                path="*" 
-                element={
-                  <div className="container">
-                    <h2>Page Not Found</h2>
-                    <p>The page you're looking for doesn't exist.</p>
-                  </div>
-                } 
-              />
-            </Routes>
-          </main>
-          <footer className="app-footer">
-            <div className="footer-content">
-              <p>Authentic Reader &copy; {new Date().getFullYear()} - Content that respects your intelligence</p>
-              <p>
-                <a href="#privacy">Privacy Policy</a> | 
-                <a href="#terms">Terms of Service</a> | 
-                <a href="#about">About Us</a>
-              </p>
-            </div>
-          </footer>
-        </div>
-      </Router>
-    </AuthProvider>
+                } />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                
+                <Route 
+                  path="*" 
+                  element={
+                    <div className="container">
+                      <h2>Page Not Found</h2>
+                      <p>The page you're looking for doesn't exist.</p>
+                    </div>
+                  } 
+                />
+              </Routes>
+            </main>
+            <footer className="app-footer">
+              <div className="footer-content">
+                <p>Authentic Reader &copy; {new Date().getFullYear()} - Content that respects your intelligence</p>
+                <p>
+                  <a href="#privacy">Privacy Policy</a> | 
+                  <a href="#terms">Terms of Service</a> | 
+                  <a href="#about">About Us</a>
+                </p>
+              </div>
+            </footer>
+          </div>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   )
 }
 
