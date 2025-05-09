@@ -109,6 +109,8 @@ app = FastAPI(
 origins = [
     "http://localhost:5173", # Your React frontend origin
     "http://127.0.0.1:5173", # Often good to include this too
+    "http://localhost:5174", # Additional frontend origin
+    "http://127.0.0.1:5174", # Additional frontend origin
     "http://localhost:5175", # Additional frontend origin
     "http://127.0.0.1:5175", # Additional frontend origin
     # Add deployed frontend URL(s) here in production, e.g., os.environ.get('FRONTEND_URL')
