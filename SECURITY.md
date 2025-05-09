@@ -24,6 +24,7 @@ Authentic Reader uses Hugging Face's inference API for various NLP tasks. Proper
    - Rotate tokens every 90 days (recommended)
    - Immediately rotate tokens if you suspect they've been compromised
    - Keep a log of when tokens were last rotated
+   - Use our token rotation helper: `npm run security:rotate`
 
 #### Accessing Tokens in Code
 
@@ -36,6 +37,30 @@ Authentic Reader uses Hugging Face's inference API for various NLP tasks. Proper
    - Access tokens through environment variables
    - Never use default hardcoded tokens as fallbacks
    - Document required environment variables in README
+
+## Security Tools
+
+Authentic Reader includes several tools to help maintain security:
+
+1. **Token Scanning**:
+   ```bash
+   npm run security:check
+   ```
+   This command scans the codebase for accidentally exposed API tokens and reports any findings.
+
+2. **Token Rotation Helper**:
+   ```bash
+   npm run security:rotate
+   ```
+   This interactive tool:
+   - Tracks when your token was last rotated
+   - Reminds you to rotate tokens older than 90 days
+   - Guides you through the token rotation process
+   - Documents token rotation history (in `.token-meta.json`)
+
+3. **Pre-commit Hook**:
+   The project includes a pre-commit hook that automatically runs the token scanner
+   before each commit to prevent accidental token exposure.
 
 ## Git Security Practices
 

@@ -23,5 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment and security files
 .env
+.env.local
+.env.production
+.env.development
+.token-meta.json
 public/env.js
