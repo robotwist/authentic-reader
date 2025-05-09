@@ -138,6 +138,15 @@ const localFallback = (task: string, input: string) => {
       
       return { type: BiasType.CENTER, confidence: 0.5 };
     
+    case 'summarization':
+      // Very basic summarization - first few sentences
+      const sentences = input.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      if (sentences.length === 0) return input;
+      
+      // Extract first 2-3 sentences for a simple summary
+      const numSentences = Math.min(3, sentences.length);
+      return sentences.slice(0, numSentences).join(". ") + ".";
+      
     default:
       return { label: 'UNKNOWN', score: 0.5 };
   }
@@ -479,26 +488,44 @@ export async function answerQuestion(context: string, question: string): Promise
  */
 export async function summarizeText(text: string, maxLength = 150): Promise<string> {
   try {
-    // We need to trim the input to avoid token limits
-    const trimmedText = text.length > 1024 ? text.substring(0, 1024) + '...' : text;
+    // Check if we should just use local processing
+    if (HF_CONFIG.useLocalFallbacks() || text.length < 100) {
+      return localFallback('summarization', text);
+    }
     
-    const response = await withRetry(() => 
-      hfClient.post(`${HF_CONFIG.INFERENCE_API_URL}/${MODELS.SUMMARIZATION}`, {
-        inputs: trimmedText,
-        parameters: {
-          max_length: maxLength,
-          min_length: Math.min(30, maxLength - 1)
+    // Try API call with simple model first
+    try {
+      const response = await axios.post(
+        `${HF_CONFIG.INFERENCE_API_URL}/facebook/bart-base-cnn`,
+        { 
+          inputs: text,
+          parameters: {
+            max_length: maxLength,
+            min_length: 30,
+            do_sample: false
+          }
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${HF_CONFIG.API_TOKEN}`,
+            'Content-Type': 'application/json',
+          },
+          timeout: HF_CONFIG.REQUEST.TIMEOUT_MS
         }
-      })
-    );
+      );
+      
+      if (response.data && Array.isArray(response.data) && response.data.length > 0) {
+        return response.data[0].summary_text;
+      }
+    } catch (apiError) {
+      logger.error('Error summarizing text with HF API:', apiError);
+    }
     
-    return response.data[0].summary_text;
+    // If all else fails, use a local fallback
+    return localFallback('summarization', text);
   } catch (error) {
-    logger.error('Error summarizing text with HF API:', error);
-    
-    // Simple fallback - return first few sentences
-    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
-    return sentences.slice(0, 2).join('. ') + '.';
+    logger.error('Error in text summarization:', error);
+    return text.substring(0, 200) + '...'; // Simple truncation as last resort
   }
 }
 
@@ -750,6 +777,12 @@ export async function enhancedEntityExtraction(text: string): Promise<{
  * @returns A concise summary of the text
  */
 export async function generateAdvancedSummary(text: string, maxLength: number = 150): Promise<string> {
+  // If configured to use local fallbacks or text is very short, skip API call
+  if (HF_CONFIG.useLocalFallbacks() || text.length < 100) {
+    logger.info('Using local fallback for summarization (policy or short text)');
+    return localFallback('summarization', text);
+  }
+  
   try {
     // Ensure text is not too long for the model
     const truncatedText = text.length > 1024 ? text.substring(0, 1024) : text;
@@ -773,23 +806,32 @@ export async function generateAdvancedSummary(text: string, maxLength: number = 
       }
     );
 
-    if (!response.ok) {
-      throw new Error(`Summary generation failed with status ${response.status}`);
+    if (!response || !response.ok) {
+      const status = response ? response.status : 'unknown';
+      logger.error(`Summary generation failed with status ${status}`);
+      
+      // Try fallback to basic summarization
+      return summarizeText(text);
     }
 
-    const data = await response.json();
-    
-    // Extract summary from the response
-    if (data && Array.isArray(data) && data.length > 0 && data[0].summary_text) {
-      return data[0].summary_text;
-    } else if (typeof data === 'object' && data.summary_text) {
-      return data.summary_text;
-    } else {
-      console.warn('Unexpected summary response format:', data);
-      return summarizeText(text); // Fall back to the basic summarizer
+    try {
+      const data = await response.json();
+      
+      // Extract summary from the response
+      if (data && Array.isArray(data) && data.length > 0 && data[0].summary_text) {
+        return data[0].summary_text;
+      } else if (typeof data === 'object' && data.summary_text) {
+        return data.summary_text;
+      } else {
+        logger.warn('Unexpected summary response format:', data);
+        return summarizeText(text); // Fall back to the basic summarizer
+      }
+    } catch (jsonError) {
+      logger.error('Error parsing summary JSON response:', jsonError);
+      return summarizeText(text);
     }
   } catch (error) {
-    console.error('Advanced summary generation error:', error);
+    logger.error('Advanced summary generation error:', error);
     // Fall back to the basic summarizer
     return summarizeText(text);
   }

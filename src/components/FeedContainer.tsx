@@ -337,18 +337,20 @@ const FeedContainer = ({
       
       <div className="feed-content">
         <aside className="filter-sidebar">
-          <FilterPanel 
-            activeFilters={[
-              ...(activeFilters.sources || []),
-              ...(activeFilters.categories || [])
-            ]}
+          <FilterPanel
+            sources={sourceNames}
+            categories={allCategories}
             onFilterChange={applyFilters}
-            contentTypes={sourceNames}
-            categories={allCategories.slice(0, 10)}
-            onQualityFilterChange={handleFilterPreferencesChange}
             qualityFilters={{
               muteOutrage: qualityFilters.muteOutrage,
               blockDoomscroll: qualityFilters.blockDoomscroll
+            }}
+            onQualityFilterChange={handleFilterPreferencesChange}
+            availableSources={sourceNames}
+            availableCategories={allCategories}
+            initialFilters={{
+              sources: activeFilters.sources || [],
+              categories: activeFilters.categories || []
             }}
           />
           
