@@ -223,7 +223,7 @@ export async function classifyText(
 export async function extractEntities(text: string): Promise<Array<{ entity: string; type: string; score: number }>> {
   try {
     const response = await withRetry(() => 
-      hfClient.post(`${HF_CONFIG.INFERENCE_API_URL}/${MODELS.NER}`, { inputs: text })
+      hfClient.post(`${HF_CONFIG.INFERENCE_API_URL}/${MODELS.ENTITY}`, { inputs: text })
     );
     
     // Format the entity results
@@ -590,7 +590,7 @@ export async function analyzePoliticalBias(text: string): Promise<{
       : text;
 
     const response = await fetchWithRetry(
-      `${HF_CONFIG.INFERENCE_API_URL}/${HF_CONFIG.MODELS.POLITICAL_BIAS}`,
+      `${HF_CONFIG.INFERENCE_API_URL}/${MODELS.POLITICAL_BIAS}`,
       {
         method: 'POST',
         headers: {
@@ -755,7 +755,7 @@ export async function generateAdvancedSummary(text: string, maxLength: number = 
     const truncatedText = text.length > 1024 ? text.substring(0, 1024) : text;
     
     const response = await fetchWithRetry(
-      `${HF_CONFIG.INFERENCE_API_URL}/${HF_CONFIG.MODELS.SUMMARIZATION}`,
+      `${HF_CONFIG.INFERENCE_API_URL}/${MODELS.SUMMARIZATION}`,
       {
         method: 'POST',
         headers: {

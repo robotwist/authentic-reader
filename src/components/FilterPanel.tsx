@@ -54,12 +54,20 @@ const FilterPanel = ({
     }
   };
   
-  const handleTypeClick = (type: string) => {
-    if (activeFilters.includes(type)) {
-      onFilterChange(activeFilters.filter(t => t !== type));
+  const handleSourceClick = (source: string) => {
+    // Create a new array of filters
+    let newFilters: string[];
+    
+    if (activeFilters.includes(source)) {
+      // Remove the source from filters
+      newFilters = activeFilters.filter(filter => filter !== source);
     } else {
-      onFilterChange([...activeFilters, type]);
+      // Add the source to filters
+      newFilters = [...activeFilters, source];
     }
+    
+    // Call the parent component's handler with the updated filters
+    onFilterChange(newFilters);
   };
 
   const clearAllFilters = () => {
@@ -133,13 +141,14 @@ const FilterPanel = ({
         <div className="filter-section">
           <h3>Sources</h3>
           <div className="filter-chips">
-            {contentTypes.map(type => (
+            {contentTypes.map(source => (
               <button 
-                key={type}
-                className={`filter-chip ${activeFilters.includes(type) ? 'active' : ''}`}
-                onClick={() => handleTypeClick(type)}
+                key={source}
+                className={`filter-chip ${activeFilters.includes(source) ? 'active' : ''}`}
+                onClick={() => handleSourceClick(source)}
+                aria-pressed={activeFilters.includes(source)}
               >
-                {type}
+                {source}
               </button>
             ))}
           </div>
@@ -154,6 +163,7 @@ const FilterPanel = ({
               key={tag}
               className={`filter-chip ${activeFilters.includes(tag) ? 'active' : ''}`}
               onClick={() => handleTagClick(tag)}
+              aria-pressed={activeFilters.includes(tag)}
             >
               {tag}
             </button>

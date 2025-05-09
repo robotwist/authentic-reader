@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getExtractedContent, getPassageAnalyses } from '../services/storageService';
 import InteractiveArticleView from '../components/InteractiveArticleView';
 import ArticleAnalysis from '../components/ArticleAnalysis';
+import EnhancedArticleView from '../components/EnhancedArticleView';
 import { logger } from '../utils/logger';
 import '../styles/ArticlePage.css';
 
@@ -13,7 +14,7 @@ const ArticlePage: React.FC = () => {
   const [passages, setPassages] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeView, setActiveView] = useState<'interactive' | 'summary'>('interactive');
+  const [activeView, setActiveView] = useState<'interactive' | 'summary' | 'enhanced'>('enhanced');
 
   useEffect(() => {
     const loadArticle = async () => {
@@ -70,9 +71,10 @@ const ArticlePage: React.FC = () => {
     navigate(-1);
   };
 
-  // Toggle between interactive and summary views
-  const toggleView = () => {
-    setActiveView(prev => prev === 'interactive' ? 'summary' : 'interactive');
+  // Track when analysis completes
+  const handleAnalysisComplete = (analysisResults: any) => {
+    logger.info('Analysis complete', { articleId: id });
+    // Could do something with the results here if needed
   };
 
   if (isLoading) {
@@ -109,6 +111,12 @@ const ArticlePage: React.FC = () => {
         
         <div className="view-toggle">
           <button 
+            className={`toggle-button ${activeView === 'enhanced' ? 'active' : ''}`}
+            onClick={() => setActiveView('enhanced')}
+          >
+            Critical Reader
+          </button>
+          <button 
             className={`toggle-button ${activeView === 'interactive' ? 'active' : ''}`}
             onClick={() => setActiveView('interactive')}
           >
@@ -124,7 +132,12 @@ const ArticlePage: React.FC = () => {
       </div>
       
       <div className="article-container">
-        {activeView === 'interactive' ? (
+        {activeView === 'enhanced' ? (
+          <EnhancedArticleView
+            article={content}
+            onAnalysisComplete={handleAnalysisComplete}
+          />
+        ) : activeView === 'interactive' ? (
           <InteractiveArticleView
             content={content}
             passages={passages}

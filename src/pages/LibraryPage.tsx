@@ -1,143 +1,214 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { getAllArticleAnalyses, getExtractedContent } from '../services/storageService';
-import { logger } from '../utils/logger';
+import { useArticles } from '../hooks/useArticles';
+import ArticleCard from '../components/ArticleCard';
+import { RSSArticle } from '../types';
+import { FiBookmark, FiClock, FiRss, FiPlusCircle } from 'react-icons/fi';
 import '../styles/LibraryPage.css';
 
-interface SavedAnalysis {
-  id: string;
-  title: string;
-  source: string;
-  date: string;
-  excerpt: string;
-  analysisType: 'bias' | 'rhetoric' | 'dark-patterns' | 'full';
-}
-
 const LibraryPage: React.FC = () => {
-  const [savedAnalyses, setSavedAnalyses] = useState<SavedAnalysis[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [filter, setFilter] = useState<'all' | 'bias' | 'rhetoric' | 'dark-patterns'>('all');
-
+  const [activeTab, setActiveTab] = useState<'saved' | 'history' | 'sources'>('saved');
+  const [savedArticles, setSavedArticles] = useState<RSSArticle[]>([]);
+  const [readArticles, setReadArticles] = useState<RSSArticle[]>([]);
+  
+  const { 
+    articles, 
+    sources, 
+    loading, 
+    markAsRead, 
+    markAsSaved,
+    analyzeArticle
+  } = useArticles();
+  
   useEffect(() => {
-    const loadSavedContent = async () => {
-      try {
-        setIsLoading(true);
-        // Get all analyses from storage
-        const analyses = await getAllArticleAnalyses();
-        
-        if (!analyses || analyses.length === 0) {
-          setIsLoading(false);
-          return;
-        }
-        
-        // Create a list of saved analyses with metadata
-        const savedItems: SavedAnalysis[] = [];
-        
-        for (const analysis of analyses) {
-          try {
-            // Get the content metadata for this analysis
-            const content = await getExtractedContent(analysis.articleId);
-            
-            if (content) {
-              savedItems.push({
-                id: analysis.articleId,
-                title: content.metadata?.title || 'Untitled Article',
-                source: content.metadata?.siteName || 'Unknown Source',
-                date: new Date(content.timestamp).toLocaleDateString(),
-                excerpt: content.metadata?.excerpt || '',
-                analysisType: 'full' // Default to full analysis
-              });
-            }
-          } catch (error) {
-            logger.error(`Error loading content for analysis ${analysis.articleId}:`, error);
-          }
-        }
-        
-        setSavedAnalyses(savedItems);
-      } catch (error) {
-        logger.error('Error loading saved analyses:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    // Filter saved articles
+    const saved = articles.filter(article => article.saved);
+    setSavedArticles(saved);
     
-    loadSavedContent();
-  }, []);
-
-  // Filter the saved analyses
-  const filteredAnalyses = filter === 'all' 
-    ? savedAnalyses 
-    : savedAnalyses.filter(analysis => analysis.analysisType === filter);
+    // Filter read articles
+    const read = articles.filter(article => article.read);
+    setReadArticles(read);
+  }, [articles]);
+  
+  const handleAnalyzeArticle = async (article: RSSArticle) => {
+    try {
+      await analyzeArticle(article);
+      // Navigate to article page with ID
+      const articleId = article.id || article.guid;
+      if (articleId) {
+        window.location.href = `/article/${articleId}`;
+      }
+    } catch (error) {
+      console.error('Error analyzing article:', error);
+    }
+  };
 
   return (
     <div className="library-page">
-      <div className="library-header">
-        <h1>Your Analysis Library</h1>
-        <p className="subtitle">A collection of your saved articles and analyses</p>
-      </div>
+      <header className="library-header">
+        <h1>My Library</h1>
+        <p>Manage your saved content, reading history, and sources</p>
+      </header>
       
-      <div className="library-filters">
+      <div className="library-tabs">
         <button 
-          className={`filter-button ${filter === 'all' ? 'active' : ''}`}
-          onClick={() => setFilter('all')}
+          className={`library-tab ${activeTab === 'saved' ? 'active' : ''}`}
+          onClick={() => setActiveTab('saved')}
         >
-          All Analyses
+          <FiBookmark /> Saved Articles
         </button>
         <button 
-          className={`filter-button ${filter === 'bias' ? 'active' : ''}`}
-          onClick={() => setFilter('bias')}
+          className={`library-tab ${activeTab === 'history' ? 'active' : ''}`}
+          onClick={() => setActiveTab('history')}
         >
-          Bias Analysis
+          <FiClock /> Reading History
         </button>
         <button 
-          className={`filter-button ${filter === 'rhetoric' ? 'active' : ''}`}
-          onClick={() => setFilter('rhetoric')}
+          className={`library-tab ${activeTab === 'sources' ? 'active' : ''}`}
+          onClick={() => setActiveTab('sources')}
         >
-          Rhetoric Analysis
-        </button>
-        <button 
-          className={`filter-button ${filter === 'dark-patterns' ? 'active' : ''}`}
-          onClick={() => setFilter('dark-patterns')}
-        >
-          Dark Patterns
+          <FiRss /> My Sources
         </button>
       </div>
       
       <div className="library-content">
-        {isLoading ? (
-          <div className="loading-indicator">
-            <div className="spinner"></div>
-            <p>Loading your saved analyses...</p>
-          </div>
-        ) : filteredAnalyses.length > 0 ? (
-          <div className="analysis-grid">
-            {filteredAnalyses.map(analysis => (
-              <div key={analysis.id} className="analysis-card">
-                <h3 className="analysis-title">{analysis.title}</h3>
-                <div className="analysis-meta">
-                  <span className="source">{analysis.source}</span>
-                  <span className="date">Analyzed: {analysis.date}</span>
-                </div>
-                {analysis.excerpt && (
-                  <p className="analysis-excerpt">{analysis.excerpt}</p>
-                )}
-                <div className="analysis-actions">
-                  <Link to={`/analysis/${analysis.id}`} className="view-button">
-                    View Analysis
-                  </Link>
-                </div>
+        {activeTab === 'saved' && (
+          <div className="saved-articles-section">
+            {loading ? (
+              <div className="loading-state">
+                <div className="spinner"></div>
+                <p>Loading your saved articles...</p>
               </div>
-            ))}
+            ) : savedArticles.length > 0 ? (
+              <div className="articles-grid">
+                {savedArticles.map(article => (
+                  <ArticleCard
+                    key={article.id || article.guid}
+                    article={article}
+                    onRead={markAsRead}
+                    onSave={markAsSaved}
+                    onAnalyze={handleAnalyzeArticle}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="empty-state">
+                <div className="empty-icon">
+                  <FiBookmark size={48} />
+                </div>
+                <h3>No saved articles yet</h3>
+                <p>Articles you save will appear here for easy access.</p>
+                <button className="primary-button" onClick={() => window.location.href = '/'}>
+                  Browse Articles
+                </button>
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="empty-library">
-            <h2>No saved analyses yet</h2>
-            <p>
-              When you analyze articles, they'll be saved here for future reference.
-            </p>
-            <Link to="/analysis" className="analyze-button">
-              Analyze an Article
-            </Link>
+        )}
+        
+        {activeTab === 'history' && (
+          <div className="reading-history-section">
+            {loading ? (
+              <div className="loading-state">
+                <div className="spinner"></div>
+                <p>Loading your reading history...</p>
+              </div>
+            ) : readArticles.length > 0 ? (
+              <div className="articles-grid">
+                {readArticles.map(article => (
+                  <ArticleCard
+                    key={article.id || article.guid}
+                    article={article}
+                    onRead={markAsRead}
+                    onSave={markAsSaved}
+                    onAnalyze={handleAnalyzeArticle}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="empty-state">
+                <div className="empty-icon">
+                  <FiClock size={48} />
+                </div>
+                <h3>No reading history</h3>
+                <p>Articles you've read will appear here.</p>
+                <button className="primary-button" onClick={() => window.location.href = '/'}>
+                  Browse Articles
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+        
+        {activeTab === 'sources' && (
+          <div className="sources-section">
+            <div className="sources-header">
+              <h2>My News Sources</h2>
+              <button className="add-source-button">
+                <FiPlusCircle /> Add Source
+              </button>
+            </div>
+            
+            {loading ? (
+              <div className="loading-state">
+                <div className="spinner"></div>
+                <p>Loading your sources...</p>
+              </div>
+            ) : sources.length > 0 ? (
+              <div className="sources-grid">
+                {sources.map(source => (
+                  <div key={source.id} className="source-card">
+                    <div className="source-icon">
+                      {source.favicon ? (
+                        <img src={source.favicon} alt={source.name} />
+                      ) : (
+                        <FiRss />
+                      )}
+                    </div>
+                    <div className="source-details">
+                      <h3>{source.name}</h3>
+                      <p className="source-category">{source.category || 'News'}</p>
+                      <div className="source-meta">
+                        <span className={`source-reliability ${source.reliability}`}>
+                          {source.reliability || 'Unknown'} Reliability
+                        </span>
+                        <span className={`source-bias ${source.biasRating?.replace('-', '')}`}>
+                          {source.biasRating || 'Unrated'}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="source-actions">
+                      <button className="source-action-btn" title="Edit source">Edit</button>
+                      <button className="source-action-btn danger" title="Remove source">Remove</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="empty-state">
+                <div className="empty-icon">
+                  <FiRss size={48} />
+                </div>
+                <h3>No sources added yet</h3>
+                <p>Add sources to customize your news feed.</p>
+                <button className="primary-button">
+                  <FiPlusCircle /> Add Your First Source
+                </button>
+              </div>
+            )}
+            
+            <div className="sources-info">
+              <h3>What are sources?</h3>
+              <p>
+                Sources determine what content appears in your feed. Add trusted news sites,
+                blogs, and other content sources to customize your reading experience.
+              </p>
+              <h3>Source ratings explained</h3>
+              <p>
+                Each source has reliability and bias ratings to help you understand potential
+                content quality and perspective. These ratings are based on multiple media bias
+                and fact-checking organizations.
+              </p>
+            </div>
           </div>
         )}
       </div>
