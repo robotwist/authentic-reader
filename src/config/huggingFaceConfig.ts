@@ -3,9 +3,13 @@
  */
 export const HF_CONFIG = {
   // API token from environment variables
-  API_TOKEN: import.meta.env?.VITE_HF_API_TOKEN || 
-             window.env?.REACT_APP_HF_API_TOKEN ||
-             'HUGGING_FACE_TOKEN_PLACEHOLDER', // Fallback placeholder (you must provide a token via env)
+  API_TOKEN: (() => {
+    const token = import.meta.env?.VITE_HF_API_TOKEN || window.env?.REACT_APP_HF_API_TOKEN || '';
+    if (!token) {
+      console.error('ERROR: No Hugging Face API token found in environment variables. NLP features will not work.');
+    }
+    return token;
+  })(),
   
   // Base URL for Hugging Face Inference API
   INFERENCE_API_URL: 'https://api-inference.huggingface.co/models',
@@ -44,5 +48,10 @@ export const HF_CONFIG = {
     
     // Maximum length of text to send in a single request
     MAX_INPUT_LENGTH: 512
+  },
+
+  // Helper function to check if API token is available
+  isConfigured: function() {
+    return !!this.API_TOKEN;
   }
 }; 

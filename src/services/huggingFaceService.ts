@@ -17,45 +17,31 @@ import {
 } from '../types';
 import { HF_CONFIG } from '../config/huggingFaceConfig';
 
-// Environment variables and configuration
-const HF_API_TOKEN = import.meta.env.VITE_HF_API_TOKEN || '';
-const HF_API_URL = 'https://api-inference.huggingface.co/models/';
-
 // Free tier models for different analysis tasks
-const MODELS = {
-  // Text classification models
-  SENTIMENT: 'distilbert-base-uncased-finetuned-sst-2-english',
-  EMOTION: 'SamLowe/roberta-base-go_emotions',
-  TOXICITY: 'Hate-speech-CNERG/bert-base-uncased-hatexplain',
-  
-  // Zero-shot classification
-  ZERO_SHOT: 'facebook/bart-large-mnli',
-  
-  // Text generation models (useful for explaining analysis)
-  TEXT_GENERATION: 'gpt2',
-  SUMMARIZATION: 'facebook/bart-large-cnn',
-  
-  // Named entity recognition
-  NER: 'dbmdz/bert-large-cased-finetuned-conll03-english',
-  
-  // Question answering
-  QA: 'deepset/roberta-base-squad2',
-  
-  // Feature extraction (for custom analysis)
-  EMBEDDINGS: 'sentence-transformers/all-MiniLM-L6-v2'
-};
+const MODELS = HF_CONFIG.MODELS;
 
 // API client with defaults
 const hfClient = axios.create({
   headers: {
-    'Authorization': `Bearer ${HF_API_TOKEN}`,
+    'Authorization': `Bearer ${HF_CONFIG.API_TOKEN}`,
     'Content-Type': 'application/json'
   },
-  timeout: 30000 // 30 seconds timeout
+  timeout: HF_CONFIG.REQUEST.TIMEOUT_MS
 });
 
+// Helper to validate API token before making requests
+const validateApiToken = () => {
+  if (!HF_CONFIG.isConfigured()) {
+    const error = new Error('Hugging Face API token is not configured');
+    logger.error(error.message);
+    throw error;
+  }
+};
+
 // Helper to handle API rate limits
-const withRetry = async (fn: () => Promise<any>, maxRetries = 3, delay = 1000) => {
+const withRetry = async (fn: () => Promise<any>, maxRetries = HF_CONFIG.REQUEST.MAX_RETRIES, delay = HF_CONFIG.REQUEST.RETRY_DELAY_MS) => {
+  validateApiToken();
+  
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       return await fn();
@@ -65,6 +51,10 @@ const withRetry = async (fn: () => Promise<any>, maxRetries = 3, delay = 1000) =
         const waitTime = delay * Math.pow(2, attempt);
         logger.warn(`Rate limit hit, waiting ${waitTime}ms before retry ${attempt}`);
         await new Promise(resolve => setTimeout(resolve, waitTime));
+      } else if (error.response?.status === 401) {
+        // Authentication error
+        logger.error('Hugging Face API authentication failed: Invalid token');
+        throw new Error('Authentication failed: Please check your Hugging Face API token');
       } else {
         throw error;
       }
@@ -75,10 +65,18 @@ const withRetry = async (fn: () => Promise<any>, maxRetries = 3, delay = 1000) =
 /**
  * Utility for fetching from Hugging Face API with retry logic
  */
-const fetchWithRetry = async (url: string, options: RequestInit, maxRetries = 3, delay = 1000) => {
+const fetchWithRetry = async (url: string, options: RequestInit, maxRetries = HF_CONFIG.REQUEST.MAX_RETRIES, delay = HF_CONFIG.REQUEST.RETRY_DELAY_MS) => {
+  validateApiToken();
+  
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const response = await fetch(url, options);
+      
+      if (response.status === 401) {
+        logger.error('Hugging Face API authentication failed: Invalid token');
+        throw new Error('Authentication failed: Please check your Hugging Face API token');
+      }
+      
       return response;
     } catch (error: any) {
       // Only retry on network errors or rate limits
@@ -151,7 +149,7 @@ const localFallback = (task: string, input: string) => {
 export async function analyzeSentiment(text: string): Promise<{ label: string; score: number }> {
   try {
     const response = await withRetry(() => 
-      hfClient.post(`${HF_API_URL}${MODELS.SENTIMENT}`, { inputs: text })
+      hfClient.post(`${HF_CONFIG.INFERENCE_API_URL}/${MODELS.SENTIMENT}`, { inputs: text })
     );
     
     return response.data[0];
@@ -167,7 +165,7 @@ export async function analyzeSentiment(text: string): Promise<{ label: string; s
 export async function analyzeEmotions(text: string): Promise<Array<{ label: string; score: number }>> {
   try {
     const response = await withRetry(() => 
-      hfClient.post(`${HF_API_URL}${MODELS.EMOTION}`, { inputs: text })
+      hfClient.post(`${HF_CONFIG.INFERENCE_API_URL}/${MODELS.EMOTION}`, { inputs: text })
     );
     
     return response.data[0];
@@ -196,7 +194,7 @@ export async function classifyText(
 ): Promise<Array<{ label: string; score: number }>> {
   try {
     const response = await withRetry(() => 
-      hfClient.post(`${HF_API_URL}${MODELS.ZERO_SHOT}`, {
+      hfClient.post(`${HF_CONFIG.INFERENCE_API_URL}/${MODELS.ZERO_SHOT}`, {
         inputs: text,
         parameters: { candidate_labels: categories }
       })
@@ -225,7 +223,7 @@ export async function classifyText(
 export async function extractEntities(text: string): Promise<Array<{ entity: string; type: string; score: number }>> {
   try {
     const response = await withRetry(() => 
-      hfClient.post(`${HF_API_URL}${MODELS.NER}`, { inputs: text })
+      hfClient.post(`${HF_CONFIG.INFERENCE_API_URL}/${MODELS.NER}`, { inputs: text })
     );
     
     // Format the entity results
@@ -262,7 +260,7 @@ export async function extractEntities(text: string): Promise<Array<{ entity: str
 export async function getTextEmbeddings(text: string): Promise<number[]> {
   try {
     const response = await withRetry(() => 
-      hfClient.post(`${HF_API_URL}${MODELS.EMBEDDINGS}`, { inputs: text })
+      hfClient.post(`${HF_CONFIG.INFERENCE_API_URL}/${MODELS.EMBEDDINGS}`, { inputs: text })
     );
     
     return response.data;
@@ -461,7 +459,7 @@ export async function analyzeRhetoric(text: string): Promise<RhetoricAnalysis> {
 export async function answerQuestion(context: string, question: string): Promise<string> {
   try {
     const response = await withRetry(() => 
-      hfClient.post(`${HF_API_URL}${MODELS.QA}`, {
+      hfClient.post(`${HF_CONFIG.INFERENCE_API_URL}/${MODELS.QA}`, {
         inputs: {
           question,
           context
@@ -485,7 +483,7 @@ export async function summarizeText(text: string, maxLength = 150): Promise<stri
     const trimmedText = text.length > 1024 ? text.substring(0, 1024) + '...' : text;
     
     const response = await withRetry(() => 
-      hfClient.post(`${HF_API_URL}${MODELS.SUMMARIZATION}`, {
+      hfClient.post(`${HF_CONFIG.INFERENCE_API_URL}/${MODELS.SUMMARIZATION}`, {
         inputs: trimmedText,
         parameters: {
           max_length: maxLength,
@@ -532,7 +530,7 @@ export async function generateAnalysisExplanation(
     
     // Use the text generation model
     const response = await withRetry(() => 
-      hfClient.post(`${HF_API_URL}${MODELS.TEXT_GENERATION}`, {
+      hfClient.post(`${HF_CONFIG.INFERENCE_API_URL}/${MODELS.TEXT_GENERATION}`, {
         inputs: prompt,
         parameters: {
           max_length: 150,
