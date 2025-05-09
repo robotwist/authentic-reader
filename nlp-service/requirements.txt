@@ -8,3 +8,11 @@ tokenizers
 # For better text processing
 spacy>=3.0.0
 # Or use transformers[tf] if you prefer TensorFlow 
+# ONNX Runtime packages
+onnx
+onnxruntime
+optimum[onnxruntime]
+# For model conversion and optimization
+transformers[onnx]
+# For benchmarking
+numpy 

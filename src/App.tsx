@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, NavLink } from 'react-router-dom';
 import './App.css'
 import Header from './components/Header'
 import FeedContainer from './components/FeedContainer'
@@ -26,6 +26,7 @@ import ArticlePage from './pages/ArticlePage';
 import AnalysisPage from './pages/AnalysisPage';
 import { UserPreferences } from './types';
 import { logger } from './utils/logger';
+import NLPBenchmark from './components/NLPBenchmark';
 
 // Default RSS feeds to load on first run
 const DEFAULT_SOURCES = [
@@ -359,6 +360,10 @@ function App() {
               <Route 
                 path="/analysis" 
                 element={<AnalysisPage />} 
+              />
+              <Route 
+                path="/benchmark" 
+                element={<NLPBenchmark />} 
               />
               <Route 
                 path="*" 
