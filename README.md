@@ -19,6 +19,7 @@ Authentic Reader is a powerful news aggregation platform designed to enhance you
 - [Testing](#testing)
 - [Deployment](#deployment)
 - [Architecture](#architecture)
+- [Security](#security)
 - [Contributing](#contributing)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
@@ -82,16 +83,22 @@ Authentic Reader uses the Hugging Face Inference API for content analysis featur
 
 1. **Get an API Token**: Visit [Hugging Face](https://huggingface.co/settings/tokens) to create an account and generate an API token.
 
-2. **Add to Environment Variables**: Add your token to the `.env` file as shown above.
+2. **Create a Fine-Grained Token**: For improved security, we recommend using a fine-grained token with minimal permissions:
+   - Select "Read" access only
+   - Enable only the "Inference" permission
+   - Optionally restrict to only the specific models we use (listed below)
 
-3. **Test the Integration**: Use the "Env Test" page in the application to verify your token is loaded correctly, then try the "Analysis Tool" to test the API connection.
+3. **Add to Environment Variables**: Add your token to the `.env` file as shown above. Never commit this file to version control.
 
-4. **Models Used**:
+4. **Test the Integration**: Use the "Env Test" page in the application to verify your token is loaded correctly, then try the "Analysis Tool" to test the API connection.
+
+5. **Models Used**:
    - Emotion Analysis: `j-hartmann/emotion-english-distilroberta-base`
    - Sentiment Analysis: `distilbert-base-uncased-finetuned-sst-2-english`
-   - Toxicity Detection: `michellejieli/albert_toxicity_classifier`
+   - Entity Detection: `dslim/bert-base-NER`
+   - Summarization: `facebook/bart-large-cnn`
 
-**Note**: Be aware of Hugging Face API rate limits and costs for your token.
+**Security Note**: Keep your API tokens secure. See our [Security Guidelines](#security) for best practices.
 
 ## Quick Start
 
@@ -236,6 +243,27 @@ The compiled JavaScript will be in the `dist` directory. Deploy to a Node.js hos
 ## Architecture
 
 For detailed information about the application architecture, see [ARCHITECTURE.md](ARCHITECTURE.md).
+
+## Security
+
+Authentic Reader takes security seriously, especially regarding API token management and secure coding practices.
+
+### API Token Security
+
+- **Use Fine-Grained Tokens**: Always use fine-grained tokens with minimal permissions
+- **Never Commit Tokens**: Store tokens only in `.env` files excluded from git
+- **Regularly Rotate Tokens**: Create new tokens periodically (recommended every 90 days)
+
+### Security Tools
+
+The project includes several security-focused tools:
+
+```bash
+# Check for exposed tokens in the codebase
+node scripts/check-tokens.js
+```
+
+For comprehensive security guidelines, see [SECURITY.md](SECURITY.md).
 
 ## Contributing
 
