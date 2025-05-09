@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import '../styles/FilterPanel.css';
+import { HF_CONFIG } from '../config/huggingFaceConfig';
 
 interface FilterPanelProps {
   activeFilters: string[];
@@ -14,6 +15,12 @@ interface FilterPanelProps {
     muteOutrage: boolean;
     blockDoomscroll: boolean;
   }) => void;
+  availableSources: string[];
+  availableCategories: string[];
+  initialFilters?: {
+    sources: string[];
+    categories: string[];
+  };
 }
 
 // Common tags for filtering
@@ -35,10 +42,18 @@ const FilterPanel = ({
   contentTypes,
   categories = [],
   qualityFilters = { muteOutrage: false, blockDoomscroll: false },
-  onQualityFilterChange
+  onQualityFilterChange,
+  availableSources,
+  availableCategories,
+  initialFilters = { sources: [], categories: [] }
 }: FilterPanelProps) => {
   const [outrageMuted, setOutrageMuted] = useState(qualityFilters.muteOutrage);
   const [doomscrollBlocked, setDoomscrollBlocked] = useState(qualityFilters.blockDoomscroll);
+  
+  // Add state for API/local analysis mode
+  const [useLocalAnalysis, setUseLocalAnalysis] = useState<boolean>(() => {
+    return localStorage.getItem('use_local_fallbacks') === 'true';
+  });
   
   // Update internal state when props change
   useEffect(() => {
@@ -108,6 +123,15 @@ const FilterPanel = ({
     'business'
   ];
 
+  // Handle local analysis toggle
+  const handleLocalAnalysisToggle = () => {
+    const newValue = !useLocalAnalysis;
+    setUseLocalAnalysis(newValue);
+    localStorage.setItem('use_local_fallbacks', newValue.toString());
+    // Force page reload to apply the setting
+    window.location.reload();
+  };
+
   return (
     <div className="filter-panel">
       <div className="filter-section">
@@ -176,6 +200,27 @@ const FilterPanel = ({
           Clear all filters
         </button>
       )}
+      
+      {/* Analysis Mode Toggle */}
+      <div className="filter-group">
+        <h4>Analysis Mode</h4>
+        <label className="toggle-switch">
+          <input 
+            type="checkbox" 
+            checked={useLocalAnalysis}
+            onChange={handleLocalAnalysisToggle}
+          />
+          <span className="toggle-slider"></span>
+          <span className="toggle-label">
+            {useLocalAnalysis ? 'Local Analysis (Faster)' : 'API Analysis (Better)'}
+          </span>
+        </label>
+        <p className="toggle-description">
+          {useLocalAnalysis 
+            ? 'Using local analysis for faster performance but less accuracy' 
+            : 'Using Hugging Face API for better results but may be slower'}
+        </p>
+      </div>
     </div>
   );
 };

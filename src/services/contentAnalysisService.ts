@@ -1880,11 +1880,24 @@ async function cachedSentimentAnalysis(text: string): Promise<{score: number, la
   try {
     // Perform the actual sentiment analysis
     logger.debug('Performing fresh sentiment analysis');
-    const result = await analyzeSentiment(text);
     
-    // Cache the result
-    cache.sentiment.set(cacheKey, result);
-    return result;
+    try {
+      const result = await analyzeSentiment(text);
+      
+      // Cache the result
+      cache.sentiment.set(cacheKey, result);
+      return result;
+    } catch (apiError) {
+      logger.error('API-based sentiment analysis failed, using keyword-based fallback', apiError);
+      
+      // Fallback to keyword-based analysis
+      logger.debug('Falling back to keyword-based sentiment analysis');
+      const keywordResult = localFallback('sentiment', text);
+      
+      // Cache the fallback result
+      cache.sentiment.set(cacheKey, keywordResult);
+      return keywordResult;
+    }
   } catch (error) {
     logger.error('Error in sentiment analysis:', error);
     // Return a default sentiment analysis if there's an error
@@ -1985,12 +1998,26 @@ async function cachedSummaryGeneration(text: string): Promise<string> {
     // Try advanced summarization first, fallback to basic summarization
     let summary = '';
     try {
-      summary = await generateAdvancedSummary(text, 1);
+      if (text.length < 100) {
+        // For very short text, just return it as is or truncate if needed
+        summary = text.length > 150 ? text.substring(0, 150) + '...' : text;
+        logger.debug('Text too short for summarization, using as-is');
+      } else {
+        // For longer text, try the API
+        summary = await generateAdvancedSummary(text, 150);
+      }
     } catch (advancedError) {
       logger.error('Advanced summarization failed, using fallback:', advancedError);
       
-      // Fallback to basic summarization
-      summary = await summarizeText(text, 1);
+      // Fallback to basic summarization or extract first sentences
+      try {
+        summary = await summarizeText(text, 150);
+      } catch (basicError) {
+        logger.error('Basic summarization also failed:', basicError);
+        // Last resort: extract first few sentences
+        const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+        summary = sentences.slice(0, 3).join(". ") + ".";
+      }
     }
     
     // Cache the result
