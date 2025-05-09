@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { runBenchmark, formatBenchmarkResults, getNLPServiceHealth, BenchmarkResult } from '../utils/benchmarkUtils';
+import '../styles/NLPBenchmark.css'; // We'll create this file next
 
 const SAMPLE_TEXT = `
 The recent developments in artificial intelligence have sparked debates about ethics and governance. 
@@ -95,6 +96,7 @@ const NLPBenchmark: React.FC = () => {
         <button 
           onClick={handleRunBenchmark} 
           disabled={isLoading || !text.trim()}
+          className="benchmark-button"
         >
           {isLoading ? 'Running Benchmark...' : 'Run Benchmark'}
         </button>
@@ -124,100 +126,6 @@ const NLPBenchmark: React.FC = () => {
           )}
         </div>
       )}
-      
-      <style jsx>{`
-        .nlp-benchmark {
-          max-width: 800px;
-          margin: 0 auto;
-          padding: 20px;
-        }
-        
-        .service-status {
-          margin: 20px 0;
-          padding: 15px;
-          border-radius: 5px;
-        }
-        
-        .status-healthy {
-          background-color: #e6ffe6;
-          border: 1px solid #99cc99;
-        }
-        
-        .status-degraded {
-          background-color: #fff9e6;
-          border: 1px solid #ffcc99;
-        }
-        
-        .status-critical, .status-unavailable {
-          background-color: #ffe6e6;
-          border: 1px solid #cc9999;
-        }
-        
-        .benchmark-form {
-          margin: 20px 0;
-        }
-        
-        .form-group {
-          margin-bottom: 15px;
-        }
-        
-        label {
-          display: block;
-          margin-bottom: 5px;
-          font-weight: bold;
-        }
-        
-        textarea, input {
-          width: 100%;
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-        }
-        
-        button {
-          background-color: #4CAF50;
-          color: white;
-          padding: 10px 15px;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-        
-        button:disabled {
-          background-color: #cccccc;
-          cursor: not-allowed;
-        }
-        
-        .error-message {
-          color: #cc0000;
-          margin: 15px 0;
-        }
-        
-        .benchmark-results {
-          margin-top: 30px;
-        }
-        
-        .markdown-container {
-          background-color: #f5f5f5;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          padding: 15px;
-          overflow-x: auto;
-        }
-        
-        pre {
-          margin: 0;
-          white-space: pre-wrap;
-        }
-        
-        .summary {
-          margin-top: 20px;
-          padding: 15px;
-          background-color: #e6f7ff;
-          border: 1px solid #91d5ff;
-          border-radius: 4px;
-        }
-      `}</style>
     </div>
   );
 };
