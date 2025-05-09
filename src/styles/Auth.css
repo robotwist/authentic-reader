@@ -212,4 +212,330 @@ button:disabled {
 
 .dark-mode .btn-secondary {
   border-color: var(--border-color-dark);
+}
+
+/* Auth.css - Shared styles for Login and Register components */
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #f8f9fa;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 450px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  transition: transform 0.2s ease;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-header h1 {
+  margin: 0 0 0.75rem;
+  color: #212529;
+  font-size: 1.8rem;
+}
+
+.auth-header p {
+  color: #6c757d;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.auth-error {
+  background-color: #fff5f5;
+  color: #e53e3e;
+  padding: 0.75rem;
+  border-radius: 5px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.auth-error svg {
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.auth-form {
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  color: #adb5bd;
+}
+
+.input-with-icon input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-with-icon input:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+}
+
+.input-with-icon input::placeholder {
+  color: #adb5bd;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #adb5bd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.toggle-password:hover {
+  color: #6c757d;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #4299e1;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.auth-button:hover {
+  background-color: #3182ce;
+}
+
+.auth-button:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.auth-divider {
+  position: relative;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.auth-divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #e2e8f0;
+}
+
+.auth-divider span {
+  position: relative;
+  background-color: white;
+  padding: 0 1rem;
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+.social-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 5px;
+  background-color: white;
+  color: #4a5568;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-button.google {
+  position: relative;
+}
+
+.social-button.google::before {
+  content: "G";
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #4285F4;
+  margin-right: 0.75rem;
+}
+
+.social-button:hover {
+  background-color: #f7fafc;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+.auth-footer a {
+  color: #4299e1;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+.demo-credentials {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.demo-credentials strong {
+  color: #495057;
+}
+
+.terms-agreement {
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.terms-agreement label {
+  display: flex;
+  align-items: flex-start;
+}
+
+.terms-agreement input {
+  margin: 0.2rem 0.5rem 0 0;
+}
+
+.terms-agreement a {
+  color: #4299e1;
+  text-decoration: none;
+}
+
+.terms-agreement a:hover {
+  text-decoration: underline;
+}
+
+.password-strength {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.strength-bar {
+  height: 4px;
+  flex: 1;
+  border-radius: 2px;
+  background-color: #e2e8f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.strength-bar.weak::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 30%;
+  background-color: #fc8181;
+}
+
+.strength-bar.strong::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #68d391;
+}
+
+.strength-text {
+  margin-left: 0.75rem;
+  font-size: 0.8rem;
+  color: #718096;
+}
+
+.success-message {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.success-icon {
+  width: 60px;
+  height: 60px;
+  background-color: #c6f6d5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.success-icon svg {
+  font-size: 1.5rem;
+  color: #38a169;
+}
+
+.success-message h2 {
+  color: #2d3748;
+  margin-bottom: 1rem;
+}
+
+.success-message p {
+  color: #718096;
+  margin-bottom: 1.5rem;
 } 
