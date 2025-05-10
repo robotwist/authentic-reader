@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import '../styles/ArticleCard.css';
 import { Article } from '../types/Article';
 import { formatDate, truncateText } from '../utils/textUtils';
-import { FaBookmark, FaRegBookmark, FaChevronRight, FaEye, FaEyeSlash, FaTextHeight } from 'react-icons/fa';
+import { 
+  FaBookmark, FaRegBookmark, FaChevronRight, 
+  FaEye, FaEyeSlash, FaTextHeight, FaSpinner 
+} from 'react-icons/fa';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { Badge } from './ui/Badge';
 import { getArticleTypeIcon } from '../utils/articleUtils';
 import defaultImage from '../assets/default-article.svg';
+import { logger } from '../utils/logger';
 
 interface ArticleCardProps {
   article: Article;
@@ -22,6 +26,10 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   onAnalyze 
 }) => {
   const [imageError, setImageError] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  // Check if article has a valid image
+  const hasValidImage = article.image && !imageError;
 
   // Get the appropriate image source with fallbacks
   const getImageSource = () => {
@@ -77,27 +85,33 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
     onSave(article.id);
   };
 
-  const handleAnalyzeClick = (e: React.MouseEvent) => {
+  const handleAnalyzeClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
+    if (isAnalyzing) return; // Prevent multiple clicks
+    
+    setIsAnalyzing(true);
     logger.debug('🔍 Analyze button clicked for article:', article.title);
-    logger.debug('🔍 Article guid:', article.guid);
-    logger.debug('🔍 Is onAnalyze available?', Boolean(onAnalyze));
     
     try {
       if (onAnalyze) {
         // Pass the whole article object to the handler
-        onAnalyze(article);
+        await onAnalyze(article);
       }
     } catch (error) {
       logger.error('Error in handleAnalyzeClick:', error);
+    } finally {
+      // Add a small delay before resetting to prevent flickering
+      setTimeout(() => {
+        setIsAnalyzing(false);
+      }, 500);
     }
   };
 
   return (
     <div 
-      className={`article-card ${article.read ? 'article-read' : ''}`} 
+      className={`article-card ${article.read ? 'article-read' : ''} ${!hasValidImage ? 'no-image' : ''}`} 
       onClick={handleCardClick}
     >
       {article.saved && (
@@ -106,21 +120,23 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
         </div>
       )}
       
-      <div className="article-image-container">
-        <img 
-          src={getImageSource()} 
-          alt={article.title || 'Article'} 
-          className="article-image"
-          onError={() => setImageError(true)}
-        />
-        {article.contentType && (
-          <Badge 
-            text={article.contentType} 
-            icon={getArticleTypeIcon(article.contentType)} 
-            className="content-type-badge"
+      {hasValidImage && (
+        <div className="article-image-container">
+          <img 
+            src={getImageSource()} 
+            alt={article.title || 'Article'} 
+            className="article-image"
+            onError={() => setImageError(true)}
           />
-        )}
-      </div>
+          {article.contentType && (
+            <Badge 
+              text={article.contentType} 
+              icon={getArticleTypeIcon(article.contentType)} 
+              className="content-type-badge"
+            />
+          )}
+        </div>
+      )}
 
       <div className="article-content">
         <div className="article-meta">
@@ -143,6 +159,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
             className={`action-btn ${article.read ? 'active' : ''}`}
             onClick={handleReadClick}
             title={article.read ? "Mark as unread" : "Mark as read"}
+            aria-pressed={article.read}
           >
             {article.read ? <FaEye /> : <FaEyeSlash />}
           </button>
@@ -151,17 +168,20 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
             className={`action-btn ${article.saved ? 'active' : ''}`}
             onClick={handleSaveClick}
             title={article.saved ? "Remove from saved" : "Save for later"}
+            aria-pressed={article.saved}
           >
             {article.saved ? <FaBookmark /> : <FaRegBookmark />}
           </button>
           
           {onAnalyze && (
             <button 
-              className="action-btn analyze-btn"
+              className={`action-btn analyze-btn ${isAnalyzing ? 'loading' : ''}`}
               onClick={handleAnalyzeClick}
               title="Analyze article"
+              disabled={isAnalyzing}
+              aria-busy={isAnalyzing}
             >
-              <FaTextHeight />
+              {isAnalyzing ? <FaSpinner className="fa-spin" /> : <FaTextHeight />}
             </button>
           )}
           
