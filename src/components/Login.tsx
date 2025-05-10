@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiMail, FiLock, FiAlertCircle, FiEye, FiEyeOff } from 'react-icons/fi';
 import '../styles/Auth.css';
+import { useAuth } from '../contexts/AuthContext';
+import { logger } from '../utils/logger';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -9,8 +11,10 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Basic validation
@@ -22,17 +26,19 @@ const Login: React.FC = () => {
     setIsLoading(true);
     setError(null);
     
-    // Simulate API call for login
-    setTimeout(() => {
-      // In a real application, this would be an actual API call
-      if (email === 'demo@example.com' && password === 'password') {
-        // Successful login simulation
-        window.location.href = '/';
-      } else {
-        setError('Invalid email or password');
-        setIsLoading(false);
-      }
-    }, 1500);
+    try {
+      // Use the login function from AuthContext
+      await login({ email, password });
+      logger.info('Login successful, redirecting to admin dashboard');
+      
+      // Redirect to home page after successful login
+      navigate('/admin');
+    } catch (err) {
+      logger.error('Login error:', err);
+      setError(err instanceof Error ? err.message : 'Authentication failed');
+    } finally {
+      setIsLoading(false);
+    }
   };
   
   return (
@@ -123,7 +129,7 @@ const Login: React.FC = () => {
           </p>
           
           <p className="demo-info">
-            <strong>Demo credentials:</strong> demo@example.com / password
+            <strong>Admin credentials:</strong> simpleadmin@example.com / admin123
           </p>
         </div>
       </div>
