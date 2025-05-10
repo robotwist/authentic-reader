@@ -1,0 +1,17 @@
+# These owners will be the default owners for everything in the repo
+* @robotwist
+
+# Server code owners
+/server/ @robotwist
+
+# Frontend code owners
+/src/ @robotwist
+
+# NLP service code owners
+/nlp-service/ @robotwist
+
+# Config files
+*.json @robotwist
+*.js @robotwist
+*.yml @robotwist
+*.yaml @robotwist 

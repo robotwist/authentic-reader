@@ -1,0 +1,198 @@
+import { useState, useEffect, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FiMenu, FiX, FiHome, FiBookmark, FiSearch, FiUser, FiSettings, FiMoon, FiSun, FiBookOpen } from 'react-icons/fi';
+import './styles/Header.css';
+import { useAuth } from './hooks/useAuth';
+import { useTheme } from './hooks/useTheme';
+
+const Header = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const { currentUser, signOut } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node) && menuOpen) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    // Close menus when route changes
+    setMenuOpen(false);
+    setUserMenuOpen(false);
+    setSearchOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (searchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchOpen]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      setSearchOpen(false);
+      setSearchQuery('');
+    }
+  };
+
+  const toggleMobileMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const toggleUserMenu = () => {
+    setUserMenuOpen(!userMenuOpen);
+  };
+
+  const toggleSearchBar = () => {
+    setSearchOpen(!searchOpen);
+    if (!searchOpen) {
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 100);
+    }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    setUserMenuOpen(false);
+    navigate('/');
+  };
+
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/';
+    }
+    return location.pathname.startsWith(path);
+  };
+
+  return (
+    <header className="header">
+      <div className="header-container">
+        <div className="header-left">
+          <button className="menu-toggle" onClick={toggleMobileMenu} aria-label="Toggle Menu">
+            {menuOpen ? <FiX /> : <FiMenu />}
+          </button>
+          <Link to="/" className="logo">
+            Authentic Reader
+          </Link>
+        </div>
+
+        <nav className={`header-nav ${menuOpen ? 'open' : ''}`} ref={mobileMenuRef}>
+          <ul className="nav-list">
+            <li className={isActive('/') ? 'active' : ''}>
+              <Link to="/" className="nav-link">
+                <FiHome /> <span>Home</span>
+              </Link>
+            </li>
+            <li className={isActive('/library') ? 'active' : ''}>
+              <Link to="/library" className="nav-link">
+                <FiBookOpen /> <span>Library</span>
+              </Link>
+            </li>
+            <li className={isActive('/saved') ? 'active' : ''}>
+              <Link to="/saved" className="nav-link">
+                <FiBookmark /> <span>Saved</span>
+              </Link>
+            </li>
+          </ul>
+        </nav>
+
+        <div className="header-right">
+          <div className={`search-container ${searchOpen ? 'open' : ''}`}>
+            <form onSubmit={handleSearch}>
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Search articles..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+                onBlur={() => searchQuery.trim() === '' && setSearchOpen(false)}
+              />
+            </form>
+          </div>
+
+          <button className="icon-button" onClick={toggleSearchBar} aria-label="Search">
+            <FiSearch />
+          </button>
+
+          <button className="icon-button" onClick={toggleTheme} aria-label="Toggle Theme">
+            {theme === 'dark' ? <FiSun /> : <FiMoon />}
+          </button>
+
+          {currentUser ? (
+            <div className="user-menu-container">
+              <button className="user-avatar" onClick={toggleUserMenu} aria-label="User Menu">
+                {currentUser.profileImage ? (
+                  <img src={currentUser.profileImage} alt={currentUser.displayName || 'User'} />
+                ) : (
+                  <FiUser />
+                )}
+              </button>
+              
+              {userMenuOpen && (
+                <div className="user-dropdown" ref={userMenuRef}>
+                  <div className="user-info">
+                    <span className="user-name">{currentUser.displayName || currentUser.email}</span>
+                    <span className="user-email">{currentUser.email}</span>
+                  </div>
+                  <div className="dropdown-divider"></div>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link to="/profile" className="dropdown-item">
+                        <FiUser /> Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/library" className="dropdown-item">
+                        <FiBookOpen /> My Library
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/settings" className="dropdown-item">
+                        <FiSettings /> Settings
+                      </Link>
+                    </li>
+                    <li className="dropdown-divider"></li>
+                    <li>
+                      <button onClick={handleSignOut} className="dropdown-item sign-out">
+                        Sign Out
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to="/login" className="auth-button">
+              Sign In
+            </Link>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header; 
