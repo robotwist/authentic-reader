@@ -10,7 +10,7 @@ import {
 } from '../types';
 
 // API base URL - replace with your production URL when deploying
-const API_BASE_URL = 'http://localhost:3001';
+const API_BASE_URL = 'http://localhost:3000';
 
 // Local storage keys
 const TOKEN_KEY = 'auth_token';

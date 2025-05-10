@@ -14,13 +14,13 @@ export const HF_CONFIG = {
   // Base URL for Hugging Face Inference API
   INFERENCE_API_URL: 'https://api-inference.huggingface.co/models',
   
-  // Model IDs for different analysis types - updated with more reliable models
+  // Model IDs for different analysis types - updated with more reliable and current models
   MODELS: {
     // Emotion analysis model - detects joy, sadness, fear, anger, etc.
-    EMOTION: 'SamLowe/roberta-base-go_emotions',
+    EMOTION: 'j-hartmann/emotion-english-distilroberta-base',
     
     // Sentiment analysis model - positive/negative classification
-    SENTIMENT: 'cardiffnlp/twitter-roberta-base-sentiment', // More reliable than distilbert
+    SENTIMENT: 'distilbert-base-uncased-finetuned-sst-2-english',
     
     // Toxicity detection model
     TOXICITY: 'michellejieli/albert_toxicity_classifier',
@@ -28,11 +28,11 @@ export const HF_CONFIG = {
     // Political bias detection model
     POLITICAL_BIAS: 'bucketresearch/politicalBiasBERT',
     
-    // Entity recognition model
-    ENTITY: 'dslim/bert-base-NER-uncased', 
+    // Entity recognition model - updated to a more current model
+    ENTITY: 'dbmdz/bert-large-cased-finetuned-conll03-english',
     
-    // Text summarization model for better metadata extraction
-    SUMMARIZATION: 'sshleifer/distilbart-cnn-12-6', // Smaller model as fallback
+    // Text summarization model for better metadata extraction - updated to current model
+    SUMMARIZATION: 'facebook/bart-large-cnn',
     
     // Zero-shot classification model
     ZERO_SHOT: 'facebook/bart-large-mnli',
