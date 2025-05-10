@@ -30,3 +30,7 @@ dist-ssr
 .env.development
 .token-meta.json
 public/env.js
+server/.env
+llama-service/.env
+**/.env*
+!**/.env.example
