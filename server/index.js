@@ -13,11 +13,15 @@ const sequelize = db.sequelize;
 // Import user maintenance utilities
 const { ensureAdminUsers, verifyUserPasswords } = require('./utils/userMaintenance');
 
+// Import services
+const onnxService = require('./services/onnxService');
+
 // Import routes
 const userRoutes = require('./routes/user');
 const sourceRoutes = require('./routes/source');
 const articleRoutes = require('./routes/article');
 const adminRoutes = require('./routes/admin');
+const onnxRoutes = require('./routes/onnx');
 
 // Middleware
 app.use(cors());
@@ -29,6 +33,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/sources', sourceRoutes);
 app.use('/api/articles', articleRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/onnx', onnxRoutes);
 
 // Enable verbose login debugging
 app.use((req, res, next) => {

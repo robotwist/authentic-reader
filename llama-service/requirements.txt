@@ -1,0 +1,23 @@
+fastapi>=0.103.1
+uvicorn>=0.23.2
+pydantic>=2.3.0
+httpx>=0.24.1
+python-dotenv>=1.0.0
+langchain>=0.0.292
+langchain-community>=0.0.1
+langchain-core>=0.1.1
+langchainhub>=0.1.14
+redis>=5.0.0
+nltk>=3.8.1
+tiktoken>=0.5.1
+pytest>=7.4.2
+requests>=2.31.0
+# Ollama client library
+ollama>=0.1.0
+# For document processing
+beautifulsoup4>=4.12.2
+markdown>=3.5
+# For development
+black>=23.9.1
+isort>=5.12.0
+mypy>=1.5.1 
