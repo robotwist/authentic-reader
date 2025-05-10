@@ -13,7 +13,7 @@ export interface ExtractedArticle {
 }
 
 // API endpoint for backend proxy (change to production URL when deploying)
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'http://localhost:3001';
 
 // Calculate reading time based on average reading speed
 function calculateReadingTime(text: string): number {

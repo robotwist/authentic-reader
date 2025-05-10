@@ -25,7 +25,7 @@ import { logger } from '../utils/logger';
 import axios from 'axios';
 
 // Base URL for your backend API - use Vite environment variables
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'; 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'; 
 
 interface UseArticlesReturn {
   articles: RSSArticle[];
@@ -512,11 +512,18 @@ export function useArticles(): UseArticlesReturn {
       // Apply filters
       let filteredResults = [...articles];
       
-      // Filter by source
+      // Filter by source - handle both string and object sources
       if (filters.sources && filters.sources.length > 0) {
-        filteredResults = filteredResults.filter(article => 
-          filters.sources!.includes(article.source)
-        );
+        filteredResults = filteredResults.filter(article => {
+          // Check if the article's source matches any of the selected sources
+          if (typeof article.source === 'string') {
+            return filters.sources!.includes(article.source);
+          } else if (article.source && typeof article.source === 'object') {
+            // Handle source as an object with a name property
+            return filters.sources!.includes((article.source as any).name);
+          }
+          return false;
+        });
       }
       
       // Filter by category

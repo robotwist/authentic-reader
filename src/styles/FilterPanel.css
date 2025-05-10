@@ -94,6 +94,7 @@
   background-color: #ddd;
   transition: .3s;
   border-radius: 24px;
+  overflow: hidden; /* Prevent the knob from visually overflowing */
 }
 
 .slider:before {
@@ -115,6 +116,24 @@ input:checked + .slider {
 
 input:checked + .slider:before {
   transform: translateX(22px);
+}
+
+/* Dark mode styles for toggles */
+.dark-mode .slider {
+  background-color: #444;
+}
+
+.dark-mode .slider:before {
+  background-color: #ddd;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+.dark-mode .toggle-filter span {
+  color: #e0e0e0;
 }
 
 /* Clear filters button */

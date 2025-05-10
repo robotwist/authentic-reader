@@ -23,6 +23,11 @@
   transform: translateY(-1px);
 }
 
+/* Special class for when no image is present */
+.article-card.no-image {
+  grid-row: span 1; /* Take up less vertical space */
+}
+
 /* Styling for read articles */
 .article-read {
   opacity: 0.85;
@@ -116,15 +121,20 @@
 .article-content {
   display: flex;
   flex-direction: column;
-  padding: 0.8rem;
+  padding: 1rem;
   flex-grow: 1;
+}
+
+/* Adjust padding for cards without images */
+.no-image .article-content {
+  padding: 1.5rem;
 }
 
 .article-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   font-size: 0.75rem;
   color: var(--text-light);
 }
@@ -140,7 +150,7 @@
 .article-title {
   font-size: 1rem;
   line-height: 1.4;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.75rem 0;
   font-weight: 600;
   color: var(--text-color);
   display: -webkit-box;
@@ -150,11 +160,17 @@
   text-overflow: ellipsis;
 }
 
+/* Make titles larger in cards without images */
+.no-image .article-title {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
 .article-summary {
   color: var(--text-light);
   font-size: 0.85rem;
   line-height: 1.5;
-  margin: 0 0 0.8rem 0;
+  margin: 0 0 1rem 0;
   flex-grow: 1;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -163,13 +179,18 @@
   text-overflow: ellipsis;
 }
 
+/* Show more summary text when no image */
+.no-image .article-summary {
+  -webkit-line-clamp: 4;
+}
+
 /* Article actions */
 .article-actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   margin-top: auto;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
 .action-btn {
@@ -217,10 +238,19 @@
   text-decoration: underline;
 }
 
-/* Loading state */
+/* Loading state for analyze button */
 .action-btn.loading {
-  opacity: 0.7;
-  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.fa-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Media queries for responsiveness */
@@ -233,13 +263,25 @@
     padding: 0.75rem;
   }
   
+  .no-image .article-content {
+    padding: 1rem;
+  }
+  
   .article-title {
     font-size: 0.95rem;
+  }
+  
+  .no-image .article-title {
+    font-size: 1rem;
   }
   
   .article-summary {
     font-size: 0.8rem;
     -webkit-line-clamp: 2;
+  }
+  
+  .no-image .article-summary {
+    -webkit-line-clamp: 3;
   }
 }
 

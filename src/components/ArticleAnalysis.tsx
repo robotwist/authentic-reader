@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import '../styles/ArticleAnalysis.css';
 import { ContentAnalysisResult } from '../types';
 import { 
   LogicalFallacy, 
   BiasType
 } from '../services/contentAnalysisService';
+import ManipulationAnalysis from './ManipulationAnalysis';
+import EmotionAnalysis from './EmotionAnalysis';
+import FeedbackPanel from './FeedbackPanel';
 
 interface ArticleAnalysisProps {
   title: string;
@@ -12,16 +16,36 @@ interface ArticleAnalysisProps {
   author?: string;
   date?: string;
   analysis: ContentAnalysisResult;
+  articleId?: string;
 }
+
+// Helper function for getting bias type name
+const getBiasTypeName = (biasType: BiasType): string => {
+  switch (biasType) {
+    case BiasType.LEFT_STRONG:
+      return 'Strong Left';
+    case BiasType.LEFT_MODERATE:
+      return 'Moderate Left';
+    case BiasType.CENTER:
+      return 'Center';
+    case BiasType.RIGHT_MODERATE:
+      return 'Moderate Right';
+    case BiasType.RIGHT_STRONG:
+      return 'Strong Right';
+    default:
+      return 'Center';
+  }
+};
 
 const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
   title,
   source,
   author,
   date,
-  analysis
+  analysis,
+  articleId = 'unknown'
 }) => {
-  const [activeTab, setActiveTab] = useState<'fallacies' | 'bias' | 'metrics'>('fallacies');
+  const [activeTab, setActiveTab] = useState<'fallacies' | 'bias' | 'metrics' | 'manipulation' | 'emotions'>('fallacies');
   
   // Helper functions for styling based on score
   const getQualityClass = (score: number): string => {
@@ -40,11 +64,11 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
     switch (biasType) {
       case BiasType.LEFT_STRONG:
         return 'bias-left-strong';
-      case BiasType.LEFT:
+      case BiasType.LEFT_MODERATE:
         return 'bias-left';
       case BiasType.CENTER:
         return 'bias-center';
-      case BiasType.RIGHT:
+      case BiasType.RIGHT_MODERATE:
         return 'bias-right';
       case BiasType.RIGHT_STRONG:
         return 'bias-right-strong';
@@ -53,26 +77,45 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
     }
   };
   
+  // Helper for generating bias position on the spectrum
+  const getBiasPosition = (biasType: BiasType): string => {
+    switch(biasType) {
+      case BiasType.LEFT_STRONG:
+        return '10%';
+      case BiasType.LEFT_MODERATE:
+        return '30%';
+      case BiasType.CENTER:
+        return '50%';
+      case BiasType.RIGHT_MODERATE:
+        return '70%';
+      case BiasType.RIGHT_STRONG:
+        return '90%';
+      default:
+        return '50%';
+    }
+  };
+  
+  // Helper for generating readable score labels
+  const getQualityLabel = (score: number): string => {
+    if (score >= 70) return 'High';
+    if (score >= 40) return 'Medium';
+    return 'Low';
+  };
+  
+  const getManipulationLabel = (score: number): string => {
+    if (score >= 70) return 'High Risk';
+    if (score >= 40) return 'Medium Risk';
+    return 'Low Risk';
+  };
+  
   // Helper to format date
   const formatDate = (dateString?: string): string => {
     if (!dateString) return '';
     try {
       const date = new Date(dateString);
       return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-    } catch (error) {
+    } catch (_unused) {
       return dateString;
-    }
-  };
-  
-  // Helper to get bias position for marker
-  const getBiasPosition = (biasType: BiasType): string => {
-    switch (biasType) {
-      case BiasType.LEFT_STRONG: return '10%';
-      case BiasType.LEFT: return '30%';
-      case BiasType.CENTER: return '50%';
-      case BiasType.RIGHT: return '70%';
-      case BiasType.RIGHT_STRONG: return '90%';
-      default: return '50%';
     }
   };
   
@@ -88,44 +131,56 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
       </div>
       
       <div className="analysis-scores">
-        <div className={`quality-score ${getQualityClass(analysis.qualityScore)}`}>
+        <div className={`quality-score ${getQualityClass(analysis.qualityScore * 100)}`}>
           <div className="score-label">Content Quality</div>
-          <div className="score-value">{analysis.qualityScore}/100</div>
+          <div className="score-value">{getQualityLabel(analysis.qualityScore * 100)}</div>
+          <div className="score-numeric">{Math.round(analysis.qualityScore * 100)}/100</div>
         </div>
         
-        <div className={`manipulation-score ${getManipulationClass(analysis.manipulationScore)}`}>
+        <div className={`manipulation-score ${getManipulationClass(analysis.manipulationScore * 100)}`}>
           <div className="score-label">Manipulation</div>
-          <div className="score-value">{analysis.manipulationScore}/100</div>
+          <div className="score-value">{getManipulationLabel(analysis.manipulationScore * 100)}</div>
+          <div className="score-numeric">{Math.round(analysis.manipulationScore * 100)}/100</div>
         </div>
         
-        <div className={`bias-indicator ${getBiasClass(analysis.biasAnalysis.biasType)}`}>
+        <div className={`bias-indicator ${getBiasClass(analysis.biasAnalysis.type)}`}>
           <div className="score-label">Bias</div>
           <div className="score-value">
-            {analysis?.biasAnalysis?.biasType && BiasType[analysis.biasAnalysis.biasType]
-              ? BiasType[analysis.biasAnalysis.biasType].replace('_', ' ')
-              : 'N/A'}
+            {getBiasTypeName(analysis.biasAnalysis.type).replace('_', ' ')}
           </div>
         </div>
       </div>
       
       <div className="analysis-tabs">
         <button 
-          className={activeTab === 'fallacies' ? 'active' : ''} 
+          className={`tab ${activeTab === 'fallacies' ? 'active' : ''}`}
           onClick={() => setActiveTab('fallacies')}
         >
           Logical Fallacies
         </button>
         <button 
-          className={activeTab === 'bias' ? 'active' : ''} 
+          className={`tab ${activeTab === 'bias' ? 'active' : ''}`}
           onClick={() => setActiveTab('bias')}
         >
           Bias Analysis
         </button>
         <button 
-          className={activeTab === 'metrics' ? 'active' : ''} 
+          className={`tab ${activeTab === 'metrics' ? 'active' : ''}`}
           onClick={() => setActiveTab('metrics')}
         >
           Content Metrics
+        </button>
+        <button 
+          className={`tab ${activeTab === 'manipulation' ? 'active' : ''}`}
+          onClick={() => setActiveTab('manipulation')}
+        >
+          Manipulation
+        </button>
+        <button 
+          className={`tab ${activeTab === 'emotions' ? 'active' : ''}`}
+          onClick={() => setActiveTab('emotions')}
+        >
+          Emotions
         </button>
       </div>
       
@@ -153,6 +208,12 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
               No logical fallacies were detected in this article.
             </div>
           )}
+          
+          <FeedbackPanel 
+            articleId={articleId}
+            analysisType="fallacy"
+            originalPrediction={analysis.logicalFallacies}
+          />
         </div>
       )}
       
@@ -171,7 +232,7 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
             <div className="spectrum-bar">
               <div 
                 className="bias-marker" 
-                style={{ left: getBiasPosition(analysis.biasAnalysis.biasType) }}
+                style={{ left: getBiasPosition(analysis.biasAnalysis.type) }}
               ></div>
             </div>
             <div className="spectrum-label right">Right</div>
@@ -184,7 +245,7 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
                 <div className="left-indicators">
                   <h5>Left-leaning Indicators</h5>
                   <ul>
-                    {analysis.biasAnalysis.leftIndicators.map((indicator, index) => (
+                    {analysis.biasAnalysis.leftIndicators.map((indicator: string, index: number) => (
                       <li key={index}>{indicator}</li>
                     ))}
                   </ul>
@@ -195,7 +256,7 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
                 <div className="right-indicators">
                   <h5>Right-leaning Indicators</h5>
                   <ul>
-                    {analysis.biasAnalysis.rightIndicators.map((indicator, index) => (
+                    {analysis.biasAnalysis.rightIndicators.map((indicator: string, index: number) => (
                       <li key={index}>{indicator}</li>
                     ))}
                   </ul>
@@ -203,6 +264,12 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
               )}
             </div>
           </div>
+          
+          <FeedbackPanel 
+            articleId={articleId}
+            analysisType="bias"
+            originalPrediction={analysis.biasAnalysis}
+          />
         </div>
       )}
       
@@ -236,7 +303,7 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
                 <div className="citations-list">
                   <h4>Citations</h4>
                   <ul>
-                    {analysis.metadata.citations.map((citation, index) => (
+                    {analysis.metadata.citations.map((citation: string, index: number) => (
                       <li key={index}>{citation}</li>
                     ))}
                   </ul>
@@ -248,7 +315,7 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
               <div className="key-entities">
                 <h3>Key Entities</h3>
                 <div className="entity-tags">
-                  {analysis.metadata?.entities?.map((entity, index) => (
+                  {analysis.metadata?.entities?.map((entity: string, index: number) => (
                     <span key={index} className="entity-tag">{entity}</span>
                   ))}
                 </div>
@@ -271,8 +338,8 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
                         <div key={index} className="metric-item">
                           <div className="metric-label">{aspect}</div>
                           <div className="metric-value">
-                            {score > 0 ? 'Positive' : score < 0 ? 'Negative' : 'Neutral'}
-                            {' '}({score.toFixed(2)})
+                            {Number(score) > 0 ? 'Positive' : Number(score) < 0 ? 'Negative' : 'Neutral'}
+                            {' '}({Number(score).toFixed(2)})
                           </div>
                         </div>
                       ))}
@@ -293,10 +360,10 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
                         <div className="emotion-track">
                           <div 
                             className="emotion-fill" 
-                            style={{ width: `${value * 100}%` }}
+                            style={{ width: `${Number(value) * 100}%` }}
                           ></div>
                         </div>
-                        <div className="emotion-value">{(value * 100).toFixed(0)}%</div>
+                        <div className="emotion-value">{(Number(value) * 100).toFixed(0)}%</div>
                       </div>
                     ))}
                   </div>
@@ -306,6 +373,42 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
               </div>
             </div>
           </div>
+          
+          <FeedbackPanel 
+            articleId={articleId}
+            analysisType="metrics"
+            originalPrediction={analysis.metadata}
+          />
+        </div>
+      )}
+      
+      {activeTab === 'manipulation' && (
+        <div className="manipulation-tab">
+          <ManipulationAnalysis manipulationAnalysis={analysis.manipulationAnalysis} />
+          
+          <FeedbackPanel 
+            articleId={articleId}
+            analysisType="manipulation"
+            originalPrediction={analysis.manipulationAnalysis}
+          />
+        </div>
+      )}
+      
+      {activeTab === 'emotions' && (
+        <div className="emotions-tab">
+          <EmotionAnalysis 
+            emotionAnalysis={analysis.emotionAnalysis} 
+            sentiment={analysis.sentiment}
+          />
+          
+          <FeedbackPanel 
+            articleId={articleId}
+            analysisType="emotion"
+            originalPrediction={{
+              emotions: analysis.emotionAnalysis,
+              sentiment: analysis.sentiment
+            }}
+          />
         </div>
       )}
     </div>
