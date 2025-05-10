@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiMail, FiLock, FiAlertCircle, FiEye, FiEyeOff } from 'react-icons/fi';
+import { FiMail, FiLock, FiAlertCircle, FiEye, FiEyeOff, FiUser } from 'react-icons/fi';
 import '../styles/Auth.css';
 import { useAuth } from '../contexts/AuthContext';
 import { logger } from '../utils/logger';
 
 const Login: React.FC = () => {
+  const [loginMethod, setLoginMethod] = useState<'email' | 'username'>('email');
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,8 +20,10 @@ const Login: React.FC = () => {
     e.preventDefault();
     
     // Basic validation
-    if (!email.trim() || !password.trim()) {
-      setError('Please enter both email and password');
+    if ((loginMethod === 'email' && !email.trim()) || 
+        (loginMethod === 'username' && !username.trim()) || 
+        !password.trim()) {
+      setError(`Please enter both ${loginMethod} and password`);
       return;
     }
     
@@ -27,11 +31,16 @@ const Login: React.FC = () => {
     setError(null);
     
     try {
-      // Use the login function from AuthContext
-      await login({ email, password });
+      // Use the login function from AuthContext with appropriate credentials
+      if (loginMethod === 'email') {
+        await login({ email, password });
+      } else {
+        await login({ username, password });
+      }
+      
       logger.info('Login successful, redirecting to admin dashboard');
       
-      // Redirect to home page after successful login
+      // Redirect to admin page after successful login
       navigate('/admin');
     } catch (err) {
       logger.error('Login error:', err);
@@ -39,6 +48,11 @@ const Login: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const toggleLoginMethod = () => {
+    setLoginMethod(prev => prev === 'email' ? 'username' : 'email');
+    setError(null);
   };
   
   return (
@@ -56,20 +70,54 @@ const Login: React.FC = () => {
           </div>
         )}
         
+        <div className="login-method-toggle">
+          <button 
+            type="button"
+            className={`toggle-btn ${loginMethod === 'email' ? 'active' : ''}`} 
+            onClick={() => setLoginMethod('email')}
+          >
+            Email
+          </button>
+          <button 
+            type="button"
+            className={`toggle-btn ${loginMethod === 'username' ? 'active' : ''}`} 
+            onClick={() => setLoginMethod('username')}
+          >
+            Username
+          </button>
+        </div>
+        
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor={loginMethod}>{loginMethod === 'email' ? 'Email' : 'Username'}</label>
             <div className="input-with-icon">
-              <FiMail className="input-icon" />
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                disabled={isLoading}
-                autoComplete="email"
-              />
+              {loginMethod === 'email' ? (
+                <>
+                  <FiMail className="input-icon" />
+                  <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    disabled={isLoading}
+                    autoComplete="email"
+                  />
+                </>
+              ) : (
+                <>
+                  <FiUser className="input-icon" />
+                  <input
+                    id="username"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Enter your username"
+                    disabled={isLoading}
+                    autoComplete="username"
+                  />
+                </>
+              )}
             </div>
           </div>
           
@@ -129,7 +177,7 @@ const Login: React.FC = () => {
           </p>
           
           <p className="demo-info">
-            <strong>Admin credentials:</strong> simpleadmin@example.com / admin123
+            <strong>Note:</strong> Contact your administrator for login credentials
           </p>
         </div>
       </div>
