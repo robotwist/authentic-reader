@@ -24,7 +24,7 @@ import {
 } from '@mui/icons-material';
 import { formatDistanceToNow } from 'date-fns';
 import { useAuth } from '../contexts/AuthContext'; // Assuming you have an auth context
-import { BiasTagger } from './BiasTagger';
+import BiasTagger from './BiasTagger';
 import '../styles/AnnotationSystem.css';
 
 // Type definitions
