@@ -30,7 +30,7 @@ interface CustomFeed {
 }
 
 // Backend API endpoint (change to your production URL when deploying)
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'http://localhost:3001';
 
 // For backward compatibility
 export type { RSSSource, RSSArticle };
