@@ -52,6 +52,6 @@ jobs:
           DB_NAME: authentic_reader_test
           DB_HOST: localhost
           DB_PORT: 5432
-          JWT_SECRET: test_secret
+          JWT_SECRET: ${{ secrets.TEST_JWT_SECRET }}
           JWT_EXPIRES_IN: 1d
           NODE_ENV: test 
