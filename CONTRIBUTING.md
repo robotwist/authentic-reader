@@ -4,17 +4,27 @@ Thank you for considering contributing to Authentic Reader! This document provid
 
 ## Development Workflow
 
-We follow a GitHub Flow workflow:
+We follow a strict GitHub workflow to ensure code quality:
 
-1. **Fork the repository** (external contributors) or **create a new branch** (core team members)
-2. **Create a feature branch** for your changes
+1. **Fork the repository** to your personal GitHub account
+2. **Create a feature branch** in your fork for your changes
 3. **Make your changes** following our coding standards
 4. **Write or update tests** for your changes
-5. **Submit a pull request** against the `main` branch
+5. **Submit a pull request** from your fork to the main repository's `main` branch
+
+## Important Note on Branch Protection
+
+All branches in the main repository have branch protection rules applied. This means:
+
+- Direct pushing to any branch in the main repository is restricted
+- All changes must go through the fork and pull request workflow
+- Pull requests require review before merging
+- Code must pass CI checks before it can be merged
 
 ## Branching Strategy
 
-- `main` branch is the default branch and is protected
+When working in your fork:
+
 - Feature branches should be named following this convention:
   - `feature/short-description` for new features
   - `bugfix/issue-number-short-description` for bug fixes
@@ -53,10 +63,25 @@ We loosely follow the [Conventional Commits](https://www.conventionalcommits.org
 
 ## Setting Up Development Environment
 
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Set up environment variables (see `.env.example`)
-4. Start the development server: `npm run dev`
+1. Fork the repository on GitHub
+2. Clone your fork: `git clone https://github.com/YOUR-USERNAME/authentic-reader.git`
+3. Add the upstream repository: `git remote add upstream https://github.com/robotwist/authentic-reader.git`
+4. Install dependencies: `npm install`
+5. Set up environment variables (see `.env.example`)
+6. Start the development server: `npm run dev`
+
+## Keeping Your Fork Updated
+
+Regularly sync your fork with the upstream repository:
+
+```
+git fetch upstream
+git checkout main
+git merge upstream/main
+git push origin main
+```
+
+Then create new feature branches from your updated main branch.
 
 ## Additional Resources
 
@@ -66,4 +91,4 @@ We loosely follow the [Conventional Commits](https://www.conventionalcommits.org
 
 ## License
 
-By contributing to Authentic Reader, you agree that your contributions will be licensed under the project's license. 
+By contributing to Authentic Reader, you agree that your contributions will be licensed under the project's license.
