@@ -248,11 +248,38 @@ For detailed information about the application architecture, see [ARCHITECTURE.m
 
 Authentic Reader takes security seriously, especially regarding API token management and secure coding practices.
 
-### API Token Security
+### API Tokens and Secrets
 
-- **Use Fine-Grained Tokens**: Always use fine-grained tokens with minimal permissions
-- **Never Commit Tokens**: Store tokens only in `.env` files excluded from git
-- **Regularly Rotate Tokens**: Create new tokens periodically (recommended every 90 days)
+To keep your API tokens and secrets secure:
+
+1. **Never commit tokens to Git**: Always store sensitive information in environment variables.
+
+2. **Use the setup script**: Run our setup script to configure your environment:
+   ```bash
+   node setup-dev.js
+   ```
+
+3. **Rotate tokens regularly**: Regenerate your API tokens periodically, especially if you suspect they may have been exposed.
+
+4. **Use fine-grained access**: Create tokens with minimal permissions required for your use case.
+
+5. **Verify .gitignore**: Ensure `.env` files are included in your `.gitignore` file.
+
+6. **Check for accidental commits**: Use tools like `git-secrets` to scan for accidentally committed credentials.
+
+7. **For production**: Set environment variables on your hosting platform rather than using `.env` files.
+
+### Handling Token Exposure
+
+If you suspect an API token has been exposed:
+
+1. **Revoke the token immediately**: Go to [Hugging Face Settings](https://huggingface.co/settings/tokens) and delete the compromised token.
+
+2. **Create a new token**: Generate a fresh token with appropriate permissions.
+
+3. **Update all environments**: Update the token in all your development and production environments.
+
+4. **Monitor usage**: Keep an eye on API usage for any unauthorized access.
 
 ### Security Tools
 

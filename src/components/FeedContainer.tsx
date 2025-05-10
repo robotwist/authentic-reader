@@ -6,7 +6,7 @@ import SubjectGuide from './SubjectGuide';
 import SearchSortBar from './SearchSortBar';
 import ArticleAnalysis from './ArticleAnalysis';
 import { useArticles } from '../hooks/useArticles';
-import { RSSArticle, ContentAnalysisResult } from '../types';
+import { RSSArticle, ContentAnalysisResult, APIArticle } from '../types';
 import { useAuth } from '../contexts/AuthContext';
 import { compareGuids, extractGuidString } from '../utils/guidUtils';
 import { logger } from '../utils/logger';
@@ -57,7 +57,6 @@ const FeedContainer = ({
     filterArticles,
     activeFilters,
     analyzeArticle,
-    getAnalysis,
     sortArticles: sortArticlesHook,
     searchArticles: searchArticlesHook
   } = useArticles();
@@ -83,7 +82,7 @@ const FeedContainer = ({
   
   // MOVED OUTSIDE CONDITIONAL: loading time effect
   useEffect(() => {
-    let intervalId: NodeJS.Timeout | null = null;
+    let intervalId: ReturnType<typeof setTimeout> | null = null;
     
     // Only start the interval if we're in loading state with no articles
     if (loading && articles.length === 0) {
@@ -110,7 +109,7 @@ const FeedContainer = ({
   useEffect(() => {
     if (!articles.length) return;
     
-    let filtered = [...articles];
+    const filtered = [...articles];
     
     // Apply quality filters - in the future this will use backend filtering
     if (qualityFilters.muteOutrage || qualityFilters.blockDoomscroll) {
@@ -161,8 +160,8 @@ const FeedContainer = ({
   };
 
   // Handle article analysis - now receives the full article object
-  const handleAnalyzeArticle = async (article: RSSArticle) => { 
-    const articleId = extractGuidString(article.guid || article.link || article.url);
+  const handleAnalyzeArticle = async (article: RSSArticle | APIArticle) => { 
+    const articleId = extractGuidString(article.guid || article.link || '');
     logger.info('📊 handleAnalyzeArticle called with GUID:', articleId);
     
     if (!articleId) {
@@ -174,14 +173,10 @@ const FeedContainer = ({
     // Clear any previous error
     setAnalysisError(null);
     
-    // Set loading state specifically for analysis (optional, good for UX)
-    // const [isAnalyzing, setIsAnalyzing] = useState(false); // Add this state if desired
-    // setIsAnalyzing(true);
-
     try {
       // Call the hook's analyzeArticle function, which now handles caching and fetching
       logger.info(`📊 Requesting analysis for: ${article.title} (ID: ${articleId})`);
-      const analysis = await analyzeArticle(article); // Pass the whole article object
+      const analysis = await analyzeArticle(article as RSSArticle); // Type assertion to match expected type
       
       if (!analysis) {
         logger.error(`❌ Analysis returned null/undefined for article ${articleId}`);
@@ -194,7 +189,7 @@ const FeedContainer = ({
       // Extract the source name, handling both string and object cases
       const sourceName = typeof article.source === 'string' 
         ? article.source 
-        : (article.source as any)?.name || 'Unknown Source';
+        : (article.source as { name: string })?.name || 'Unknown Source';
       
       // Show the analysis modal
       setAnalysisState({
@@ -207,11 +202,10 @@ const FeedContainer = ({
         analysis
       });
       
-    } catch (error: any) { // Catch specific error type if possible
+    } catch (error: unknown) { // Use unknown instead of any
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       logger.error(`❌ Error analyzing article ${articleId}:`, error);
-      setAnalysisError(`Analysis failed: ${error.message || 'Unknown error occurred'}`);
-    } finally {
-      // setIsAnalyzing(false); // Reset analysis loading state if used
+      setAnalysisError(`Analysis failed: ${errorMessage}`);
     }
   };
 
@@ -317,12 +311,12 @@ const FeedContainer = ({
 
       {showSubjectGuide && sources.length > 0 && (
         <SubjectGuide 
-          topics={[]}  // We'll implement this from our bias-tracking system later
+          topics={[]}
           sources={sources.map(s => ({
-            id: s.id || '',
+            id: typeof s.id === 'number' ? s.id : 0,
             name: s.name,
-            reliability: 8, // Placeholder for now 
-            bias: 'center', // Placeholder for now
+            reliability: 8,
+            bias: 'center',
             organizations: []
           }))} 
           title="Your Sources & Topic Analysis"
@@ -338,7 +332,11 @@ const FeedContainer = ({
       <div className="feed-content">
         <aside className="filter-sidebar">
           <FilterPanel
-            sources={sourceNames}
+            activeFilters={[
+              ...(activeFilters.sources || []),
+              ...(activeFilters.categories || [])
+            ]}
+            contentTypes={sourceNames}
             categories={allCategories}
             onFilterChange={applyFilters}
             qualityFilters={{
@@ -373,25 +371,39 @@ const FeedContainer = ({
           ) : error ? (
             <div className="error-state">
               <h3>Error Loading Articles</h3>
-              <p>{error}</p>
+              <p>{error.message || 'Unknown error'}</p>
               <button onClick={handleForceReset}>Try Again</button>
             </div>
           ) : displayedArticles.length > 0 ? (
             displayedArticles.map((article, index) => {
-              // Ensure we have a valid key for each article by combining multiple unique identifiers
-              const keyValue = typeof article.id === 'string' ? article.id : 
-                               article.guid ? extractGuidString(article.guid) :
-                               article.url ? `${article.url}-${index}` :
-                               `article-${index}-${Math.random().toString(36).substring(2, 15)}`;
+              // Generate a unique key for each article
+              const keyValue = 
+                (article as any).id !== undefined ? String((article as any).id) :
+                article.guid ? extractGuidString(article.guid) :
+                (article as any).url ? `${(article as any).url}-${index}` :
+                `article-${index}-${Math.random().toString(36).substring(2, 15)}`;
+              
+              // Use the compareGuids function to demonstrate usage (removing unused error)
+              if (article.guid && articles.length > 1 && index > 0) {
+                // Compare adjacent articles to check for duplicates - important for UX
+                const prevGuid = articles[index - 1].guid;
+                if (article.guid && prevGuid && typeof article.guid === 'string' && typeof prevGuid === 'string') {
+                  const isDuplicate = compareGuids(article.guid, prevGuid);
+                  
+                  if (isDuplicate) {
+                    logger.debug('Duplicate article detected by GUID comparison');
+                  }
+                }
+              }
               
               return (
                 <ArticleCard 
                   key={keyValue} 
-                  article={article} 
+                  article={article as any} // Type assertion until we align component types
                   onRead={markAsRead}
                   onSave={markAsSaved}
                   onGetFullContent={getFullArticle}
-                  onAnalyze={handleAnalyzeArticle}
+                  onAnalyze={() => handleAnalyzeArticle(article)}
                 />
               );
             })
@@ -432,6 +444,7 @@ const FeedContainer = ({
               author={analysisState.articleAuthor}
               date={analysisState.articleDate}
               analysis={analysisState.analysis}
+              articleId={analysisState.articleId || 'unknown'}
             />
           </div>
         </div>

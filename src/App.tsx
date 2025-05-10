@@ -38,6 +38,7 @@ import ArticleImporter from './components/ArticleImporter';
 import Login from './components/Login';
 import Register from './components/Register';
 import { ThemeProvider } from './contexts/ThemeContext';
+import FeedbackDashboard from './components/FeedbackDashboard';
 
 // Default RSS feeds to load on first run
 const DEFAULT_SOURCES = [
@@ -315,6 +316,22 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <UserProfile />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/feedback" 
+                  element={
+                    <ProtectedRoute>
+                      <FeedbackDashboard />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/analytics" 
+                  element={
+                    <ProtectedRoute>
+                      <FeedbackDashboard />
                     </ProtectedRoute>
                   } 
                 />

@@ -8,6 +8,7 @@ import {
 } from '../services/contentAnalysisService';
 import ManipulationAnalysis from './ManipulationAnalysis';
 import EmotionAnalysis from './EmotionAnalysis';
+import FeedbackPanel from './FeedbackPanel';
 
 interface ArticleAnalysisProps {
   title: string;
@@ -15,6 +16,7 @@ interface ArticleAnalysisProps {
   author?: string;
   date?: string;
   analysis: ContentAnalysisResult;
+  articleId?: string;
 }
 
 // Helper function for getting bias type name
@@ -40,7 +42,8 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
   source,
   author,
   date,
-  analysis
+  analysis,
+  articleId = 'unknown'
 }) => {
   const [activeTab, setActiveTab] = useState<'fallacies' | 'bias' | 'metrics' | 'manipulation' | 'emotions'>('fallacies');
   
@@ -205,6 +208,12 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
               No logical fallacies were detected in this article.
             </div>
           )}
+          
+          <FeedbackPanel 
+            articleId={articleId}
+            analysisType="fallacy"
+            originalPrediction={analysis.logicalFallacies}
+          />
         </div>
       )}
       
@@ -255,6 +264,12 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
               )}
             </div>
           </div>
+          
+          <FeedbackPanel 
+            articleId={articleId}
+            analysisType="bias"
+            originalPrediction={analysis.biasAnalysis}
+          />
         </div>
       )}
       
@@ -358,12 +373,24 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
               </div>
             </div>
           </div>
+          
+          <FeedbackPanel 
+            articleId={articleId}
+            analysisType="metrics"
+            originalPrediction={analysis.metadata}
+          />
         </div>
       )}
       
       {activeTab === 'manipulation' && (
         <div className="manipulation-tab">
           <ManipulationAnalysis manipulationAnalysis={analysis.manipulationAnalysis} />
+          
+          <FeedbackPanel 
+            articleId={articleId}
+            analysisType="manipulation"
+            originalPrediction={analysis.manipulationAnalysis}
+          />
         </div>
       )}
       
@@ -372,6 +399,15 @@ const ArticleAnalysis: React.FC<ArticleAnalysisProps> = ({
           <EmotionAnalysis 
             emotionAnalysis={analysis.emotionAnalysis} 
             sentiment={analysis.sentiment}
+          />
+          
+          <FeedbackPanel 
+            articleId={articleId}
+            analysisType="emotion"
+            originalPrediction={{
+              emotions: analysis.emotionAnalysis,
+              sentiment: analysis.sentiment
+            }}
           />
         </div>
       )}
