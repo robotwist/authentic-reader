@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentic Reader - Server Monitor</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --dark: #34495e;
+            --light: #ecf0f1;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--dark);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--primary);
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-dot {
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-dot.online {
+            background-color: var(--secondary);
+            box-shadow: 0 0 8px var(--secondary);
+        }
+        
+        .status-dot.offline {
+            background-color: var(--danger);
+            box-shadow: 0 0 8px var(--danger);
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h2 {
+            margin-top: 0;
+            color: var(--dark);
+            font-size: 1.2rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .metric-value {
+            font-weight: bold;
+        }
+        
+        .good {
+            color: var(--secondary);
+        }
+        
+        .warning {
+            color: var(--warning);
+        }
+        
+        .critical {
+            color: var(--danger);
+        }
+        
+        .logs {
+            grid-column: 1 / -1;
+            min-height: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .logs-content {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            height: 300px;
+            overflow-y: auto;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 200px;
+            margin-top: 20px;
+        }
+        
+        .resource-bar {
+            height: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .resource-fill {
+            height: 100%;
+            border-radius: 5px;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Animations */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Toggle for Dark Mode */
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        /* Process List Styling */
+        .process-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .process-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .process-item:last-child {
+            border-bottom: none;
+        }
+        
+        .process-name {
+            font-weight: bold;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .badge-running {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .badge-stopped {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .refresh-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background-color 0.3s;
+        }
+        
+        .refresh-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Authentic Reader - Server Monitor</h1>
+        <div class="status-indicator">
+            <div class="status-dot offline" id="connection-status"></div>
+            <span id="status-text">Connecting...</span>
+            <button class="theme-toggle" id="theme-toggle">☀️</button>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="dashboard">
+            <div class="card">
+                <h2>System Information</h2>
+                <div class="metric">
+                    <span>Host:</span>
+                    <span class="metric-value" id="hostname">Loading...</span>
+                </div>
+                <div class="metric">
+                    <span>Platform:</span>
+                    <span class="metric-value" id="platform">Loading...</span>
+                </div>
+                <div class="metric">
+                    <span>Uptime:</span>
+                    <span class="metric-value" id="uptime">Loading...</span>
+                </div>
+                <div class="metric">
+                    <span>CPU Usage:</span>
+                    <span class="metric-value" id="cpu-usage">Loading...</span>
+                </div>
+                <div class="resource-bar">
+                    <div class="resource-fill" id="cpu-bar"></div>
+                </div>
+                <div class="metric">
+                    <span>Memory Usage:</span>
+                    <span class="metric-value" id="memory-usage">Loading...</span>
+                </div>
+                <div class="resource-bar">
+                    <div class="resource-fill" id="memory-bar"></div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Database Status</h2>
+                <div class="metric">
+                    <span>Status:</span>
+                    <span class="metric-value" id="db-status">Loading...</span>
+                </div>
+                <div class="metric">
+                    <span>Connection Pool:</span>
+                    <span class="metric-value" id="db-connections">Loading...</span>
+                </div>
+                <div class="metric">
+                    <span>Active Queries:</span>
+                    <span class="metric-value" id="db-queries">Loading...</span>
+                </div>
+                <div class="metric">
+                    <span>Response Time:</span>
+                    <span class="metric-value" id="db-response-time">Loading...</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Server Processes</h2>
+                <div class="process-list" id="process-list">
+                    <div class="loading-message">Loading process information...</div>
+                </div>
+                <button class="refresh-button" id="refresh-processes">Refresh Processes</button>
+            </div>
+            
+            <div class="card logs">
+                <h2>
+                    Recent Logs
+                    <button class="refresh-button" id="refresh-logs">Refresh Logs</button>
+                </h2>
+                <div class="logs-content" id="logs-content">Fetching logs...</div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Connect to the WebSocket server
+        const socket = io();
+        
+        // DOM elements
+        const connectionStatus = document.getElementById('connection-status');
+        const statusText = document.getElementById('status-text');
+        const logsContent = document.getElementById('logs-content');
+        const refreshLogsBtn = document.getElementById('refresh-logs');
+        const refreshProcessesBtn = document.getElementById('refresh-processes');
+        
+        // Connection status handling
+        socket.on('connect', () => {
+            connectionStatus.classList.remove('offline');
+            connectionStatus.classList.add('online');
+            statusText.textContent = 'Connected';
+            
+            // Request initial data
+            socket.emit('requestSystemInfo');
+            socket.emit('requestDatabaseStatus');
+            socket.emit('requestProcessInfo');
+            socket.emit('requestLogs');
+        });
+        
+        socket.on('disconnect', () => {
+            connectionStatus.classList.remove('online');
+            connectionStatus.classList.add('offline');
+            statusText.textContent = 'Disconnected';
+        });
+        
+        // System information handling
+        socket.on('systemInfo', (data) => {
+            document.getElementById('hostname').textContent = data.hostname;
+            document.getElementById('platform').textContent = `${data.platform} (${data.arch})`;
+            document.getElementById('uptime').textContent = formatUptime(data.uptime);
+            
+            const cpuUsage = parseFloat(data.cpuUsage).toFixed(1);
+            document.getElementById('cpu-usage').textContent = `${cpuUsage}%`;
+            document.getElementById('cpu-bar').style.width = `${cpuUsage}%`;
+            
+            if (cpuUsage > 80) {
+                document.getElementById('cpu-usage').className = 'metric-value critical';
+                document.getElementById('cpu-bar').style.backgroundColor = 'var(--danger)';
+            } else if (cpuUsage > 60) {
+                document.getElementById('cpu-usage').className = 'metric-value warning';
+                document.getElementById('cpu-bar').style.backgroundColor = 'var(--warning)';
+            } else {
+                document.getElementById('cpu-usage').className = 'metric-value good';
+                document.getElementById('cpu-bar').style.backgroundColor = 'var(--secondary)';
+            }
+            
+            const memoryUsed = formatBytes(data.memoryUsed);
+            const memoryTotal = formatBytes(data.memoryTotal);
+            const memoryPercentage = Math.round((data.memoryUsed / data.memoryTotal) * 100);
+            
+            document.getElementById('memory-usage').textContent = `${memoryUsed} / ${memoryTotal} (${memoryPercentage}%)`;
+            document.getElementById('memory-bar').style.width = `${memoryPercentage}%`;
+            
+            if (memoryPercentage > 80) {
+                document.getElementById('memory-usage').className = 'metric-value critical';
+                document.getElementById('memory-bar').style.backgroundColor = 'var(--danger)';
+            } else if (memoryPercentage > 60) {
+                document.getElementById('memory-usage').className = 'metric-value warning';
+                document.getElementById('memory-bar').style.backgroundColor = 'var(--warning)';
+            } else {
+                document.getElementById('memory-usage').className = 'metric-value good';
+                document.getElementById('memory-bar').style.backgroundColor = 'var(--secondary)';
+            }
+        });
+        
+        // Database status handling
+        socket.on('databaseStatus', (data) => {
+            document.getElementById('db-status').textContent = data.connected ? 'Connected' : 'Disconnected';
+            document.getElementById('db-status').className = data.connected ? 'metric-value good' : 'metric-value critical';
+            
+            document.getElementById('db-connections').textContent = `${data.activeConnections} / ${data.maxConnections}`;
+            document.getElementById('db-queries').textContent = data.activeQueries;
+            document.getElementById('db-response-time').textContent = `${data.responseTime} ms`;
+        });
+        
+        // Process information handling
+        socket.on('processInfo', (processes) => {
+            const processList = document.getElementById('process-list');
+            processList.innerHTML = '';
+            
+            processes.forEach(process => {
+                const processItem = document.createElement('div');
+                processItem.className = 'process-item';
+                
+                const status = process.running ? 'running' : 'stopped';
+                
+                processItem.innerHTML = `
+                    <div class="process-name">${process.name} <span class="badge badge-${status}">${status}</span></div>
+                    <div class="metric">
+                        <span>PID:</span>
+                        <span class="metric-value">${process.pid || 'N/A'}</span>
+                    </div>
+                    <div class="metric">
+                        <span>Memory:</span>
+                        <span class="metric-value">${process.memory ? formatBytes(process.memory) : 'N/A'}</span>
+                    </div>
+                    <div class="metric">
+                        <span>CPU:</span>
+                        <span class="metric-value">${process.cpu ? process.cpu + '%' : 'N/A'}</span>
+                    </div>
+                `;
+                
+                processList.appendChild(processItem);
+            });
+        });
+        
+        // Logs handling
+        socket.on('logs', (logs) => {
+            logsContent.textContent = logs;
+            logsContent.scrollTop = logsContent.scrollHeight;
+        });
+        
+        // Event listeners
+        refreshLogsBtn.addEventListener('click', () => {
+            socket.emit('requestLogs');
+        });
+        
+        refreshProcessesBtn.addEventListener('click', () => {
+            socket.emit('requestProcessInfo');
+        });
+        
+        // Set up auto-refresh
+        setInterval(() => {
+            if (socket.connected) {
+                socket.emit('requestSystemInfo');
+            }
+        }, 5000);
+        
+        setInterval(() => {
+            if (socket.connected) {
+                socket.emit('requestDatabaseStatus');
+                socket.emit('requestProcessInfo');
+            }
+        }, 10000);
+        
+        // Helper functions
+        function formatUptime(seconds) {
+            const days = Math.floor(seconds / (3600 * 24));
+            const hours = Math.floor(seconds % (3600 * 24) / 3600);
+            const minutes = Math.floor(seconds % 3600 / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            
+            return `${days}d ${hours}h ${minutes}m ${remainingSeconds}s`;
+        }
+        
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+            
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+        
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        let darkMode = false;
+        
+        themeToggle.addEventListener('click', () => {
+            darkMode = !darkMode;
+            document.body.style.backgroundColor = darkMode ? '#1a1a1a' : '#f5f7fa';
+            document.body.style.color = darkMode ? '#f5f5f5' : '#333';
+            
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.style.backgroundColor = darkMode ? '#2d2d2d' : 'white';
+                card.style.color = darkMode ? '#f5f5f5' : '#333';
+            });
+            
+            const cardTitles = document.querySelectorAll('.card h2');
+            cardTitles.forEach(title => {
+                title.style.color = darkMode ? '#f5f5f5' : 'var(--dark)';
+                title.style.borderBottomColor = darkMode ? '#444' : '#eee';
+            });
+            
+            const processItems = document.querySelectorAll('.process-item');
+            processItems.forEach(item => {
+                item.style.borderBottomColor = darkMode ? '#444' : '#eee';
+            });
+            
+            themeToggle.textContent = darkMode ? '🌙' : '☀️';
+        });
+    </script>
+</body>
+</html> 
