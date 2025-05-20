@@ -1,14 +1,19 @@
 /**
  * Admin routes for ONNX model management
  */
-const express = require('express');
+import express from 'express';
+import { adminRequired } from '../../middleware/auth.js';
+import { spawn } from 'child_process';
+import path from 'path';
+import { promises as fs } from 'fs';
+import winston from 'winston';
+import onnxService from '../../services/onnxService.js';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const router = express.Router();
-const { adminRequired } = require('../../middleware/auth');
-const { spawn } = require('child_process');
-const path = require('path');
-const fs = require('fs').promises;
-const winston = require('winston');
-const onnxService = require('../../services/onnxService');
 
 // Get logger instance
 const logger = winston.createLogger({
@@ -228,4 +233,4 @@ router.delete('/models/:modelName', async (req, res) => {
   }
 });
 
-module.exports = router; 
+export default router; 

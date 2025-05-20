@@ -1,0 +1,36 @@
+# <type>(<scope>): <subject>
+# |<---- Using a maximum of 50 characters --->|
+
+
+# <body>
+# |<---- Using a maximum of 72 characters --->|
+
+
+# --- COMMIT MESSAGE FORMAT ---
+# <type>(<scope>): <subject>
+# <BLANK LINE>
+# <body>
+# <BLANK LINE>
+# <footer>
+# ---
+# 
+# type values:
+#    feat     (new feature)
+#    fix      (bug fix)
+#    refactor (refactoring code)
+#    style    (formatting, missing semicolons, etc; no code change)
+#    docs     (changes to documentation)
+#    test     (adding or changing tests; no production code change)
+#    chore    (updating build tasks, package manager configs, etc; no production code change)
+#
+# Example scope values:
+#    server
+#    client
+#    routes
+#    models
+#    auth
+#    onnx
+#    utils
+#
+# See https://www.conventionalcommits.org/
+# for more details 

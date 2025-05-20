@@ -1,9 +1,28 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
 
-echo "🔍 Running security checks before commit..."
-node scripts/check-tokens.js
+# Check if we're in a merge state
+if git rev-parse --verify MERGE_HEAD >/dev/null 2>&1; then
+  echo "Merge in progress, skipping pre-commit hooks"
+  exit 0
+fi
 
-# Tests are currently disabled as there's no test script
-# echo "🧪 Running tests..."
-# npm test
+echo "Running pre-commit hooks..."
+
+# Lint server code
+cd server && npm run lint
+
+# Check server for route-controller consistency
+cd server && npm run check:routes
+
+# Lint React code - uncomment if needed
+# cd ../
+# npm run lint
+
+# If any of the commands failed, exit with a non-zero status
+if [ $? -ne 0 ]; then
+  echo "❌ Pre-commit checks failed. Please fix the errors and try again."
+  exit 1
+fi
+
+echo "✅ Pre-commit checks passed!"

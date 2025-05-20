@@ -1,32 +1,45 @@
-require('dotenv').config();
-const express = require('express');
-const axios = require('axios');
-const cors = require('cors');
-const { parseStringPromise } = require('xml2js');
+import 'dotenv/config';
+import express from 'express';
+import axios from 'axios';
+import cors from 'cors';
+import { parseStringPromise } from 'xml2js';
+
+// Import monitoring tools
+import monitorService from './services/monitorService.js';
+import { requestMonitor, errorMonitor } from './middleware/monitorMiddleware.js';
+import monitorRoutes from './routes/monitorRoutes.js';
+
+// Import database models and utilities
+import db from './models/index.js';
+const { sequelize } = db;
+
+// Import user maintenance utilities
+import { ensureAdminUsers, verifyUserPasswords } from './utils/userMaintenance.js';
+
+// Import services
+import onnxService from './services/onnxService.js';
+
+// Import routes
+import userRoutes from './routes/user.js';
+import sourceRoutes from './routes/source.js';
+import articleRoutes from './routes/article.js';
+import adminRoutes from './routes/admin.js';
+import onnxRoutes from './routes/onnx.js';
+import analysisRoutes from './routes/analysis.js';
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Import database models
-const db = require('./models');
-const sequelize = db.sequelize;
-
-// Import user maintenance utilities
-const { ensureAdminUsers, verifyUserPasswords } = require('./utils/userMaintenance');
-
-// Import services
-const onnxService = require('./services/onnxService');
-
-// Import routes
-const userRoutes = require('./routes/user');
-const sourceRoutes = require('./routes/source');
-const articleRoutes = require('./routes/article');
-const adminRoutes = require('./routes/admin');
-const onnxRoutes = require('./routes/onnx');
+// Initialize monitoring service
+monitorService.init();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Apply monitoring middleware to all requests
+app.use(requestMonitor);
 
 // API routes
 app.use('/api/users', userRoutes);
@@ -34,6 +47,8 @@ app.use('/api/sources', sourceRoutes);
 app.use('/api/articles', articleRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/onnx', onnxRoutes);
+app.use('/api/analysis', analysisRoutes);
+app.use('/api/monitor', monitorRoutes);
 
 // Enable verbose login debugging
 app.use((req, res, next) => {
@@ -226,6 +241,9 @@ app.get('/api/content', async (req, res) => {
   }
 });
 
+// Apply error monitoring middleware
+app.use(errorMonitor);
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -259,6 +277,7 @@ const startServer = async () => {
       } catch (error) {
         console.error('Unable to connect to the database or run maintenance:', error);
         console.error('Is the database server running and accessible?');
+        monitorService.recordError('startup', error);
         process.exit(1);
       }
     });
@@ -266,19 +285,23 @@ const startServer = async () => {
     // Handle server errors
     serverInstance.on('error', (error) => {
       if (error.syscall !== 'listen') {
+        monitorService.recordError('server', error);
         throw error;
       }
       switch (error.code) {
         case 'EACCES':
           console.error(`Port ${PORT} requires elevated privileges`);
+          monitorService.recordError('server', new Error(`Port ${PORT} requires elevated privileges`));
           process.exit(1);
           break;
         case 'EADDRINUSE':
           console.error(`Port ${PORT} is already in use`);
+          monitorService.recordError('server', new Error(`Port ${PORT} is already in use`));
           // Attempt to gracefully handle or notify, instead of exiting immediately
           // process.exit(1);
           break;
         default:
+          monitorService.recordError('server', error);
           throw error;
       }
     });
@@ -290,12 +313,9 @@ const startServer = async () => {
 };
 
 // Call startServer only if this file is run directly (not required by tests)
-if (require.main === module) {
+if (import.meta.url === import.meta.main) {
   startServer();
 }
-
-// Export the Express app instance for testing
-module.exports = app;
 
 // Graceful shutdown (optional but recommended)
 process.on('SIGTERM', () => {
@@ -304,6 +324,10 @@ process.on('SIGTERM', () => {
     serverInstance.close(() => {
       console.log('HTTP server closed');
       sequelize.close().then(() => console.log('DB connection closed'));
+      monitorService.shutdown();
     });
   }
-}); 
+});
+
+// Export the Express app instance for testing
+export default app; 

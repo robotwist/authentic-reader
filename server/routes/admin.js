@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import { authenticate, adminRequired } from '../middleware/auth.js';
+import * as adminController from '../controllers/adminController.js';
+import onnxAdminRoutes from './admin/onnx.js';
+
 const router = express.Router();
-const { authenticate, adminRequired } = require('../middleware/auth');
-const adminController = require('../controllers/adminController');
-const onnxAdminRoutes = require('./admin/onnx');
 
 // All routes in this file require authentication
 router.use(authenticate);
@@ -23,4 +24,4 @@ router.get('/stats', adminController.getStats);
 // ONNX model management routes
 router.use('/onnx', onnxAdminRoutes);
 
-module.exports = router; 
+export default router; 

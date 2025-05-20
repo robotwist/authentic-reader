@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+coverage/
+.env
+.env.*
+/server/
+*.css
+*.scss
+*.svg
+vite.config.js
+vite-env.d.ts
+*.json
+*.html 

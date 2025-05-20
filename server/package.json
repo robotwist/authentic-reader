@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Backend server for Authentic Reader",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
@@ -11,7 +12,13 @@
     "seed": "sequelize-cli db:seed:all",
     "migrate:undo": "sequelize-cli db:migrate:undo",
     "setup-db": "npm run migrate && npm run seed",
-    "setup": "node setup.js"
+    "setup": "node setup.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:routes": "eslint ./routes/ --fix",
+    "lint:controllers": "eslint ./controllers/ --fix",
+    "lint:report": "eslint . --format html --output-file ./eslint-report.html",
+    "check:routes": "node tools/check-controller-routes.js"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",
@@ -25,10 +32,12 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "node-fetch": "^3.3.2",
-    "onnxruntime-node": "^1.16.3",
+    "onnxruntime-node": "^1.18.0",
+    "perf_hooks": "^0.0.1",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.1",
+    "uuid": "^9.0.1",
     "winston": "^3.8.2",
     "xml2js": "^0.6.2"
   },
@@ -36,6 +45,9 @@
     "@types/jest": "^29.5.14",
     "@types/supertest": "^6.0.3",
     "cross-env": "^7.0.3",
+    "eslint": "^9.26.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-node": "^11.1.0",
     "jest": "^29.7.0",
     "nodemon": "^3.1.10",
     "sequelize-cli": "^6.6.2",

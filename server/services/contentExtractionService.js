@@ -1,6 +1,6 @@
-const axios = require('axios');
-const { JSDOM } = require('jsdom');
-const { Readability } = require('@mozilla/readability');
+import axios from 'axios';
+import { JSDOM } from 'jsdom';
+import { Readability } from '@mozilla/readability';
 
 /**
  * Fetches the HTML content of a given URL.
@@ -64,7 +64,7 @@ function extractArticleContent(html, url) {
  * @param {string} url The URL of the article to fetch and process.
  * @returns {Promise<Object|null>} The extracted article content object or null if any step fails.
  */
-async function fetchAndExtractArticle(url) {
+export async function fetchAndExtractArticle(url) {
   const html = await fetchHtml(url);
   if (!html) {
     return null; // Fetching failed
@@ -79,8 +79,4 @@ async function fetchAndExtractArticle(url) {
   }
   
   return extractedContent;
-}
-
-module.exports = {
-  fetchAndExtractArticle
-}; 
+} 

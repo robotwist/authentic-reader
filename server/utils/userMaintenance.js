@@ -1,11 +1,11 @@
-const { User } = require('../models');
-const bcrypt = require('bcrypt');
+import { User } from '../models/index.js';
+import bcrypt from 'bcrypt';
 
 /**
  * Check for administrator accounts and ensure they're properly configured.
  * If no admin users exist, this will create a default admin.
  */
-async function ensureAdminUsers() {
+export async function ensureAdminUsers() {
   try {
     console.log('Checking for admin users...');
     
@@ -65,7 +65,7 @@ async function ensureAdminUsers() {
  * Verify that user password hashes are valid and fix them if needed.
  * This helps recover from issues with password hashing.
  */
-async function verifyUserPasswords() {
+export async function verifyUserPasswords() {
   try {
     // Only run this check in development mode
     if (process.env.NODE_ENV !== 'development') {
@@ -124,9 +124,4 @@ async function verifyUserPasswords() {
   } catch (error) {
     console.error('Error verifying user passwords:', error);
   }
-}
-
-module.exports = {
-  ensureAdminUsers,
-  verifyUserPasswords
-}; 
+} 

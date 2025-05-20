@@ -1,17 +1,19 @@
-const express = require('express');
-const router = express.Router();
-const userController = require('../controllers/userController');
-const { authenticate } = require('../middleware/auth');
+import express from 'express';
+import * as userController from '../controllers/userController.js';
+import { authenticate } from '../middleware/auth.js';
 
-// Public routes
+const router = express.Router();
+
+// Auth routes (no auth required)
 router.post('/register', userController.register);
 router.post('/login', userController.login);
+router.post('/refresh-token', userController.refreshToken);
 
-// Protected routes - require authentication
-router.get('/profile', authenticate, userController.getProfile);
-router.put('/profile', authenticate, userController.updateProfile);
-router.put('/password', authenticate, userController.updatePassword);
-router.get('/preferences', authenticate, userController.getPreferences);
-router.put('/preferences', authenticate, userController.updatePreferences);
+// Protected routes (auth required)
+router.use(authenticate);
+router.get('/profile', userController.getProfile);
+router.patch('/profile', userController.updateProfile);
+router.patch('/password', userController.changePassword);
+router.delete('/account', userController.deleteAccount);
 
-module.exports = router; 
+export default router; 

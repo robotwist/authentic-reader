@@ -7,6 +7,7 @@ import UserProfile from './components/UserProfile';
 import AdminDashboard from './components/AdminDashboard';
 import AnalysisTest from './components/AnalysisTest';
 import EnvTest from './components/EnvTest';
+import ServerMonitor from './components/ServerMonitor';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { 
   initializeDB, 
@@ -360,6 +361,14 @@ function App() {
                   element={
                     <AdminRoute>
                       <AdminDashboard />
+                    </AdminRoute>
+                  } 
+                />
+                <Route 
+                  path="/admin/monitor" 
+                  element={
+                    <AdminRoute>
+                      <ServerMonitor />
                     </AdminRoute>
                   } 
                 />

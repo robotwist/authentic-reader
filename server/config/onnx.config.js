@@ -10,7 +10,7 @@ require('dotenv').config();
 // Base directory for storing ONNX models
 const MODELS_BASE_DIR = process.env.ONNX_MODELS_DIR || './models/onnx';
 
-module.exports = {
+const onnxConfig = {
   // Directory paths
   directories: {
     modelsDir: MODELS_BASE_DIR,
@@ -88,4 +88,6 @@ module.exports = {
     logLevel: process.env.ONNX_LOG_LEVEL || 'warning',
     enableMetrics: process.env.ONNX_ENABLE_METRICS === 'true',
   },
-}; 
+};
+
+export default onnxConfig; 

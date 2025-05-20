@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { Link } from 'react-router-dom';
 import '../styles/AdminDashboard.css';
 
 interface User {
@@ -22,7 +23,7 @@ const AdminDashboard: React.FC = () => {
   const [sources, setSources] = useState<Source[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'users' | 'sources'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'sources' | 'monitoring'>('users');
   
   // New user form state
   const [newUser, setNewUser] = useState({
@@ -324,6 +325,12 @@ const AdminDashboard: React.FC = () => {
         >
           Sources
         </button>
+        <button 
+          className={`tab-button ${activeTab === 'monitoring' ? 'active' : ''}`}
+          onClick={() => setActiveTab('monitoring')}
+        >
+          Monitoring
+        </button>
       </div>
       
       {activeTab === 'users' && (
@@ -529,6 +536,38 @@ const AdminDashboard: React.FC = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'monitoring' && (
+        <div className="admin-section">
+          <h2>System Monitoring</h2>
+          
+          <div className="monitoring-card">
+            <h3>Real-time Server Monitoring</h3>
+            <p>
+              Monitor server performance, response times, memory usage, and application errors
+              in real time. Use this dashboard to identify and diagnose issues.
+            </p>
+            <Link to="/admin/monitor" className="btn-primary">
+              Open Monitoring Dashboard
+            </Link>
+          </div>
+          
+          <div className="monitoring-features">
+            <div className="feature-item">
+              <h4>Performance Metrics</h4>
+              <p>Track API response times, memory usage, and system load</p>
+            </div>
+            <div className="feature-item">
+              <h4>Error Tracking</h4>
+              <p>View application errors and exceptions in real time</p>
+            </div>
+            <div className="feature-item">
+              <h4>API Usage</h4>
+              <p>Monitor endpoint usage and success rates</p>
+            </div>
           </div>
         </div>
       )}

@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const { User } = require('../models');
+import jwt from 'jsonwebtoken';
+import { User } from '../models/index.js';
 
 /**
  * Authentication middleware that verifies the JWT token
@@ -109,7 +109,7 @@ const adminRequired = async (req, res, next) => {
   next();
 };
 
-module.exports = {
+export {
   authenticate,
   optionalAuthenticate,
   adminRequired

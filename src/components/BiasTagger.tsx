@@ -94,19 +94,42 @@ const BIAS_TYPES: BiasType[] = [
 interface BiasTaggerProps {
   open: boolean;
   onClose: () => void;
-  selection: SelectionData | null;
-  onTagApplied: (selection: SelectionData, biasType: BiasType, notes: string) => void;
+  selectedText: string;
+  existingTags?: {type: string, confidence: number}[];
+  onApplyTags: (tags: {type: string, confidence: number}[]) => void;
 }
 
-const BiasTagger: React.FC<BiasTaggerProps> = ({ open, onClose, selection, onTagApplied }) => {
+const BiasTagger: React.FC<BiasTaggerProps> = ({ 
+  open, 
+  onClose, 
+  selectedText, 
+  existingTags = [], 
+  onApplyTags 
+}) => {
   const [selectedBiasType, setSelectedBiasType] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
   const [filter, setFilter] = useState<string>('all');
   
   const handleApply = () => {
     const biasType = BIAS_TYPES.find(bias => bias.id === selectedBiasType);
-    if (selection && biasType) {
-      onTagApplied(selection, biasType, notes);
+    if (selectedText && biasType) {
+      // Convert to the tag format expected by onApplyTags
+      const newTag = {
+        type: biasType.id,
+        confidence: 1.0 // Default confidence, could be adjusted based on user input
+      };
+      
+      // Combine with existing tags, avoiding duplicates
+      const updatedTags = [...existingTags];
+      const existingIndex = updatedTags.findIndex(t => t.type === newTag.type);
+      
+      if (existingIndex >= 0) {
+        updatedTags[existingIndex] = newTag;
+      } else {
+        updatedTags.push(newTag);
+      }
+      
+      onApplyTags(updatedTags);
       reset();
       onClose();
     }
@@ -130,14 +153,38 @@ const BiasTagger: React.FC<BiasTaggerProps> = ({ open, onClose, selection, onTag
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <DialogTitle>Tag Text with Bias/Rhetorical Analysis</DialogTitle>
       <DialogContent>
-        {!selection ? (
+        {!selectedText ? (
           <Alert severity="warning" sx={{ mb: 2 }}>
             No text selection detected. Please select text to tag.
           </Alert>
         ) : (
           <Box sx={{ mb: 2, p: 2, bgcolor: '#f5f5f5', borderRadius: 1 }}>
             <Typography variant="subtitle2" color="textSecondary">Selected text:</Typography>
-            <Typography variant="body1">"{selection.text}"</Typography>
+            <Typography variant="body1">"{selectedText}"</Typography>
+          </Box>
+        )}
+        
+        {/* Show existing tags if any */}
+        {existingTags.length > 0 && (
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="subtitle2" color="textSecondary">Existing tags:</Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+              {existingTags.map((tag, index) => {
+                const biasType = BIAS_TYPES.find(b => b.id === tag.type);
+                return (
+                  <Chip 
+                    key={index}
+                    label={`${biasType?.name || tag.type} (${Math.round(tag.confidence * 100)}%)`}
+                    size="small"
+                    style={{ backgroundColor: biasType?.color }}
+                    onDelete={() => {
+                      const updatedTags = existingTags.filter((_, i) => i !== index);
+                      onApplyTags(updatedTags);
+                    }}
+                  />
+                );
+              })}
+            </Box>
           </Box>
         )}
         
@@ -173,7 +220,7 @@ const BiasTagger: React.FC<BiasTaggerProps> = ({ open, onClose, selection, onTag
           <Select
             value={selectedBiasType}
             onChange={(e) => setSelectedBiasType(e.target.value)}
-            disabled={!selection}
+            disabled={!selectedText}
           >
             {filteredBiasTypes.map((biasType) => (
               <MenuItem key={biasType.id} value={biasType.id}>
@@ -215,7 +262,7 @@ const BiasTagger: React.FC<BiasTaggerProps> = ({ open, onClose, selection, onTag
           rows={4}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          disabled={!selection || !selectedBiasType}
+          disabled={!selectedText || !selectedBiasType}
           placeholder="Explain why this text demonstrates the selected bias or rhetorical technique..."
         />
       </DialogContent>
@@ -225,7 +272,7 @@ const BiasTagger: React.FC<BiasTaggerProps> = ({ open, onClose, selection, onTag
           variant="contained" 
           color="primary" 
           onClick={handleApply}
-          disabled={!selection || !selectedBiasType}
+          disabled={!selectedText || !selectedBiasType}
         >
           Apply Tag
         </Button>

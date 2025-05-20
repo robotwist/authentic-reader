@@ -77,6 +77,14 @@ DATABASE_URL=postgresql://username:password@localhost:5432/portfolio
 JWT_SECRET=your_jwt_secret
 ```
 
+4. Set up Git hooks for development best practices:
+
+```bash
+npm run setup:git
+```
+
+This will initialize Git hooks to enforce code quality and consistent commit messages.
+
 ### Hugging Face API Integration
 
 Authentic Reader uses the Hugging Face Inference API for content analysis features:
@@ -301,6 +309,8 @@ For comprehensive security guidelines, see [SECURITY.md](SECURITY.md).
 5. Open a Pull Request
 
 Please ensure you follow the coding standards and include tests for new features.
+
+For detailed guidelines on our Git workflow, commit message conventions, and best practices, please refer to our [Git Workflow Guide](GIT-WORKFLOW.md).
 
 ## Troubleshooting
 

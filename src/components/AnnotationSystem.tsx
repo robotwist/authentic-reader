@@ -5,7 +5,7 @@ import {
   Box, Button, Typography, TextField, Dialog, DialogTitle, 
   DialogContent, DialogActions, CircularProgress, 
   IconButton, Menu, MenuItem, InputAdornment, Chip, Tooltip,
-  Badge, Avatar, Divider, Card, CardContent
+  Badge, Avatar, Divider, Card, CardContent, Paper
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -20,12 +20,18 @@ import {
   Bookmark as BookmarkIcon,
   MoreVert as MoreVertIcon,
   History as HistoryIcon,
-  PersonOutline as UserIcon
+  PersonOutline as UserIcon,
+  Lock as LockIcon,
+  Assessment as AssessmentIcon,
+  Help as HelpIcon,
+  Summarize as SummarizeIcon
 } from '@mui/icons-material';
 import { formatDistanceToNow } from 'date-fns';
 import { useAuth } from '../contexts/AuthContext'; // Assuming you have an auth context
 import BiasTagger from './BiasTagger';
 import '../styles/AnnotationSystem.css';
+import { FixedSizeList, ListChildComponentProps } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 // Type definitions
 export interface Annotation {
@@ -552,6 +558,157 @@ export const AnnotationSystem: React.FC<AnnotationSystemProps> = ({
     }
   };
   
+  // Define the virtualized list item renderer
+  const AnnotationItem = React.memo(({ data, index, style }: ListChildComponentProps) => {
+    const annotation = data.annotations[index];
+    const { handleMenuOpen, addReaction, handleOpenBiasTagger, lockedAnnotations, user, renderTypeIcon } = data;
+
+    return (
+      <div style={{ ...style, paddingRight: '8px' }}>
+        <Card className="annotation-item">
+          <CardContent>
+            <div className="annotation-header">
+              <div className="annotation-user">
+                <Avatar src={annotation.userAvatar} className="user-avatar">
+                  {!annotation.userAvatar && (annotation.username || 'U').charAt(0)}
+                </Avatar>
+                <div>
+                  <Typography variant="subtitle2">
+                    {annotation.username || 'Anonymous'}
+                  </Typography>
+                  <Typography variant="caption" color="textSecondary">
+                    {formatDistanceToNow(new Date(annotation.createdAt), { addSuffix: true })}
+                  </Typography>
+                </div>
+              </div>
+              
+              <div className="annotation-actions">
+                {/* Lock indicator */}
+                {lockedAnnotations[annotation.id] && (
+                  <Tooltip title={`Being edited by ${lockedAnnotations[annotation.id].username}`}>
+                    <LockIcon fontSize="small" color="warning" />
+                  </Tooltip>
+                )}
+                
+                {annotation.userId === user?.id && (
+                  <IconButton 
+                    size="small"
+                    onClick={(e) => handleMenuOpen(e, annotation)}
+                  >
+                    <MoreVertIcon fontSize="small" />
+                  </IconButton>
+                )}
+              </div>
+            </div>
+            
+            <div className="annotation-content">
+              <div className="annotation-type">
+                <Tooltip title={annotation.type}>
+                  {renderTypeIcon(annotation.type)}
+                </Tooltip>
+              </div>
+              
+              <div className="annotation-text">
+                {annotation.richText ? (
+                  <div dangerouslySetInnerHTML={{ __html: annotation.richText }} />
+                ) : (
+                  <Typography>{annotation.text}</Typography>
+                )}
+                
+                {/* Selected text preview */}
+                {annotation.selectedText && (
+                  <div className="selected-text">
+                    <Typography variant="caption" color="textSecondary">
+                      "{annotation.selectedText}"
+                    </Typography>
+                  </div>
+                )}
+                
+                {/* Bias tags */}
+                {annotation.biasTags && annotation.biasTags.length > 0 && (
+                  <div className="annotation-tags">
+                    {annotation.biasTags.map((tag, index) => (
+                      <Chip 
+                        key={index}
+                        label={`${tag.type} (${Math.round(tag.confidence * 100)}%)`}
+                        size="small"
+                        color="primary"
+                        variant="outlined"
+                        className="bias-tag"
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            {/* Tags */}
+            {annotation.tags && annotation.tags.length > 0 && (
+              <div className="annotation-tags">
+                {annotation.tags.map((tag, index) => (
+                  <Chip 
+                    key={index}
+                    label={tag}
+                    size="small"
+                    variant="outlined"
+                    className="tag"
+                  />
+                ))}
+              </div>
+            )}
+            
+            {/* Reactions */}
+            <div className="annotation-reactions">
+              <Tooltip title="Like">
+                <IconButton 
+                  size="small"
+                  onClick={() => addReaction(annotation.id, 'like')}
+                  color={annotation.reactions?.find(r => r.type === 'like' && r.userReacted) ? 'primary' : 'default'}
+                >
+                  <Badge 
+                    badgeContent={annotation.reactions?.find(r => r.type === 'like')?.count || 0} 
+                    color="primary"
+                  >
+                    <ThumbUpIcon fontSize="small" />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
+              
+              <Tooltip title="Add comment">
+                <IconButton size="small">
+                  <Badge 
+                    badgeContent={annotation.replies?.length || 0} 
+                    color="primary"
+                  >
+                    <CommentIcon fontSize="small" />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
+              
+              <Tooltip title="View history">
+                <IconButton 
+                  size="small"
+                  disabled={!annotation.versionHistory || annotation.versionHistory.length <= 1}
+                >
+                  <HistoryIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              
+              <Tooltip title="Analyze bias">
+                <IconButton 
+                  size="small"
+                  onClick={() => handleOpenBiasTagger(annotation)}
+                >
+                  <AssessmentIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  });
+
   return (
     <div className="annotation-system">
       {/* Header with active users */}
@@ -698,178 +855,43 @@ export const AnnotationSystem: React.FC<AnnotationSystemProps> = ({
         </Menu>
       </div>
       
-      {/* Loading state */}
-      {loading && (
-        <div className="annotation-loading">
-          <CircularProgress />
-          <Typography>Loading annotations...</Typography>
-        </div>
-      )}
-      
-      {/* Error state */}
-      {error && (
-        <div className="annotation-error">
-          <Typography color="error">{error}</Typography>
-          <Button 
-            variant="outlined" 
-            color="primary"
-            onClick={() => window.location.reload()}
-          >
-            Retry
-          </Button>
-        </div>
-      )}
-      
-      {/* Annotations list */}
-      <div className="annotation-list">
-        {!loading && filteredAnnotations.length === 0 && (
+      {/* Annotations list with virtualization */}
+      <div className="annotation-list-container">
+        {!loading && filteredAnnotations.length === 0 ? (
           <div className="no-annotations">
             <Typography>No annotations found</Typography>
           </div>
-        )}
-        
-        {filteredAnnotations.map(annotation => (
-          <Card key={annotation.id} className="annotation-item">
-            <CardContent>
-              <div className="annotation-header">
-                <div className="annotation-user">
-                  <Avatar src={annotation.userAvatar} className="user-avatar">
-                    {!annotation.userAvatar && (annotation.username || 'U').charAt(0)}
-                  </Avatar>
-                  <div>
-                    <Typography variant="subtitle2">
-                      {annotation.username || 'Anonymous'}
-                    </Typography>
-                    <Typography variant="caption" color="textSecondary">
-                      {formatDistanceToNow(new Date(annotation.createdAt), { addSuffix: true })}
-                    </Typography>
-                  </div>
-                </div>
-                
-                <div className="annotation-actions">
-                  {/* Lock indicator */}
-                  {lockedAnnotations[annotation.id] && (
-                    <Tooltip title={`Being edited by ${lockedAnnotations[annotation.id].username}`}>
-                      <LockIcon fontSize="small" color="warning" />
-                    </Tooltip>
-                  )}
-                  
-                  {annotation.userId === user?.id && (
-                    <IconButton 
-                      size="small"
-                      onClick={(e) => handleMenuOpen(e, annotation)}
-                    >
-                      <MoreVertIcon fontSize="small" />
-                    </IconButton>
-                  )}
-                </div>
-              </div>
-              
-              <div className="annotation-content">
-                <div className="annotation-type">
-                  <Tooltip title={annotation.type}>
-                    {renderTypeIcon(annotation.type)}
-                  </Tooltip>
-                </div>
-                
-                <div className="annotation-text">
-                  {annotation.richText ? (
-                    <div dangerouslySetInnerHTML={{ __html: annotation.richText }} />
-                  ) : (
-                    <Typography>{annotation.text}</Typography>
-                  )}
-                  
-                  {/* Selected text preview */}
-                  {annotation.selectedText && (
-                    <div className="selected-text">
-                      <Typography variant="caption" color="textSecondary">
-                        "{annotation.selectedText}"
-                      </Typography>
-                    </div>
-                  )}
-                  
-                  {/* Bias tags */}
-                  {annotation.biasTags && annotation.biasTags.length > 0 && (
-                    <div className="annotation-tags">
-                      {annotation.biasTags.map((tag, index) => (
-                        <Chip 
-                          key={index}
-                          label={`${tag.type} (${Math.round(tag.confidence * 100)}%)`}
-                          size="small"
-                          color="primary"
-                          variant="outlined"
-                          className="bias-tag"
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-              
-              {/* Tags */}
-              {annotation.tags && annotation.tags.length > 0 && (
-                <div className="annotation-tags">
-                  {annotation.tags.map((tag, index) => (
-                    <Chip 
-                      key={index}
-                      label={tag}
-                      size="small"
-                      variant="outlined"
-                      className="tag"
-                    />
-                  ))}
-                </div>
+        ) : loading ? (
+          <div className="annotation-loading">
+            <CircularProgress />
+            <Typography>Loading annotations...</Typography>
+          </div>
+        ) : (
+          <Paper elevation={0} className="virtualized-list-container">
+            <AutoSizer>
+              {({ height, width }) => (
+                <FixedSizeList
+                  height={height || 500}
+                  width={width || 400}
+                  itemSize={200} // Adjust based on average item height
+                  itemCount={filteredAnnotations.length}
+                  overscanCount={5}
+                  itemData={{
+                    annotations: filteredAnnotations,
+                    handleMenuOpen,
+                    addReaction,
+                    handleOpenBiasTagger,
+                    lockedAnnotations,
+                    user,
+                    renderTypeIcon
+                  }}
+                >
+                  {AnnotationItem}
+                </FixedSizeList>
               )}
-              
-              {/* Reactions */}
-              <div className="annotation-reactions">
-                <Tooltip title="Like">
-                  <IconButton 
-                    size="small"
-                    onClick={() => addReaction(annotation.id, 'like')}
-                    color={annotation.reactions?.find(r => r.type === 'like' && r.userReacted) ? 'primary' : 'default'}
-                  >
-                    <Badge 
-                      badgeContent={annotation.reactions?.find(r => r.type === 'like')?.count || 0} 
-                      color="primary"
-                    >
-                      <ThumbUpIcon fontSize="small" />
-                    </Badge>
-                  </IconButton>
-                </Tooltip>
-                
-                <Tooltip title="Add comment">
-                  <IconButton size="small">
-                    <Badge 
-                      badgeContent={annotation.replies?.length || 0} 
-                      color="primary"
-                    >
-                      <CommentIcon fontSize="small" />
-                    </Badge>
-                  </IconButton>
-                </Tooltip>
-                
-                <Tooltip title="View history">
-                  <IconButton 
-                    size="small"
-                    disabled={!annotation.versionHistory || annotation.versionHistory.length <= 1}
-                  >
-                    <HistoryIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-                
-                <Tooltip title="Analyze bias">
-                  <IconButton 
-                    size="small"
-                    onClick={() => handleOpenBiasTagger(annotation)}
-                  >
-                    <AssessmentIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+            </AutoSizer>
+          </Paper>
+        )}
       </div>
       
       {/* Annotation dialog */}

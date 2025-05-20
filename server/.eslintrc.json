@@ -1,0 +1,55 @@
+{
+  "env": {
+    "node": true,
+    "es2022": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "import",
+    "node"
+  ],
+  "rules": {
+    // General code style
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "no-console": "off",
+    "no-undef": "error",
+    
+    // ES Module Syntax Rules
+    "import/no-commonjs": "error",
+    "import/no-amd": "error",
+    "import/first": "error",
+    "import/no-duplicates": "error",
+    "import/extensions": ["error", "always", { "ignorePackages": true }],
+    
+    // Prevent Missing Exports/Imports
+    "import/named": "error",
+    "import/default": "error",
+    "import/namespace": "error",
+    "import/no-unresolved": "error",
+    "import/no-extraneous-dependencies": "error",
+    "import/export": "error",
+
+    // Prevent Reference Issues
+    "no-undefined": "warn",
+    "no-unused-expressions": "error",
+    "no-use-before-define": ["error", { "functions": false, "classes": true }],
+    
+    // Prevent Express-specific issues
+    "node/no-missing-import": "off" // This rule often has issues with ES modules in Node
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js"]
+      }
+    }
+  }
+} 

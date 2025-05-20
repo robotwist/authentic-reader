@@ -1,9 +1,10 @@
-const { User, Source, Article, Analysis } = require('../models');
-const { validationResult } = require('express-validator');
-const bcrypt = require('bcrypt');
+import { User, Source, Article, Analysis } from '../models/index.js';
+import { validationResult } from 'express-validator';
+import bcrypt from 'bcrypt';
+import { Op } from 'sequelize';
 
 // Get all users
-exports.getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
       attributes: ['id', 'username', 'email', 'isAdmin', 'createdAt', 'updatedAt']
@@ -17,7 +18,7 @@ exports.getAllUsers = async (req, res) => {
 };
 
 // Get user by ID
-exports.getUser = async (req, res) => {
+export const getUser = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id, {
       attributes: ['id', 'username', 'email', 'isAdmin', 'createdAt', 'updatedAt']
@@ -35,7 +36,7 @@ exports.getUser = async (req, res) => {
 };
 
 // Create a new user
-exports.createUser = async (req, res) => {
+export const createUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -83,7 +84,7 @@ exports.createUser = async (req, res) => {
 };
 
 // Update a user
-exports.updateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -136,7 +137,7 @@ exports.updateUser = async (req, res) => {
 };
 
 // Delete a user
-exports.deleteUser = async (req, res) => {
+export const deleteUser = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);
     
@@ -168,7 +169,7 @@ exports.deleteUser = async (req, res) => {
 };
 
 // Get system stats for admin dashboard
-exports.getStats = async (req, res) => {
+export const getStats = async (req, res) => {
   try {
     const userCount = await User.count();
     const sourceCount = await Source.count();

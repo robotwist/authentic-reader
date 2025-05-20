@@ -1,23 +1,22 @@
-const express = require('express');
+import express from 'express';
+import * as articleController from '../controllers/articleController.js';
+import { authenticate, optionalAuthenticate } from '../middleware/auth.js';
+
 const router = express.Router();
-const articleController = require('../controllers/articleController');
-const { authenticate, optionalAuthenticate } = require('../middleware/auth');
 
-// Public routes with optional authentication
-router.get('/source/:id', optionalAuthenticate, articleController.fetchArticlesFromSource);
-router.get('/', optionalAuthenticate, articleController.getAllArticles);
+// Public routes
+router.get('/public', optionalAuthenticate, articleController.getPublicArticles);
+router.get('/public/:id', optionalAuthenticate, articleController.getPublicArticle);
 
-// User-specific routes
-router.get('/saved', authenticate, articleController.getSavedArticles);
-router.post('/read', authenticate, articleController.markAsRead);
-router.post('/save', authenticate, articleController.saveArticle);
+// Protected routes
+router.use(authenticate);
+router.get('/', articleController.getUserArticles);
+router.post('/', articleController.createArticle);
+router.get('/bookmarks', articleController.getBookmarkedArticles);
+router.get('/:id', articleController.getArticle);
+router.put('/:id', articleController.updateArticle);
+router.delete('/:id', articleController.deleteArticle);
+router.post('/:id/bookmark', articleController.bookmarkArticle);
+router.delete('/:id/bookmark', articleController.removeBookmark);
 
-// Analysis routes
-router.get('/:id/analysis', optionalAuthenticate, articleController.getArticleAnalysis);
-router.post('/analysis', optionalAuthenticate, articleController.createArticleAnalysis);
-router.get('/guid/:guid/analysis', optionalAuthenticate, articleController.getArticleAnalysis);
-
-// Route to fetch and extract full article content
-router.get('/extract', optionalAuthenticate, articleController.extractFullArticleContent);
-
-module.exports = router; 
+export default router; 

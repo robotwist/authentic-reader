@@ -1,9 +1,9 @@
-const { Source, UserSource, User } = require('../models');
-const { validationResult } = require('express-validator');
-const { Op } = require('sequelize');
+import { Source, UserSource, User } from '../models/index.js';
+import { validationResult } from 'express-validator';
+import { Op } from 'sequelize';
 
 // Get all sources
-exports.getAllSources = async (req, res) => {
+export const getAllSources = async (req, res) => {
   try {
     const sources = await Source.findAll({
       order: [['name', 'ASC']]
@@ -17,7 +17,7 @@ exports.getAllSources = async (req, res) => {
 };
 
 // Get a single source by ID
-exports.getSourceById = async (req, res) => {
+export const getSource = async (req, res) => {
   try {
     const source = await Source.findByPk(req.params.id);
     
@@ -33,7 +33,7 @@ exports.getSourceById = async (req, res) => {
 };
 
 // Create a new source
-exports.createSource = async (req, res) => {
+export const createSource = async (req, res) => {
   try {
     const { name, url, category, description } = req.body;
     
@@ -65,7 +65,7 @@ exports.createSource = async (req, res) => {
 };
 
 // Update a source
-exports.updateSource = async (req, res) => {
+export const updateSource = async (req, res) => {
   try {
     const { name, url, category, description } = req.body;
     const sourceId = req.params.id;
@@ -107,7 +107,7 @@ exports.updateSource = async (req, res) => {
 };
 
 // Delete a source
-exports.deleteSource = async (req, res) => {
+export const deleteSource = async (req, res) => {
   try {
     const sourceId = req.params.id;
     
@@ -129,7 +129,7 @@ exports.deleteSource = async (req, res) => {
 };
 
 // Get user's subscribed sources
-exports.getUserSources = async (req, res) => {
+export const getUserSources = async (req, res) => {
   try {
     const userId = req.user.id;
     
@@ -184,7 +184,7 @@ exports.getUserSources = async (req, res) => {
 };
 
 // Subscribe to a source
-exports.subscribeToSource = async (req, res) => {
+export const subscribeToSource = async (req, res) => {
   try {
     const userId = req.user.id;
     const sourceId = req.params.id;
@@ -228,7 +228,7 @@ exports.subscribeToSource = async (req, res) => {
 };
 
 // Unsubscribe from a source
-exports.unsubscribeFromSource = async (req, res) => {
+export const unsubscribeFromSource = async (req, res) => {
   try {
     const userId = req.user.id;
     const sourceId = req.params.id;
@@ -253,7 +253,7 @@ exports.unsubscribeFromSource = async (req, res) => {
 };
 
 // Update source display order
-exports.updateSourceOrder = async (req, res) => {
+export const updateSourceOrder = async (req, res) => {
   const userId = req.user.id;
   const { sourceOrders } = req.body;
   
@@ -283,5 +283,41 @@ exports.updateSourceOrder = async (req, res) => {
     console.error('Error updating source order:', error);
     // Transaction automatically rolls back on error
     res.status(500).json({ message: 'Server error updating source order' });
+  }
+};
+
+// Get public sources
+export const getPublicSources = async (req, res) => {
+  try {
+    const sources = await Source.findAll({
+      where: { isPublic: true },
+      order: [['name', 'ASC']]
+    });
+    
+    res.json(sources);
+  } catch (error) {
+    console.error('Error fetching public sources:', error);
+    res.status(500).json({ message: 'Server error fetching public sources' });
+  }
+};
+
+// Get a public source by ID
+export const getPublicSource = async (req, res) => {
+  try {
+    const source = await Source.findOne({
+      where: { 
+        id: req.params.id,
+        isPublic: true
+      }
+    });
+    
+    if (!source) {
+      return res.status(404).json({ message: 'Public source not found' });
+    }
+    
+    res.json(source);
+  } catch (error) {
+    console.error('Error fetching public source:', error);
+    res.status(500).json({ message: 'Server error fetching public source' });
   }
 }; 

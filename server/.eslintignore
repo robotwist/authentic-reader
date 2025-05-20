@@ -1,0 +1,11 @@
+node_modules/
+dist/
+logs/
+*.log
+coverage/
+.env
+.env.*
+db/data/
+__tests__/fixtures/
+public/
+tmp/ 

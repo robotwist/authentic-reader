@@ -1,10 +1,10 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const { User, UserPrefs } = require('../models');
-const { Op } = require('sequelize');
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import { User, UserPrefs } from '../models/index.js';
+import { Op } from 'sequelize';
 
 // Register a new user
-exports.register = async (req, res) => {
+export const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
@@ -61,7 +61,7 @@ exports.register = async (req, res) => {
 };
 
 // Login user
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, username, password } = req.body;
 
@@ -120,7 +120,7 @@ exports.login = async (req, res) => {
 };
 
 // Get user profile
-exports.getProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
     // User is already attached to req by auth middleware
     const { id, username, email } = req.user;
@@ -143,7 +143,7 @@ exports.getProfile = async (req, res) => {
 };
 
 // Update user profile
-exports.updateProfile = async (req, res) => {
+export const updateProfile = async (req, res) => {
   try {
     const { username, email } = req.body;
     const user = req.user;
@@ -186,7 +186,7 @@ exports.updateProfile = async (req, res) => {
 };
 
 // Update user password
-exports.updatePassword = async (req, res) => {
+export const changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
     const user = req.user;
@@ -215,7 +215,7 @@ exports.updatePassword = async (req, res) => {
 };
 
 // Get user preferences
-exports.getPreferences = async (req, res) => {
+export const getPreferences = async (req, res) => {
   try {
     const userId = req.user.id;
 
@@ -239,7 +239,7 @@ exports.getPreferences = async (req, res) => {
 };
 
 // Update user preferences
-exports.updatePreferences = async (req, res) => {
+export const updatePreferences = async (req, res) => {
   try {
     const userId = req.user.id;
     const { darkMode, muteOutrage, blockDoomscroll, refreshInterval } = req.body;
@@ -269,5 +269,71 @@ exports.updatePreferences = async (req, res) => {
   } catch (error) {
     console.error('Update preferences error:', error);
     res.status(500).json({ message: 'Server error updating preferences' });
+  }
+};
+
+// Delete user account
+export const deleteAccount = async (req, res) => {
+  try {
+    const user = req.user;
+    
+    // Delete user's preferences first (to handle foreign key constraints)
+    await UserPrefs.destroy({
+      where: { userId: user.id }
+    });
+    
+    // Delete the user
+    await User.destroy({
+      where: { id: user.id }
+    });
+    
+    res.json({ message: 'Account deleted successfully' });
+  } catch (error) {
+    console.error('Delete account error:', error);
+    res.status(500).json({ message: 'Server error deleting account' });
+  }
+};
+
+// Refresh token
+export const refreshToken = async (req, res) => {
+  try {
+    const { token } = req.body;
+    
+    if (!token) {
+      return res.status(400).json({ message: 'Token is required' });
+    }
+    
+    // Verify the existing token
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      return res.status(401).json({ message: 'Invalid or expired token' });
+    }
+    
+    // Check if user exists
+    const user = await User.findByPk(decoded.id);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    // Generate a new token
+    const newToken = jwt.sign(
+      { id: user.id },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+    );
+    
+    res.json({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      isAdmin: user.isAdmin || false,
+      token: newToken
+    });
+  } catch (error) {
+    console.error('Refresh token error:', error);
+    res.status(500).json({ message: 'Server error refreshing token' });
   }
 }; 

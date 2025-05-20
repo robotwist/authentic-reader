@@ -1,12 +1,12 @@
-const { Article, User, UserArticle, Source, Analysis } = require('../models');
-const { validationResult } = require('express-validator');
-const axios = require('axios');
-const xml2js = require('xml2js');
-const { Op } = require('sequelize');
-const { fetchAndExtractArticle } = require('../services/contentExtractionService');
+import { Article, User, UserArticle, Source, Analysis } from '../models/index.js';
+import { validationResult } from 'express-validator';
+import axios from 'axios';
+import xml2js from 'xml2js';
+import { Op } from 'sequelize';
+import { fetchAndExtractArticle } from '../services/contentExtractionService.js';
 
 // Save article for a user
-exports.saveArticle = async (req, res) => {
+export const saveArticle = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -78,7 +78,7 @@ exports.saveArticle = async (req, res) => {
 };
 
 // Mark article as read
-exports.markArticleAsRead = async (req, res) => {
+export const markArticleAsRead = async (req, res) => {
   const { articleId } = req.params;
 
   try {
@@ -122,7 +122,7 @@ exports.markArticleAsRead = async (req, res) => {
 };
 
 // Get all saved articles for a user
-exports.getSavedArticles = async (req, res) => {
+export const getSavedArticles = async (req, res) => {
   try {
     const userArticles = await UserArticle.findAll({
       where: {
@@ -153,7 +153,7 @@ exports.getSavedArticles = async (req, res) => {
 };
 
 // Get all read articles for a user
-exports.getReadArticles = async (req, res) => {
+export const getReadArticles = async (req, res) => {
   try {
     const userArticles = await UserArticle.findAll({
       where: {
@@ -184,7 +184,7 @@ exports.getReadArticles = async (req, res) => {
 };
 
 // Remove saved article
-exports.unsaveArticle = async (req, res) => {
+export const unsaveArticle = async (req, res) => {
   const { articleId } = req.params;
 
   try {
@@ -213,7 +213,7 @@ exports.unsaveArticle = async (req, res) => {
 };
 
 // Get article by ID
-exports.getArticleById = async (req, res) => {
+export const getArticleById = async (req, res) => {
   try {
     const article = await Article.findByPk(req.params.id, {
       include: [{ model: Source }]
@@ -250,7 +250,7 @@ exports.getArticleById = async (req, res) => {
 };
 
 // Fetch articles from RSS
-exports.fetchArticlesFromRSS = async (req, res) => {
+export const fetchArticlesFromRSS = async (req, res) => {
   const { sourceId } = req.params;
 
   try {
@@ -320,7 +320,7 @@ exports.fetchArticlesFromRSS = async (req, res) => {
 };
 
 // Fetch articles from a source
-exports.fetchArticlesFromSource = async (req, res) => {
+export const fetchArticlesFromSource = async (req, res) => {
   try {
     const { id } = req.params;
     
@@ -479,7 +479,7 @@ exports.fetchArticlesFromSource = async (req, res) => {
 };
 
 // Get all articles
-exports.getAllArticles = async (req, res) => {
+export const getAllArticles = async (req, res) => {
   try {
     // Get query parameters for filtering
     const { 
@@ -577,7 +577,7 @@ exports.getAllArticles = async (req, res) => {
 };
 
 // Get user's saved articles
-exports.getSavedArticles = async (req, res) => {
+export const getUserSavedArticles = async (req, res) => {
   try {
     const userId = req.user.id;
     
@@ -627,7 +627,7 @@ exports.getSavedArticles = async (req, res) => {
 };
 
 // Mark article as read
-exports.markAsRead = async (req, res) => {
+export const markAsRead = async (req, res) => {
   try {
     const userId = req.user.id;
     const { articleId, guid, isRead = true } = req.body;
@@ -675,8 +675,8 @@ exports.markAsRead = async (req, res) => {
   }
 };
 
-// Save article
-exports.saveArticle = async (req, res) => {
+// Save article in the user's collection
+export const saveUserArticle = async (req, res) => {
   try {
     const userId = req.user.id;
     const { articleId, guid, isSaved = true } = req.body;
@@ -725,7 +725,7 @@ exports.saveArticle = async (req, res) => {
 };
 
 // Get article analysis
-exports.getArticleAnalysis = async (req, res) => {
+export const getArticleAnalysis = async (req, res) => {
   try {
     const { id, guid } = req.params;
     
@@ -756,7 +756,7 @@ exports.getArticleAnalysis = async (req, res) => {
 };
 
 // Create article analysis
-exports.createArticleAnalysis = async (req, res) => {
+export const createArticleAnalysis = async (req, res) => {
   try {
     const userId = req.user?.id;
     const { 
@@ -827,7 +827,7 @@ exports.createArticleAnalysis = async (req, res) => {
 /**
  * NEW: Fetch and extract full article content
  */
-exports.extractFullArticleContent = async (req, res) => {
+export const extractFullArticleContent = async (req, res) => {
   const { url } = req.query;
 
   if (!url) {
@@ -856,5 +856,257 @@ exports.extractFullArticleContent = async (req, res) => {
       error: error.message, // Provide error message for debugging
       url
      });
+  }
+};
+
+// Get public articles
+export const getPublicArticles = async (req, res) => {
+  try {
+    const articles = await Article.findAll({
+      where: {
+        isPublic: true
+      },
+      limit: 20,
+      order: [['publishDate', 'DESC']],
+      include: [{ model: Source }]
+    });
+    
+    res.status(200).json(articles);
+  } catch (error) {
+    console.error('Error fetching public articles:', error);
+    res.status(500).json({ message: 'Server error fetching public articles' });
+  }
+};
+
+// Get a specific public article
+export const getPublicArticle = async (req, res) => {
+  try {
+    const article = await Article.findOne({
+      where: { 
+        id: req.params.id,
+        isPublic: true
+      },
+      include: [{ model: Source }]
+    });
+    
+    if (!article) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
+    
+    res.status(200).json(article);
+  } catch (error) {
+    console.error('Error fetching public article:', error);
+    res.status(500).json({ message: 'Server error fetching article' });
+  }
+};
+
+// Get articles for the logged-in user
+export const getUserArticles = async (req, res) => {
+  try {
+    const userArticles = await UserArticle.findAll({
+      where: { userId: req.user.id },
+      include: [{
+        model: Article,
+        include: [{ model: Source }]
+      }],
+      order: [[Article, 'publishDate', 'DESC']]
+    });
+    
+    const articles = userArticles.map(ua => ({
+      ...ua.Article.toJSON(),
+      source: ua.Article.Source,
+      savedAt: ua.savedAt,
+      readAt: ua.readAt,
+      isRead: ua.isRead,
+      isSaved: ua.isSaved
+    }));
+    
+    res.status(200).json(articles);
+  } catch (error) {
+    console.error('Error fetching user articles:', error);
+    res.status(500).json({ message: 'Server error fetching articles' });
+  }
+};
+
+// Create a new article
+export const createArticle = async (req, res) => {
+  try {
+    const { title, link, author, sourceId, publishDate, content, summary, imageUrl, categories, guid } = req.body;
+    
+    if (!title || !link || !sourceId) {
+      return res.status(400).json({ message: 'Title, link, and sourceId are required' });
+    }
+    
+    const article = await Article.create({
+      title,
+      link,
+      author,
+      sourceId,
+      publishDate: publishDate || new Date(),
+      content,
+      summary,
+      imageUrl,
+      categories,
+      guid: guid || link,
+      isPublic: false
+    });
+    
+    res.status(201).json(article);
+  } catch (error) {
+    console.error('Error creating article:', error);
+    res.status(500).json({ message: 'Server error creating article' });
+  }
+};
+
+// Get a specific article
+export const getArticle = async (req, res) => {
+  try {
+    const article = await Article.findByPk(req.params.id, {
+      include: [{ model: Source }]
+    });
+    
+    if (!article) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
+    
+    res.status(200).json(article);
+  } catch (error) {
+    console.error('Error fetching article:', error);
+    res.status(500).json({ message: 'Server error fetching article' });
+  }
+};
+
+// Update an article
+export const updateArticle = async (req, res) => {
+  try {
+    const article = await Article.findByPk(req.params.id);
+    
+    if (!article) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
+    
+    const { title, content, summary, isPublic } = req.body;
+    
+    await article.update({
+      title: title || article.title,
+      content: content || article.content,
+      summary: summary || article.summary,
+      isPublic: isPublic !== undefined ? isPublic : article.isPublic
+    });
+    
+    res.status(200).json(article);
+  } catch (error) {
+    console.error('Error updating article:', error);
+    res.status(500).json({ message: 'Server error updating article' });
+  }
+};
+
+// Delete an article
+export const deleteArticle = async (req, res) => {
+  try {
+    const article = await Article.findByPk(req.params.id);
+    
+    if (!article) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
+    
+    await article.destroy();
+    
+    res.status(200).json({ message: 'Article deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting article:', error);
+    res.status(500).json({ message: 'Server error deleting article' });
+  }
+};
+
+// Bookmark an article
+export const bookmarkArticle = async (req, res) => {
+  try {
+    const article = await Article.findByPk(req.params.id);
+    
+    if (!article) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
+    
+    let userArticle = await UserArticle.findOne({
+      where: {
+        userId: req.user.id,
+        articleId: article.id
+      }
+    });
+    
+    if (userArticle) {
+      userArticle.isSaved = true;
+      userArticle.savedAt = new Date();
+      await userArticle.save();
+    } else {
+      userArticle = await UserArticle.create({
+        userId: req.user.id,
+        articleId: article.id,
+        isSaved: true,
+        savedAt: new Date()
+      });
+    }
+    
+    res.status(200).json({ message: 'Article bookmarked successfully' });
+  } catch (error) {
+    console.error('Error bookmarking article:', error);
+    res.status(500).json({ message: 'Server error bookmarking article' });
+  }
+};
+
+// Remove bookmark from an article
+export const removeBookmark = async (req, res) => {
+  try {
+    const userArticle = await UserArticle.findOne({
+      where: {
+        userId: req.user.id,
+        articleId: req.params.id,
+        isSaved: true
+      }
+    });
+    
+    if (!userArticle) {
+      return res.status(404).json({ message: 'Bookmarked article not found' });
+    }
+    
+    userArticle.isSaved = false;
+    userArticle.savedAt = null;
+    await userArticle.save();
+    
+    res.status(200).json({ message: 'Bookmark removed successfully' });
+  } catch (error) {
+    console.error('Error removing bookmark:', error);
+    res.status(500).json({ message: 'Server error removing bookmark' });
+  }
+};
+
+// Get bookmarked articles
+export const getBookmarkedArticles = async (req, res) => {
+  try {
+    const userArticles = await UserArticle.findAll({
+      where: {
+        userId: req.user.id,
+        isSaved: true
+      },
+      include: [{
+        model: Article,
+        include: [{ model: Source }]
+      }],
+      order: [['savedAt', 'DESC']]
+    });
+    
+    const articles = userArticles.map(ua => ({
+      ...ua.Article.toJSON(),
+      source: ua.Article.Source,
+      savedAt: ua.savedAt,
+      readAt: ua.readAt,
+      isRead: ua.isRead
+    }));
+    
+    res.status(200).json(articles);
+  } catch (error) {
+    console.error('Error fetching bookmarked articles:', error);
+    res.status(500).json({ message: 'Server error fetching bookmarked articles' });
   }
 }; 

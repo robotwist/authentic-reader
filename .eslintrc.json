@@ -1,0 +1,69 @@
+{
+  "env": {
+    "browser": true,
+    "es2022": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": [
+    "react",
+    "react-hooks",
+    "@typescript-eslint",
+    "import"
+  ],
+  "rules": {
+    // Basic rules
+    "no-unused-vars": "off", // Disabled in favor of TypeScript's version
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    
+    // React rules
+    "react/react-in-jsx-scope": "off", // Not needed in React 17+
+    "react/prop-types": "off", // Not needed with TypeScript
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    
+    // Import rules
+    "import/no-unresolved": "error",
+    "import/named": "error",
+    "import/default": "error",
+    "import/namespace": "error",
+    "import/export": "error",
+    "import/no-named-as-default": "warn",
+    "import/no-duplicates": "error",
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+        "newlines-between": "always",
+        "alphabetize": { "order": "asc", "caseInsensitive": true }
+      }
+    ]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
+      "typescript": {}
+    }
+  }
+} 
