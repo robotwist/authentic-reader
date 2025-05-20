@@ -24,7 +24,16 @@ const adminRoutes = require('./routes/admin');
 const onnxRoutes = require('./routes/onnx');
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://authentic-reader.netlify.app', 'http://localhost:5173']
+    : '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -226,12 +235,14 @@ app.get('/api/content', async (req, res) => {
   }
 });
 
-// Error handling middleware
+// Global error handler
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Global error:', err);
   res.status(err.status || 500).json({
-    message: err.message || 'An unexpected error occurred',
-    error: process.env.NODE_ENV === 'development' ? err : {}
+    error: process.env.NODE_ENV === 'production' 
+      ? 'Internal server error' 
+      : err.message,
+    status: err.status || 500
   });
 });
 

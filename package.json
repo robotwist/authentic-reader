@@ -19,7 +19,9 @@
     "monitor:logs": "pm2 logs ar-monitor",
     "pm2:status": "pm2 status",
     "pm2:stop:all": "pm2 stop all",
-    "pm2:restart:all": "pm2 restart all"
+    "pm2:restart:all": "pm2 restart all",
+    "deploy": "node scripts/deploy.js",
+    "deploy:init": "netlify login && netlify init"
   },
   "dependencies": {
     "@ant-design/icons": "^6.0.0",
