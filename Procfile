@@ -1,2 +1,2 @@
-web: cd server && npm start
-release: cd server && npm run migrate 
+web: cd server && node index.js
+release: cd server && npx sequelize-cli db:migrate 
