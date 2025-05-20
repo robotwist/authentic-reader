@@ -1,6 +1,11 @@
 [build]
+  base = "/"
   publish = "dist"
   command = "npm run build"
+
+[context.production.environment]
+  VITE_BACKEND_URL = "https://authentic-reader.herokuapp.com"
+  VITE_CHROMA_PORT = "8080"
 
 # Handle SPA routing
 [[redirects]]
