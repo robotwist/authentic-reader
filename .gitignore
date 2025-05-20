@@ -34,3 +34,5 @@ server/.env
 llama-service/.env
 **/.env*
 !**/.env.example
+# Local Netlify folder
+.netlify

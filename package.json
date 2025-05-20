@@ -1,8 +1,7 @@
 {
-  "name": "temp-vite",
+  "name": "authentic-reader-root",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -19,7 +18,8 @@
     "pm2:status": "pm2 status",
     "pm2:stop:all": "pm2 stop all",
     "pm2:restart:all": "pm2 restart all",
-    "setup:git": "node setup-git-hooks.js"
+    "setup:git": "node setup-git-hooks.js",
+    "postinstall": "cd server && npm install"
   },
   "dependencies": {
     "@ant-design/icons": "^6.0.0",

@@ -227,26 +227,33 @@ test('renders article title', () => {
 
 ## Deployment
 
-### Frontend Deployment
+### Frontend Deployment with Netlify
 
-Build the frontend for production:
-
-```bash
-npm run build
-```
-
-The output will be in the `dist` directory, which can be deployed to any static hosting service like Netlify, Vercel, or AWS S3.
-
-### Backend Deployment
-
-Build the backend for production:
+The frontend can be deployed to Netlify using our deployment helper script:
 
 ```bash
-cd server
-npm run build
+node scripts/deploy-netlify.js
 ```
 
-The compiled JavaScript will be in the `dist` directory. Deploy to a Node.js hosting service like Heroku, DigitalOcean, or AWS EC2.
+This script will:
+1. Build the frontend for production
+2. Configure environment variables
+3. Deploy to Netlify
+4. Set up SPA routing automatically
+
+### Backend Deployment with Heroku
+
+The backend can be deployed to Heroku using our deployment helper script:
+
+```bash
+node scripts/deploy-heroku.js
+```
+
+This script will:
+1. Set up environment variables on Heroku
+2. Deploy the server code to Heroku
+3. Configure the PostgreSQL database
+4. Run migrations if needed
 
 ## Architecture
 
