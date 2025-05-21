@@ -1,0 +1,245 @@
+.summarizer-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--background-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.summarizer-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: var(--primary-color);
+}
+
+.summarizer-title .icon {
+  margin-right: 0.5rem;
+  font-size: 1.6rem;
+}
+
+.service-status {
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.service-status h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+.status-healthy, .status-error {
+  display: flex;
+  align-items: center;
+}
+
+.status-healthy {
+  color: var(--success-color);
+}
+
+.status-error {
+  color: var(--error-color);
+}
+
+.status-icon {
+  margin-right: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.summarizer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.form-group textarea, .form-group select {
+  padding: 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: var(--input-background);
+  color: var(--text-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  resize: vertical;
+}
+
+.form-group textarea:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.form-group textarea:disabled, .form-group select:disabled {
+  background-color: var(--disabled-background);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.primary-button, .secondary-button {
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.primary-button {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.primary-button:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.secondary-button {
+  background-color: var(--background-secondary);
+  color: var(--text-color);
+}
+
+.secondary-button:hover:not(:disabled) {
+  background-color: var(--background-tertiary);
+}
+
+.primary-button:disabled, .secondary-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.5rem;
+  background-color: var(--error-background);
+  color: var(--error-color);
+  border-radius: 6px;
+}
+
+.error-message .icon {
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.result-container {
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.result-container h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  font-size: 1.3rem;
+}
+
+.summary-result {
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: var(--text-color);
+  background-color: var(--card-background);
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 4px solid var(--primary-color);
+}
+
+.result-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.metadata-item {
+  display: flex;
+  align-items: center;
+}
+
+.metadata-item .icon {
+  margin-right: 0.4rem;
+}
+
+/* Add CSS variables if they don't exist in your main CSS */
+:root {
+  --primary-color: #4a6fa5;
+  --primary-color-rgb: 74, 111, 165;
+  --primary-hover: #3e5d8a;
+  --background-color: #ffffff;
+  --background-secondary: #f8f9fa;
+  --background-tertiary: #edf0f2;
+  --text-color: #333333;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+  --input-background: #ffffff;
+  --card-background: #ffffff;
+  --disabled-background: #f1f3f5;
+  --success-color: #28a745;
+  --error-color: #dc3545;
+  --error-background: #f8d7da;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-color: #5a84c8;
+    --primary-hover: #6d92d0;
+    --background-color: #1a1a1a;
+    --background-secondary: #2a2a2a;
+    --background-tertiary: #3a3a3a;
+    --text-color: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --border-color: #444444;
+    --input-background: #2a2a2a;
+    --card-background: #2a2a2a;
+    --disabled-background: #3a3a3a;
+    --success-color: #2ecc71;
+    --error-color: #e74c3c;
+    --error-background: #422;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .summarizer-container {
+    padding: 1.5rem;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .result-metadata {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+} 

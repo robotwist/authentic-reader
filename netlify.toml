@@ -5,7 +5,7 @@
   
 [build.environment]
   # Specify Node.js version explicitly
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
   
 # Set environment variables for production
 [context.production.environment]
