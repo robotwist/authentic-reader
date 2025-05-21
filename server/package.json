@@ -8,9 +8,9 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --runInBand",
-    "migrate": "sequelize-cli db:migrate",
-    "seed": "sequelize-cli db:seed:all",
-    "migrate:undo": "sequelize-cli db:migrate:undo",
+    "migrate": "NODE_OPTIONS='--experimental-vm-modules' sequelize-cli db:migrate",
+    "seed": "NODE_OPTIONS='--experimental-vm-modules' sequelize-cli db:seed:all",
+    "migrate:undo": "NODE_OPTIONS='--experimental-vm-modules' sequelize-cli db:migrate:undo",
     "setup-db": "npm run migrate && npm run seed",
     "setup": "node setup.js",
     "lint": "eslint .",
@@ -19,7 +19,7 @@
     "lint:controllers": "eslint ./controllers/ --fix",
     "lint:report": "eslint . --format html --output-file ./eslint-report.html",
     "check:routes": "node tools/check-controller-routes.js",
-    "heroku-postbuild": "mkdir -p models/onnx"
+    "heroku-postbuild": "mkdir -p models/onnx && node scripts/create-placeholder-models.js"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",

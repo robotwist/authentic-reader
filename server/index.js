@@ -36,7 +36,7 @@ monitorService.init();
 // Middleware
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://authentic-reader.netlify.app', 'http://localhost:5173']
+    ? ['https://authentic-reader.netlify.app', 'https://authentic-reader-3069d55d-ae95-404d-9983-3dd4f5b3795f.netlify.app', 'http://localhost:5173']
     : '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -87,7 +87,7 @@ app.get('/api/rss', async (req, res) => {
     
     console.log(`Fetching RSS feed from: ${feedUrl}`);
     
-    // Fix for Reuters feed which may have special handling needs
+    // Fix for specific problematic feeds
     let adjustedFeedUrl = feedUrl;
     if (feedUrl.includes('reuters.com')) {
       // Use alternative Reuters feed URL if needed
@@ -152,17 +152,118 @@ app.get('/api/rss', async (req, res) => {
         trim: true
       });
       
-      // Check if the result has a valid RSS structure
-      if (!result || (!result.rss && !result.feed && !result.rdf)) {
-        console.error('Invalid RSS structure detected', JSON.stringify(result).substring(0, 200) + '...');
-        return res.status(422).json({ 
-          error: 'Invalid RSS feed structure',
-          feedUrl: adjustedFeedUrl
+      // Process the parsed feed into a standardized format for the client
+      let standardizedFeed = {
+        title: 'Unknown Feed',
+        description: '',
+        link: adjustedFeedUrl,
+        items: []
+      };
+      
+      // Extract feed data from different possible formats
+      if (result.rss && result.rss.channel) {
+        // Standard RSS format
+        const channel = result.rss.channel;
+        standardizedFeed.title = channel.title || 'RSS Feed';
+        standardizedFeed.description = channel.description || '';
+        standardizedFeed.link = channel.link || adjustedFeedUrl;
+        
+        // Handle items, ensuring we have an array
+        let items = channel.item || [];
+        if (!Array.isArray(items)) items = [items];
+        
+        standardizedFeed.items = items.map(item => {
+          // Process GUID - handle string or object with '_' property
+          let guid = item.guid;
+          if (typeof guid === 'object' && guid && guid._) {
+            guid = guid._;
+          }
+          
+          // Process link - handle string or object with '_' property
+          let link = item.link;
+          if (typeof link === 'object' && link && link._) {
+            link = link._;
+          }
+          
+          return {
+            title: item.title || 'Untitled',
+            link: link || guid || '',
+            guid: guid || link || '',
+            pubDate: item.pubDate || item.date || new Date().toISOString(),
+            author: item.author || item['dc:creator'] || standardizedFeed.title,
+            content: item['content:encoded'] || item.content || item.description || '',
+            description: item.description || item.summary || '',
+            categories: Array.isArray(item.category) ? item.category : 
+                       (item.category ? [item.category] : [])
+          };
         });
+      } else if (result.feed) {
+        // Atom format
+        const feed = result.feed;
+        standardizedFeed.title = feed.title || 'Atom Feed';
+        standardizedFeed.description = feed.subtitle || '';
+        standardizedFeed.link = (feed.link && feed.link.href) || adjustedFeedUrl;
+        
+        // Handle entries, ensuring we have an array
+        let entries = feed.entry || [];
+        if (!Array.isArray(entries)) entries = [entries];
+        
+        standardizedFeed.items = entries.map(entry => {
+          // Handle link which could be an array or object
+          let link = '';
+          if (entry.link) {
+            if (Array.isArray(entry.link)) {
+              const alternateLink = entry.link.find(l => l.rel === 'alternate');
+              link = alternateLink ? alternateLink.href : (entry.link[0].href || '');
+            } else if (typeof entry.link === 'object') {
+              link = entry.link.href || '';
+            } else {
+              link = entry.link || '';
+            }
+          }
+          
+          return {
+            title: entry.title || 'Untitled',
+            link: link,
+            guid: entry.id || link,
+            pubDate: entry.published || entry.updated || new Date().toISOString(),
+            author: (entry.author && entry.author.name) || standardizedFeed.title,
+            content: entry.content || entry.summary || '',
+            description: entry.summary || '',
+            categories: Array.isArray(entry.category) ? 
+                       entry.category.map(c => c.term || c) : 
+                       (entry.category ? [entry.category.term || entry.category] : [])
+          };
+        });
+      } else if (result.rdf) {
+        // RDF format
+        const rdf = result.rdf;
+        standardizedFeed.title = rdf.channel?.title || 'RDF Feed';
+        standardizedFeed.description = rdf.channel?.description || '';
+        standardizedFeed.link = rdf.channel?.link || adjustedFeedUrl;
+        
+        // Handle items, ensuring we have an array
+        let items = rdf.item || [];
+        if (!Array.isArray(items)) items = [items];
+        
+        standardizedFeed.items = items.map(item => {
+          return {
+            title: item.title || 'Untitled',
+            link: item.link || '',
+            guid: item.guid || item.link || '',
+            pubDate: item.date || item['dc:date'] || new Date().toISOString(),
+            author: item['dc:creator'] || standardizedFeed.title,
+            content: item['content:encoded'] || item.description || '',
+            description: item.description || '',
+            categories: []
+          };
+        });
+      } else {
+        throw new Error('Unsupported feed format');
       }
       
-      // Return the parsed feed
-      res.json(result);
+      // Return the standardized feed
+      res.json(standardizedFeed);
     } catch (parseError) {
       console.error(`XML parsing error:`, parseError);
       
@@ -274,8 +375,8 @@ let serverInstance = null;
 // Function to start the server (if not in test mode)
 const startServer = async () => {
   if (process.env.NODE_ENV !== 'test') {
-    serverInstance = app.listen(PORT, async () => {
-      console.log(`Server running on port ${PORT}`);
+    serverInstance = app.listen(PORT, '0.0.0.0', async () => {
+      console.log(`Server running on port ${PORT} and bound to all interfaces`);
       // Initialize database connection and run maintenance
       try {
         await sequelize.authenticate();

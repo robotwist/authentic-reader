@@ -1,2 +1,2 @@
-web: npm start
-release: npm run migrate 
+web: node index.js
+release: node scripts/run-migrations.js
