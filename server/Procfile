@@ -1,0 +1,2 @@
+web: node index.js
+release: node scripts/run-migrations.js
