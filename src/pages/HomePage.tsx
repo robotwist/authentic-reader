@@ -6,16 +6,40 @@ import {
   Paper,
   Box,
   CircularProgress,
-  Alert
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Stack
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ArticleCard from '../components/ArticleCard';
+import { FiBookOpen, FiShield, FiTarget, FiTrendingUp } from 'react-icons/fi';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   height: '100%',
   display: 'flex',
   flexDirection: 'column'
+}));
+
+const HeroSection = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(8, 0),
+  background: `linear-gradient(45deg, ${theme.palette.primary.main} 30%, ${theme.palette.primary.dark} 90%)`,
+  color: theme.palette.primary.contrastText,
+  textAlign: 'center',
+  marginBottom: theme.spacing(6)
+}));
+
+const FeatureCard = styled(Card)(({ theme }) => ({
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  transition: 'transform 0.2s ease-in-out',
+  '&:hover': {
+    transform: 'translateY(-4px)'
+  }
 }));
 
 interface Article {
@@ -34,6 +58,29 @@ interface Article {
     errorScore?: number;
   };
 }
+
+const features = [
+  {
+    icon: <FiShield size={32} />,
+    title: 'Bias Detection',
+    description: 'Advanced AI analysis to identify potential biases in content'
+  },
+  {
+    icon: <FiTarget size={32} />,
+    title: 'Rhetorical Analysis',
+    description: 'Understand the persuasive techniques used in articles'
+  },
+  {
+    icon: <FiTrendingUp size={32} />,
+    title: 'Quality Metrics',
+    description: 'Comprehensive scoring of article reliability and credibility'
+  },
+  {
+    icon: <FiBookOpen size={32} />,
+    title: 'Smart Library',
+    description: 'Organize and analyze your reading collection'
+  }
+];
 
 const HomePage: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -75,54 +122,100 @@ const HomePage: React.FC = () => {
   if (error) return <Alert severity="error">{error}</Alert>;
 
   return (
-    <Container maxWidth="lg">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Today's Highlights
-        </Typography>
+    <Box>
+      <HeroSection>
+        <Container maxWidth="md">
+          <Typography variant="h2" component="h1" gutterBottom>
+            Read Smarter, Not Harder
+          </Typography>
+          <Typography variant="h5" gutterBottom sx={{ mb: 4 }}>
+            Understand the hidden aspects of what you read with AI-powered analysis
+          </Typography>
+          <Stack direction="row" spacing={2} justifyContent="center">
+            <Button variant="contained" color="secondary" size="large">
+              Try Analysis
+            </Button>
+            <Button variant="outlined" color="inherit" size="large">
+              Learn More
+            </Button>
+          </Stack>
+        </Container>
+      </HeroSection>
 
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid item xs={12} md={6}>
-            <StyledPaper>
-              <Typography variant="h6" gutterBottom>
-                Doomscroll of the Day
-              </Typography>
-              {doomArticle && (
-                <ArticleCard
-                  article={doomArticle}
-                  highlight="doom"
-                />
-              )}
-            </StyledPaper>
+      <Container maxWidth="lg">
+        <Box sx={{ mb: 6 }}>
+          <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ mb: 4 }}>
+            Key Features
+          </Typography>
+          <Grid container spacing={3}>
+            {features.map((feature, index) => (
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <FeatureCard>
+                  <CardContent>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+                      {feature.icon}
+                    </Box>
+                    <Typography variant="h6" component="h3" gutterBottom align="center">
+                      {feature.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" align="center">
+                      {feature.description}
+                    </Typography>
+                  </CardContent>
+                </FeatureCard>
+              </Grid>
+            ))}
           </Grid>
-          <Grid item xs={12} md={6}>
-            <StyledPaper>
-              <Typography variant="h6" gutterBottom>
-                Most Erroneous Article
-              </Typography>
-              {errorArticle && (
-                <ArticleCard
-                  article={errorArticle}
-                  highlight="error"
-                />
-              )}
-            </StyledPaper>
-          </Grid>
-        </Grid>
+        </Box>
 
-        <Typography variant="h4" component="h2" gutterBottom>
-          Latest Articles
-        </Typography>
+        <Box sx={{ mb: 6 }}>
+          <Typography variant="h4" component="h2" gutterBottom>
+            Today's Highlights
+          </Typography>
 
-        <Grid container spacing={3}>
-          {articles.map((article) => (
-            <Grid item xs={12} md={6} lg={4} key={article.id}>
-              <ArticleCard article={article} />
+          <Grid container spacing={3} sx={{ mb: 4 }}>
+            <Grid item xs={12} md={6}>
+              <StyledPaper>
+                <Typography variant="h6" gutterBottom>
+                  Doomscroll of the Day
+                </Typography>
+                {doomArticle && (
+                  <ArticleCard
+                    article={doomArticle}
+                    highlight="doom"
+                  />
+                )}
+              </StyledPaper>
             </Grid>
-          ))}
-        </Grid>
-      </Box>
-    </Container>
+            <Grid item xs={12} md={6}>
+              <StyledPaper>
+                <Typography variant="h6" gutterBottom>
+                  Most Erroneous Article
+                </Typography>
+                {errorArticle && (
+                  <ArticleCard
+                    article={errorArticle}
+                    highlight="error"
+                  />
+                )}
+              </StyledPaper>
+            </Grid>
+          </Grid>
+
+          <Typography variant="h4" component="h2" gutterBottom>
+            Latest Articles
+          </Typography>
+
+          <Grid container spacing={3}>
+            {articles.map((article) => (
+              <Grid item xs={12} md={6} lg={4} key={article.id}>
+                <ArticleCard article={article} />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 
