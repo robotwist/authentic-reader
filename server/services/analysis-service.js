@@ -27,25 +27,35 @@ export async function analyzeArticle(articleId) {
     // Perform sentiment analysis
     const sentimentResult = await onnxService.analyzeSentiment(textToAnalyze);
     
-    // Create analysis record
-    const analysis = await ArticleAnalysisModel.create({
-      articleId,
-      sentiment: sentimentResult.sentiment,
-      subjectivity: sentimentResult.subjectivity,
-      bias: article.Source?.bias || 'Unknown',
-      reliability: article.Source?.reliability || 'Unknown',
-      analysis: {
-        sentiment: sentimentResult.sentiment,
-        subjectivity: sentimentResult.subjectivity,
-        confidence: sentimentResult.confidence,
-        keywords: sentimentResult.keywords
+    // Perform analysis
+    const analysis = await performAnalysis(article);
+
+    // Create or update analysis record
+    const [articleAnalysis, created] = await ArticleAnalysisModel.findOrCreate({
+      where: { articleId },
+      defaults: {
+        sentiment: analysis.sentiment,
+        subjectivity: analysis.subjectivity,
+        bias: analysis.bias,
+        reliability: analysis.reliability,
+        analysis: analysis.details
       }
     });
+
+    if (!created) {
+      await articleAnalysis.update({
+        sentiment: analysis.sentiment,
+        subjectivity: analysis.subjectivity,
+        bias: analysis.bias,
+        reliability: analysis.reliability,
+        analysis: analysis.details
+      });
+    }
 
     // Update article status
     await article.update({ isAnalyzed: true });
 
-    return analysis;
+    return articleAnalysis;
   } catch (error) {
     logger.error(`Error analyzing article ${articleId}:`, error);
     throw error;
@@ -77,14 +87,71 @@ export async function analyzeUnanalyzedArticles() {
 }
 
 async function performAnalysis(article) {
-  // Placeholder for actual analysis logic
+  const biasAnalysis = await performBiasAnalysis(article);
+  const rhetoricalAnalysis = await performRhetoricalAnalysis(article);
+  const networkAnalysis = await performNetworkAnalysis(article);
+  const manipulationAnalysis = await performManipulationAnalysis(article);
+  const emotionAnalysis = await performEmotionAnalysis(article);
+
   return {
-    sentiment: 0.5,
-    subjectivity: 0.5,
+    sentiment: 0.5, // Placeholder
+    subjectivity: 0.5, // Placeholder
+    bias: biasAnalysis.bias,
+    reliability: biasAnalysis.reliability,
+    details: {
+      bias: biasAnalysis.details,
+      rhetorical: rhetoricalAnalysis.details,
+      network: networkAnalysis.details,
+      manipulation: manipulationAnalysis.details,
+      emotion: emotionAnalysis.details
+    }
+  };
+}
+
+// Implement real analysis logic for each analysis tab
+async function performBiasAnalysis(article) {
+  // Placeholder for bias analysis logic
+  return {
     bias: 'neutral',
     reliability: 'medium',
     details: {
-      // Analysis details will go here
+      // Bias analysis details will go here
+    }
+  };
+}
+
+async function performRhetoricalAnalysis(article) {
+  // Placeholder for rhetorical analysis logic
+  return {
+    details: {
+      // Rhetorical analysis details will go here
+    }
+  };
+}
+
+async function performNetworkAnalysis(article) {
+  // Placeholder for network analysis logic
+  return {
+    details: {
+      // Network analysis details will go here
+    }
+  };
+}
+
+async function performManipulationAnalysis(article) {
+  // Placeholder for manipulation analysis logic
+  return {
+    details: {
+      // Manipulation analysis details will go here
+    }
+  };
+}
+
+async function performEmotionAnalysis(article) {
+  // Placeholder for emotion analysis logic
+  return {
+    details: {
+      // Emotion analysis details will go here
     }
   };
 } 

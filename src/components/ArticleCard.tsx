@@ -202,6 +202,37 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
         }}>
           {article.content}
         </Typography>
+
+        <Box sx={{ mt: 2 }}>
+          <Typography variant="body2" gutterBottom>
+            Bias: {article.analysis?.bias || 'Unknown'}
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            Reliability: {article.analysis?.reliability || 'Unknown'}
+          </Typography>
+          {article.analysis?.details && (
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="body2" gutterBottom>
+                Analysis Details:
+              </Typography>
+              <Typography variant="body2" gutterBottom>
+                Bias: {JSON.stringify(article.analysis.details.bias)}
+              </Typography>
+              <Typography variant="body2" gutterBottom>
+                Rhetorical: {JSON.stringify(article.analysis.details.rhetorical)}
+              </Typography>
+              <Typography variant="body2" gutterBottom>
+                Network: {JSON.stringify(article.analysis.details.network)}
+              </Typography>
+              <Typography variant="body2" gutterBottom>
+                Manipulation: {JSON.stringify(article.analysis.details.manipulation)}
+              </Typography>
+              <Typography variant="body2" gutterBottom>
+                Emotion: {JSON.stringify(article.analysis.details.emotion)}
+              </Typography>
+            </Box>
+          )}
+        </Box>
       </CardContent>
 
       <CardActions>
