@@ -11,22 +11,55 @@ import { Badge } from './ui/Badge';
 import { getArticleTypeIcon } from '../utils/articleUtils';
 import defaultImage from '../assets/default-article.svg';
 import { logger } from '../utils/logger';
+import { useNavigate } from 'react-router-dom';
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Typography,
+  Button,
+  Box,
+  Chip,
+  Rating
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 interface ArticleCardProps {
   article: Article;
   onRead: (articleId: string) => void;
   onSave: (articleId: string) => void;
   onAnalyze?: (article: Article) => void;
+  highlight?: 'doom' | 'error';
 }
+
+const StyledCard = styled(Card)<{ highlight?: string }>(({ theme, highlight }) => ({
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  transition: 'transform 0.2s',
+  '&:hover': {
+    transform: 'translateY(-4px)',
+  },
+  ...(highlight === 'doom' && {
+    border: `2px solid ${theme.palette.error.main}`,
+    backgroundColor: theme.palette.error.light,
+  }),
+  ...(highlight === 'error' && {
+    border: `2px solid ${theme.palette.warning.main}`,
+    backgroundColor: theme.palette.warning.light,
+  }),
+}));
 
 const ArticleCard: React.FC<ArticleCardProps> = ({ 
   article, 
   onRead, 
   onSave, 
-  onAnalyze 
+  onAnalyze,
+  highlight
 }) => {
   const [imageError, setImageError] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const navigate = useNavigate();
 
   // Check if article has a valid image
   const hasValidImage = article.image && !imageError;
@@ -109,94 +142,74 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
     }
   };
 
+  const handleClick = () => {
+    navigate(`/article/${article.id}`);
+  };
+
   return (
-    <div 
-      className={`article-card ${article.read ? 'article-read' : ''} ${!hasValidImage ? 'no-image' : ''}`} 
-      onClick={handleCardClick}
-    >
-      {article.saved && (
-        <div className="saved-badge">
-          <FaBookmark className="saved-icon" />
-        </div>
-      )}
-      
-      {hasValidImage && (
-        <div className="article-image-container">
-          <img 
-            src={getImageSource()} 
-            alt={article.title || 'Article'} 
-            className="article-image"
-            onError={() => setImageError(true)}
+    <StyledCard highlight={highlight}>
+      <CardContent>
+        <Typography variant="h6" component="h2" gutterBottom>
+          {article.title}
+        </Typography>
+
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body2" color="text.secondary">
+            {article.source?.name} • {new Date(article.pubDate).toLocaleDateString()}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            By {article.author}
+          </Typography>
+        </Box>
+
+        <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+          <Chip
+            label={`Bias: ${article.source?.bias.toFixed(1)}`}
+            color={article.source?.bias > 0.5 ? 'error' : 'success'}
+            size="small"
           />
-          {article.contentType && (
-            <Badge 
-              text={article.contentType} 
-              icon={getArticleTypeIcon(article.contentType)} 
-              className="content-type-badge"
-            />
-          )}
-        </div>
-      )}
+          <Chip
+            label={`Reliability: ${article.source?.reliability.toFixed(1)}`}
+            color={article.source?.reliability > 0.5 ? 'success' : 'error'}
+            size="small"
+          />
+        </Box>
 
-      <div className="article-content">
-        <div className="article-meta">
-          {article.source?.name && (
-            <span className="article-source">{article.source.name}</span>
-          )}
-          {article.publishedAt && (
-            <span className="article-date">{formatDate(article.publishedAt)}</span>
-          )}
-        </div>
-
-        <h3 className="article-title">{truncateText(article.title || 'Untitled', 80)}</h3>
-        
-        {article.summary && (
-          <p className="article-summary">{truncateText(article.summary, 120)}</p>
+        {highlight === 'doom' && article.analysis?.doomScore && (
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="body2" color="error">
+              Doomscroll Score: {article.analysis.doomScore.toFixed(1)}
+            </Typography>
+            <Rating value={article.analysis.doomScore} max={1} readOnly />
+          </Box>
         )}
 
-        <div className="article-actions">
-          <button 
-            className={`action-btn ${article.read ? 'active' : ''}`}
-            onClick={handleReadClick}
-            title={article.read ? "Mark as unread" : "Mark as read"}
-            aria-pressed={article.read}
-          >
-            {article.read ? <FaEye /> : <FaEyeSlash />}
-          </button>
-          
-          <button 
-            className={`action-btn ${article.saved ? 'active' : ''}`}
-            onClick={handleSaveClick}
-            title={article.saved ? "Remove from saved" : "Save for later"}
-            aria-pressed={article.saved}
-          >
-            {article.saved ? <FaBookmark /> : <FaRegBookmark />}
-          </button>
-          
-          {onAnalyze && (
-            <button 
-              className={`action-btn analyze-btn ${isAnalyzing ? 'loading' : ''}`}
-              onClick={handleAnalyzeClick}
-              title="Analyze article"
-              disabled={isAnalyzing}
-              aria-busy={isAnalyzing}
-            >
-              {isAnalyzing ? <FaSpinner className="fa-spin" /> : <FaTextHeight />}
-            </button>
-          )}
-          
-          <a 
-            href={getArticleUrl()} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="read-more-link"
-            onClick={(e) => e.stopPropagation()}
-          >
-            Read <FaChevronRight />
-          </a>
-        </div>
-      </div>
-    </div>
+        {highlight === 'error' && article.analysis?.errorScore && (
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="body2" color="warning.main">
+              Error Score: {article.analysis.errorScore.toFixed(1)}
+            </Typography>
+            <Rating value={article.analysis.errorScore} max={1} readOnly />
+          </Box>
+        )}
+
+        <Typography variant="body2" color="text.secondary" sx={{
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          display: '-webkit-box',
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: 'vertical',
+        }}>
+          {article.content}
+        </Typography>
+      </CardContent>
+
+      <CardActions>
+        <Button size="small" onClick={handleClick}>
+          Read More
+        </Button>
+      </CardActions>
+    </StyledCard>
   );
 };
 

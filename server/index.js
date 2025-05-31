@@ -18,6 +18,7 @@ import { ensureAdminUsers, verifyUserPasswords } from './utils/userMaintenance.j
 
 // Import services
 import onnxService from './services/onnxService.js';
+import { startScheduler } from './services/scheduler.js';
 
 // Import routes
 import userRoutes from './routes/user.js';
@@ -28,7 +29,7 @@ import onnxRoutes from './routes/onnx.js';
 import analysisRoutes from './routes/analysis.js';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3001;
 
 // Initialize monitoring service
 monitorService.init();
@@ -71,6 +72,22 @@ app.use((req, res, next) => {
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
+});
+
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    name: 'Authentic Reader API',
+    version: '1.0.0',
+    status: 'running',
+    endpoints: {
+      health: '/health',
+      articles: '/api/articles',
+      sources: '/api/sources',
+      users: '/api/users',
+      analysis: '/api/analysis'
+    }
+  });
 });
 
 /**
@@ -370,76 +387,55 @@ app.use('*', (req, res) => {
   res.status(404).json({ message: 'API endpoint not found' });
 });
 
-let serverInstance = null;
-
-// Function to start the server (if not in test mode)
+// Start the server
 const startServer = async () => {
-  if (process.env.NODE_ENV !== 'test') {
-    serverInstance = app.listen(PORT, '0.0.0.0', async () => {
-      console.log(`Server running on port ${PORT} and bound to all interfaces`);
-      // Initialize database connection and run maintenance
-      try {
-        await sequelize.authenticate();
-        console.log('Database connection established successfully.');
-        
-        // Run user maintenance tasks
-        await ensureAdminUsers();
-        await verifyUserPasswords();
-        
-      } catch (error) {
-        console.error('Unable to connect to the database or run maintenance:', error);
-        console.error('Is the database server running and accessible?');
-        monitorService.recordError('startup', error);
-        process.exit(1);
-      }
+  try {
+    // Test database connection
+    await sequelize.authenticate();
+    console.log('Database connection established successfully.');
+
+    // Initialize services
+    await onnxService.initialize();
+    startScheduler();
+
+    // Run maintenance tasks
+    await ensureAdminUsers();
+    await verifyUserPasswords();
+
+    // Start the server
+    const server = app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+      console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
     });
 
     // Handle server errors
-    serverInstance.on('error', (error) => {
+    server.on('error', (error) => {
       if (error.syscall !== 'listen') {
-        monitorService.recordError('server', error);
         throw error;
       }
       switch (error.code) {
         case 'EACCES':
           console.error(`Port ${PORT} requires elevated privileges`);
-          monitorService.recordError('server', new Error(`Port ${PORT} requires elevated privileges`));
           process.exit(1);
           break;
         case 'EADDRINUSE':
           console.error(`Port ${PORT} is already in use`);
-          monitorService.recordError('server', new Error(`Port ${PORT} is already in use`));
-          // Attempt to gracefully handle or notify, instead of exiting immediately
-          // process.exit(1);
+          process.exit(1);
           break;
         default:
-          monitorService.recordError('server', error);
           throw error;
       }
     });
 
-  } else {
-    console.log('Test environment detected, server will not start automatically.');
-    // In test mode, the app instance is exported for supertest
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
   }
 };
 
-// Call startServer only if this file is run directly (not required by tests)
-if (import.meta.url === import.meta.main) {
+// Start the server if not in test mode
+if (process.env.NODE_ENV !== 'test') {
   startServer();
 }
 
-// Graceful shutdown (optional but recommended)
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
-  if (serverInstance) {
-    serverInstance.close(() => {
-      console.log('HTTP server closed');
-      sequelize.close().then(() => console.log('DB connection closed'));
-      monitorService.shutdown();
-    });
-  }
-});
-
-// Export the Express app instance for testing
 export default app; 

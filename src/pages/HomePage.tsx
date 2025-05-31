@@ -1,50 +1,128 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import '../styles/HomePage.css';
+import React, { useState, useEffect } from 'react';
+import {
+  Container,
+  Grid,
+  Typography,
+  Paper,
+  Box,
+  CircularProgress,
+  Alert
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import ArticleCard from '../components/ArticleCard';
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column'
+}));
+
+interface Article {
+  id: string;
+  title: string;
+  content: string;
+  source: {
+    name: string;
+    bias: number;
+    reliability: number;
+  };
+  pubDate: string;
+  author: string;
+  analysis?: {
+    doomScore?: number;
+    errorScore?: number;
+  };
+}
 
 const HomePage: React.FC = () => {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [doomArticle, setDoomArticle] = useState<Article | null>(null);
+  const [errorArticle, setErrorArticle] = useState<Article | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch('/api/articles');
+        if (!response.ok) throw new Error('Failed to fetch articles');
+        const data = await response.json();
+        setArticles(data);
+
+        // Find doomscroll and error articles
+        const doom = data.reduce((max: Article, article: Article) => 
+          (article.analysis?.doomScore || 0) > (max.analysis?.doomScore || 0) ? article : max
+        , data[0]);
+
+        const error = data.reduce((max: Article, article: Article) => 
+          (article.analysis?.errorScore || 0) > (max.analysis?.errorScore || 0) ? article : max
+        , data[0]);
+
+        setDoomArticle(doom);
+        setErrorArticle(error);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load articles');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
+  if (loading) return <CircularProgress />;
+  if (error) return <Alert severity="error">{error}</Alert>;
+
   return (
-    <div className="home-page">
-      <div className="hero-section">
-        <h1>Welcome to Authentic Reader</h1>
-        <p className="tagline">Content that respects your intelligence</p>
-        
-        <div className="hero-actions">
-          <Link to="/" className="action-button primary">Browse Feed</Link>
-          <Link to="/analysis" className="action-button secondary">Analyze Content</Link>
-        </div>
-      </div>
-      
-      <div className="features-section">
-        <h2>Intelligent Content Analysis</h2>
-        <div className="features-grid">
-          <div className="feature-card">
-            <h3>Bias Detection</h3>
-            <p>Identify political and ideological bias in articles from across the web.</p>
-          </div>
-          
-          <div className="feature-card">
-            <h3>Rhetoric Analysis</h3>
-            <p>Discover the persuasion techniques used in content to influence your thinking.</p>
-          </div>
-          
-          <div className="feature-card">
-            <h3>Dark Pattern Detection</h3>
-            <p>Unmask manipulative design patterns used to influence your behavior online.</p>
-          </div>
-          
-          <div className="feature-card">
-            <h3>Virgil AI Guide</h3>
-            <p>Get intelligent explanations that help you understand content analysis results.</p>
-          </div>
-        </div>
-      </div>
-      
-      <div className="cta-section">
-        <h2>Ready to see beyond the content?</h2>
-        <Link to="/analysis" className="action-button primary">Try Content Analysis</Link>
-      </div>
-    </div>
+    <Container maxWidth="lg">
+      <Box sx={{ my: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Today's Highlights
+        </Typography>
+
+        <Grid container spacing={3} sx={{ mb: 4 }}>
+          <Grid item xs={12} md={6}>
+            <StyledPaper>
+              <Typography variant="h6" gutterBottom>
+                Doomscroll of the Day
+              </Typography>
+              {doomArticle && (
+                <ArticleCard
+                  article={doomArticle}
+                  highlight="doom"
+                />
+              )}
+            </StyledPaper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <StyledPaper>
+              <Typography variant="h6" gutterBottom>
+                Most Erroneous Article
+              </Typography>
+              {errorArticle && (
+                <ArticleCard
+                  article={errorArticle}
+                  highlight="error"
+                />
+              )}
+            </StyledPaper>
+          </Grid>
+        </Grid>
+
+        <Typography variant="h4" component="h2" gutterBottom>
+          Latest Articles
+        </Typography>
+
+        <Grid container spacing={3}>
+          {articles.map((article) => (
+            <Grid item xs={12} md={6} lg={4} key={article.id}>
+              <ArticleCard article={article} />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    </Container>
   );
 };
 
