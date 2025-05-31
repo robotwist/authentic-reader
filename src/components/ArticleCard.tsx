@@ -204,33 +204,53 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
         </Typography>
 
         <Box sx={{ mt: 2 }}>
-          <Typography variant="body2" gutterBottom>
-            Bias: {article.analysis?.bias || 'Unknown'}
-          </Typography>
-          <Typography variant="body2" gutterBottom>
-            Reliability: {article.analysis?.reliability || 'Unknown'}
-          </Typography>
-          {article.analysis?.details && (
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="body2" gutterBottom>
-                Analysis Details:
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                Bias: {JSON.stringify(article.analysis.details.bias)}
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                Rhetorical: {JSON.stringify(article.analysis.details.rhetorical)}
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                Network: {JSON.stringify(article.analysis.details.network)}
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                Manipulation: {JSON.stringify(article.analysis.details.manipulation)}
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                Emotion: {JSON.stringify(article.analysis.details.emotion)}
-              </Typography>
-            </Box>
+          {article.analysis && (
+            <>
+              <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                <Chip
+                  label={`Bias: ${article.analysis.bias || 'Unknown'}`}
+                  color={article.analysis.bias === 'high' ? 'error' : 
+                         article.analysis.bias === 'medium' ? 'warning' : 'success'}
+                  size="small"
+                />
+                <Chip
+                  label={`Reliability: ${article.analysis.reliability || 'Unknown'}`}
+                  color={article.analysis.reliability === 'high' ? 'success' : 
+                         article.analysis.reliability === 'medium' ? 'warning' : 'error'}
+                  size="small"
+                />
+              </Box>
+
+              {article.analysis.details && (
+                <Box sx={{ mt: 1 }}>
+                  <Typography variant="caption" color="text.secondary">
+                    Analysis Summary:
+                  </Typography>
+                  <Box sx={{ mt: 1 }}>
+                    {article.analysis.details.bias && (
+                      <Typography variant="caption" display="block">
+                        • Bias Score: {article.analysis.details.bias.biasIndicators?.emotionalLanguage?.toFixed(2) || 'N/A'}
+                      </Typography>
+                    )}
+                    {article.analysis.details.rhetorical && (
+                      <Typography variant="caption" display="block">
+                        • Argument Strength: {article.analysis.details.rhetorical.argumentStrength?.toFixed(2) || 'N/A'}
+                      </Typography>
+                    )}
+                    {article.analysis.details.manipulation && (
+                      <Typography variant="caption" display="block">
+                        • Manipulation Risk: {article.analysis.details.manipulation.riskLevel || 'N/A'}
+                      </Typography>
+                    )}
+                    {article.analysis.details.emotion && (
+                      <Typography variant="caption" display="block">
+                        • Dominant Emotion: {article.analysis.details.emotion.dominantEmotion || 'N/A'}
+                      </Typography>
+                    )}
+                  </Box>
+                </Box>
+              )}
+            </>
           )}
         </Box>
       </CardContent>

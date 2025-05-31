@@ -32,18 +32,19 @@
     "jsdom": "^26.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
+    "natural": "^8.1.0",
+    "node-cron": "^3.0.3",
     "node-fetch": "^3.3.2",
     "onnxruntime-node": "^1.18.0",
     "perf_hooks": "^0.0.1",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
+    "rss-parser": "^3.13.0",
     "sequelize": "^6.37.1",
     "sequelize-cli": "^6.6.2",
     "uuid": "^9.0.1",
     "winston": "^3.8.2",
-    "xml2js": "^0.6.2",
-    "rss-parser": "^3.13.0",
-    "node-cron": "^3.0.3"
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
