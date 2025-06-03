@@ -60,3 +60,4 @@ llama-service/.env
 !**/.env.example
 # Local Netlify folder
 .netlify
+server/models/onnx/sentiment-model.onnx
