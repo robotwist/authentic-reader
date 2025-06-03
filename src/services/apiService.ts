@@ -10,7 +10,7 @@ import {
 } from '../types';
 
 // API base URL - replace with your production URL when deploying
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'http://localhost:3001/api';
 
 // Local storage keys
 const TOKEN_KEY = 'auth_token';
@@ -272,7 +272,7 @@ export const sourcesApi = {
   // Get all sources
   getAllSources: async (retryCount = 2): Promise<Source[]> => {
     try {
-      return await apiRequest<Source[]>('/api/sources', 'GET', undefined, false);
+      return await apiRequest<Source[]>('/sources', 'GET', undefined, false);
     } catch (error) {
       if (retryCount > 0 && (error instanceof ApiError || error instanceof Error)) {
         console.warn(`Retrying getAllSources (${retryCount} retries left)...`);
@@ -293,42 +293,42 @@ export const sourcesApi = {
   
   // Get source by ID
   getSource: async (id: number): Promise<Source> => {
-    return apiRequest<Source>(`/api/sources/${id}`, 'GET', undefined, false);
+    return apiRequest<Source>(`/sources/${id}`, 'GET', undefined, false);
   },
   
   // Get user's subscribed sources
   getUserSources: async (): Promise<Source[]> => {
-    return apiRequest<Source[]>('/api/sources/user/subscriptions');
+    return apiRequest<Source[]>('/sources/user/subscriptions');
   },
   
   // Subscribe to a source
   subscribeToSource: async (sourceId: number): Promise<Source> => {
-    return apiRequest<Source>(`/api/sources/${sourceId}/subscribe`, 'POST');
+    return apiRequest<Source>(`/sources/${sourceId}/subscribe`, 'POST');
   },
   
   // Unsubscribe from a source
   unsubscribeFromSource: async (sourceId: number): Promise<void> => {
-    return apiRequest<void>(`/api/sources/${sourceId}/subscribe`, 'DELETE');
+    return apiRequest<void>(`/sources/${sourceId}/subscribe`, 'DELETE');
   },
   
   // Update source order
   updateSourceOrder: async (sourceOrders: { sourceId: number, displayOrder: number }[]): Promise<{ message: string }> => {
-    return apiRequest<{ message: string }>('/api/sources/user/order', 'PUT', { sourceOrders });
+    return apiRequest<{ message: string }>('/sources/user/order', 'PUT', { sourceOrders });
   },
   
   // Create a new source (admin function)
   createSource: async (source: Omit<Source, 'id'>): Promise<Source> => {
-    return apiRequest<Source>('/api/sources', 'POST', source);
+    return apiRequest<Source>('/sources', 'POST', source);
   },
   
   // Update a source (admin function)
   updateSource: async (id: number, updates: Partial<Source>): Promise<Source> => {
-    return apiRequest<Source>(`/api/sources/${id}`, 'PUT', updates);
+    return apiRequest<Source>(`/sources/${id}`, 'PUT', updates);
   },
   
   // Delete a source (admin function)
   deleteSource: async (id: number): Promise<void> => {
-    return apiRequest<void>(`/api/sources/${id}`, 'DELETE');
+    return apiRequest<void>(`/sources/${id}`, 'DELETE');
   }
 };
 
@@ -358,7 +358,7 @@ export const articlesApi = {
     const queryString = params.toString() ? `?${params.toString()}` : '';
     
     return apiRequest<PaginatedResponse<Article>>(
-      `/api/articles${queryString}`,
+      `/articles${queryString}`,
       'GET',
       undefined,
       isAuthenticated()
@@ -368,7 +368,7 @@ export const articlesApi = {
   // Get articles from a source
   getArticlesFromSource: async (sourceId: number | string): Promise<Article[]> => {
     return apiRequest<Article[]>(
-      `/api/articles/source/${sourceId}`,
+      `/articles/source/${sourceId}`,
       'GET',
       undefined,
       isAuthenticated()
@@ -387,14 +387,14 @@ export const articlesApi = {
     const queryString = params.toString() ? `?${params.toString()}` : '';
     
     return apiRequest<PaginatedResponse<Article>>(
-      `/api/articles/saved${queryString}`
+      `/articles/saved${queryString}`
     );
   },
   
   // Mark article as read/unread
   markAsRead: async (articleId?: number, guid?: string, isRead: boolean = true): Promise<{ message: string }> => {
     return apiRequest<{ message: string }>(
-      '/api/articles/read',
+      '/articles/read',
       'POST',
       { articleId, guid, isRead }
     );
@@ -403,7 +403,7 @@ export const articlesApi = {
   // Save/unsave article
   saveArticle: async (articleId?: number, guid?: string, isSaved: boolean = true): Promise<{ message: string }> => {
     return apiRequest<{ message: string }>(
-      '/api/articles/save',
+      '/articles/save',
       'POST',
       { articleId, guid, isSaved }
     );
@@ -413,14 +413,14 @@ export const articlesApi = {
   getArticleAnalysis: async (articleId?: number, guid?: string): Promise<ArticleAnalysis> => {
     if (articleId) {
       return apiRequest<ArticleAnalysis>(
-        `/api/articles/${articleId}/analysis`,
+        `/articles/${articleId}/analysis`,
         'GET',
         undefined,
         isAuthenticated()
       );
     } else if (guid) {
       return apiRequest<ArticleAnalysis>(
-        `/api/articles/guid/${guid}/analysis`,
+        `/articles/guid/${guid}/analysis`,
         'GET',
         undefined,
         isAuthenticated()
@@ -433,7 +433,7 @@ export const articlesApi = {
   // Create article analysis
   createArticleAnalysis: async (analysis: Partial<ArticleAnalysis>): Promise<ArticleAnalysis> => {
     return apiRequest<ArticleAnalysis>(
-      '/api/articles/analysis',
+      '/articles/analysis',
       'POST',
       analysis,
       isAuthenticated()
