@@ -1,11 +1,11 @@
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 import { FeedItem, Source } from './rssService';
-import { ContentAnalysisResult } from '../types';
+import { ContentAnalysisResult, RSSArticle } from '../types';
 
 interface AuthenticReaderDB extends DBSchema {
   articles: {
     key: string;
-    value: FeedItem;
+    value: RSSArticle;
     indexes: {
       'by-source': string;
       'by-date': string;
@@ -39,7 +39,7 @@ interface AuthenticReaderDB extends DBSchema {
 
 // Database name and version
 const DB_NAME = 'authenticReader';
-const DB_VERSION = 2; // Incremented to add analyses store
+const DB_VERSION = 3; // Bumped to 3 to resolve IndexedDB VersionError
 
 // In-memory storage fallback
 const inMemoryDB = {
@@ -52,11 +52,10 @@ const inMemoryDB = {
 // Create an in-memory fallback that mimics the IDBPDatabase interface
 function createInMemoryFallback(): IDBPDatabase<AuthenticReaderDB> {
   return {
-    // Basic mock implementation of IDBPDatabase
     objectStoreNames: {
       contains: (name: string) => ['articles', 'sources', 'preferences', 'analyses'].includes(name)
     },
-    transaction: (storeNames: string | string[], mode?: 'readonly' | 'readwrite') => {
+    transaction: (storeNames: string | string[]) => {
       return {
         objectStore: (name: string) => createMockObjectStore(name),
         store: createMockObjectStore(Array.isArray(storeNames) ? storeNames[0] : storeNames),
@@ -150,15 +149,19 @@ function createMockObjectStore(name: string) {
       }
       return [];
     },
-    put: async (value: any) => {
+    put: async (value: unknown) => {
       if (name === 'preferences') {
-        inMemoryDB.preferences.set(value.id, value.value);
+        const pref = value as { id: string; value: any };
+        inMemoryDB.preferences.set(pref.id, pref.value);
       } else if (name === 'articles') {
-        inMemoryDB.articles.set(value.id, value);
+        const article = value as RSSArticle;
+        inMemoryDB.articles.set(article.link, article);
       } else if (name === 'sources') {
-        inMemoryDB.sources.set(value.id, value);
+        const source = value as Source;
+        inMemoryDB.sources.set(source.name, source);
       } else if (name === 'analyses') {
-        inMemoryDB.analyses.set(value.articleId, value);
+        const analysis = value as { articleId: string; analysis: ContentAnalysisResult; timestamp: number };
+        inMemoryDB.analyses.set(analysis.articleId, analysis);
       }
       return '';
     },
@@ -283,14 +286,14 @@ export async function getArticles(filters: ArticleFilters = {}): Promise<FeedIte
   
   // Apply filters
   if (filters.sources && filters.sources.length > 0) {
-    allArticles = allArticles.filter(article => 
-      filters.sources!.includes(article.source)
-    );
+    allArticles = allArticles.filter(article => {
+      const sourceName = typeof article.source === 'string' ? article.source : article.source?.name;
+      return filters.sources!.includes(sourceName);
+    });
   }
   
   if (filters.categories && filters.categories.length > 0) {
     allArticles = allArticles.filter(article => {
-      // Check if any of the article categories match any of the filter categories
       return article.categories && article.categories.some(category => 
         filters.categories!.includes(category.toLowerCase())
       );
@@ -315,24 +318,23 @@ export async function getArticles(filters: ArticleFilters = {}): Promise<FeedIte
   
   allArticles.sort((a, b) => {
     let comparison = 0;
-    
+    const aSource = typeof a.source === 'string' ? a.source : a.source?.name || '';
+    const bSource = typeof b.source === 'string' ? b.source : b.source?.name || '';
     switch (sortBy) {
       case 'date':
-        comparison = new Date(b.publishDate || b.pubDate || b.isoDate || '').getTime() - 
-                     new Date(a.publishDate || a.pubDate || a.isoDate || '').getTime();
+        comparison = new Date(b.publishDate || b.pubDate || '').getTime() - 
+                     new Date(a.publishDate || a.pubDate || '').getTime();
         break;
       case 'source':
-        comparison = (a.source || '').localeCompare(b.source || '');
+        comparison = aSource.localeCompare(bSource);
         break;
       case 'title':
         comparison = a.title.localeCompare(b.title);
         break;
       default:
-        comparison = new Date(b.publishDate || b.pubDate || b.isoDate || '').getTime() - 
-                     new Date(a.publishDate || a.pubDate || a.isoDate || '').getTime();
+        comparison = new Date(b.publishDate || b.pubDate || '').getTime() - 
+                     new Date(a.publishDate || a.pubDate || '').getTime();
     }
-    
-    // Reverse comparison for ascending order
     return sortDirection === 'asc' ? -comparison : comparison;
   });
   
@@ -354,83 +356,15 @@ export async function saveSources(sources: Source[]): Promise<void> {
   console.log(`Saved ${sources.length} sources to IndexedDB`);
 }
 
-// Get all sources
+// Add export for getAllSources
 export async function getAllSources(): Promise<Source[]> {
   const db = await initializeDB();
   return db.getAll('sources');
 }
 
-// Get sources by category
-export async function getSourcesByCategory(category: string): Promise<Source[]> {
-  const db = await initializeDB();
-  const tx = db.transaction('sources', 'readonly');
-  const index = tx.store.index('by-category');
-  return index.getAll(category);
-}
-
-// Save a preference
-export async function savePreference(id: string, value: any): Promise<void> {
-  const db = await initializeDB();
-  await db.put('preferences', { id, value });
-}
-
-// Get a preference
-export async function getPreference(id: string): Promise<any> {
-  const db = await initializeDB();
-  try {
-    const pref = await db.get('preferences', id);
-    return pref ? pref.value : null;
-  } catch (error) {
-    console.error(`Error getting preference ${id}:`, error);
-    return null;
-  }
-}
-
-// Mark article as read
-export async function markArticleAsRead(id: string, isRead: boolean = true): Promise<void> {
-  const db = await initializeDB();
-  const tx = db.transaction('articles', 'readwrite');
-  const article = await tx.store.get(id);
-  
-  if (article) {
-    article.isRead = isRead;
-    await tx.store.put(article);
-  }
-  
-  await tx.done;
-}
-
-// Mark article as saved
-export async function markArticleAsSaved(id: string, isSaved: boolean = true): Promise<void> {
-  const db = await initializeDB();
-  const tx = db.transaction('articles', 'readwrite');
-  const article = await tx.store.get(id);
-  
-  if (article) {
-    article.isSaved = isSaved;
-    await tx.store.put(article);
-  }
-  
-  await tx.done;
-}
-
-// Save article analysis
-export async function saveArticleAnalysis(articleId: string, analysis: ContentAnalysisResult): Promise<void> {
-  const db = await initializeDB();
-  
-  await db.put('analyses', {
-    articleId,
-    analysis,
-    timestamp: Date.now()
-  });
-  
-  console.log(`Saved analysis for article ${articleId}`);
-}
-
-// Get article analysis
+// Add export for getArticleAnalysis
 export async function getArticleAnalysis(articleId: string): Promise<ContentAnalysisResult | null> {
   const db = await initializeDB();
-  
   try {
     const analysisRecord = await db.get('analyses', articleId);
     return analysisRecord ? analysisRecord.analysis : null;
@@ -440,14 +374,49 @@ export async function getArticleAnalysis(articleId: string): Promise<ContentAnal
   }
 }
 
-// Get all article analyses
-export async function getAllArticleAnalyses(): Promise<{ articleId: string; analysis: ContentAnalysisResult; timestamp: number }[]> {
+// Add export for markArticleAsRead
+export async function markArticleAsRead(id: string, isRead: boolean = true): Promise<void> {
   const db = await initializeDB();
-  return db.getAll('analyses');
+  const tx = db.transaction('articles', 'readwrite');
+  const article = await tx.store.get(id);
+  if (article) {
+    article.isRead = isRead;
+    await tx.store.put(article);
+  }
+  await tx.done;
 }
 
-// Delete article analysis
-export async function deleteArticleAnalysis(articleId: string): Promise<void> {
+// Add export for markArticleAsSaved
+export async function markArticleAsSaved(id: string, isSaved: boolean = true): Promise<void> {
   const db = await initializeDB();
-  await db.delete('analyses', articleId);
-} 
+  const tx = db.transaction('articles', 'readwrite');
+  const article = await tx.store.get(id);
+  if (article) {
+    article.isSaved = isSaved;
+    await tx.store.put(article);
+  }
+  await tx.done;
+}
+
+// Add export for saveArticleAnalysis
+export async function saveArticleAnalysis(articleId: string, analysis: ContentAnalysisResult): Promise<void> {
+  const db = await initializeDB();
+  const tx = db.transaction('analyses', 'readwrite');
+  await tx.store.put({ articleId, analysis, timestamp: Date.now() });
+  await tx.done;
+}
+
+// Add export for getPreference
+export async function getPreference(id: string): Promise<any | undefined> {
+  const db = await initializeDB();
+  const pref = await db.get('preferences', id);
+  return pref ? pref.value : undefined;
+}
+
+// Add export for savePreference
+export async function savePreference(id: string, value: any): Promise<void> {
+  const db = await initializeDB();
+  const tx = db.transaction('preferences', 'readwrite');
+  await tx.store.put({ id, value });
+  await tx.done;
+}

@@ -1,0 +1,41 @@
+redirectsOrigin = "config"
+plugins = []
+headers = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "/home/robwistrand/code/ga/projects/authentic-reader/dist"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "npm run build:no-types"
+
+[build.environment]
+NODE_VERSION = "18"
+VITE_BACKEND_URL = "https://authentic-reader-api-8b0a83fb7d96.herokuapp.com"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
