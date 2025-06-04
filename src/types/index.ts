@@ -99,18 +99,13 @@ export interface User {
  * User preferences
  */
 export interface UserPreferences {
-  id?: number;
-  userId?: number;
-  theme?: 'light' | 'dark' | 'system';
-  fontSize?: 'small' | 'medium' | 'large';
-  layout?: 'grid' | 'list';
-  defaultView?: 'all' | 'saved' | 'categories';
-  showImages?: boolean;
-  sortBy?: 'date' | 'source' | 'title';
-  hideReadArticles?: boolean;
-  articlesPerPage?: number;
-  createdAt?: string;
-  updatedAt?: string;
+  textSize: 'small' | 'medium' | 'large';
+  darkMode: boolean;
+  theme: 'light' | 'dark' | 'system';
+  focusMode: boolean;
+  dyslexicFont: boolean;
+  autoSaveHighlights: boolean;
+  notificationsEnabled: boolean;
 }
 
 /**

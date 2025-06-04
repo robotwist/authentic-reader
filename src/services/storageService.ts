@@ -1,6 +1,6 @@
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 import { FeedItem, Source } from './rssService';
-import { ContentAnalysisResult, RSSArticle } from '../types';
+import { ContentAnalysisResult, RSSArticle, UserPreferences } from '../types';
 
 interface AuthenticReaderDB extends DBSchema {
   articles: {
@@ -433,4 +433,41 @@ export async function getPassageAnalyses(articleId: string): Promise<ContentAnal
   const db = await initializeDB();
   const analysis = await db.get('analyses', articleId);
   return analysis?.analysis || null;
+}
+
+// Get all user preferences
+export async function getUserPreferences(): Promise<UserPreferences> {
+  const db = await initializeDB();
+  const preferences = await db.getAll('preferences');
+  const defaultPreferences: UserPreferences = {
+    textSize: 'medium',
+    darkMode: true,
+    theme: 'dark',
+    focusMode: false,
+    dyslexicFont: false,
+    autoSaveHighlights: true,
+    notificationsEnabled: true
+  };
+
+  if (!preferences || preferences.length === 0) {
+    return defaultPreferences;
+  }
+
+  return preferences.reduce((acc, pref) => ({
+    ...acc,
+    [pref.id]: pref.value
+  }), defaultPreferences);
+}
+
+// Save user preferences
+export async function saveUserPreferences(preferences: UserPreferences): Promise<void> {
+  const db = await initializeDB();
+  const tx = db.transaction('preferences', 'readwrite');
+  const store = tx.objectStore('preferences');
+
+  for (const [key, value] of Object.entries(preferences)) {
+    await store.put({ id: key, value });
+  }
+
+  await tx.done;
 }
