@@ -36,6 +36,7 @@ logs/
 
 # ONNX models
 server/models/onnx/*.onnx
+server/models/onnx/sentiment-model.onnx
 
 # Large binary files
 *.onnx
@@ -58,6 +59,6 @@ server/.env
 llama-service/.env
 **/.env*
 !**/.env.example
+
 # Local Netlify folder
 .netlify
-server/models/onnx/sentiment-model.onnx
