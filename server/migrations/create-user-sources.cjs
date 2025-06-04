@@ -1,9 +1,11 @@
 'use strict';
 
+const { DataTypes } = require('sequelize');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('user_prefs', {
+    await queryInterface.createTable('user_sources', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,7 +15,6 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true, // Each user should have only one preferences row
         references: {
           model: 'users',
           key: 'id'
@@ -21,25 +22,20 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      dark_mode: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
-      },
-      mute_outrage: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
-      },
-      block_doomscroll: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
-      },
-      refresh_interval: {
+      source_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 60 // minutes
+        references: {
+          model: 'sources',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
+      display_order: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
       },
       created_at: {
         allowNull: false,
@@ -51,11 +47,15 @@ module.exports = {
       }
     });
 
-    // Add index for user_id for faster lookups
-    await queryInterface.addIndex('user_prefs', ['user_id']);
+    // Add indexes for performance
+    await queryInterface.addIndex('user_sources', ['user_id']);
+    await queryInterface.addIndex('user_sources', ['source_id']);
+    await queryInterface.addIndex('user_sources', ['user_id', 'source_id'], {
+      unique: true
+    });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('user_prefs');
+    await queryInterface.dropTable('user_sources');
   }
 }; 
