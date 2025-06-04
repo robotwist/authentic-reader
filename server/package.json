@@ -9,6 +9,7 @@
     "dev": "nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --runInBand",
     "migrate": "NODE_OPTIONS='--experimental-vm-modules' sequelize-cli db:migrate",
+    "migrate:direct": "node scripts/run-migrations.js",
     "seed": "NODE_OPTIONS='--experimental-vm-modules' sequelize-cli db:seed:all",
     "migrate:undo": "NODE_OPTIONS='--experimental-vm-modules' sequelize-cli db:migrate:undo",
     "setup-db": "npm run migrate && npm run seed",
