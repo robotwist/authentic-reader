@@ -2,24 +2,20 @@
  * Database Configuration
  */
 
-require('dotenv').config();
-
 const config = {
   development: {
-    username: process.env.DB_USER || 'postgres',
+    username: process.env.DB_USERNAME || 'postgres',
     password: process.env.DB_PASSWORD || 'postgres',
-    database: process.env.DB_NAME || 'authentic_reader',
+    database: process.env.DB_NAME || 'authentic_reader_dev',
     host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 5432,
     dialect: 'postgres',
-    logging: console.log
+    logging: false
   },
   test: {
-    username: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgres',
-    database: process.env.DB_NAME || 'authentic_reader_test',
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 5432,
+    username: process.env.TEST_DB_USERNAME || 'postgres',
+    password: process.env.TEST_DB_PASSWORD || 'postgres',
+    database: process.env.TEST_DB_NAME || 'authentic_reader_test',
+    host: process.env.TEST_DB_HOST || 'localhost',
     dialect: 'postgres',
     logging: false
   },
@@ -31,7 +27,8 @@ const config = {
         require: true,
         rejectUnauthorized: false
       }
-    }
+    },
+    logging: false
   }
 };
 

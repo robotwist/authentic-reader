@@ -5,7 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import Sequelize from 'sequelize';
 import process from 'process';
-import databaseConfig from '../config/database.js';
+import databaseConfig from '../config/database.cjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
