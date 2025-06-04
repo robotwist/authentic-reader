@@ -420,3 +420,17 @@ export async function savePreference(id: string, value: any): Promise<void> {
   await tx.store.put({ id, value });
   await tx.done;
 }
+
+// Get extracted content for an article
+export async function getExtractedContent(articleId: string): Promise<RSSArticle | null> {
+  const db = await initializeDB();
+  const article = await db.get('articles', articleId);
+  return article || null;
+}
+
+// Get passage analyses for an article
+export async function getPassageAnalyses(articleId: string): Promise<ContentAnalysisResult | null> {
+  const db = await initializeDB();
+  const analysis = await db.get('analyses', articleId);
+  return analysis?.analysis || null;
+}
