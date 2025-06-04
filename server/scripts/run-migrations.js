@@ -1,4 +1,5 @@
-const { Client } = require('pg');
+import pg from 'pg';
+const { Client } = pg;
 
 async function runMigrations() {
   const client = new Client({
