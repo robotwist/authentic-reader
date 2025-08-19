@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import axios from 'axios';
 import cors from 'cors';
+import helmet from 'helmet';
 import { parseStringPromise } from 'xml2js';
 
 // Import monitoring tools
@@ -49,6 +50,28 @@ app.use(express.urlencoded({ extended: true }));
 
 // Apply monitoring middleware to all requests
 app.use(requestMonitor);
+
+// Security middleware
+// app.use(helmet({
+//   contentSecurityPolicy: {
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+//       fontSrc: ["'self'", "https://fonts.gstatic.com"],
+//       scriptSrc: ["'self'", "'unsafe-inline'"],
+//       imgSrc: ["'self'", "data:", "https:"],
+//       connectSrc: ["'self'", "https://api.huggingface.co", "https://authentic-reader-api-8b0a83fb7d96.herokuapp.com"],
+//       frameSrc: ["'none'"],
+//       objectSrc: ["'none'"],
+//       upgradeInsecureRequests: []
+//     }
+//   },
+//   hsts: {
+//     maxAge: 31536000,
+//     includeSubDomains: true,
+//     preload: true
+//   }
+// }));
 
 // API routes
 app.use('/api/users', userRoutes);

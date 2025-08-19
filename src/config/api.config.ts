@@ -4,19 +4,36 @@
  * Centralized configuration for API endpoints and settings
  */
 
+// Debug logging for environment variables
+console.log('[API Config] Environment variables:', {
+  viteApiUrl: import.meta.env?.VITE_API_URL,
+  nodeEnv: import.meta.env?.MODE,
+  allEnv: import.meta.env
+});
+
 // Determine the API base URL from environment variables or default to localhost
 export const API_BASE_URL = (() => {
   // Check for environment variables in Vite format first
   const viteUrl = import.meta.env?.VITE_API_URL;
-  if (viteUrl) return viteUrl;
+  if (viteUrl) {
+    console.log('[API Config] Using Vite API URL:', viteUrl);
+    return viteUrl;
+  }
   
   // Then check for CRA format environment variables
   const craUrl = window.env?.REACT_APP_API_URL;
-  if (craUrl) return craUrl;
+  if (craUrl) {
+    console.log('[API Config] Using CRA API URL:', craUrl);
+    return craUrl;
+  }
   
   // Default to localhost development server
+  console.log('[API Config] Using default localhost URL');
   return 'http://localhost:3001';
 })();
+
+// Log the final API base URL
+console.log('[API Config] Final API base URL:', API_BASE_URL);
 
 // API configuration object
 export const API_CONFIG = {

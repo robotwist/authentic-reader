@@ -8,9 +8,15 @@ import {
   ArticleAnalysis,
   PaginatedResponse
 } from '../types';
+import { API_BASE_URL } from '../config/api.config';
 
-// API base URL - replace with your production URL when deploying
-const API_BASE_URL = 'http://localhost:3001/api';
+// Debug logging
+console.log('[API Service] Initializing with base URL:', API_BASE_URL);
+console.log('[API Service] Environment:', {
+  mode: import.meta.env?.MODE || 'development',
+  viteApiUrl: import.meta.env?.VITE_API_URL,
+  baseUrl: API_BASE_URL
+});
 
 // Local storage keys
 const TOKEN_KEY = 'auth_token';
@@ -97,6 +103,14 @@ async function apiRequest<T>(
   requiresAuth: boolean = true
 ): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
+  console.log(`[API Request] ${method} ${url}`, { 
+    data, 
+    requiresAuth,
+    baseUrl: API_BASE_URL,
+    endpoint,
+    env: import.meta.env?.MODE,
+    viteApiUrl: import.meta.env?.VITE_API_URL
+  });
   
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
@@ -107,7 +121,9 @@ async function apiRequest<T>(
     const token = getToken();
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
+      console.log('[API Request] Using auth token');
     } else if (requiresAuth) {
+      console.log('[API Request] Auth required but no token found');
       // Return a rejected promise if auth is required but no token exists
       return Promise.reject(new ApiError('Authentication required', 401));
     }
@@ -117,6 +133,8 @@ async function apiRequest<T>(
     method,
     headers,
     body: data ? JSON.stringify(data) : undefined,
+    mode: 'cors', // Explicitly enable CORS
+    credentials: 'include' // Include credentials if needed
   };
   
   try {
@@ -124,10 +142,18 @@ async function apiRequest<T>(
     let response;
     try {
       // Use a longer timeout for initial requests
+      console.log('[API Request] Sending request with options:', {
+        method: options.method,
+        headers: options.headers,
+        mode: options.mode,
+        credentials: options.credentials
+      });
       response = await fetchWithTimeout(url, options, 30000);
+      console.log('[API Response] Status:', response.status, response.statusText);
+      console.log('[API Response] Headers:', Object.fromEntries(response.headers.entries()));
     } catch (fetchError) {
       // Network error or timeout (connectivity issues or server not available)
-      console.error(`Network error accessing ${url}:`, fetchError);
+      console.error(`[API Error] Network error accessing ${url}:`, fetchError);
       
       // Provide a more specific error for different scenarios
       if (fetchError instanceof Error) {
@@ -145,8 +171,11 @@ async function apiRequest<T>(
     
     // Handle non-JSON responses
     const contentType = response.headers.get('content-type');
+    console.log('[API Response] Content-Type:', contentType);
+    
     if (contentType && contentType.includes('application/json')) {
       const responseData = await response.json();
+      console.log('[API Response] Data:', responseData);
       
       if (!response.ok) {
         // Handle API errors
@@ -161,6 +190,7 @@ async function apiRequest<T>(
     } else {
       // Handle non-JSON response
       const text = await response.text();
+      console.log('[API Response] Text:', text);
       
       if (!response.ok) {
         throw new ApiError(`HTTP Error: ${response.status}`, response.status, text);
@@ -176,11 +206,12 @@ async function apiRequest<T>(
   } catch (error) {
     // Re-throw ApiErrors as is
     if (error instanceof ApiError) {
+      console.error('[API Error] ApiError:', error.message, error.status, error.data);
       throw error;
     }
     
     // Convert other errors to ApiError with better messages
-    console.error(`API error (${method} ${endpoint}):`, error);
+    console.error(`[API Error] (${method} ${endpoint}):`, error);
     
     // Provide more specific error messages based on common patterns
     let errorMessage = 'Network error';

@@ -10,6 +10,15 @@ import { logger } from '../utils/logger';
 // Configuration options from environment
 const CHROMA_HOST = import.meta.env?.VITE_CHROMA_HOST || window.env?.REACT_APP_CHROMA_HOST || 'localhost';
 const CHROMA_PORT = import.meta.env?.VITE_CHROMA_PORT || window.env?.REACT_APP_CHROMA_PORT || '8000';
+const IS_PRODUCTION = import.meta.env?.PROD || window.env?.NODE_ENV === 'production';
+
+// Debug logging
+console.log('[ChromaDB] Environment:', {
+  host: CHROMA_HOST,
+  port: CHROMA_PORT,
+  isProduction: IS_PRODUCTION,
+  env: import.meta.env?.MODE
+});
 
 interface ChromaDocument {
   id: string;
@@ -33,10 +42,14 @@ class ChromaService {
   private collectionName: string = 'authentic-reader';
   
   constructor() {
-    this.baseUrl = `http://${CHROMA_HOST}:${CHROMA_PORT}`;
+    // In production, use HTTPS and the production domain
+    const protocol = IS_PRODUCTION ? 'https' : 'http';
+    this.baseUrl = IS_PRODUCTION 
+      ? `${protocol}://${CHROMA_HOST}`  // Production URL without port
+      : `${protocol}://${CHROMA_HOST}:${CHROMA_PORT}`; // Development URL with port
     
     // Check if ChromaDB config exists
-    this.isConfigured = !!CHROMA_HOST && !!CHROMA_PORT;
+    this.isConfigured = !!CHROMA_HOST;
     
     if (!this.isConfigured) {
       logger.warn('ChromaDB service is not configured. Vector storage unavailable.');
@@ -57,7 +70,14 @@ class ChromaService {
     
     try {
       // Check if collection exists
-      const response = await fetch(`${this.baseUrl}/api/v1/collections`);
+      const response = await fetch(`${this.baseUrl}/api/v1/collections`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        mode: 'cors', // Enable CORS
+        credentials: 'include' // Include credentials if needed
+      });
       
       if (!response.ok) {
         throw new Error(`Failed to fetch collections: ${response.statusText}`);
@@ -75,8 +95,11 @@ class ChromaService {
         const createResponse = await fetch(`${this.baseUrl}/api/v1/collections`, {
           method: 'POST',
           headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
+          mode: 'cors', // Enable CORS
+          credentials: 'include', // Include credentials if needed
           body: JSON.stringify({
             name: this.collectionName,
             metadata: {
@@ -95,7 +118,8 @@ class ChromaService {
       }
     } catch (error) {
       logger.error('Error initializing ChromaDB collection:', error);
-      throw error;
+      // Don't throw the error, just log it and continue
+      // This allows the app to work even if ChromaDB is unavailable
     }
   }
   

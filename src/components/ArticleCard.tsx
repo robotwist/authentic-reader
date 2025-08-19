@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useCallback } from 'react';
 import '../styles/ArticleCard.css';
 import { Article } from '../types/Article';
 import { formatDate, truncateText } from '../utils/textUtils';
@@ -19,12 +19,7 @@ interface ArticleCardProps {
   onAnalyze?: (article: Article) => void;
 }
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ 
-  article, 
-  onRead, 
-  onSave, 
-  onAnalyze 
-}) => {
+const ArticleCard = memo(({ article, onSave, onAnalyze, isSaved = false, isRead = false }: ArticleCardProps) => {
   const [imageError, setImageError] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
@@ -198,6 +193,8 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
       </div>
     </div>
   );
-};
+});
+
+ArticleCard.displayName = 'ArticleCard';
 
 export default ArticleCard; 

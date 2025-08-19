@@ -89,20 +89,28 @@ const Header = ({}: HeaderProps) => {
           <span></span>
         </button>
         
-        <nav className={`nav-menu ${isMenuOpen ? 'open' : ''}`}>
-          <ul>
+        <nav className={`nav-menu ${isMenuOpen ? 'open' : ''}`} role="navigation" aria-label="Main navigation">
+          <ul role="menubar">
             {/* Primary Navigation */}
-            <li>
-              <Link to="/" className={isActive('/') ? 'active' : ''} aria-current={isActive('/') ? 'page' : undefined}>
+            <li role="none">
+              <Link 
+                to="/" 
+                className={isActive('/') ? 'active' : ''} 
+                aria-current={isActive('/') ? 'page' : undefined}
+                role="menuitem"
+                tabIndex={0}
+              >
                 Home
               </Link>
             </li>
             
-            <li>
+            <li role="none">
               <Link 
                 to="/library" 
                 className={isActive('/library') ? 'active' : ''} 
                 aria-current={isActive('/library') ? 'page' : undefined}
+                role="menuitem"
+                tabIndex={0}
               >
                 My Library
               </Link>
@@ -115,6 +123,8 @@ const Header = ({}: HeaderProps) => {
                 onClick={() => setIsAnalysisDropdownOpen(!isAnalysisDropdownOpen)}
                 aria-expanded={isAnalysisDropdownOpen}
                 aria-haspopup="true"
+                role="menuitem"
+                tabIndex={0}
               >
                 Analysis Tools <FiChevronDown className={`dropdown-icon ${isAnalysisDropdownOpen ? 'open' : ''}`} />
               </button>
@@ -149,6 +159,8 @@ const Header = ({}: HeaderProps) => {
                   onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
                   aria-expanded={isUserDropdownOpen}
                   aria-haspopup="true"
+                  role="menuitem"
+                  tabIndex={0}
                 >
                   <FiUser className="nav-icon" /> <FiChevronDown className={`dropdown-icon ${isUserDropdownOpen ? 'open' : ''}`} />
                 </button>
