@@ -1,6 +1,6 @@
 [build]
-  # Use our build script that bypasses TypeScript errors
-  command = "npm run build:no-types"
+  # Install dependencies including devDependencies, then build
+  command = "npm ci --include=dev && npm run build:no-types"
   publish = "dist"
   
 [build.environment]
