@@ -1,0 +1,12 @@
+{
+  "npr": {
+    "name": "NPR",
+    "url": "https://feeds.npr.org/1001/rss.xml",
+    "description": "National Public Radio"
+  },
+  "bbc": {
+    "name": "BBC News",
+    "url": "http://feeds.bbci.co.uk/news/rss.xml",
+    "description": "BBC News"
+  }
+}
