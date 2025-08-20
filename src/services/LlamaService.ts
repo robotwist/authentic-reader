@@ -6,7 +6,7 @@
 
 import axios from 'axios';
 
-const LLAMA_SERVICE_URL = import.meta.env.VITE_LLAMA_SERVICE_URL || 'http://localhost:3500';
+const LLAMA_SERVICE_URL = import.meta.env.VITE_LLAMA_SERVICE_URL || '';
 
 // Types for API requests and responses
 export interface GenerateRequest {
@@ -60,12 +60,19 @@ export class LlamaService {
    */
   async checkStatus(): Promise<LlamaServiceStatus> {
     try {
+      if (!this.baseUrl) {
+        return { status: 'error', model: 'disabled', error: 'Llama service disabled (no VITE_LLAMA_SERVICE_URL)' };
+      }
       const response = await axios.get(`${this.baseUrl}/health`, {
         timeout: 5000,
       });
       return response.data;
     } catch (error) {
-      console.error('Failed to connect to Llama service:', error);
+      // Log only once per session to avoid console spam
+      if (!(window as any).__llama_status_logged) {
+        console.error('Failed to connect to Llama service:', error);
+        (window as any).__llama_status_logged = true;
+      }
       return {
         status: 'error',
         model: 'unknown',
@@ -81,6 +88,7 @@ export class LlamaService {
    */
   async generateText(request: GenerateRequest): Promise<LlamaResponse> {
     try {
+      if (!this.baseUrl) throw new Error('Llama service disabled');
       const response = await axios.post(`${this.baseUrl}/generate`, request, {
         timeout: 30000, // 30 seconds timeout for generation
       });
@@ -98,6 +106,7 @@ export class LlamaService {
    */
   async summarizeText(request: SummarizeRequest): Promise<LlamaResponse> {
     try {
+      if (!this.baseUrl) throw new Error('Llama service disabled');
       const response = await axios.post(`${this.baseUrl}/summarize`, request, {
         timeout: 30000, // 30 seconds timeout for summarization
       });
@@ -115,6 +124,7 @@ export class LlamaService {
    */
   async analyzeText(request: AnalyzeRequest): Promise<LlamaResponse> {
     try {
+      if (!this.baseUrl) throw new Error('Llama service disabled');
       const response = await axios.post(`${this.baseUrl}/analyze`, request, {
         timeout: 30000, // 30 seconds timeout for analysis
       });

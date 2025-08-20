@@ -122,7 +122,11 @@ export function useLlamaAnalysis() {
         return null;
       }
     } else if (serviceStatus.status !== 'healthy') {
-      setError('Llama service is not available. Please check the service status.');
+      // Do not loop on error; surface a clear disabled message
+      const msg = serviceStatus.error?.includes('disabled')
+        ? 'Llama service disabled in this environment.'
+        : 'Llama service is not available. Please check the service status.';
+      setError(msg);
       return null;
     }
     

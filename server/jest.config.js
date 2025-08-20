@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   testEnvironment: 'node',
   globalSetup: './__tests__/setup.js',
   globalTeardown: './__tests__/teardown.js', // Added teardown script
