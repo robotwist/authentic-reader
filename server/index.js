@@ -4,18 +4,12 @@ import axios from 'axios';
 import cors from 'cors';
 import helmet from 'helmet';
 import { parseStringPromise } from 'xml2js';
+import jsonStorage from './services/jsonStorageService.js';
 
 // Import monitoring tools
 import monitorService from './services/monitorService.js';
-import { requestMonitor, errorMonitor } from './middleware/monitorMiddleware.js';
+import { errorMonitor } from './middleware/monitorMiddleware.js';
 import monitorRoutes from './routes/monitorRoutes.js';
-
-// Import database models and utilities
-import db from './models/index.js';
-const { sequelize } = db;
-
-// Import user maintenance utilities
-import { ensureAdminUsers, verifyUserPasswords } from './utils/userMaintenance.js';
 
 // Import services
 import onnxService from './services/onnxService.js';
@@ -47,9 +41,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Apply monitoring middleware to all requests
-app.use(requestMonitor);
 
 // Security middleware
 // app.use(helmet({
@@ -400,18 +391,16 @@ const startServer = async () => {
   if (process.env.NODE_ENV !== 'test') {
     serverInstance = app.listen(PORT, '0.0.0.0', async () => {
       console.log(`Server running on port ${PORT} and bound to all interfaces`);
-      // Initialize database connection and run maintenance
+      // Initialize JSON storage and run maintenance
       try {
-        await sequelize.authenticate();
-        console.log('Database connection established successfully.');
+        await jsonStorage.ensureDataDir();
+        console.log('JSON storage initialized successfully.');
         
-        // Run user maintenance tasks
-        await ensureAdminUsers();
-        await verifyUserPasswords();
+        // Initialize default data if needed
+        await initializeDefaultData();
         
       } catch (error) {
-        console.error('Unable to connect to the database or run maintenance:', error);
-        console.error('Is the database server running and accessible?');
+        console.error('Unable to initialize JSON storage:', error);
         monitorService.recordError('startup', error);
         process.exit(1);
       }
@@ -447,8 +436,27 @@ const startServer = async () => {
   }
 };
 
+// Initialize default data
+async function initializeDefaultData() {
+  const sources = await jsonStorage.getSources();
+  if (Object.keys(sources).length === 0) {
+    // Add default sources
+    await jsonStorage.saveSource('npr', {
+      name: 'NPR',
+      url: 'https://feeds.npr.org/1001/rss.xml',
+      description: 'National Public Radio'
+    });
+    await jsonStorage.saveSource('bbc', {
+      name: 'BBC News',
+      url: 'http://feeds.bbci.co.uk/news/rss.xml',
+      description: 'BBC News'
+    });
+    console.log('Default sources initialized.');
+  }
+}
+
 // Call startServer only if this file is run directly (not required by tests)
-if (import.meta.url === import.meta.main) {
+if (process.argv[1] && process.argv[1].endsWith('index.js')) {
   startServer();
 }
 
@@ -458,7 +466,6 @@ process.on('SIGTERM', () => {
   if (serverInstance) {
     serverInstance.close(() => {
       console.log('HTTP server closed');
-      sequelize.close().then(() => console.log('DB connection closed'));
       monitorService.shutdown();
     });
   }
