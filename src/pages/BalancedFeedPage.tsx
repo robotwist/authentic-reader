@@ -46,6 +46,8 @@ const BalancedFeedPage: React.FC = () => {
       const response = await fetch(`http://localhost:3001/api/balanced-feed?categories=${activeFilters.join(',')}&limit=50`);
       if (response.ok) {
         const data = await response.json();
+        console.log('Fetched articles:', data.articles.length);
+        console.log('First article analysis:', data.articles[0]?.analysis);
         const sortedArticles = sortArticles(data.articles, sortBy);
         setArticles(sortedArticles);
       } else {
