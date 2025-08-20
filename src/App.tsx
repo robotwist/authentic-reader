@@ -26,6 +26,7 @@ import SettingsPage from './pages/SettingsPage';
 import ArticlePage from './pages/ArticlePage';
 import AnalysisPage from './pages/AnalysisPage';
 import ArticleFeedPage from './pages/ArticleFeedPage';
+import ArticleAnalysisPage from './pages/ArticleAnalysisPage';
 import { UserPreferences } from './types';
 import { logger } from './utils/logger';
 import NLPBenchmark from './components/NLPBenchmark';
@@ -398,6 +399,10 @@ function App() {
                 <Route 
                   path="/article/:id" 
                   element={<ArticlePage />} 
+                />
+                <Route 
+                  path="/analysis/:id" 
+                  element={<ArticleAnalysisPage />} 
                 />
                 <Route 
                   path="/settings" 

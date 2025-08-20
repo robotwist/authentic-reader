@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/ArticleFeedPage.css';
 
 interface Article {
@@ -39,6 +39,7 @@ const ArticleFeedPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentSource, setCurrentSource] = useState('npr');
+  const navigate = useNavigate();
 
   // Default RSS sources
   const defaultSources = [
@@ -151,14 +152,14 @@ const ArticleFeedPage: React.FC = () => {
           <article key={article.articleId || index} className="article-card" role="article">
             <div className="article-header">
               <h2 className="article-title">
-                <a 
-                  href={article.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
+                <Link 
+                  to={`/analysis/${article.articleId || index}`}
+                  state={{ article }}
+                  className="article-link"
                   aria-describedby={`article-${index}-meta`}
                 >
                   {article.title}
-                </a>
+                </Link>
               </h2>
               <div className="article-meta" id={`article-${index}-meta`}>
                 <span className="article-author" aria-label="Author">{article.author}</span>
@@ -222,15 +223,14 @@ const ArticleFeedPage: React.FC = () => {
             )}
 
             <div className="article-actions">
-              <a 
-                href={article.link} 
-                target="_blank" 
-                rel="noopener noreferrer"
+              <Link 
+                to={`/analysis/${article.articleId || index}`} 
+                state={{ article }}
                 className="read-button"
                 aria-label={`Read full article: ${article.title}`}
               >
                 Read Full Article
-              </a>
+              </Link>
             </div>
           </article>
         ))}

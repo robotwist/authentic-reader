@@ -14,7 +14,10 @@ command = "npm run build:no-types"
 
 [build.environment]
 NODE_VERSION = "18"
+VITE_API_URL = "https://authentic-reader-api-8b0a83fb7d96.herokuapp.com/api"
 VITE_BACKEND_URL = "https://authentic-reader-api-8b0a83fb7d96.herokuapp.com"
+VITE_ENABLE_CHROMA = "false"
+VITE_ENABLE_FEEDBACK_LOOP = "false"
 
 [build.processing]
 

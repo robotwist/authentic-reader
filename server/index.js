@@ -28,18 +28,23 @@ const PORT = process.env.PORT || 3000;
 // Initialize monitoring service
 monitorService.init();
 
-// Helper functions for basic analysis
+// Helper functions for comprehensive analysis
 function extractKeyTopics(title, content) {
   const text = `${title || ''} ${content || ''}`.toLowerCase();
   const topics = [];
   
-  // Simple keyword extraction
+  // Enhanced keyword extraction with more categories
   const keywords = {
-    'politics': ['election', 'vote', 'democrat', 'republican', 'congress', 'senate', 'president'],
-    'technology': ['tech', 'ai', 'artificial intelligence', 'software', 'digital', 'computer'],
-    'health': ['health', 'medical', 'doctor', 'hospital', 'disease', 'vaccine'],
-    'economy': ['economy', 'market', 'stock', 'business', 'finance', 'money'],
-    'environment': ['climate', 'environment', 'green', 'pollution', 'sustainability']
+    'politics': ['election', 'vote', 'democrat', 'republican', 'congress', 'senate', 'president', 'government', 'policy', 'legislation'],
+    'technology': ['tech', 'ai', 'artificial intelligence', 'software', 'digital', 'computer', 'algorithm', 'machine learning', 'automation'],
+    'health': ['health', 'medical', 'doctor', 'hospital', 'disease', 'vaccine', 'treatment', 'medicine', 'healthcare'],
+    'economy': ['economy', 'market', 'stock', 'business', 'finance', 'money', 'inflation', 'recession', 'employment'],
+    'environment': ['climate', 'environment', 'green', 'pollution', 'sustainability', 'carbon', 'renewable'],
+    'science': ['research', 'study', 'scientists', 'discovery', 'experiment', 'data', 'analysis'],
+    'education': ['school', 'university', 'education', 'student', 'learning', 'academic'],
+    'entertainment': ['movie', 'music', 'celebrity', 'film', 'entertainment', 'culture'],
+    'sports': ['sport', 'football', 'basketball', 'baseball', 'athlete', 'team', 'championship'],
+    'international': ['world', 'global', 'international', 'foreign', 'diplomacy', 'trade']
   };
 
   for (const [topic, words] of Object.entries(keywords)) {
@@ -51,33 +56,140 @@ function extractKeyTopics(title, content) {
   return topics.length > 0 ? topics : ['general'];
 }
 
-function assessBasicCredibility(url, title) {
+function assessBasicCredibility(url, title, content) {
   const domain = url ? new URL(url).hostname.toLowerCase() : '';
   const titleText = (title || '').toLowerCase();
+  const contentText = (content || '').toLowerCase();
   
-  // Basic credibility indicators
-  const credibleDomains = ['bbc.com', 'reuters.com', 'ap.org', 'npr.org', 'pbs.org'];
-  const suspiciousWords = ['shocking', 'amazing', 'you won\'t believe', 'incredible', 'secret'];
+  // Enhanced credibility assessment
+  const credibleDomains = [
+    'bbc.com', 'reuters.com', 'ap.org', 'npr.org', 'pbs.org', 'nytimes.com', 
+    'washingtonpost.com', 'wsj.com', 'economist.com', 'nature.com', 'science.org'
+  ];
   
+  const suspiciousWords = [
+    'shocking', 'amazing', 'you won\'t believe', 'incredible', 'secret', 'conspiracy',
+    'they don\'t want you to know', 'hidden truth', 'exposed', 'revealed', 'scandal'
+  ];
+  
+  const sensationalistPatterns = [
+    /!\s*$/, // Exclamation marks at end
+    /BREAKING/, // Breaking news
+    /URGENT/, // Urgent alerts
+    /\d+\s+ways/, // Numbered lists
+    /you'll never guess/, // Clickbait patterns
+  ];
+  
+  let score = 0.5; // Base score
+  let reasons = [];
+  
+  // Domain reputation
   if (domain && credibleDomains.some(d => domain.includes(d))) {
-    return { score: 0.8, level: 'high', reason: 'Reputable news source' };
+    score += 0.3;
+    reasons.push('Reputable news source');
   }
   
-  if (suspiciousWords.some(word => titleText.includes(word))) {
-    return { score: 0.3, level: 'low', reason: 'Sensationalist language detected' };
+  // Sensationalist language detection
+  const suspiciousCount = suspiciousWords.filter(word => titleText.includes(word)).length;
+  if (suspiciousCount > 0) {
+    score -= 0.2 * suspiciousCount;
+    reasons.push(`${suspiciousCount} sensationalist words detected`);
   }
   
-  return { score: 0.6, level: 'medium', reason: 'Standard content' };
+  // Sensationalist patterns
+  const patternMatches = sensationalistPatterns.filter(pattern => pattern.test(titleText)).length;
+  if (patternMatches > 0) {
+    score -= 0.1 * patternMatches;
+    reasons.push('Clickbait patterns detected');
+  }
+  
+  // Content length and structure
+  if (contentText.length > 500) {
+    score += 0.1;
+    reasons.push('Substantial content length');
+  }
+  
+  // External links presence
+  if (contentText.includes('http') || contentText.includes('www')) {
+    score += 0.1;
+    reasons.push('Contains external references');
+  }
+  
+  // Balance score
+  score = Math.max(0.1, Math.min(1.0, score));
+  
+  let level = 'medium';
+  if (score >= 0.7) level = 'high';
+  else if (score <= 0.4) level = 'low';
+  
+  return { 
+    score: Math.round(score * 100) / 100, 
+    level, 
+    reason: reasons.length > 0 ? reasons.join('; ') : 'Standard content assessment'
+  };
 }
 
 function generateBasicSummary(content) {
   if (!content) return '';
   
-  // Simple extractive summarization (first few sentences)
-  const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 10);
-  const summary = sentences.slice(0, 2).join('. ') + '.';
+  // Remove HTML tags and clean content
+  const cleanContent = content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
   
-  return summary.length > 200 ? summary.substring(0, 200) + '...' : summary;
+  // Extract meaningful sentences
+  const sentences = cleanContent.split(/[.!?]+/).filter(s => s.trim().length > 20);
+  
+  if (sentences.length === 0) return '';
+  
+  // Take first 2-3 meaningful sentences
+  const summary = sentences.slice(0, Math.min(3, sentences.length)).join('. ') + '.';
+  
+  // Limit length for readability
+  return summary.length > 300 ? summary.substring(0, 300) + '...' : summary;
+}
+
+function analyzeContentComplexity(content) {
+  if (!content) return 'medium';
+  
+  const cleanContent = content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  const words = cleanContent.split(/\s+/);
+  const sentences = cleanContent.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  
+  // Calculate average sentence length
+  const avgSentenceLength = words.length / sentences.length;
+  
+  // Calculate average word length
+  const avgWordLength = words.reduce((sum, word) => sum + word.length, 0) / words.length;
+  
+  // Determine complexity
+  if (avgSentenceLength > 25 || avgWordLength > 6) {
+    return 'hard';
+  } else if (avgSentenceLength < 15 && avgWordLength < 5) {
+    return 'easy';
+  } else {
+    return 'medium';
+  }
+}
+
+function detectBiasIndicators(title, content) {
+  const text = `${title || ''} ${content || ''}`.toLowerCase();
+  
+  const biasIndicators = {
+    emotional: ['outrageous', 'disgusting', 'terrible', 'wonderful', 'amazing', 'horrible'],
+    political: ['liberal', 'conservative', 'left-wing', 'right-wing', 'democrat', 'republican'],
+    sensationalist: ['shocking', 'scandal', 'exposed', 'revealed', 'secret'],
+    opinionated: ['clearly', 'obviously', 'undoubtedly', 'certainly', 'definitely']
+  };
+  
+  const detectedBias = {};
+  
+  for (const [type, words] of Object.entries(biasIndicators)) {
+    const matches = words.filter(word => text.includes(word));
+    if (matches.length > 0) {
+      detectedBias[type] = matches;
+    }
+  }
+  
+  return detectedBias;
 }
 
 // Middleware
@@ -131,15 +243,16 @@ app.post('/api/analyze-article', async (req, res) => {
       return res.status(400).json({ error: 'Title or content is required' });
     }
 
-    // Basic content analysis (no external AI services needed)
+    // Enhanced content analysis
     const analysis = {
       wordCount: content ? content.split(' ').length : 0,
       readingTime: content ? Math.ceil(content.split(' ').length / 200) : 0, // 200 words per minute
       hasExternalLinks: content ? (content.includes('http') || content.includes('www')) : false,
-      complexity: 'medium', // Basic complexity assessment
+      complexity: analyzeContentComplexity(content),
       keyTopics: extractKeyTopics(title, content),
-      credibility: assessBasicCredibility(url, title),
+      credibility: assessBasicCredibility(url, title, content),
       summary: generateBasicSummary(content),
+      biasIndicators: detectBiasIndicators(title, content),
       timestamp: new Date().toISOString()
     };
 
@@ -239,15 +352,16 @@ app.get('/api/rss', async (req, res) => {
       // Basic content extraction
       const content = item['content:encoded']?.[0] || description;
       
-      // Analyze the article
+      // Analyze the article with enhanced analysis
       const analysis = {
         wordCount: content ? content.split(' ').length : 0,
         readingTime: content ? Math.ceil(content.split(' ').length / 200) : 0,
         hasExternalLinks: content ? (content.includes('http') || content.includes('www')) : false,
-        complexity: 'medium',
+        complexity: analyzeContentComplexity(content),
         keyTopics: extractKeyTopics(title, content),
-        credibility: assessBasicCredibility(link, title),
+        credibility: assessBasicCredibility(link, title, content),
         summary: generateBasicSummary(content),
+        biasIndicators: detectBiasIndicators(title, content),
         timestamp: new Date().toISOString()
       };
 
