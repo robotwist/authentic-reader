@@ -1,18 +1,12 @@
-# Exclude frontend files from Railway deployment
-src/
-public/
-index.html
-vite.config.ts
-tsconfig.json
-tsconfig.app.json
-tsconfig.node.json
-package-lock.json
-package.json
-*.css
-*.tsx
-*.ts
-
-# Keep only backend files
-!server/
-!railway.json
-!RAILWAY_DEPLOYMENT.md
+# Exclude frontend build artifacts and unnecessary files
+dist/
+node_modules/
+*.log
+.env.local
+.env.development
+.env.test
+.DS_Store
+*.map
+coverage/
+.nyc_output/
+.cache/
