@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiShield, FiEye, FiBrain, FiCheckCircle, FiAlertTriangle, FiInfo, FiBook, FiTarget, FiTrendingUp } from 'react-icons/fi';
+import { FiShield, FiEye, FiActivity, FiCheckCircle, FiAlertTriangle, FiInfo, FiBook, FiTarget, FiTrendingUp } from 'react-icons/fi';
 import '../styles/MediaLiteracyGuide.css';
 
 const MediaLiteracyGuide: React.FC = () => {
@@ -14,7 +14,7 @@ const MediaLiteracyGuide: React.FC = () => {
       <div className="guide-content">
         <section className="guide-section">
           <div className="section-header">
-            <FiBrain className="section-icon" />
+            <FiActivity className="section-icon" />
             <h2>Understanding Media Bias</h2>
           </div>
           
