@@ -45,6 +45,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import { ThemeProvider } from './contexts/ThemeContext';
 import FeedbackDashboard from './components/FeedbackDashboard';
+import PWAInstallBanner from './components/PWAInstallBanner';
 
 // Default RSS feeds to load on first run
 const DEFAULT_SOURCES = [
@@ -449,6 +450,7 @@ function App() {
                 />
               </Routes>
             </main>
+            <PWAInstallBanner />
             <footer className="app-footer">
               <div className="footer-content">
                 <p>Authentic Reader &copy; {new Date().getFullYear()} - Content that respects your intelligence</p>

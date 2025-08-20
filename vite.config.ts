@@ -42,20 +42,26 @@ export default defineConfig(({ mode }) => {
           scope: '/',
           icons: [
             {
-              src: '/authentic-internet-logo.png',
+              src: '/icon-192x192.png',
               sizes: '192x192',
               type: 'image/png'
             },
             {
-              src: '/authentic-internet-logo.png',
+              src: '/icon-512x512.png',
               sizes: '512x512',
               type: 'image/png'
             },
             {
-              src: '/authentic-internet-logo.png',
+              src: '/icon-192x192-maskable.png',
+              sizes: '192x192',
+              type: 'image/png',
+              purpose: 'maskable'
+            },
+            {
+              src: '/icon-512x512-maskable.png',
               sizes: '512x512',
               type: 'image/png',
-              purpose: 'any maskable'
+              purpose: 'maskable'
             }
           ]
         },
