@@ -16,8 +16,8 @@ interface Article {
     summary: string;
     credibility: { score: number; level: string; reason: string };
     logicalFallacies?: Array<{ type: string; explanation: string; excerpt?: string; confidence: number }>;
-    bias?: { direction: 'left' | 'right' | 'center'; confidence: number; explanation: string; indicators: { left: number; right: number } };
-    network?: { topEntities: Array<{ name: string; count: number }>; entityCount: number };
+    biasAnalysis?: { direction: 'left' | 'right' | 'center'; confidence: number; explanation: string; indicators: { left: number; right: number } };
+    networkAnalysis?: { topEntities: Array<{ name: string; count: number }>; entityCount: number };
     timestamp: string;
   };
   articleId: string;
@@ -283,11 +283,11 @@ const BalancedFeedPage: React.FC = () => {
                     </span>
                   </div>
 
-                  {article.analysis.bias && typeof article.analysis.bias.direction === 'string' && (
+                  {article.analysis.biasAnalysis && typeof article.analysis.biasAnalysis.direction === 'string' && (
                     <div className="analysis-item">
                       <FiTag className="analysis-icon" />
                       <span className="analysis-value">
-                        Bias: {article.analysis.bias.direction} ({Math.round((article.analysis.bias.confidence || 0) * 100)}%)
+                        Bias: {article.analysis.biasAnalysis.direction} ({Math.round((article.analysis.biasAnalysis.confidence || 0) * 100)}%)
                       </span>
                     </div>
                   )}
@@ -312,10 +312,10 @@ const BalancedFeedPage: React.FC = () => {
                   </div>
                 )}
 
-                {article.analysis.network && article.analysis.network.topEntities && Array.isArray(article.analysis.network.topEntities) && article.analysis.network.topEntities.length > 0 && (
+                {article.analysis.networkAnalysis && article.analysis.networkAnalysis.topEntities && Array.isArray(article.analysis.networkAnalysis.topEntities) && article.analysis.networkAnalysis.topEntities.length > 0 && (
                   <div className="network-snippets">
                     <span className="network-label">Top entities:</span>
-                    {article.analysis.network.topEntities.slice(0, 3).map((e, idx) => (
+                    {article.analysis.networkAnalysis.topEntities.slice(0, 3).map((e, idx) => (
                       <span key={idx} className="entity-chip">{typeof e.name === 'string' ? e.name : 'Unknown'}</span>
                     ))}
                   </div>

@@ -1,12 +1,12 @@
 {
-  "analysis_article_1755673688008_4": {
-    "wordCount": 554,
-    "readingTime": 3,
+  "analysis_article_1755707667900_18": {
+    "wordCount": 278,
+    "readingTime": 2,
     "hasExternalLinks": false,
     "complexity": "medium",
     "keyTopics": [
-      "politics",
       "technology",
+      "entertainment",
       "international"
     ],
     "credibility": {
@@ -14,297 +14,252 @@
       "level": "medium",
       "reason": "Substantial content length"
     },
-    "summary": "‘Downright False’: Karoline Leavitt Torches Media over Russia-Ukraine Negotiation Coverage 31 AP Photo/Evan Vucci Jasmyn Jordan 19 Aug 2025 Press Secretary Karoline Leavitt tore into the media’s handling of Trump’s recent negotiations with Russia, Ukraine, and European leaders during a White House b...",
+    "summary": "Eurovision, the World’s Largest Live Music Event, Set for Vienna in 2026 Harold Cunningham/Getty Breitbart News 20 Aug 2025 VIENNA (AP) — The Eurovision Song Contest 2026 will take place in Vienna.  Austria’s public broadcaster ORF, which will organize the world’s largest live music event, announced...",
     "biasIndicators": {
-      "political": [
-        "left-wing"
+      "emotional": [
+        "wonderful"
+      ]
+    },
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Vienna",
+          "count": 6
+        },
+        {
+          "name": "Eurovision",
+          "count": 5
+        },
+        {
+          "name": "May",
+          "count": 5
+        },
+        {
+          "name": "The",
+          "count": 3
+        },
+        {
+          "name": "Austrias",
+          "count": 2
+        },
+        {
+          "name": "Viennas",
+          "count": 2
+        },
+        {
+          "name": "Worlds",
+          "count": 1
+        },
+        {
+          "name": "Largest",
+          "count": 1
+        },
+        {
+          "name": "Live",
+          "count": 1
+        },
+        {
+          "name": "Music",
+          "count": 1
+        },
+        {
+          "name": "Event",
+          "count": 1
+        },
+        {
+          "name": "Set",
+          "count": 1
+        },
+        {
+          "name": "Harold",
+          "count": 1
+        },
+        {
+          "name": "Breitbart",
+          "count": 1
+        },
+        {
+          "name": "News",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Song",
+          "count": 1
+        },
+        {
+          "name": "Contest",
+          "count": 1
+        },
+        {
+          "name": "Wednesday",
+          "count": 1
+        },
+        {
+          "name": "Following",
+          "count": 1
+        },
+        {
+          "name": "Austrian",
+          "count": 1
+        },
+        {
+          "name": "Wasted",
+          "count": 1
+        },
+        {
+          "name": "Love",
+          "count": 1
+        },
+        {
+          "name": "Basel",
+          "count": 1
+        },
+        {
+          "name": "Wiener",
+          "count": 1
+        },
+        {
+          "name": "Stadthalle",
+          "count": 1
+        },
+        {
+          "name": "After",
+          "count": 1
+        },
+        {
+          "name": "Director",
+          "count": 1
+        },
+        {
+          "name": "General",
+          "count": 1
+        },
+        {
+          "name": "Roland",
+          "count": 1
+        },
+        {
+          "name": "Weissmann",
+          "count": 1
+        },
+        {
+          "name": "Innsbruck",
+          "count": 1
+        },
+        {
+          "name": "Austria",
+          "count": 1
+        },
+        {
+          "name": "Mayor",
+          "count": 1
+        },
+        {
+          "name": "Michael",
+          "count": 1
+        },
+        {
+          "name": "Ludwig",
+          "count": 1
+        },
+        {
+          "name": "Eurovisions",
+          "count": 1
+        },
+        {
+          "name": "State",
+          "count": 1
+        },
+        {
+          "name": "Opera",
+          "count": 1
+        },
+        {
+          "name": "Johannes",
+          "count": 1
+        },
+        {
+          "name": "Pietsch",
+          "count": 1
+        },
+        {
+          "name": "Conchita",
+          "count": 1
+        },
+        {
+          "name": "Wurst",
+          "count": 1
+        },
+        {
+          "name": "Udo",
+          "count": 1
+        },
+        {
+          "name": "Jrgens",
+          "count": 1
+        },
+        {
+          "name": "Europeans",
+          "count": 1
+        },
+        {
+          "name": "Entertainment",
+          "count": 1
+        },
+        {
+          "name": "London",
+          "count": 1
+        },
+        {
+          "name": "Europe",
+          "count": 1
+        }
       ],
-      "sensationalist": [
-        "secret"
-      ]
+      "topEntities": [
+        {
+          "name": "Vienna",
+          "count": 6
+        },
+        {
+          "name": "Eurovision",
+          "count": 5
+        },
+        {
+          "name": "May",
+          "count": 5
+        },
+        {
+          "name": "The",
+          "count": 3
+        },
+        {
+          "name": "Austrias",
+          "count": 2
+        }
+      ],
+      "entityCount": 49
     },
-    "timestamp": "2025-08-20T07:08:08.009Z"
+    "timestamp": "2025-08-20T16:34:27.901Z"
   },
-  "analysis_article_1755673688018_3": {
-    "wordCount": 53,
-    "readingTime": 1,
-    "hasExternalLinks": true,
-    "complexity": "medium",
-    "keyTopics": [
-      "technology",
-      "international"
-    ],
-    "credibility": {
-      "score": 0.7,
-      "level": "high",
-      "reason": "Substantial content length; Contains external references"
-    },
-    "summary": "Monday marked a historic day in the pursuit of peace in the Ukraine War, and Breitbart News had a front row seat in the press pool to the high-stakes meeting among world leaders.  The post Breitbart in the Oval Office: Inside Zelensky&#8217;s White House Visit 2. 0 appeared first on Breitbart .",
-    "biasIndicators": {},
-    "timestamp": "2025-08-20T07:08:08.018Z"
-  },
-  "analysis_article_1755673688064_5": {
-    "wordCount": 508,
-    "readingTime": 3,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "health",
-      "science"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "&#8216;Disturbing Evidence:&#8217; Senate Judiciary Committee Reveals Biden&#8217;s HHS Placed Over 11,000 Migrant Children in U.  Homes with Unvetted Adults 381 Jim WATSON/AFP via Getty Images John Binder 19 Aug 2025 Senate Judiciary Committee Chairman Chuck Grassley (R-IA) revealed in a bombshell ...",
-    "biasIndicators": {
-      "sensationalist": [
-        "revealed",
-        "secret"
-      ]
-    },
-    "timestamp": "2025-08-20T07:08:08.065Z"
-  },
-  "analysis_article_1755673688128_6": {
-    "wordCount": 442,
-    "readingTime": 3,
-    "hasExternalLinks": true,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "entertainment"
-    ],
-    "credibility": {
-      "score": 0.5,
-      "level": "medium",
-      "reason": "1 sensationalist words detected; Substantial content length; Contains external references"
-    },
-    "summary": "‘Weak Ass President,’ ‘Pee Pee Tapes,’ Hollywood Celebrities Throw Conspiracy-Filled Tantrums over Trump’s Russia-Ukraine Peace Talks 32 Kevin Winter/Getty Images Warner Todd Huston 19 Aug 2025 The peace talks being hosted by President Donald Trump in the White House have spurred a throng of left-wi...",
-    "biasIndicators": {
-      "political": [
-        "left-wing",
-        "democrat"
-      ]
-    },
-    "timestamp": "2025-08-20T07:08:08.128Z"
-  },
-  "analysis_article_1755673688200_7": {
-    "wordCount": 956,
-    "readingTime": 5,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "economy",
-      "environment",
-      "international"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Breitbart Business Digest: What if We Had Listened to Pat Buchanan.  24 AP Photo/Bob Galbraith John Carney 19 Aug 2025 Patrick J.  Buchanan: The Prophet of American Trade Policy When Pat Buchanan campaigned for the Republican presidential nomination in the 1990s, he made tariffs a central pillar of ...",
-    "biasIndicators": {
-      "political": [
-        "republican"
-      ]
-    },
-    "timestamp": "2025-08-20T07:08:08.201Z"
-  },
-  "analysis_article_1755673688262_10": {
-    "wordCount": 567,
+  "analysis_article_1755707667927_19": {
+    "wordCount": 562,
     "readingTime": 3,
     "hasExternalLinks": false,
     "complexity": "hard",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "international"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Pope Leo Prays for Success in Peace Efforts 8 TIZIANA FABI/AFP via Getty Images John Hayward 19 Aug 2025 Pope Leo XIV offered a prayer on Sunday for the success of peacemaking efforts.  The pope did not reference any conflict in particular, but the peace effort drawing the most attention over the we...",
-    "biasIndicators": {},
-    "timestamp": "2025-08-20T07:08:08.262Z"
-  },
-  "analysis_article_1755673688279_9": {
-    "wordCount": 1641,
-    "readingTime": 9,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "health",
-      "economy",
-      "environment",
-      "science",
-      "education",
-      "international"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Citizenship Chief Says Federal Work Permits for Foreign Grads Are &#8216;Depressing Wages&#8217; 29 AP Photo/Carlos Osorio Neil Munro 19 Aug 2025 President Joe Biden&#8217;s pro-migration deputies allowed at least 400,000 foreign students at U.  white-collar jobs in 2024.  Biden&#8217;s 400,000 give...",
-    "biasIndicators": {
-      "political": [
-        "conservative",
-        "republican"
-      ]
-    },
-    "timestamp": "2025-08-20T07:08:08.280Z"
-  },
-  "analysis_article_1755673688294_11": {
-    "wordCount": 400,
-    "readingTime": 2,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "international"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Report: Freed Palestinian Terrorists to Address Detroit Conference 52 AP Photo/Andres Kudacki Joel B.  Pollak 19 Aug 2025 Two Palestinian terrorists who were released by Israel during temporary ceasefires with Hamas are set to address a pro-Palestinian conference in Detroit, Michigan, in late August...",
-    "biasIndicators": {
-      "political": [
-        "democrat"
-      ]
-    },
-    "timestamp": "2025-08-20T07:08:08.294Z"
-  },
-  "analysis_article_1755673688347_12": {
-    "wordCount": 223,
-    "readingTime": 2,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "technology",
-      "health",
-      "sports"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Milwaukee Father Faces Charge in Fentanyl Death of Toddler 4 Getty Katherine Hamilton 19 Aug 2025 A man in Milwaukee, Wisconsin is facing charges related to the fentanyl death of his 14-month-old son.  Demetrius Hubanks, 28, told police he and his son fell asleep on the couch while the child&#8217;s...",
-    "biasIndicators": {},
-    "timestamp": "2025-08-20T07:08:08.347Z"
-  },
-  "analysis_article_1755673688357_13": {
-    "wordCount": 314,
-    "readingTime": 2,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "entertainment"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Rocker Jack White Approves of CA Gov.  Newsom Using &#8216;Seven Nation Army&#8217; for Anti-Trump Meme: &#8216;Keep Hitting Him Back Gavin.  Rodriguez/WireImage Alana Mastrangelo 19 Aug 2025 Rocker Jack White approved of California Gov.",
-    "biasIndicators": {
-      "political": [
-        "democrat",
-        "republican"
-      ]
-    },
-    "timestamp": "2025-08-20T07:08:08.358Z"
-  },
-  "analysis_article_1755673688359_15": {
-    "wordCount": 267,
-    "readingTime": 2,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "technology",
-      "sports"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Indiana Fever&#8217;s Sophie Cunningham Out for the Season with Knee Injury 4 Sean M.  Haffey/Getty Images Warner Todd Huston 19 Aug 2025 Indiana Fever guard Sophie Cunningham is out for the rest of the season after suffering a knee injury on Sunday.  Cunningham was seen rolling on the court in pain...",
-    "biasIndicators": {},
-    "timestamp": "2025-08-20T07:08:08.360Z"
-  },
-  "analysis_article_1755673688378_14": {
-    "wordCount": 648,
-    "readingTime": 4,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "health",
-      "environment",
-      "science",
-      "education",
-      "international"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Costco Will Not Sell Abortion Pills in Its U.  Pharmacies 59 Damian Dovarganes/AP Katherine Hamilton 19 Aug 2025 Costco said it will not sell the abortion pill mifepristone at any of its U.  pharmacies, citing &#8220;lack of demand.",
-    "biasIndicators": {
-      "political": [
-        "conservative"
-      ],
-      "sensationalist": [
-        "shocking"
-      ]
-    },
-    "timestamp": "2025-08-20T07:08:08.378Z"
-  },
-  "analysis_article_1755673688395_8": {
-    "wordCount": 310,
-    "readingTime": 2,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "technology"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "WATCH: Boeing Plane Makes Emergency Landing After Flames Seemingly Shoot Out of Engine: &#8216;An Incredibly Horrible Experience&#8217; 35 Marcos del Mazo/LightRocket via Getty Images Hannah Knudsen 19 Aug 2025 A Boeing plane made an emergency landing in Italy on Saturday after flames were seen shoo...",
-    "biasIndicators": {
-      "emotional": [
-        "horrible"
-      ]
-    },
-    "timestamp": "2025-08-20T07:08:08.395Z"
-  },
-  "analysis_article_1755673688451_16": {
-    "wordCount": 509,
-    "readingTime": 3,
-    "hasExternalLinks": false,
-    "complexity": "medium",
     "keyTopics": [
       "politics",
       "technology",
@@ -316,95 +271,318 @@
       "level": "medium",
       "reason": "Substantial content length"
     },
-    "summary": "Transgender Democrat Rep.  Sarah McBride Accuses President Trump of ‘All-Out Assault’ on ‘American Democracy’ 50 Jemal Countess/Getty Images for Families Over Billionaires Katherine Hamilton 19 Aug 2025 Democrat Rep.  Sarah McBride (D-DE), a man who identifies as a woman, claimed President Trump is ...",
+    "summary": "Report: Illegal Trucker Behind Fatal U-Turn Failed English Language Test 859 St.  Lucie County Sheriff&#039;s Office/U.  Marshals Elizabeth Weibel 19 Aug 2025 The semi-truck driver, who allegedly killed three Americans while making an illegal U-turn in Florida, failed an English language proficiency...",
     "biasIndicators": {
-      "emotional": [
-        "horrible"
-      ],
-      "political": [
-        "democrat",
-        "republican"
-      ]
-    },
-    "timestamp": "2025-08-20T07:08:08.451Z"
-  },
-  "analysis_article_1755673688459_18": {
-    "wordCount": 624,
-    "readingTime": 4,
-    "hasExternalLinks": false,
-    "complexity": "hard",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "economy",
-      "sports"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Exclusive &#8212; Trump CFPB Closes Biden-Era Weaponized Investigation Against Public Square, Credova 165 Daniel Karmann/picture alliance via Getty Images Sean Moran 19 Aug 2025 The Consumer Financial Protection Bureau (CFPB) under Director Russ Vought on Tuesday closed a Biden-era investigation aga...",
-    "biasIndicators": {
-      "political": [
-        "democrat"
-      ],
-      "opinionated": [
-        "clearly"
-      ]
-    },
-    "timestamp": "2025-08-20T07:08:08.460Z"
-  },
-  "analysis_article_1755673688482_17": {
-    "wordCount": 537,
-    "readingTime": 3,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "health"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Retired Navy SEAL Rep.  Derrick Van Orden Uses Makeshift Tourniquets to Save 11-Year-Old: ‘He Would’ve Bled to Death’ 260 Tom Williams/CQ-Roll Call, Inc via Getty Images Jasmyn Jordan 19 Aug 2025 Rep.  Derrick Van Orden (R-WI), a retired Navy SEAL, helped save the life of an 11-year-old boy injured ...",
-    "biasIndicators": {
-      "emotional": [
-        "amazing"
-      ],
-      "political": [
-        "conservative"
-      ]
-    },
-    "timestamp": "2025-08-20T07:08:08.482Z"
-  },
-  "analysis_article_1755673688501_19": {
-    "wordCount": 933,
-    "readingTime": 5,
-    "hasExternalLinks": false,
-    "complexity": "hard",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "economy"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "President Trump Says American Planes in the Air But Not Boots on the Ground for Ukraine Security Mission 687 SAUL LOEB/AFP via Getty Images Oliver JJ Lane 19 Aug 2025 U.  President Donald Trump gave his personal assurance that there will be no American boots on the ground in a post-peace deal Ukrain...",
-    "biasIndicators": {
-      "political": [
-        "left-wing"
-      ],
       "sensationalist": [
-        "revealed"
+        "revealed",
+        "secret"
       ]
     },
-    "timestamp": "2025-08-20T07:08:08.501Z"
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Florida",
+          "count": 7
+        },
+        {
+          "name": "Singh",
+          "count": 7
+        },
+        {
+          "name": "English",
+          "count": 6
+        },
+        {
+          "name": "The",
+          "count": 5
+        },
+        {
+          "name": "State",
+          "count": 4
+        },
+        {
+          "name": "Drivers",
+          "count": 4
+        },
+        {
+          "name": "California",
+          "count": 4
+        },
+        {
+          "name": "Uturn",
+          "count": 3
+        },
+        {
+          "name": "Department",
+          "count": 3
+        },
+        {
+          "name": "Transportation",
+          "count": 3
+        },
+        {
+          "name": "Harjinder",
+          "count": 3
+        },
+        {
+          "name": "Commercial",
+          "count": 3
+        },
+        {
+          "name": "License",
+          "count": 3
+        },
+        {
+          "name": "Troopers",
+          "count": 3
+        },
+        {
+          "name": "Language",
+          "count": 2
+        },
+        {
+          "name": "Motor",
+          "count": 2
+        },
+        {
+          "name": "Safety",
+          "count": 2
+        },
+        {
+          "name": "During",
+          "count": 2
+        },
+        {
+          "name": "Sean",
+          "count": 2
+        },
+        {
+          "name": "Duffy",
+          "count": 2
+        },
+        {
+          "name": "This",
+          "count": 2
+        },
+        {
+          "name": "July",
+          "count": 2
+        },
+        {
+          "name": "Breitbart",
+          "count": 2
+        },
+        {
+          "name": "News",
+          "count": 2
+        },
+        {
+          "name": "United",
+          "count": 2
+        },
+        {
+          "name": "States",
+          "count": 2
+        },
+        {
+          "name": "Immigration",
+          "count": 2
+        },
+        {
+          "name": "Fort",
+          "count": 2
+        },
+        {
+          "name": "Pierce",
+          "count": 2
+        },
+        {
+          "name": "August",
+          "count": 2
+        },
+        {
+          "name": "Report",
+          "count": 1
+        },
+        {
+          "name": "Illegal",
+          "count": 1
+        },
+        {
+          "name": "Trucker",
+          "count": 1
+        },
+        {
+          "name": "Behind",
+          "count": 1
+        },
+        {
+          "name": "Fatal",
+          "count": 1
+        },
+        {
+          "name": "Failed",
+          "count": 1
+        },
+        {
+          "name": "Test",
+          "count": 1
+        },
+        {
+          "name": "Lucie",
+          "count": 1
+        },
+        {
+          "name": "County",
+          "count": 1
+        },
+        {
+          "name": "Sheriffs",
+          "count": 1
+        },
+        {
+          "name": "Marshals",
+          "count": 1
+        },
+        {
+          "name": "Elizabeth",
+          "count": 1
+        },
+        {
+          "name": "Weibel",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Americans",
+          "count": 1
+        },
+        {
+          "name": "Federal",
+          "count": 1
+        },
+        {
+          "name": "Carrier",
+          "count": 1
+        },
+        {
+          "name": "Administration",
+          "count": 1
+        },
+        {
+          "name": "Proficiency",
+          "count": 1
+        },
+        {
+          "name": "Secretary",
+          "count": 1
+        },
+        {
+          "name": "Nonenforcement",
+          "count": 1
+        },
+        {
+          "name": "Washington",
+          "count": 1
+        },
+        {
+          "name": "Highway",
+          "count": 1
+        },
+        {
+          "name": "Vehicles",
+          "count": 1
+        },
+        {
+          "name": "Saturday",
+          "count": 1
+        },
+        {
+          "name": "Customs",
+          "count": 1
+        },
+        {
+          "name": "Enforcement",
+          "count": 1
+        },
+        {
+          "name": "Mexico",
+          "count": 1
+        },
+        {
+          "name": "Defendant",
+          "count": 1
+        },
+        {
+          "name": "Turnpike",
+          "count": 1
+        },
+        {
+          "name": "President",
+          "count": 1
+        },
+        {
+          "name": "Donald",
+          "count": 1
+        },
+        {
+          "name": "Trump",
+          "count": 1
+        },
+        {
+          "name": "April",
+          "count": 1
+        },
+        {
+          "name": "They",
+          "count": 1
+        },
+        {
+          "name": "Crime",
+          "count": 1
+        },
+        {
+          "name": "India",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Florida",
+          "count": 7
+        },
+        {
+          "name": "Singh",
+          "count": 7
+        },
+        {
+          "name": "English",
+          "count": 6
+        },
+        {
+          "name": "The",
+          "count": 5
+        },
+        {
+          "name": "State",
+          "count": 4
+        }
+      ],
+      "entityCount": 67
+    },
+    "timestamp": "2025-08-20T16:34:27.928Z"
   }
 }

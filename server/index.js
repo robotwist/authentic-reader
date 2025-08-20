@@ -570,6 +570,9 @@ app.get('/api/rss', async (req, res) => {
           },
           summary: analysis.summary,
           biasIndicators: analysis.biasIndicators,
+          logicalFallacies: analysis.logicalFallacies,
+          biasAnalysis: analysis.bias,
+          networkAnalysis: analysis.network,
           timestamp: analysis.timestamp
         }
       };
