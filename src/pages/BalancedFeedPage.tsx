@@ -13,16 +13,11 @@ interface Article {
   analysis: {
     wordCount: number;
     readingTime: number;
-    hasExternalLinks: boolean;
-    complexity: string;
-    keyTopics: string[];
-    credibility: {
-      score: number;
-      level: string;
-      reason: string;
-    };
     summary: string;
-    biasIndicators?: any;
+    credibility: { score: number; level: string; reason: string };
+    logicalFallacies?: Array<{ type: string; explanation: string; excerpt?: string; confidence: number }>;
+    bias?: { direction: 'left' | 'right' | 'center'; confidence: number; explanation: string; indicators: { left: number; right: number } };
+    network?: { topEntities: Array<{ name: string; count: number }>; entityCount: number };
     timestamp: string;
   };
   articleId: string;
@@ -422,29 +417,54 @@ const BalancedFeedPage: React.FC = () => {
                     <FiClock className="analysis-icon" />
                     <span className="analysis-value">{article.analysis.readingTime} min</span>
                   </div>
-                  
+
                   <div className="analysis-item">
                     <FiShield className="analysis-icon" />
-                    <span 
+                    <span
                       className="analysis-value credibility-badge"
                       style={{ backgroundColor: getCredibilityColor(article.analysis.credibility.level) }}
                     >
                       {article.analysis.credibility.level}
                     </span>
                   </div>
-                  
-                  <div className="analysis-item">
-                    <FiTag className="analysis-icon" />
-                    <span className="analysis-value">
-                      {article.analysis.keyTopics[0]}
-                    </span>
-                  </div>
-                  
-                  <div className="analysis-item">
-                    <FiTrendingUp className="analysis-icon" />
-                    <span className="analysis-value">{article.analysis.complexity}</span>
-                  </div>
+
+                  {article.analysis.bias && (
+                    <div className="analysis-item">
+                      <FiTag className="analysis-icon" />
+                      <span className="analysis-value">
+                        Bias: {article.analysis.bias.direction} ({Math.round(article.analysis.bias.confidence * 100)}%)
+                      </span>
+                    </div>
+                  )}
+
+                  {article.analysis.logicalFallacies && article.analysis.logicalFallacies.length > 0 && (
+                    <div className="analysis-item">
+                      <FiTrendingUp className="analysis-icon" />
+                      <span className="analysis-value">
+                        {article.analysis.logicalFallacies.length} fallac{article.analysis.logicalFallacies.length === 1 ? 'y' : 'ies'} detected
+                      </span>
+                    </div>
+                  )}
                 </div>
+
+                {article.analysis.logicalFallacies && article.analysis.logicalFallacies.length > 0 && (
+                  <div className="fallacy-snippets">
+                    {article.analysis.logicalFallacies.slice(0, 2).map((f, idx) => (
+                      <div key={idx} className="fallacy-chip" title={f.explanation}>
+                        {f.type.replace(/_/g, ' ')}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {article.analysis.network && article.analysis.network.topEntities && article.analysis.network.topEntities.length > 0 && (
+                  <div className="network-snippets">
+                    <span className="network-label">Top entities:</span>
+                    {article.analysis.network.topEntities.slice(0, 3).map((e, idx) => (
+                      <span key={idx} className="entity-chip">{e.name}</span>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 

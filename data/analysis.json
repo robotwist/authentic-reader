@@ -1,0 +1,53 @@
+{
+  "analysis_1755673700721": {
+    "wordCount": 21,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "easy",
+    "keyTopics": [
+      "technology"
+    ],
+    "credibility": {
+      "score": 0.5,
+      "level": "medium",
+      "reason": "Standard content assessment"
+    },
+    "summary": "These people are stupid and cannot be trusted.  You are either with us or against us.  This will lead to collapse.",
+    "biasIndicators": {},
+    "logicalFallacies": [
+      {
+        "type": "AD_HOMINEM",
+        "confidence": 0.65,
+        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
+        "excerpt": "These people are stupid and cannot be trusted",
+        "startIndex": 0,
+        "endIndex": 45
+      },
+      {
+        "type": "AD_HOMINEM",
+        "confidence": 0.8,
+        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
+        "excerpt": "These people are stupid and cannot be trusted",
+        "startIndex": 0,
+        "endIndex": 45
+      },
+      {
+        "type": "FALSE_DICHOTOMY",
+        "confidence": 0.8,
+        "explanation": "False Dichotomy: Presenting only two options when others exist.",
+        "excerpt": "You are either with us or against us",
+        "startIndex": 47,
+        "endIndex": 83
+      },
+      {
+        "type": "SLIPPERY_SLOPE",
+        "confidence": 0.8,
+        "explanation": "Slippery Slope: Claiming a small step will inevitably lead to a severe outcome.",
+        "excerpt": "This will lead to collapse.",
+        "startIndex": 85,
+        "endIndex": 112
+      }
+    ],
+    "timestamp": "2025-08-20T07:08:20.721Z"
+  }
+}

@@ -5,7 +5,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { parseStringPromise } from 'xml2js';
 import jsonStorage from './services/jsonStorageService.js';
-import comprehensiveAnalysis from './services/comprehensiveAnalysisService.js';
+// import comprehensiveAnalysis from './services/comprehensiveAnalysisService.js';
 
 // Import monitoring tools
 import monitorService from './services/monitorService.js';
@@ -248,6 +248,169 @@ function detectBiasIndicators(title, content) {
   return detectedBias;
 }
 
+// Logical fallacy detection utilities
+function splitIntoSentences(text) {
+  if (!text) return [];
+  return String(text).replace(/\s+/g, ' ').split(/[.!?]+\s+/).filter(s => s && s.trim().length > 0);
+}
+
+const fallacyPatterns = {
+  AD_HOMINEM: [
+    /(liar|corrupt|stupid|ignorant|crazy|insane|extremist)/i,
+    /cannot\s+be\s+trusted/i,
+    /has\s+no\s+credibility/i,
+    /typical\s+(liberal|conservative|leftist|right[- ]wing)/i
+  ],
+  STRAW_MAN: [
+    /they\s+would\s+have\s+you\s+believe/i,
+    /they\s+claim\s+that/i,
+    /their\s+argument\s+boils\s+down\s+to/i
+  ],
+  APPEAL_TO_EMOTION: [
+    /(horrific|terrifying|devastating|heartbreaking|outrageous)/i,
+    /think(\s+of)?\s+the\s+children/i,
+    /(fear|anger|outrage|panic)/i
+  ],
+  FALSE_DICHOTOMY: [
+    /either\s+.*\s+or/i,
+    /only\s+two\s+choices/i,
+    /you\'re\s+either\s+with\s+us\s+or\s+against\s+us/i
+  ],
+  SLIPPERY_SLOPE: [
+    /will\s+lead\s+to/i,
+    /opens\s+the\s+door\s+to/i,
+    /before\s+you\s+know\s+it/i
+  ],
+  HASTY_GENERALIZATION: [
+    /they\s+always/i,
+    /all\s+of\s+them\s+are/i,
+    /never\s+once\s+has/i
+  ]
+};
+
+function getFallacyExplanation(type) {
+  const map = {
+    AD_HOMINEM: 'Ad Hominem: Attacking the person instead of the argument.',
+    STRAW_MAN: 'Straw Man: Misrepresenting an argument to make it easier to attack.',
+    APPEAL_TO_EMOTION: 'Appeal to Emotion: Manipulating emotions instead of using facts.',
+    FALSE_DICHOTOMY: 'False Dichotomy: Presenting only two options when others exist.',
+    SLIPPERY_SLOPE: 'Slippery Slope: Claiming a small step will inevitably lead to a severe outcome.',
+    HASTY_GENERALIZATION: 'Hasty Generalization: Drawing a broad conclusion from insufficient evidence.'
+  };
+  return map[type] || 'Logical fallacy detected.';
+}
+
+function calculateFallacyConfidence(matchText) {
+  if (!matchText) return 0.6;
+  return matchText.length > 10 ? 0.8 : 0.65;
+}
+
+function detectLogicalFallacies(text) {
+  const results = [];
+  if (!text) return results;
+  const sentences = splitIntoSentences(text);
+  sentences.forEach(sentence => {
+    const startIndex = text.indexOf(sentence);
+    const endIndex = startIndex + sentence.length;
+    for (const [type, patterns] of Object.entries(fallacyPatterns)) {
+      for (const pattern of patterns) {
+        const match = sentence.match(pattern);
+        if (match) {
+          results.push({
+            type,
+            confidence: calculateFallacyConfidence(match[0]),
+            explanation: getFallacyExplanation(type),
+            excerpt: sentence.trim(),
+            startIndex,
+            endIndex
+          });
+        }
+      }
+    }
+  });
+  return results;
+}
+
+// Simple HTML entity decoder to handle titles like \'Home Improvement\'
+function decodeHtmlEntities(input) {
+  if (!input) return input;
+  let str = String(input);
+  const map = {
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&#39;': "'",
+    '&#8216;': "'",
+    '&#8217;': "'",
+    '&#8220;': '"',
+    '&#8221;': '"',
+    '&#8211;': '–',
+    '&#8212;': '—'
+  };
+  Object.entries(map).forEach(([k, v]) => {
+    str = str.split(k).join(v);
+  });
+  // Numeric entities
+  str = str.replace(/&#(\d+);/g, (_m, code) => {
+    const c = Number(code);
+    if (!Number.isFinite(c)) return _m;
+    try { return String.fromCharCode(c); } catch { return _m; }
+  });
+  return str;
+}
+
+// Basic bias assessment (left/right/center) using simple keyword counts
+function assessBiasDirection(title, content) {
+  const text = `${title || ''} ${content || ''}`.toLowerCase();
+  const leftTerms = ['social justice','equity','progressive','climate crisis','gun control','reproductive rights','wealth tax','green new deal','medicare for all','systemic'];
+  const rightTerms = ['free market','law and order','border security','small government','second amendment','pro-life','lower taxes','states\' rights','america first','patriotic'];
+  let leftScore = 0; let rightScore = 0;
+  leftTerms.forEach(t => { if (text.includes(t)) leftScore++; });
+  rightTerms.forEach(t => { if (text.includes(t)) rightScore++; });
+  let direction = 'center';
+  let confidence = 0.5;
+  if (leftScore > rightScore) {
+    direction = 'left';
+    confidence = Math.min(1, (leftScore - rightScore) / Math.max(1, leftScore + rightScore) + 0.5);
+  } else if (rightScore > leftScore) {
+    direction = 'right';
+    confidence = Math.min(1, (rightScore - leftScore) / Math.max(1, leftScore + rightScore) + 0.5);
+  }
+  const explanation = direction === 'center'
+    ? 'No strong directional bias detected.'
+    : `Detected more ${direction}-leaning indicators in language.`;
+  return {
+    direction,
+    confidence: Math.round(confidence * 100) / 100,
+    explanation,
+    indicators: {
+      left: leftScore,
+      right: rightScore
+    }
+  };
+}
+
+// Very simple network context: extract capitalized tokens as entities and rank by frequency
+function buildNetworkSummary(text) {
+  if (!text) return { entities: [], topEntities: [], entityCount: 0 };
+  const entityCounts = new Map();
+  const words = String(text).split(/\s+/);
+  for (const w of words) {
+    const token = w.replace(/[^A-Za-z]/g, '');
+    if (token.length >= 3 && token[0] === token[0].toUpperCase() && token.slice(1) === token.slice(1).toLowerCase()) {
+      entityCounts.set(token, (entityCounts.get(token) || 0) + 1);
+    }
+  }
+  const entities = Array.from(entityCounts.entries()).map(([name, count]) => ({ name, count }));
+  entities.sort((a, b) => b.count - a.count);
+  return {
+    entities,
+    topEntities: entities.slice(0, 5),
+    entityCount: entities.length
+  };
+}
+
 // Middleware
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
@@ -319,9 +482,11 @@ app.get('/api/rss', async (req, res) => {
     
     // Process and analyze each article with comprehensive analysis
     const processedItems = await Promise.all(items.slice(0, 20).map(async (item, index) => {
-      const title = item.title?.[0] || item['media:title']?.[0] || '';
+      const rawTitle = item.title?.[0] || item['media:title']?.[0] || '';
+      const title = decodeHtmlEntities(rawTitle);
       const link = item.link?.[0] || item.link?.[0]?.$?.href || '';
-      const description = item.description?.[0] || item.summary?.[0] || item['media:description']?.[0] || '';
+      const rawDesc = item.description?.[0] || item.summary?.[0] || item['media:description']?.[0] || '';
+      const description = decodeHtmlEntities(rawDesc);
       const pubDate = item.pubDate?.[0] || item.published?.[0] || '';
       const author = item.author?.[0] || item['dc:creator']?.[0] || '';
       
@@ -368,49 +533,50 @@ app.get('/api/rss', async (req, res) => {
       };
       
       // Perform comprehensive analysis
-      const comprehensiveAnalysisResult = await comprehensiveAnalysis.analyzeFullArticle(articleData);
+      // const comprehensiveAnalysisResult = await comprehensiveAnalysis.analyzeFullArticle(articleData);
       
       // Create enhanced article data with detailed analysis
       const articleId = `article_${Date.now()}_${index}`;
-      const enhancedArticleData = {
-        ...articleData,
-        articleId,
+      const analysis = {
+        wordCount: fullContent ? fullContent.split(' ').length : 0,
+        readingTime: fullContent ? Math.ceil(fullContent.split(' ').length / 200) : 0,
+        hasExternalLinks: fullContent ? (fullContent.includes('http') || fullContent.includes('www')) : false,
+        complexity: analyzeContentComplexity(fullContent),
+        keyTopics: extractKeyTopics(title, fullContent),
+        credibility: assessBasicCredibility(link, title, fullContent),
+        summary: generateBasicSummary(fullContent),
+        biasIndicators: detectBiasIndicators(title, fullContent),
+        logicalFallacies: detectLogicalFallacies(fullContent),
+        bias: assessBiasDirection(title, fullContent),
+        network: buildNetworkSummary(fullContent),
+        timestamp: new Date().toISOString()
+      };
+
+      // Create enhanced article data with detailed analysis
+      const enhancedArticle = {
+        ...item,
+        articleId: `article_${Date.now()}_${index}`,
+        content: fullContent,
         analysis: {
-          // Content analysis
-          wordCount: comprehensiveAnalysisResult.contentAnalysis.wordCount,
-          readingTime: comprehensiveAnalysisResult.contentAnalysis.readingTime,
-          hasExternalLinks: comprehensiveAnalysisResult.contentAnalysis.hasExternalLinks,
-          complexity: comprehensiveAnalysisResult.contentAnalysis.complexity,
-          keyTopics: comprehensiveAnalysisResult.contentAnalysis.keyTopics,
-          
-          // Enhanced credibility assessment with detailed explanations
+          wordCount: analysis.wordCount,
+          readingTime: analysis.readingTime,
+          hasExternalLinks: analysis.hasExternalLinks,
+          complexity: analysis.complexity,
+          keyTopics: analysis.keyTopics,
           credibility: {
-            score: comprehensiveAnalysisResult.credibilityAssessment.overallScore,
-            level: comprehensiveAnalysisResult.credibilityAssessment.level,
-            reason: generateCredibilityExplanation(comprehensiveAnalysisResult.credibilityAssessment),
-            detailedReasons: comprehensiveAnalysisResult.credibilityAssessment.detailedReasons,
-            sourceReputation: comprehensiveAnalysisResult.credibilityAssessment.sourceReputation,
-            authorCredibility: comprehensiveAnalysisResult.credibilityAssessment.authorCredibility,
-            historicalAccuracy: comprehensiveAnalysisResult.credibilityAssessment.historicalAccuracy,
-            transparency: comprehensiveAnalysisResult.credibilityAssessment.transparency
+            score: analysis.credibility.score,
+            level: analysis.credibility.level,
+            reason: analysis.credibility.reason
           },
-          
-          // Political analysis
-          politicalAnalysis: comprehensiveAnalysisResult.politicalAnalysis,
-          
-          // Bias detection
-          biasIndicators: comprehensiveAnalysisResult.biasDetection,
-          
-          // Summary
-          summary: generateEnhancedSummary(fullContent),
-          
-          timestamp: new Date().toISOString()
+          summary: analysis.summary,
+          biasIndicators: analysis.biasIndicators,
+          timestamp: analysis.timestamp
         }
       };
 
       // Save to storage
-      await jsonStorage.saveArticle(articleId, enhancedArticleData);
-      await jsonStorage.saveAnalysis(`analysis_${articleId}`, comprehensiveAnalysisResult);
+      await jsonStorage.saveArticle(articleId, enhancedArticle);
+      await jsonStorage.saveAnalysis(`analysis_${articleId}`, analysis);
 
       return {
         title,
@@ -419,7 +585,7 @@ app.get('/api/rss', async (req, res) => {
         pubDate,
         author,
         content: fullContent.substring(0, 500) + (fullContent.length > 500 ? '...' : ''),
-        analysis: enhancedArticleData.analysis,
+        analysis: enhancedArticle.analysis,
         articleId,
         source: feedUrl
       };
@@ -564,16 +730,20 @@ app.post('/api/analyze-article', async (req, res) => {
       return res.status(400).json({ error: 'Title or content is required' });
     }
 
-    // Enhanced content analysis
+    // Enhanced content analysis with comprehensive analysis
+    // const comprehensiveAnalysisResult = await comprehensiveAnalysis.analyzeFullArticle(articleData);
+    
+    // Basic analysis for now
     const analysis = {
       wordCount: content ? content.split(' ').length : 0,
-      readingTime: content ? Math.ceil(content.split(' ').length / 200) : 0, // 200 words per minute
+      readingTime: content ? Math.ceil(content.split(' ').length / 200) : 0,
       hasExternalLinks: content ? (content.includes('http') || content.includes('www')) : false,
       complexity: analyzeContentComplexity(content),
       keyTopics: extractKeyTopics(title, content),
       credibility: assessBasicCredibility(url, title, content),
       summary: generateBasicSummary(content),
       biasIndicators: detectBiasIndicators(title, content),
+      logicalFallacies: detectLogicalFallacies(content || ''),
       timestamp: new Date().toISOString()
     };
 

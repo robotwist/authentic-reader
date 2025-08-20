@@ -1,21 +1,410 @@
 {
-  "analysis_article_1755671431681_9": {
-    "wordCount": 58,
+  "analysis_article_1755673688008_4": {
+    "wordCount": 554,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "‘Downright False’: Karoline Leavitt Torches Media over Russia-Ukraine Negotiation Coverage 31 AP Photo/Evan Vucci Jasmyn Jordan 19 Aug 2025 Press Secretary Karoline Leavitt tore into the media’s handling of Trump’s recent negotiations with Russia, Ukraine, and European leaders during a White House b...",
+    "biasIndicators": {
+      "political": [
+        "left-wing"
+      ],
+      "sensationalist": [
+        "secret"
+      ]
+    },
+    "timestamp": "2025-08-20T07:08:08.009Z"
+  },
+  "analysis_article_1755673688018_3": {
+    "wordCount": 53,
     "readingTime": 1,
     "hasExternalLinks": true,
     "complexity": "medium",
     "keyTopics": [
+      "technology",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.7,
+      "level": "high",
+      "reason": "Substantial content length; Contains external references"
+    },
+    "summary": "Monday marked a historic day in the pursuit of peace in the Ukraine War, and Breitbart News had a front row seat in the press pool to the high-stakes meeting among world leaders.  The post Breitbart in the Oval Office: Inside Zelensky&#8217;s White House Visit 2. 0 appeared first on Breitbart .",
+    "biasIndicators": {},
+    "timestamp": "2025-08-20T07:08:08.018Z"
+  },
+  "analysis_article_1755673688064_5": {
+    "wordCount": 508,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
       "politics",
+      "technology",
+      "health",
+      "science"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "&#8216;Disturbing Evidence:&#8217; Senate Judiciary Committee Reveals Biden&#8217;s HHS Placed Over 11,000 Migrant Children in U.  Homes with Unvetted Adults 381 Jim WATSON/AFP via Getty Images John Binder 19 Aug 2025 Senate Judiciary Committee Chairman Chuck Grassley (R-IA) revealed in a bombshell ...",
+    "biasIndicators": {
+      "sensationalist": [
+        "revealed",
+        "secret"
+      ]
+    },
+    "timestamp": "2025-08-20T07:08:08.065Z"
+  },
+  "analysis_article_1755673688128_6": {
+    "wordCount": 442,
+    "readingTime": 3,
+    "hasExternalLinks": true,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "entertainment"
+    ],
+    "credibility": {
+      "score": 0.5,
+      "level": "medium",
+      "reason": "1 sensationalist words detected; Substantial content length; Contains external references"
+    },
+    "summary": "‘Weak Ass President,’ ‘Pee Pee Tapes,’ Hollywood Celebrities Throw Conspiracy-Filled Tantrums over Trump’s Russia-Ukraine Peace Talks 32 Kevin Winter/Getty Images Warner Todd Huston 19 Aug 2025 The peace talks being hosted by President Donald Trump in the White House have spurred a throng of left-wi...",
+    "biasIndicators": {
+      "political": [
+        "left-wing",
+        "democrat"
+      ]
+    },
+    "timestamp": "2025-08-20T07:08:08.128Z"
+  },
+  "analysis_article_1755673688200_7": {
+    "wordCount": 956,
+    "readingTime": 5,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy",
+      "environment",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Breitbart Business Digest: What if We Had Listened to Pat Buchanan.  24 AP Photo/Bob Galbraith John Carney 19 Aug 2025 Patrick J.  Buchanan: The Prophet of American Trade Policy When Pat Buchanan campaigned for the Republican presidential nomination in the 1990s, he made tariffs a central pillar of ...",
+    "biasIndicators": {
+      "political": [
+        "republican"
+      ]
+    },
+    "timestamp": "2025-08-20T07:08:08.201Z"
+  },
+  "analysis_article_1755673688262_10": {
+    "wordCount": 567,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Pope Leo Prays for Success in Peace Efforts 8 TIZIANA FABI/AFP via Getty Images John Hayward 19 Aug 2025 Pope Leo XIV offered a prayer on Sunday for the success of peacemaking efforts.  The pope did not reference any conflict in particular, but the peace effort drawing the most attention over the we...",
+    "biasIndicators": {},
+    "timestamp": "2025-08-20T07:08:08.262Z"
+  },
+  "analysis_article_1755673688279_9": {
+    "wordCount": 1641,
+    "readingTime": 9,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "health",
+      "economy",
+      "environment",
+      "science",
+      "education",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Citizenship Chief Says Federal Work Permits for Foreign Grads Are &#8216;Depressing Wages&#8217; 29 AP Photo/Carlos Osorio Neil Munro 19 Aug 2025 President Joe Biden&#8217;s pro-migration deputies allowed at least 400,000 foreign students at U.  white-collar jobs in 2024.  Biden&#8217;s 400,000 give...",
+    "biasIndicators": {
+      "political": [
+        "conservative",
+        "republican"
+      ]
+    },
+    "timestamp": "2025-08-20T07:08:08.280Z"
+  },
+  "analysis_article_1755673688294_11": {
+    "wordCount": 400,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Report: Freed Palestinian Terrorists to Address Detroit Conference 52 AP Photo/Andres Kudacki Joel B.  Pollak 19 Aug 2025 Two Palestinian terrorists who were released by Israel during temporary ceasefires with Hamas are set to address a pro-Palestinian conference in Detroit, Michigan, in late August...",
+    "biasIndicators": {
+      "political": [
+        "democrat"
+      ]
+    },
+    "timestamp": "2025-08-20T07:08:08.294Z"
+  },
+  "analysis_article_1755673688347_12": {
+    "wordCount": 223,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "health",
+      "sports"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Milwaukee Father Faces Charge in Fentanyl Death of Toddler 4 Getty Katherine Hamilton 19 Aug 2025 A man in Milwaukee, Wisconsin is facing charges related to the fentanyl death of his 14-month-old son.  Demetrius Hubanks, 28, told police he and his son fell asleep on the couch while the child&#8217;s...",
+    "biasIndicators": {},
+    "timestamp": "2025-08-20T07:08:08.347Z"
+  },
+  "analysis_article_1755673688357_13": {
+    "wordCount": 314,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "entertainment"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Rocker Jack White Approves of CA Gov.  Newsom Using &#8216;Seven Nation Army&#8217; for Anti-Trump Meme: &#8216;Keep Hitting Him Back Gavin.  Rodriguez/WireImage Alana Mastrangelo 19 Aug 2025 Rocker Jack White approved of California Gov.",
+    "biasIndicators": {
+      "political": [
+        "democrat",
+        "republican"
+      ]
+    },
+    "timestamp": "2025-08-20T07:08:08.358Z"
+  },
+  "analysis_article_1755673688359_15": {
+    "wordCount": 267,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "sports"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Indiana Fever&#8217;s Sophie Cunningham Out for the Season with Knee Injury 4 Sean M.  Haffey/Getty Images Warner Todd Huston 19 Aug 2025 Indiana Fever guard Sophie Cunningham is out for the rest of the season after suffering a knee injury on Sunday.  Cunningham was seen rolling on the court in pain...",
+    "biasIndicators": {},
+    "timestamp": "2025-08-20T07:08:08.360Z"
+  },
+  "analysis_article_1755673688378_14": {
+    "wordCount": 648,
+    "readingTime": 4,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "health",
+      "environment",
+      "science",
+      "education",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Costco Will Not Sell Abortion Pills in Its U.  Pharmacies 59 Damian Dovarganes/AP Katherine Hamilton 19 Aug 2025 Costco said it will not sell the abortion pill mifepristone at any of its U.  pharmacies, citing &#8220;lack of demand.",
+    "biasIndicators": {
+      "political": [
+        "conservative"
+      ],
+      "sensationalist": [
+        "shocking"
+      ]
+    },
+    "timestamp": "2025-08-20T07:08:08.378Z"
+  },
+  "analysis_article_1755673688395_8": {
+    "wordCount": 310,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
       "technology"
     ],
     "credibility": {
-      "score": 0.8,
-      "level": "high",
-      "reason": "Reputable news source"
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
     },
-    "summary": "<img src='undefined' alt='U.  President Donald Trump greets Ukrainian President Volodymyr Zelenskyy at the White House on August 18, in Washington, D.",
-    "timestamp": "2025-08-20T06:30:31.681Z"
-  }
-}: "2025-08-20T06:30:31.681Z"
+    "summary": "WATCH: Boeing Plane Makes Emergency Landing After Flames Seemingly Shoot Out of Engine: &#8216;An Incredibly Horrible Experience&#8217; 35 Marcos del Mazo/LightRocket via Getty Images Hannah Knudsen 19 Aug 2025 A Boeing plane made an emergency landing in Italy on Saturday after flames were seen shoo...",
+    "biasIndicators": {
+      "emotional": [
+        "horrible"
+      ]
+    },
+    "timestamp": "2025-08-20T07:08:08.395Z"
+  },
+  "analysis_article_1755673688451_16": {
+    "wordCount": 509,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "sports",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Transgender Democrat Rep.  Sarah McBride Accuses President Trump of ‘All-Out Assault’ on ‘American Democracy’ 50 Jemal Countess/Getty Images for Families Over Billionaires Katherine Hamilton 19 Aug 2025 Democrat Rep.  Sarah McBride (D-DE), a man who identifies as a woman, claimed President Trump is ...",
+    "biasIndicators": {
+      "emotional": [
+        "horrible"
+      ],
+      "political": [
+        "democrat",
+        "republican"
+      ]
+    },
+    "timestamp": "2025-08-20T07:08:08.451Z"
+  },
+  "analysis_article_1755673688459_18": {
+    "wordCount": 624,
+    "readingTime": 4,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy",
+      "sports"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Exclusive &#8212; Trump CFPB Closes Biden-Era Weaponized Investigation Against Public Square, Credova 165 Daniel Karmann/picture alliance via Getty Images Sean Moran 19 Aug 2025 The Consumer Financial Protection Bureau (CFPB) under Director Russ Vought on Tuesday closed a Biden-era investigation aga...",
+    "biasIndicators": {
+      "political": [
+        "democrat"
+      ],
+      "opinionated": [
+        "clearly"
+      ]
+    },
+    "timestamp": "2025-08-20T07:08:08.460Z"
+  },
+  "analysis_article_1755673688482_17": {
+    "wordCount": 537,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "health"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Retired Navy SEAL Rep.  Derrick Van Orden Uses Makeshift Tourniquets to Save 11-Year-Old: ‘He Would’ve Bled to Death’ 260 Tom Williams/CQ-Roll Call, Inc via Getty Images Jasmyn Jordan 19 Aug 2025 Rep.  Derrick Van Orden (R-WI), a retired Navy SEAL, helped save the life of an 11-year-old boy injured ...",
+    "biasIndicators": {
+      "emotional": [
+        "amazing"
+      ],
+      "political": [
+        "conservative"
+      ]
+    },
+    "timestamp": "2025-08-20T07:08:08.482Z"
+  },
+  "analysis_article_1755673688501_19": {
+    "wordCount": 933,
+    "readingTime": 5,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "President Trump Says American Planes in the Air But Not Boots on the Ground for Ukraine Security Mission 687 SAUL LOEB/AFP via Getty Images Oliver JJ Lane 19 Aug 2025 U.  President Donald Trump gave his personal assurance that there will be no American boots on the ground in a post-peace deal Ukrain...",
+    "biasIndicators": {
+      "political": [
+        "left-wing"
+      ],
+      "sensationalist": [
+        "revealed"
+      ]
+    },
+    "timestamp": "2025-08-20T07:08:08.501Z"
   }
 }

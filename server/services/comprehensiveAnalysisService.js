@@ -108,8 +108,8 @@ class ComprehensiveAnalysisService {
       level: 'medium',
       factors: [],
       history: await this.getSourceHistory(domain),
-      factCheckingRecord: await this.getFactCheckingRecord(domain),
-      editorialStandards: await this.getEditorialStandards(domain)
+      factCheckingRecord: { totalChecks: 0, accurate: 0, misleading: 0, false: 0 },
+      editorialStandards: { score: 0.5, factors: ['Standard editorial practices'] }
     };
 
     // Domain reputation
@@ -251,6 +251,8 @@ class ComprehensiveAnalysisService {
 
     return accuracyData;
   }
+
+
 
   async analyzePoliticalContent(articleData) {
     const { title, content } = articleData;
