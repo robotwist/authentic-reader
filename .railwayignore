@@ -10,3 +10,8 @@ node_modules/
 coverage/
 .nyc_output/
 .cache/
+venv/
+nlp-service/venv/
+llama-service/venv/
+*.pyc
+__pycache__/

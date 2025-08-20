@@ -1,24 +1,2892 @@
 {
-  "analysis_article_1755716772821_9": {
-    "wordCount": 1148,
-    "readingTime": 6,
-    "hasExternalLinks": true,
+  "analysis_article_1755717624111_5": {
+    "wordCount": 426,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "economy",
+      "sports"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Target CEO Steps Down as Company Underperforms 1 Getty Hannah Knudsen 20 Aug 2025 Brian Cornell is stepping down as CEO of Target after over a decade as the company faces declining sales and struggles with competition.  According to CNN, Target is not only facing &#8220;slumping&#8221; sales but sup...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "left",
+      "confidence": 1,
+      "explanation": "Detected more left-leaning indicators in language.",
+      "indicators": {
+        "left": 1,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Target",
+          "count": 14
+        },
+        {
+          "name": "Cornell",
+          "count": 2
+        },
+        {
+          "name": "Steps",
+          "count": 1
+        },
+        {
+          "name": "Down",
+          "count": 1
+        },
+        {
+          "name": "Company",
+          "count": 1
+        },
+        {
+          "name": "Underperforms",
+          "count": 1
+        },
+        {
+          "name": "Getty",
+          "count": 1
+        },
+        {
+          "name": "Hannah",
+          "count": 1
+        },
+        {
+          "name": "Knudsen",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Brian",
+          "count": 1
+        },
+        {
+          "name": "According",
+          "count": 1
+        },
+        {
+          "name": "Diversity",
+          "count": 1
+        },
+        {
+          "name": "Equity",
+          "count": 1
+        },
+        {
+          "name": "Inclusion",
+          "count": 1
+        },
+        {
+          "name": "This",
+          "count": 1
+        },
+        {
+          "name": "Cornells",
+          "count": 1
+        },
+        {
+          "name": "His",
+          "count": 1
+        },
+        {
+          "name": "Michael",
+          "count": 1
+        },
+        {
+          "name": "Fiddelke",
+          "count": 1
+        },
+        {
+          "name": "February",
+          "count": 1
+        },
+        {
+          "name": "Per",
+          "count": 1
+        },
+        {
+          "name": "But",
+          "count": 1
+        },
+        {
+          "name": "The",
+          "count": 1
+        },
+        {
+          "name": "Walmart",
+          "count": 1
+        },
+        {
+          "name": "Amazon",
+          "count": 1
+        },
+        {
+          "name": "Costco",
+          "count": 1
+        },
+        {
+          "name": "Wednesday",
+          "count": 1
+        },
+        {
+          "name": "Shares",
+          "count": 1
+        },
+        {
+          "name": "Targets",
+          "count": 1
+        },
+        {
+          "name": "Inclusivity",
+          "count": 1
+        },
+        {
+          "name": "Its",
+          "count": 1
+        },
+        {
+          "name": "Everyone",
+          "count": 1
+        },
+        {
+          "name": "Youll",
+          "count": 1
+        },
+        {
+          "name": "Years",
+          "count": 1
+        },
+        {
+          "name": "Biden",
+          "count": 1
+        },
+        {
+          "name": "Various",
+          "count": 1
+        },
+        {
+          "name": "However",
+          "count": 1
+        },
+        {
+          "name": "Breitbart",
+          "count": 1
+        },
+        {
+          "name": "News",
+          "count": 1
+        },
+        {
+          "name": "Earlier",
+          "count": 1
+        },
+        {
+          "name": "Economy",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Target",
+          "count": 14
+        },
+        {
+          "name": "Cornell",
+          "count": 2
+        },
+        {
+          "name": "Steps",
+          "count": 1
+        },
+        {
+          "name": "Down",
+          "count": 1
+        },
+        {
+          "name": "Company",
+          "count": 1
+        }
+      ],
+      "entityCount": 42
+    },
+    "timestamp": "2025-08-20T19:20:24.111Z"
+  },
+  "analysis_article_1755717624122_6": {
+    "wordCount": 156,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Schweizer: Putin &#8216;In a Pretty Desperate State,’ but &#8216;Both Sides Are Going to Have to Give&#8217; to Get Peace Breitbart TV 19 Aug 2025 On Tuesday&#8217;s &#8220;Alex Marlow Show,&#8221; GAI President Peter Schweizer talked about Russia-Ukraine negotiations.  Schweizer stated, &#8220;[I]f...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Alex",
+          "count": 4
+        },
+        {
+          "name": "Marlow",
+          "count": 4
+        },
+        {
+          "name": "Schweizer",
+          "count": 3
+        },
+        {
+          "name": "Putin",
+          "count": 3
+        },
+        {
+          "name": "Breitbart",
+          "count": 3
+        },
+        {
+          "name": "Show",
+          "count": 3
+        },
+        {
+          "name": "The",
+          "count": 2
+        },
+        {
+          "name": "Pretty",
+          "count": 1
+        },
+        {
+          "name": "Desperate",
+          "count": 1
+        },
+        {
+          "name": "State",
+          "count": 1
+        },
+        {
+          "name": "Both",
+          "count": 1
+        },
+        {
+          "name": "Sides",
+          "count": 1
+        },
+        {
+          "name": "Are",
+          "count": 1
+        },
+        {
+          "name": "Going",
+          "count": 1
+        },
+        {
+          "name": "Have",
+          "count": 1
+        },
+        {
+          "name": "Give",
+          "count": 1
+        },
+        {
+          "name": "Get",
+          "count": 1
+        },
+        {
+          "name": "Peace",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Tuesdays",
+          "count": 1
+        },
+        {
+          "name": "President",
+          "count": 1
+        },
+        {
+          "name": "Peter",
+          "count": 1
+        },
+        {
+          "name": "And",
+          "count": 1
+        },
+        {
+          "name": "Russian",
+          "count": 1
+        },
+        {
+          "name": "News",
+          "count": 1
+        },
+        {
+          "name": "Salem",
+          "count": 1
+        },
+        {
+          "name": "Podcast",
+          "count": 1
+        },
+        {
+          "name": "Network",
+          "count": 1
+        },
+        {
+          "name": "You",
+          "count": 1
+        },
+        {
+          "name": "Rumble",
+          "count": 1
+        },
+        {
+          "name": "Apple",
+          "count": 1
+        },
+        {
+          "name": "Podcasts",
+          "count": 1
+        },
+        {
+          "name": "Spotify",
+          "count": 1
+        },
+        {
+          "name": "Follow",
+          "count": 1
+        },
+        {
+          "name": "Breitbarttv",
+          "count": 1
+        },
+        {
+          "name": "Twitter",
+          "count": 1
+        },
+        {
+          "name": "Clips",
+          "count": 1
+        },
+        {
+          "name": "Politics",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Alex",
+          "count": 4
+        },
+        {
+          "name": "Marlow",
+          "count": 4
+        },
+        {
+          "name": "Schweizer",
+          "count": 3
+        },
+        {
+          "name": "Putin",
+          "count": 3
+        },
+        {
+          "name": "Breitbart",
+          "count": 3
+        }
+      ],
+      "entityCount": 38
+    },
+    "timestamp": "2025-08-20T19:20:24.122Z"
+  },
+  "analysis_article_1755717624178_7": {
+    "wordCount": 486,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy",
+      "science",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Report: Nvidia Is Developing Powerful AI Chips for Sale to China 14 PATRICK T.  FALLON/AFP/Getty Lucas Nolan 20 Aug 2025 Nvidia is reportedly working on a new AI chip designed specifically for the Chinese market that would be less powerful than its flagship B300 Blackwell GPU, but more capable than ...",
+    "biasIndicators": {},
+    "logicalFallacies": [
+      {
+        "type": "AD_HOMINEM",
+        "confidence": 0.65,
+        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
+        "excerpt": "According to people familiar with the situation, including a U.S",
+        "startIndex": 2479,
+        "endIndex": 2543
+      }
+    ],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Nvidia",
+          "count": 10
+        },
+        {
+          "name": "China",
+          "count": 10
+        },
+        {
+          "name": "Chinese",
+          "count": 4
+        },
+        {
+          "name": "The",
+          "count": 3
+        },
+        {
+          "name": "Lucas",
+          "count": 2
+        },
+        {
+          "name": "Nolan",
+          "count": 2
+        },
+        {
+          "name": "Blackwell",
+          "count": 2
+        },
+        {
+          "name": "Reuters",
+          "count": 2
+        },
+        {
+          "name": "This",
+          "count": 2
+        },
+        {
+          "name": "United",
+          "count": 2
+        },
+        {
+          "name": "States",
+          "count": 2
+        },
+        {
+          "name": "Breitbart",
+          "count": 2
+        },
+        {
+          "name": "News",
+          "count": 2
+        },
+        {
+          "name": "Trump",
+          "count": 2
+        },
+        {
+          "name": "Report",
+          "count": 1
+        },
+        {
+          "name": "Developing",
+          "count": 1
+        },
+        {
+          "name": "Powerful",
+          "count": 1
+        },
+        {
+          "name": "Chips",
+          "count": 1
+        },
+        {
+          "name": "Sale",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Nvidias",
+          "count": 1
+        },
+        {
+          "name": "Unlike",
+          "count": 1
+        },
+        {
+          "name": "However",
+          "count": 1
+        },
+        {
+          "name": "Sources",
+          "count": 1
+        },
+        {
+          "name": "Everything",
+          "count": 1
+        },
+        {
+          "name": "Beijing",
+          "count": 1
+        },
+        {
+          "name": "Washington",
+          "count": 1
+        },
+        {
+          "name": "Critics",
+          "count": 1
+        },
+        {
+          "name": "Huawei",
+          "count": 1
+        },
+        {
+          "name": "According",
+          "count": 1
+        },
+        {
+          "name": "Read",
+          "count": 1
+        },
+        {
+          "name": "Economy",
+          "count": 1
+        },
+        {
+          "name": "Politics",
+          "count": 1
+        },
+        {
+          "name": "Tech",
+          "count": 1
+        },
+        {
+          "name": "Donald",
+          "count": 1
+        },
+        {
+          "name": "Jensen",
+          "count": 1
+        },
+        {
+          "name": "Huang",
+          "count": 1
+        },
+        {
+          "name": "Masters",
+          "count": 1
+        },
+        {
+          "name": "Universe",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Nvidia",
+          "count": 10
+        },
+        {
+          "name": "China",
+          "count": 10
+        },
+        {
+          "name": "Chinese",
+          "count": 4
+        },
+        {
+          "name": "The",
+          "count": 3
+        },
+        {
+          "name": "Lucas",
+          "count": 2
+        }
+      ],
+      "entityCount": 39
+    },
+    "timestamp": "2025-08-20T19:20:24.178Z"
+  },
+  "analysis_article_1755717624228_8": {
+    "wordCount": 479,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "technology",
+      "health",
+      "economy",
+      "environment",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "TV Anchor Sues Boston CBS Affiliate, Claims White Employees Targeted by Corporate DEI Policies 1 Getty Images/simonkr Sean Moran 20 Aug 2025 A veteran television anchor for Boston, Massachusetts&#8217; CBS affiliate filed a lawsuit claiming she was demoted to fulfill corporate diversity quotas.  Kat...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "left",
+      "confidence": 1,
+      "explanation": "Detected more left-leaning indicators in language.",
+      "indicators": {
+        "left": 1,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Merrill",
+          "count": 10
+        },
+        {
+          "name": "Paramount",
+          "count": 4
+        },
+        {
+          "name": "Mikell",
+          "count": 4
+        },
+        {
+          "name": "Defendant",
+          "count": 4
+        },
+        {
+          "name": "Mikells",
+          "count": 4
+        },
+        {
+          "name": "Boston",
+          "count": 3
+        },
+        {
+          "name": "Merrills",
+          "count": 3
+        },
+        {
+          "name": "White",
+          "count": 2
+        },
+        {
+          "name": "The",
+          "count": 2
+        },
+        {
+          "name": "Fox",
+          "count": 2
+        },
+        {
+          "name": "News",
+          "count": 2
+        },
+        {
+          "name": "Based",
+          "count": 2
+        },
+        {
+          "name": "June",
+          "count": 2
+        },
+        {
+          "name": "Media",
+          "count": 2
+        },
+        {
+          "name": "Anchor",
+          "count": 1
+        },
+        {
+          "name": "Sues",
+          "count": 1
+        },
+        {
+          "name": "Affiliate",
+          "count": 1
+        },
+        {
+          "name": "Claims",
+          "count": 1
+        },
+        {
+          "name": "Employees",
+          "count": 1
+        },
+        {
+          "name": "Targeted",
+          "count": 1
+        },
+        {
+          "name": "Corporate",
+          "count": 1
+        },
+        {
+          "name": "Policies",
+          "count": 1
+        },
+        {
+          "name": "Getty",
+          "count": 1
+        },
+        {
+          "name": "Imagessimonkr",
+          "count": 1
+        },
+        {
+          "name": "Sean",
+          "count": 1
+        },
+        {
+          "name": "Moran",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Massachusetts",
+          "count": 1
+        },
+        {
+          "name": "Katherine",
+          "count": 1
+        },
+        {
+          "name": "Dunham",
+          "count": 1
+        },
+        {
+          "name": "Global",
+          "count": 1
+        },
+        {
+          "name": "Whitest",
+          "count": 1
+        },
+        {
+          "name": "Phils",
+          "count": 1
+        },
+        {
+          "name": "Diagnosis",
+          "count": 1
+        },
+        {
+          "name": "This",
+          "count": 1
+        },
+        {
+          "name": "Country",
+          "count": 1
+        },
+        {
+          "name": "Was",
+          "count": 1
+        },
+        {
+          "name": "Built",
+          "count": 1
+        },
+        {
+          "name": "Hard",
+          "count": 1
+        },
+        {
+          "name": "Work",
+          "count": 1
+        },
+        {
+          "name": "Not",
+          "count": 1
+        },
+        {
+          "name": "September",
+          "count": 1
+        },
+        {
+          "name": "Jason",
+          "count": 1
+        },
+        {
+          "name": "Zack",
+          "count": 1
+        },
+        {
+          "name": "Green",
+          "count": 1
+        },
+        {
+          "name": "February",
+          "count": 1
+        },
+        {
+          "name": "Specifically",
+          "count": 1
+        },
+        {
+          "name": "Digital",
+          "count": 1
+        },
+        {
+          "name": "However",
+          "count": 1
+        },
+        {
+          "name": "Should",
+          "count": 1
+        },
+        {
+          "name": "People",
+          "count": 1
+        },
+        {
+          "name": "Treated",
+          "count": 1
+        },
+        {
+          "name": "Differently",
+          "count": 1
+        },
+        {
+          "name": "Their",
+          "count": 1
+        },
+        {
+          "name": "Race",
+          "count": 1
+        },
+        {
+          "name": "Yes",
+          "count": 1
+        },
+        {
+          "name": "Because",
+          "count": 1
+        },
+        {
+          "name": "May",
+          "count": 1
+        },
+        {
+          "name": "She",
+          "count": 1
+        },
+        {
+          "name": "Skydance",
+          "count": 1
+        },
+        {
+          "name": "Politics",
+          "count": 1
+        },
+        {
+          "name": "Diversity",
+          "count": 1
+        },
+        {
+          "name": "Equity",
+          "count": 1
+        },
+        {
+          "name": "Inclusion",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Merrill",
+          "count": 10
+        },
+        {
+          "name": "Paramount",
+          "count": 4
+        },
+        {
+          "name": "Mikell",
+          "count": 4
+        },
+        {
+          "name": "Defendant",
+          "count": 4
+        },
+        {
+          "name": "Mikells",
+          "count": 4
+        }
+      ],
+      "entityCount": 64
+    },
+    "timestamp": "2025-08-20T19:20:24.228Z"
+  },
+  "analysis_article_1755717624232_9": {
+    "wordCount": 489,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "education"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": " Signs Bill Banning Funding for DEI in Higher Education 12 Gage Skidmore/Flickr Katherine Hamilton 20 Aug 2025 Oklahoma Gov.  Kevin Stitt (R) signed a bill on Tuesday ending funding for diversity, equity, and inclusion (DEI) in higher education.  While Stitt signed SB 796 in May, he ceremonially sig...",
+    "biasIndicators": {
+      "emotional": [
+        "wonderful"
+      ],
+      "sensationalist": [
+        "secret"
+      ]
+    },
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "left",
+      "confidence": 1,
+      "explanation": "Detected more left-leaning indicators in language.",
+      "indicators": {
+        "left": 1,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Education",
+          "count": 7
+        },
+        {
+          "name": "Oklahoma",
+          "count": 5
+        },
+        {
+          "name": "Stitt",
+          "count": 4
+        },
+        {
+          "name": "State",
+          "count": 4
+        },
+        {
+          "name": "Higher",
+          "count": 3
+        },
+        {
+          "name": "Linda",
+          "count": 3
+        },
+        {
+          "name": "Gov",
+          "count": 2
+        },
+        {
+          "name": "Bill",
+          "count": 2
+        },
+        {
+          "name": "Katherine",
+          "count": 2
+        },
+        {
+          "name": "Hamilton",
+          "count": 2
+        },
+        {
+          "name": "Kevin",
+          "count": 2
+        },
+        {
+          "name": "Secretary",
+          "count": 2
+        },
+        {
+          "name": "Returning",
+          "count": 2
+        },
+        {
+          "name": "States",
+          "count": 2
+        },
+        {
+          "name": "Tour",
+          "count": 2
+        },
+        {
+          "name": "Rep",
+          "count": 2
+        },
+        {
+          "name": "Crosswhite",
+          "count": 2
+        },
+        {
+          "name": "Hader",
+          "count": 2
+        },
+        {
+          "name": "Signs",
+          "count": 1
+        },
+        {
+          "name": "Banning",
+          "count": 1
+        },
+        {
+          "name": "Funding",
+          "count": 1
+        },
+        {
+          "name": "Gage",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Tuesday",
+          "count": 1
+        },
+        {
+          "name": "While",
+          "count": 1
+        },
+        {
+          "name": "May",
+          "count": 1
+        },
+        {
+          "name": "Dove",
+          "count": 1
+        },
+        {
+          "name": "Science",
+          "count": 1
+        },
+        {
+          "name": "Academy",
+          "count": 1
+        },
+        {
+          "name": "That",
+          "count": 1
+        },
+        {
+          "name": "Sooner",
+          "count": 1
+        },
+        {
+          "name": "Exclusive",
+          "count": 1
+        },
+        {
+          "name": "Sec",
+          "count": 1
+        },
+        {
+          "name": "Kick",
+          "count": 1
+        },
+        {
+          "name": "Off",
+          "count": 1
+        },
+        {
+          "name": "Stitts",
+          "count": 1
+        },
+        {
+          "name": "System",
+          "count": 1
+        },
+        {
+          "name": "The",
+          "count": 1
+        },
+        {
+          "name": "Toni",
+          "count": 1
+        },
+        {
+          "name": "Hasenbeck",
+          "count": 1
+        },
+        {
+          "name": "House",
+          "count": 1
+        },
+        {
+          "name": "Postsecondary",
+          "count": 1
+        },
+        {
+          "name": "Committee",
+          "count": 1
+        },
+        {
+          "name": "Oklahomas",
+          "count": 1
+        },
+        {
+          "name": "Hasenback",
+          "count": 1
+        },
+        {
+          "name": "Senate",
+          "count": 1
+        },
+        {
+          "name": "Denise",
+          "count": 1
+        },
+        {
+          "name": "Taken",
+          "count": 1
+        },
+        {
+          "name": "Our",
+          "count": 1
+        },
+        {
+          "name": "Sen",
+          "count": 1
+        },
+        {
+          "name": "Adam",
+          "count": 1
+        },
+        {
+          "name": "Pugh",
+          "count": 1
+        },
+        {
+          "name": "Breitbart",
+          "count": 1
+        },
+        {
+          "name": "News",
+          "count": 1
+        },
+        {
+          "name": "You",
+          "count": 1
+        },
+        {
+          "name": "Politics",
+          "count": 1
+        },
+        {
+          "name": "Diversity",
+          "count": 1
+        },
+        {
+          "name": "Equity",
+          "count": 1
+        },
+        {
+          "name": "Inclusion",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Education",
+          "count": 7
+        },
+        {
+          "name": "Oklahoma",
+          "count": 5
+        },
+        {
+          "name": "Stitt",
+          "count": 4
+        },
+        {
+          "name": "State",
+          "count": 4
+        },
+        {
+          "name": "Higher",
+          "count": 3
+        }
+      ],
+      "entityCount": 59
+    },
+    "timestamp": "2025-08-20T19:20:24.233Z"
+  },
+  "analysis_article_1755717624255_10": {
+    "wordCount": 125,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Comey Says Taylor Swift Inspires Him to Stand Up to Bullies Breitbart TV 19 Aug 2025 On Tuesday&#8217;s &#8220;Alex Marlow Show,&#8221; host and Breitbart Editor-in-Chief Alex Marlow discussed James Comey&#8217;s video post about Taylor Swift.  Marlow said, &#8220;Comey is sharing this with us for s...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Marlow",
+          "count": 6
+        },
+        {
+          "name": "Alex",
+          "count": 5
+        },
+        {
+          "name": "Breitbart",
+          "count": 4
+        },
+        {
+          "name": "Taylor",
+          "count": 3
+        },
+        {
+          "name": "Swift",
+          "count": 3
+        },
+        {
+          "name": "Show",
+          "count": 3
+        },
+        {
+          "name": "Comey",
+          "count": 2
+        },
+        {
+          "name": "The",
+          "count": 2
+        },
+        {
+          "name": "Says",
+          "count": 1
+        },
+        {
+          "name": "Inspires",
+          "count": 1
+        },
+        {
+          "name": "Him",
+          "count": 1
+        },
+        {
+          "name": "Stand",
+          "count": 1
+        },
+        {
+          "name": "Bullies",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Tuesdays",
+          "count": 1
+        },
+        {
+          "name": "James",
+          "count": 1
+        },
+        {
+          "name": "Comeys",
+          "count": 1
+        },
+        {
+          "name": "Does",
+          "count": 1
+        },
+        {
+          "name": "News",
+          "count": 1
+        },
+        {
+          "name": "Salem",
+          "count": 1
+        },
+        {
+          "name": "Podcast",
+          "count": 1
+        },
+        {
+          "name": "Network",
+          "count": 1
+        },
+        {
+          "name": "You",
+          "count": 1
+        },
+        {
+          "name": "Rumble",
+          "count": 1
+        },
+        {
+          "name": "Apple",
+          "count": 1
+        },
+        {
+          "name": "Podcasts",
+          "count": 1
+        },
+        {
+          "name": "Spotify",
+          "count": 1
+        },
+        {
+          "name": "Follow",
+          "count": 1
+        },
+        {
+          "name": "Breitbarttv",
+          "count": 1
+        },
+        {
+          "name": "Twitter",
+          "count": 1
+        },
+        {
+          "name": "Clips",
+          "count": 1
+        },
+        {
+          "name": "Politics",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Marlow",
+          "count": 6
+        },
+        {
+          "name": "Alex",
+          "count": 5
+        },
+        {
+          "name": "Breitbart",
+          "count": 4
+        },
+        {
+          "name": "Taylor",
+          "count": 3
+        },
+        {
+          "name": "Swift",
+          "count": 3
+        }
+      ],
+      "entityCount": 32
+    },
+    "timestamp": "2025-08-20T19:20:24.255Z"
+  },
+  "analysis_article_1755717624339_11": {
+    "wordCount": 368,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "economy",
+      "science",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Bed, Bath &#038; Beyond: &#8216;We Will Not Open Retail Stores in California&#8217; 12 David Zalubowski / Associated Press Joel B.  Pollak 20 Aug 2025 Marcus Lemonis, the CEO of Bed, Bath &amp; Beyond, announced on X on Wednesday that his company would no longer open stores in California because the...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Bed",
+          "count": 6
+        },
+        {
+          "name": "Bath",
+          "count": 6
+        },
+        {
+          "name": "Beyond",
+          "count": 6
+        },
+        {
+          "name": "California",
+          "count": 4
+        },
+        {
+          "name": "Lemonis",
+          "count": 3
+        },
+        {
+          "name": "The",
+          "count": 3
+        },
+        {
+          "name": "Retail",
+          "count": 2
+        },
+        {
+          "name": "Joel",
+          "count": 2
+        },
+        {
+          "name": "Pollak",
+          "count": 2
+        },
+        {
+          "name": "Breitbart",
+          "count": 2
+        },
+        {
+          "name": "News",
+          "count": 2
+        },
+        {
+          "name": "Sunday",
+          "count": 2
+        },
+        {
+          "name": "Will",
+          "count": 1
+        },
+        {
+          "name": "Not",
+          "count": 1
+        },
+        {
+          "name": "Open",
+          "count": 1
+        },
+        {
+          "name": "Stores",
+          "count": 1
+        },
+        {
+          "name": "David",
+          "count": 1
+        },
+        {
+          "name": "Zalubowski",
+          "count": 1
+        },
+        {
+          "name": "Associated",
+          "count": 1
+        },
+        {
+          "name": "Press",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Marcus",
+          "count": 1
+        },
+        {
+          "name": "Wednesday",
+          "count": 1
+        },
+        {
+          "name": "Earlier",
+          "count": 1
+        },
+        {
+          "name": "Monday",
+          "count": 1
+        },
+        {
+          "name": "Accelerating",
+          "count": 1
+        },
+        {
+          "name": "Americas",
+          "count": 1
+        },
+        {
+          "name": "Omnichannel",
+          "count": 1
+        },
+        {
+          "name": "Nashville",
+          "count": 1
+        },
+        {
+          "name": "Tennessee",
+          "count": 1
+        },
+        {
+          "name": "Over",
+          "count": 1
+        },
+        {
+          "name": "Kirklands",
+          "count": 1
+        },
+        {
+          "name": "Lemoniss",
+          "count": 1
+        },
+        {
+          "name": "Gov",
+          "count": 1
+        },
+        {
+          "name": "Gavin",
+          "count": 1
+        },
+        {
+          "name": "Newsom",
+          "count": 1
+        },
+        {
+          "name": "Senior",
+          "count": 1
+        },
+        {
+          "name": "Sirius",
+          "count": 1
+        },
+        {
+          "name": "Patriot",
+          "count": 1
+        },
+        {
+          "name": "Zionist",
+          "count": 1
+        },
+        {
+          "name": "Conspiracy",
+          "count": 1
+        },
+        {
+          "name": "Wants",
+          "count": 1
+        },
+        {
+          "name": "You",
+          "count": 1
+        },
+        {
+          "name": "Amazon",
+          "count": 1
+        },
+        {
+          "name": "Robert",
+          "count": 1
+        },
+        {
+          "name": "Novak",
+          "count": 1
+        },
+        {
+          "name": "Journalism",
+          "count": 1
+        },
+        {
+          "name": "Alumni",
+          "count": 1
+        },
+        {
+          "name": "Fellowship",
+          "count": 1
+        },
+        {
+          "name": "Follow",
+          "count": 1
+        },
+        {
+          "name": "Twitter",
+          "count": 1
+        },
+        {
+          "name": "Economy",
+          "count": 1
+        },
+        {
+          "name": "Politics",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Bed",
+          "count": 6
+        },
+        {
+          "name": "Bath",
+          "count": 6
+        },
+        {
+          "name": "Beyond",
+          "count": 6
+        },
+        {
+          "name": "California",
+          "count": 4
+        },
+        {
+          "name": "Lemonis",
+          "count": 3
+        }
+      ],
+      "entityCount": 53
+    },
+    "timestamp": "2025-08-20T19:20:24.339Z"
+  },
+  "analysis_article_1755717624376_12": {
+    "wordCount": 284,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "entertainment"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Police: Victim in Cincinnati Street Brawl Charged in Case 1 Kindel Media/Pexels Katherine Hamilton 20 Aug 2025 The victim of a violent street brawl in Cincinnati, Ohio, last month has been charged for his alleged role in the chaos, investigators said.  The unidentified 45-year-old white man is charg...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "The",
+          "count": 4
+        },
+        {
+          "name": "Police",
+          "count": 3
+        },
+        {
+          "name": "Cincinnati",
+          "count": 3
+        },
+        {
+          "name": "Wright",
+          "count": 3
+        },
+        {
+          "name": "Hamilton",
+          "count": 2
+        },
+        {
+          "name": "Aug",
+          "count": 2
+        },
+        {
+          "name": "Ohio",
+          "count": 2
+        },
+        {
+          "name": "Fox",
+          "count": 2
+        },
+        {
+          "name": "Victim",
+          "count": 1
+        },
+        {
+          "name": "Street",
+          "count": 1
+        },
+        {
+          "name": "Brawl",
+          "count": 1
+        },
+        {
+          "name": "Charged",
+          "count": 1
+        },
+        {
+          "name": "Case",
+          "count": 1
+        },
+        {
+          "name": "Kindel",
+          "count": 1
+        },
+        {
+          "name": "Katherine",
+          "count": 1
+        },
+        {
+          "name": "News",
+          "count": 1
+        },
+        {
+          "name": "Marsys",
+          "count": 1
+        },
+        {
+          "name": "Law",
+          "count": 1
+        },
+        {
+          "name": "July",
+          "count": 1
+        },
+        {
+          "name": "Footage",
+          "count": 1
+        },
+        {
+          "name": "Fourth",
+          "count": 1
+        },
+        {
+          "name": "Elm",
+          "count": 1
+        },
+        {
+          "name": "Gregory",
+          "count": 1
+        },
+        {
+          "name": "Six",
+          "count": 1
+        },
+        {
+          "name": "County",
+          "count": 1
+        },
+        {
+          "name": "Prosecutors",
+          "count": 1
+        },
+        {
+          "name": "Office",
+          "count": 1
+        },
+        {
+          "name": "Patrick",
+          "count": 1
+        },
+        {
+          "name": "Rosemond",
+          "count": 1
+        },
+        {
+          "name": "Jermaine",
+          "count": 1
+        },
+        {
+          "name": "Matthews",
+          "count": 1
+        },
+        {
+          "name": "Montianez",
+          "count": 1
+        },
+        {
+          "name": "Merriweather",
+          "count": 1
+        },
+        {
+          "name": "Vernon",
+          "count": 1
+        },
+        {
+          "name": "Dominique",
+          "count": 1
+        },
+        {
+          "name": "Kittle",
+          "count": 1
+        },
+        {
+          "name": "Aisha",
+          "count": 1
+        },
+        {
+          "name": "Devaughn",
+          "count": 1
+        },
+        {
+          "name": "Crime",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "The",
+          "count": 4
+        },
+        {
+          "name": "Police",
+          "count": 3
+        },
+        {
+          "name": "Cincinnati",
+          "count": 3
+        },
+        {
+          "name": "Wright",
+          "count": 3
+        },
+        {
+          "name": "Hamilton",
+          "count": 2
+        }
+      ],
+      "entityCount": 39
+    },
+    "timestamp": "2025-08-20T19:20:24.376Z"
+  },
+  "analysis_article_1755717624400_13": {
+    "wordCount": 438,
+    "readingTime": 3,
+    "hasExternalLinks": false,
     "complexity": "medium",
     "keyTopics": [
       "politics",
       "technology",
       "health",
-      "economy",
+      "science",
       "entertainment"
     ],
     "credibility": {
-      "score": 0.7,
-      "level": "high",
-      "reason": "Substantial content length; Contains external references"
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
     },
-    "summary": "For nine years, Karen Musick stood outside the Little Rock Family Planning Services clinic in Arkansas, protecting women arriving for their abortion appointments from anti-abortion protesters who regularly gathered there.  After retiring from her job as a loan specialist with the Small Business Admi...",
+    "summary": "Richard Gere Uses Debunked Hamas Death Stats to Attack Israel 1 Ashwini Bhatia / Associated Press Joel B.  Pollak 20 Aug 2025 Richard Gere, a Hollywood actor who starred in The Hoax , has attacked Israel for its war of self-defense in Gaza by citing false and debunked Hamas death statistics.  &#8220...",
     "biasIndicators": {
       "political": [
+        "left-wing"
+      ],
+      "opinionated": [
+        "clearly"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "AD_HOMINEM",
+        "confidence": 0.65,
+        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
+        "excerpt": "&#8221; If he wasn&#8217;t the prime minister, he&#8217;d be in jail for corruption",
+        "startIndex": 413,
+        "endIndex": 496
+      }
+    ],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Hamas",
+          "count": 7
+        },
+        {
+          "name": "Israel",
+          "count": 6
+        },
+        {
+          "name": "The",
+          "count": 6
+        },
+        {
+          "name": "Gere",
+          "count": 5
+        },
+        {
+          "name": "Gaza",
+          "count": 4
+        },
+        {
+          "name": "Richard",
+          "count": 3
+        },
+        {
+          "name": "Joel",
+          "count": 2
+        },
+        {
+          "name": "Pollak",
+          "count": 2
+        },
+        {
+          "name": "Geres",
+          "count": 2
+        },
+        {
+          "name": "Hamass",
+          "count": 2
+        },
+        {
+          "name": "Government",
+          "count": 2
+        },
+        {
+          "name": "Media",
+          "count": 2
+        },
+        {
+          "name": "Office",
+          "count": 2
+        },
+        {
+          "name": "Ministry",
+          "count": 2
+        },
+        {
+          "name": "Chinese",
+          "count": 2
+        },
+        {
+          "name": "Breitbart",
+          "count": 2
+        },
+        {
+          "name": "News",
+          "count": 2
+        },
+        {
+          "name": "Sunday",
+          "count": 2
+        },
+        {
+          "name": "Uses",
+          "count": 1
+        },
+        {
+          "name": "Debunked",
+          "count": 1
+        },
+        {
+          "name": "Death",
+          "count": 1
+        },
+        {
+          "name": "Stats",
+          "count": 1
+        },
+        {
+          "name": "Attack",
+          "count": 1
+        },
+        {
+          "name": "Ashwini",
+          "count": 1
+        },
+        {
+          "name": "Bhatia",
+          "count": 1
+        },
+        {
+          "name": "Associated",
+          "count": 1
+        },
+        {
+          "name": "Press",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Hollywood",
+          "count": 1
+        },
+        {
+          "name": "Hoax",
+          "count": 1
+        },
+        {
+          "name": "Netanyahus",
+          "count": 1
+        },
+        {
+          "name": "There",
+          "count": 1
+        },
+        {
+          "name": "Innocent",
+          "count": 1
+        },
+        {
+          "name": "Celebrities",
+          "count": 1
+        },
+        {
+          "name": "Palestine",
+          "count": 1
+        },
+        {
+          "name": "They",
+          "count": 1
+        },
+        {
+          "name": "Times",
+          "count": 1
+        },
+        {
+          "name": "May",
+          "count": 1
+        },
+        {
+          "name": "Israels",
+          "count": 1
+        },
+        {
+          "name": "October",
+          "count": 1
+        },
+        {
+          "name": "Health",
+          "count": 1
+        },
+        {
+          "name": "Gazan",
+          "count": 1
+        },
+        {
+          "name": "Heath",
+          "count": 1
+        },
+        {
+          "name": "Tibet",
+          "count": 1
+        },
+        {
+          "name": "Communist",
+          "count": 1
+        },
+        {
+          "name": "Party",
+          "count": 1
+        },
+        {
+          "name": "Senior",
+          "count": 1
+        },
+        {
+          "name": "Sirius",
+          "count": 1
+        },
+        {
+          "name": "Patriot",
+          "count": 1
+        },
+        {
+          "name": "Zionist",
+          "count": 1
+        },
+        {
+          "name": "Conspiracy",
+          "count": 1
+        },
+        {
+          "name": "Wants",
+          "count": 1
+        },
+        {
+          "name": "You",
+          "count": 1
+        },
+        {
+          "name": "Amazon",
+          "count": 1
+        },
+        {
+          "name": "Robert",
+          "count": 1
+        },
+        {
+          "name": "Novak",
+          "count": 1
+        },
+        {
+          "name": "Journalism",
+          "count": 1
+        },
+        {
+          "name": "Alumni",
+          "count": 1
+        },
+        {
+          "name": "Fellowship",
+          "count": 1
+        },
+        {
+          "name": "Follow",
+          "count": 1
+        },
+        {
+          "name": "Twitter",
+          "count": 1
+        },
+        {
+          "name": "Entertainment",
+          "count": 1
+        },
+        {
+          "name": "Middle",
+          "count": 1
+        },
+        {
+          "name": "East",
+          "count": 1
+        },
+        {
+          "name": "National",
+          "count": 1
+        },
+        {
+          "name": "Security",
+          "count": 1
+        },
+        {
+          "name": "China",
+          "count": 1
+        },
+        {
+          "name": "Palestinians",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Hamas",
+          "count": 7
+        },
+        {
+          "name": "Israel",
+          "count": 6
+        },
+        {
+          "name": "The",
+          "count": 6
+        },
+        {
+          "name": "Gere",
+          "count": 5
+        },
+        {
+          "name": "Gaza",
+          "count": 4
+        }
+      ],
+      "entityCount": 68
+    },
+    "timestamp": "2025-08-20T19:20:24.400Z"
+  },
+  "analysis_article_1755717624449_14": {
+    "wordCount": 428,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "&#8216;You Have to Give Credit Where Credit Is Due&#8217;: Stephen A.  Smith Applauds Trump Peace Efforts Watch the latest video at foxnews. com Jeff Poor 20 Aug 2025 Tuesday on FNC&#8217;s &#8220;Hannity,&#8221; ESPN commentator Stephen A.",
+    "biasIndicators": {
+      "opinionated": [
+        "obviously"
+      ]
+    },
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Smith",
+          "count": 6
+        },
+        {
+          "name": "Trump",
+          "count": 6
+        },
+        {
+          "name": "Stephen",
+          "count": 4
+        },
+        {
+          "name": "Hannity",
+          "count": 4
+        },
+        {
+          "name": "Donald",
+          "count": 4
+        },
+        {
+          "name": "You",
+          "count": 3
+        },
+        {
+          "name": "But",
+          "count": 3
+        },
+        {
+          "name": "Ive",
+          "count": 3
+        },
+        {
+          "name": "Credit",
+          "count": 2
+        },
+        {
+          "name": "Jeff",
+          "count": 2
+        },
+        {
+          "name": "Poor",
+          "count": 2
+        },
+        {
+          "name": "Sean",
+          "count": 2
+        },
+        {
+          "name": "And",
+          "count": 2
+        },
+        {
+          "name": "Have",
+          "count": 1
+        },
+        {
+          "name": "Give",
+          "count": 1
+        },
+        {
+          "name": "Where",
+          "count": 1
+        },
+        {
+          "name": "Due",
+          "count": 1
+        },
+        {
+          "name": "Applauds",
+          "count": 1
+        },
+        {
+          "name": "Peace",
+          "count": 1
+        },
+        {
+          "name": "Efforts",
+          "count": 1
+        },
+        {
+          "name": "Watch",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Tuesday",
+          "count": 1
+        },
+        {
+          "name": "President",
+          "count": 1
+        },
+        {
+          "name": "Egypt",
+          "count": 1
+        },
+        {
+          "name": "Ethiopia",
+          "count": 1
+        },
+        {
+          "name": "Iran",
+          "count": 1
+        },
+        {
+          "name": "Israel",
+          "count": 1
+        },
+        {
+          "name": "Rwanda",
+          "count": 1
+        },
+        {
+          "name": "Congo",
+          "count": 1
+        },
+        {
+          "name": "India",
+          "count": 1
+        },
+        {
+          "name": "Pakistan",
+          "count": 1
+        },
+        {
+          "name": "Theres",
+          "count": 1
+        },
+        {
+          "name": "Ill",
+          "count": 1
+        },
+        {
+          "name": "What",
+          "count": 1
+        },
+        {
+          "name": "Again",
+          "count": 1
+        },
+        {
+          "name": "Yet",
+          "count": 1
+        },
+        {
+          "name": "Follow",
+          "count": 1
+        },
+        {
+          "name": "Clips",
+          "count": 1
+        },
+        {
+          "name": "Politics",
+          "count": 1
+        },
+        {
+          "name": "Fox",
+          "count": 1
+        },
+        {
+          "name": "News",
+          "count": 1
+        },
+        {
+          "name": "Channel",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Smith",
+          "count": 6
+        },
+        {
+          "name": "Trump",
+          "count": 6
+        },
+        {
+          "name": "Stephen",
+          "count": 4
+        },
+        {
+          "name": "Hannity",
+          "count": 4
+        },
+        {
+          "name": "Donald",
+          "count": 4
+        }
+      ],
+      "entityCount": 43
+    },
+    "timestamp": "2025-08-20T19:20:24.450Z"
+  },
+  "analysis_article_1755717624472_15": {
+    "wordCount": 589,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "President Trump to Mark Levin: &#8216;I Love Stopping the Wars&#8217; 17 Alex Brandon / Associated Press Joel B.  Pollak 19 Aug 2025 President Donald Trump told conservative radio host Mark Levin on Tuesday that he was optimistic about solving the war between Russia and Ukraine &#8212; the latest in...",
+    "biasIndicators": {
+      "political": [
+        "conservative"
+      ]
+    },
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Trump",
+          "count": 10
+        },
+        {
+          "name": "President",
+          "count": 4
+        },
+        {
+          "name": "Levin",
+          "count": 4
+        },
+        {
+          "name": "Russia",
+          "count": 4
+        },
+        {
+          "name": "Ukraine",
+          "count": 4
+        },
+        {
+          "name": "Mark",
+          "count": 3
+        },
+        {
+          "name": "Putin",
+          "count": 3
+        },
+        {
+          "name": "Joel",
+          "count": 2
+        },
+        {
+          "name": "Pollak",
+          "count": 2
+        },
+        {
+          "name": "Donald",
+          "count": 2
+        },
+        {
+          "name": "Russian",
+          "count": 2
+        },
+        {
+          "name": "Zelensky",
+          "count": 2
+        },
+        {
+          "name": "Hamas",
+          "count": 2
+        },
+        {
+          "name": "Ive",
+          "count": 2
+        },
+        {
+          "name": "Breitbart",
+          "count": 2
+        },
+        {
+          "name": "News",
+          "count": 2
+        },
+        {
+          "name": "Sunday",
+          "count": 2
+        },
+        {
+          "name": "Love",
+          "count": 1
+        },
+        {
+          "name": "Stopping",
+          "count": 1
+        },
+        {
+          "name": "Wars",
+          "count": 1
+        },
+        {
+          "name": "Alex",
+          "count": 1
+        },
+        {
+          "name": "Brandon",
+          "count": 1
+        },
+        {
+          "name": "Associated",
+          "count": 1
+        },
+        {
+          "name": "Press",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Tuesday",
+          "count": 1
+        },
+        {
+          "name": "Earlier",
+          "count": 1
+        },
+        {
+          "name": "Armenia",
+          "count": 1
+        },
+        {
+          "name": "Azerbaijan",
+          "count": 1
+        },
+        {
+          "name": "Thailand",
+          "count": 1
+        },
+        {
+          "name": "Cambodia",
+          "count": 1
+        },
+        {
+          "name": "Solving",
+          "count": 1
+        },
+        {
+          "name": "But",
+          "count": 1
+        },
+        {
+          "name": "Vladimir",
+          "count": 1
+        },
+        {
+          "name": "Alaska",
+          "count": 1
+        },
+        {
+          "name": "Ukrainian",
+          "count": 1
+        },
+        {
+          "name": "Volodymyr",
+          "count": 1
+        },
+        {
+          "name": "European",
+          "count": 1
+        },
+        {
+          "name": "Monday",
+          "count": 1
+        },
+        {
+          "name": "Were",
+          "count": 1
+        },
+        {
+          "name": "Obama",
+          "count": 1
+        },
+        {
+          "name": "Crimea",
+          "count": 1
+        },
+        {
+          "name": "That",
+          "count": 1
+        },
+        {
+          "name": "Israels",
+          "count": 1
+        },
+        {
+          "name": "Benjamin",
+          "count": 1
+        },
+        {
+          "name": "Netanyahu",
+          "count": 1
+        },
+        {
+          "name": "Israeli",
+          "count": 1
+        },
+        {
+          "name": "American",
+          "count": 1
+        },
+        {
+          "name": "Irans",
+          "count": 1
+        },
+        {
+          "name": "Israel",
+          "count": 1
+        },
+        {
+          "name": "Ultimately",
+          "count": 1
+        },
+        {
+          "name": "This",
+          "count": 1
+        },
+        {
+          "name": "Oval",
+          "count": 1
+        },
+        {
+          "name": "Office",
+          "count": 1
+        },
+        {
+          "name": "Thats",
+          "count": 1
+        },
+        {
+          "name": "Senior",
+          "count": 1
+        },
+        {
+          "name": "Sirius",
+          "count": 1
+        },
+        {
+          "name": "Patriot",
+          "count": 1
+        },
+        {
+          "name": "The",
+          "count": 1
+        },
+        {
+          "name": "Zionist",
+          "count": 1
+        },
+        {
+          "name": "Conspiracy",
+          "count": 1
+        },
+        {
+          "name": "Wants",
+          "count": 1
+        },
+        {
+          "name": "You",
+          "count": 1
+        },
+        {
+          "name": "Amazon",
+          "count": 1
+        },
+        {
+          "name": "Robert",
+          "count": 1
+        },
+        {
+          "name": "Novak",
+          "count": 1
+        },
+        {
+          "name": "Journalism",
+          "count": 1
+        },
+        {
+          "name": "Alumni",
+          "count": 1
+        },
+        {
+          "name": "Fellowship",
+          "count": 1
+        },
+        {
+          "name": "Follow",
+          "count": 1
+        },
+        {
+          "name": "Twitter",
+          "count": 1
+        },
+        {
+          "name": "London",
+          "count": 1
+        },
+        {
+          "name": "Europe",
+          "count": 1
+        },
+        {
+          "name": "National",
+          "count": 1
+        },
+        {
+          "name": "Security",
+          "count": 1
+        },
+        {
+          "name": "Politics",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Trump",
+          "count": 10
+        },
+        {
+          "name": "President",
+          "count": 4
+        },
+        {
+          "name": "Levin",
+          "count": 4
+        },
+        {
+          "name": "Russia",
+          "count": 4
+        },
+        {
+          "name": "Ukraine",
+          "count": 4
+        }
+      ],
+      "entityCount": 76
+    },
+    "timestamp": "2025-08-20T19:20:24.473Z"
+  },
+  "analysis_article_1755717624522_16": {
+    "wordCount": 398,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "DNC Chair: Shut Down Government over Guard in D. , Dems Shouldn&#8217;t Play by Rules Anymore 147 Video Source: MSNBC Ian Hanchett 19 Aug 2025 On Tuesday&#8217;s broadcast of MSNBC&#8217;s &#8220;The Weeknight,&#8221; DNC Chair Ken Martin argued that Democrats should shut the government down over th...",
+    "biasIndicators": {
+      "political": [
+        "democrat",
         "republican"
       ]
     },
@@ -28,162 +2896,170 @@
       "confidence": 0.5,
       "explanation": "No strong directional bias detected.",
       "indicators": {
-        "left": 1,
-        "right": 1
+        "left": 0,
+        "right": 0
       }
     },
     "network": {
       "entities": [
         {
-          "name": "Musick",
-          "count": 8
+          "name": "Guard",
+          "count": 4
         },
         {
-          "name": "Arkansas",
-          "count": 8
+          "name": "National",
+          "count": 4
+        },
+        {
+          "name": "Republicans",
+          "count": 3
+        },
+        {
+          "name": "Yes",
+          "count": 3
+        },
+        {
+          "name": "Chair",
+          "count": 2
+        },
+        {
+          "name": "Ian",
+          "count": 2
+        },
+        {
+          "name": "Hanchett",
+          "count": 2
         },
         {
           "name": "The",
-          "count": 5
-        },
-        {
-          "name": "Little",
-          "count": 4
-        },
-        {
-          "name": "Rock",
-          "count": 4
-        },
-        {
-          "name": "Abortion",
-          "count": 4
-        },
-        {
-          "name": "They",
-          "count": 4
-        },
-        {
-          "name": "Support",
-          "count": 3
-        },
-        {
-          "name": "Center",
-          "count": 3
-        },
-        {
-          "name": "Beeley",
-          "count": 3
-        },
-        {
-          "name": "Network",
           "count": 2
         },
         {
-          "name": "Everybody",
+          "name": "Martin",
           "count": 2
         },
         {
-          "name": "Roe",
+          "name": "Democrats",
           "count": 2
         },
         {
-          "name": "Rampe",
+          "name": "Washington",
           "count": 2
         },
         {
-          "name": "Thomas",
+          "name": "White",
           "count": 2
         },
         {
-          "name": "Ohio",
+          "name": "House",
           "count": 2
         },
         {
-          "name": "Romanos",
+          "name": "That",
           "count": 2
         },
         {
-          "name": "Karen",
-          "count": 1
+          "name": "Weve",
+          "count": 2
         },
         {
-          "name": "Family",
-          "count": 1
+          "name": "Laura",
+          "count": 2
         },
         {
-          "name": "Planning",
-          "count": 1
+          "name": "Democratic",
+          "count": 2
         },
         {
-          "name": "Services",
-          "count": 1
-        },
-        {
-          "name": "After",
-          "count": 1
-        },
-        {
-          "name": "Small",
-          "count": 1
-        },
-        {
-          "name": "Business",
-          "count": 1
-        },
-        {
-          "name": "Administration",
-          "count": 1
-        },
-        {
-          "name": "Saturday",
-          "count": 1
-        },
-        {
-          "name": "God",
-          "count": 1
-        },
-        {
-          "name": "Wade",
-          "count": 1
+          "name": "And",
+          "count": 2
         },
         {
           "name": "But",
+          "count": 2
+        },
+        {
+          "name": "Shut",
           "count": 1
         },
         {
-          "name": "She",
+          "name": "Down",
           "count": 1
         },
         {
-          "name": "From",
+          "name": "Government",
           "count": 1
         },
         {
-          "name": "Centernbspp",
+          "name": "Dems",
           "count": 1
         },
         {
-          "name": "Wadeem",
+          "name": "Shouldnt",
           "count": 1
         },
         {
-          "name": "Forest",
+          "name": "Play",
           "count": 1
         },
         {
-          "name": "Indiana",
+          "name": "Rules",
           "count": 1
         },
         {
-          "name": "Pregnant",
+          "name": "Anymore",
           "count": 1
         },
         {
-          "name": "Since",
+          "name": "Video",
           "count": 1
         },
         {
-          "name": "Staff",
+          "name": "Source",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Tuesdays",
+          "count": 1
+        },
+        {
+          "name": "Weeknight",
+          "count": 1
+        },
+        {
+          "name": "Ken",
+          "count": 1
+        },
+        {
+          "name": "Cohost",
+          "count": 1
+        },
+        {
+          "name": "Justice",
+          "count": 1
+        },
+        {
+          "name": "Department",
+          "count": 1
+        },
+        {
+          "name": "Thats",
+          "count": 1
+        },
+        {
+          "name": "Party",
+          "count": 1
+        },
+        {
+          "name": "Donald",
+          "count": 1
+        },
+        {
+          "name": "Trump",
           "count": 1
         },
         {
@@ -191,82 +3067,925 @@
           "count": 1
         },
         {
-          "name": "Then",
+          "name": "Congress",
           "count": 1
         },
         {
-          "name": "Hoosier",
+          "name": "Ive",
           "count": 1
         },
         {
-          "name": "Fund",
+          "name": "Follow",
           "count": 1
         },
         {
-          "name": "Confident",
+          "name": "Twitter",
           "count": 1
         },
         {
-          "name": "Networkp",
+          "name": "Clips",
           "count": 1
         },
         {
-          "name": "Weve",
+          "name": "Crime",
           "count": 1
         },
         {
-          "name": "Columbus",
+          "name": "Politics",
           "count": 1
         },
         {
-          "name": "November",
-          "count": 1
-        },
-        {
-          "name": "Nonetheless",
-          "count": 1
-        },
-        {
-          "name": "Republican",
-          "count": 1
-        },
-        {
-          "name": "Catherine",
-          "count": 1
-        },
-        {
-          "name": "All",
-          "count": 1
-        },
-        {
-          "name": "Wed",
+          "name": "Committee",
           "count": 1
         }
       ],
       "topEntities": [
         {
-          "name": "Musick",
-          "count": 8
+          "name": "Guard",
+          "count": 4
         },
         {
-          "name": "Arkansas",
-          "count": 8
+          "name": "National",
+          "count": 4
         },
         {
-          "name": "The",
+          "name": "Republicans",
+          "count": 3
+        },
+        {
+          "name": "Yes",
+          "count": 3
+        },
+        {
+          "name": "Chair",
+          "count": 2
+        }
+      ],
+      "entityCount": 49
+    },
+    "timestamp": "2025-08-20T19:20:24.522Z"
+  },
+  "analysis_article_1755717624597_17": {
+    "wordCount": 529,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Adam Schiff, Facing Criminal Investigation, Forms Legal Defense Fund 168 Jose Luis Magana / Associated Press, File Joel B.  Pollak 20 Aug 2025 Sen.  Adam Schiff (D-CA), who abused his positions on the House Intelligence Committee and the January 6 Committee to pursue political foes, has formed a leg...",
+    "biasIndicators": {
+      "sensationalist": [
+        "revealed",
+        "secret"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "AD_HOMINEM",
+        "confidence": 0.65,
+        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
+        "excerpt": "“It’s clear that Donald Trump and his MAGA allies will continue weaponizing the justice process to attack Senator Schiff for holding this corrupt administration accountable,” said Marisol Samayoa, a spokeswoman for Mr",
+        "startIndex": 812,
+        "endIndex": 1029
+      }
+    ],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Schiff",
+          "count": 14
+        },
+        {
+          "name": "House",
+          "count": 7
+        },
+        {
+          "name": "Committee",
+          "count": 6
+        },
+        {
+          "name": "Trump",
           "count": 5
         },
         {
-          "name": "Little",
+          "name": "The",
           "count": 4
         },
         {
-          "name": "Rock",
+          "name": "Adam",
+          "count": 3
+        },
+        {
+          "name": "Intelligence",
+          "count": 3
+        },
+        {
+          "name": "Legal",
+          "count": 2
+        },
+        {
+          "name": "Defense",
+          "count": 2
+        },
+        {
+          "name": "Fund",
+          "count": 2
+        },
+        {
+          "name": "Joel",
+          "count": 2
+        },
+        {
+          "name": "Pollak",
+          "count": 2
+        },
+        {
+          "name": "Aug",
+          "count": 2
+        },
+        {
+          "name": "January",
+          "count": 2
+        },
+        {
+          "name": "Trumps",
+          "count": 2
+        },
+        {
+          "name": "Senator",
+          "count": 2
+        },
+        {
+          "name": "Donald",
+          "count": 2
+        },
+        {
+          "name": "Russia",
+          "count": 2
+        },
+        {
+          "name": "Nunes",
+          "count": 2
+        },
+        {
+          "name": "Patel",
+          "count": 2
+        },
+        {
+          "name": "Breitbart",
+          "count": 2
+        },
+        {
+          "name": "News",
+          "count": 2
+        },
+        {
+          "name": "Sunday",
+          "count": 2
+        },
+        {
+          "name": "Facing",
+          "count": 1
+        },
+        {
+          "name": "Criminal",
+          "count": 1
+        },
+        {
+          "name": "Investigation",
+          "count": 1
+        },
+        {
+          "name": "Forms",
+          "count": 1
+        },
+        {
+          "name": "Jose",
+          "count": 1
+        },
+        {
+          "name": "Luis",
+          "count": 1
+        },
+        {
+          "name": "Magana",
+          "count": 1
+        },
+        {
+          "name": "Associated",
+          "count": 1
+        },
+        {
+          "name": "Press",
+          "count": 1
+        },
+        {
+          "name": "File",
+          "count": 1
+        },
+        {
+          "name": "Sen",
+          "count": 1
+        },
+        {
+          "name": "New",
+          "count": 1
+        },
+        {
+          "name": "York",
+          "count": 1
+        },
+        {
+          "name": "Times",
+          "count": 1
+        },
+        {
+          "name": "Tuesday",
+          "count": 1
+        },
+        {
+          "name": "White",
+          "count": 1
+        },
+        {
+          "name": "Jan",
+          "count": 1
+        },
+        {
+          "name": "Capitol",
+          "count": 1
+        },
+        {
+          "name": "Paperwork",
+          "count": 1
+        },
+        {
+          "name": "Internal",
+          "count": 1
+        },
+        {
+          "name": "Revenue",
+          "count": 1
+        },
+        {
+          "name": "Service",
+          "count": 1
+        },
+        {
+          "name": "Its",
+          "count": 1
+        },
+        {
+          "name": "Marisol",
+          "count": 1
+        },
+        {
+          "name": "Samayoa",
+          "count": 1
+        },
+        {
+          "name": "This",
+          "count": 1
+        },
+        {
+          "name": "Rep",
+          "count": 1
+        },
+        {
+          "name": "Devin",
+          "count": 1
+        },
+        {
+          "name": "Kash",
+          "count": 1
+        },
+        {
+          "name": "When",
+          "count": 1
+        },
+        {
+          "name": "Impeachment",
+          "count": 1
+        },
+        {
+          "name": "Report",
+          "count": 1
+        },
+        {
+          "name": "Judiciary",
+          "count": 1
+        },
+        {
+          "name": "After",
+          "count": 1
+        },
+        {
+          "name": "Senate",
+          "count": 1
+        },
+        {
+          "name": "Nancy",
+          "count": 1
+        },
+        {
+          "name": "Pelosi",
+          "count": 1
+        },
+        {
+          "name": "Senior",
+          "count": 1
+        },
+        {
+          "name": "Sirius",
+          "count": 1
+        },
+        {
+          "name": "Patriot",
+          "count": 1
+        },
+        {
+          "name": "Zionist",
+          "count": 1
+        },
+        {
+          "name": "Conspiracy",
+          "count": 1
+        },
+        {
+          "name": "Wants",
+          "count": 1
+        },
+        {
+          "name": "You",
+          "count": 1
+        },
+        {
+          "name": "Amazon",
+          "count": 1
+        },
+        {
+          "name": "Robert",
+          "count": 1
+        },
+        {
+          "name": "Novak",
+          "count": 1
+        },
+        {
+          "name": "Journalism",
+          "count": 1
+        },
+        {
+          "name": "Alumni",
+          "count": 1
+        },
+        {
+          "name": "Fellowship",
+          "count": 1
+        },
+        {
+          "name": "Follow",
+          "count": 1
+        },
+        {
+          "name": "Twitter",
+          "count": 1
+        },
+        {
+          "name": "Crime",
+          "count": 1
+        },
+        {
+          "name": "Politics",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Schiff",
+          "count": 14
+        },
+        {
+          "name": "House",
+          "count": 7
+        },
+        {
+          "name": "Committee",
+          "count": 6
+        },
+        {
+          "name": "Trump",
+          "count": 5
+        },
+        {
+          "name": "The",
           "count": 4
         }
       ],
-      "entityCount": 52
+      "entityCount": 77
     },
-    "timestamp": "2025-08-20T19:06:12.822Z"
+    "timestamp": "2025-08-20T19:20:24.598Z"
+  },
+  "analysis_article_1755717624601_18": {
+    "wordCount": 360,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "education"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Trump Predicts &#8216;Loser&#8217; MSNBC Host Nicolle Wallace Will Be Fired Following On-Air Rant 438 Dia Dipasupil/Getty Images Alana Mastrangelo 19 Aug 2025 President Donald Trump is predicting that &#8220;loser&#8221; MSNBC host Nicolle Wallace will be fired from her job following her on-air rant...",
+    "biasIndicators": {
+      "political": [
+        "democrat"
+      ]
+    },
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Wallace",
+          "count": 6
+        },
+        {
+          "name": "Trump",
+          "count": 5
+        },
+        {
+          "name": "President",
+          "count": 4
+        },
+        {
+          "name": "Putin",
+          "count": 3
+        },
+        {
+          "name": "Its",
+          "count": 3
+        },
+        {
+          "name": "Russia",
+          "count": 3
+        },
+        {
+          "name": "Nicolle",
+          "count": 2
+        },
+        {
+          "name": "Alana",
+          "count": 2
+        },
+        {
+          "name": "Mastrangelo",
+          "count": 2
+        },
+        {
+          "name": "Friday",
+          "count": 2
+        },
+        {
+          "name": "She",
+          "count": 2
+        },
+        {
+          "name": "The",
+          "count": 2
+        },
+        {
+          "name": "Sunday",
+          "count": 2
+        },
+        {
+          "name": "Truth",
+          "count": 2
+        },
+        {
+          "name": "Social",
+          "count": 2
+        },
+        {
+          "name": "Anchorage",
+          "count": 2
+        },
+        {
+          "name": "Ukraine",
+          "count": 2
+        },
+        {
+          "name": "American",
+          "count": 2
+        },
+        {
+          "name": "Breitbart",
+          "count": 2
+        },
+        {
+          "name": "News",
+          "count": 2
+        },
+        {
+          "name": "Predicts",
+          "count": 1
+        },
+        {
+          "name": "Loser",
+          "count": 1
+        },
+        {
+          "name": "Host",
+          "count": 1
+        },
+        {
+          "name": "Will",
+          "count": 1
+        },
+        {
+          "name": "Fired",
+          "count": 1
+        },
+        {
+          "name": "Following",
+          "count": 1
+        },
+        {
+          "name": "Rant",
+          "count": 1
+        },
+        {
+          "name": "Dia",
+          "count": 1
+        },
+        {
+          "name": "Images",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Donald",
+          "count": 1
+        },
+        {
+          "name": "Russian",
+          "count": 1
+        },
+        {
+          "name": "Vladimir",
+          "count": 1
+        },
+        {
+          "name": "View",
+          "count": 1
+        },
+        {
+          "name": "Typhoid",
+          "count": 1
+        },
+        {
+          "name": "Mary",
+          "count": 1
+        },
+        {
+          "name": "Disinformation",
+          "count": 1
+        },
+        {
+          "name": "Alaska",
+          "count": 1
+        },
+        {
+          "name": "Deadline",
+          "count": 1
+        },
+        {
+          "name": "White",
+          "count": 1
+        },
+        {
+          "name": "House",
+          "count": 1
+        },
+        {
+          "name": "Watch",
+          "count": 1
+        },
+        {
+          "name": "Below",
+          "count": 1
+        },
+        {
+          "name": "And",
+          "count": 1
+        },
+        {
+          "name": "Air",
+          "count": 1
+        },
+        {
+          "name": "Force",
+          "count": 1
+        },
+        {
+          "name": "Spirit",
+          "count": 1
+        },
+        {
+          "name": "You",
+          "count": 1
+        },
+        {
+          "name": "Facebook",
+          "count": 1
+        },
+        {
+          "name": "Instagram",
+          "count": 1
+        },
+        {
+          "name": "Media",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Wallace",
+          "count": 6
+        },
+        {
+          "name": "Trump",
+          "count": 5
+        },
+        {
+          "name": "President",
+          "count": 4
+        },
+        {
+          "name": "Putin",
+          "count": 3
+        },
+        {
+          "name": "Its",
+          "count": 3
+        }
+      ],
+      "entityCount": 51
+    },
+    "timestamp": "2025-08-20T19:20:24.601Z"
+  },
+  "analysis_article_1755717624652_19": {
+    "wordCount": 340,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "easy",
+    "keyTopics": [
+      "technology",
+      "entertainment",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Pop Star Kesha Comes Out as ‘Omnisexual’ 1,325 Gotham/GC Images Simon Kent 20 Aug 2025 We live in troubled times.  The world is beset by turmoil, wars, and rumors of wars, but if you were worrying about just what sexuality pop star Kesha embraces amidst that panopoly of woes, rest easy.  The singer ...",
+    "biasIndicators": {},
+    "logicalFallacies": [
+      {
+        "type": "AD_HOMINEM",
+        "confidence": 0.65,
+        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
+        "excerpt": "The singer is now identifying herself as &#8220;omnisexual.&#8221; On dating app Feeld, &#8220;BOY CRAZY&#8221; hitmaker Kesha calls her sexuality “omnisexual” as well as noting her interest in “being dominant” and “kink,” all while offering to send &#8220;feet pics.&#8221; Yes, really",
+        "startIndex": 287,
+        "endIndex": 573
+      }
+    ],
+    "bias": {
+      "direction": "left",
+      "confidence": 1,
+      "explanation": "Detected more left-leaning indicators in language.",
+      "indicators": {
+        "left": 1,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Kesha",
+          "count": 6
+        },
+        {
+          "name": "Pride",
+          "count": 3
+        },
+        {
+          "name": "Simon",
+          "count": 2
+        },
+        {
+          "name": "Kent",
+          "count": 2
+        },
+        {
+          "name": "The",
+          "count": 2
+        },
+        {
+          "name": "Feeld",
+          "count": 2
+        },
+        {
+          "name": "Follow",
+          "count": 2
+        },
+        {
+          "name": "Pop",
+          "count": 1
+        },
+        {
+          "name": "Star",
+          "count": 1
+        },
+        {
+          "name": "Comes",
+          "count": 1
+        },
+        {
+          "name": "Out",
+          "count": 1
+        },
+        {
+          "name": "Omnisexual",
+          "count": 1
+        },
+        {
+          "name": "Images",
+          "count": 1
+        },
+        {
+          "name": "Aug",
+          "count": 1
+        },
+        {
+          "name": "Yes",
+          "count": 1
+        },
+        {
+          "name": "This",
+          "count": 1
+        },
+        {
+          "name": "Breitbart",
+          "count": 1
+        },
+        {
+          "name": "News",
+          "count": 1
+        },
+        {
+          "name": "Month",
+          "count": 1
+        },
+        {
+          "name": "Addressing",
+          "count": 1
+        },
+        {
+          "name": "Instagram",
+          "count": 1
+        },
+        {
+          "name": "Who",
+          "count": 1
+        },
+        {
+          "name": "Happy",
+          "count": 1
+        },
+        {
+          "name": "Day",
+          "count": 1
+        },
+        {
+          "name": "Then",
+          "count": 1
+        },
+        {
+          "name": "Music",
+          "count": 1
+        },
+        {
+          "name": "Festival",
+          "count": 1
+        },
+        {
+          "name": "May",
+          "count": 1
+        },
+        {
+          "name": "West",
+          "count": 1
+        },
+        {
+          "name": "Hollywood",
+          "count": 1
+        },
+        {
+          "name": "California",
+          "count": 1
+        },
+        {
+          "name": "Amy",
+          "count": 1
+        },
+        {
+          "name": "How",
+          "count": 1
+        },
+        {
+          "name": "Love",
+          "count": 1
+        },
+        {
+          "name": "And",
+          "count": 1
+        },
+        {
+          "name": "Twitter",
+          "count": 1
+        },
+        {
+          "name": "Entertainment",
+          "count": 1
+        },
+        {
+          "name": "Social",
+          "count": 1
+        },
+        {
+          "name": "Justice",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Kesha",
+          "count": 6
+        },
+        {
+          "name": "Pride",
+          "count": 3
+        },
+        {
+          "name": "Simon",
+          "count": 2
+        },
+        {
+          "name": "Kent",
+          "count": 2
+        },
+        {
+          "name": "The",
+          "count": 2
+        }
+      ],
+      "entityCount": 39
+    },
+    "timestamp": "2025-08-20T19:20:24.653Z"
   }
 }
