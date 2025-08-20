@@ -4452,5 +4452,440 @@
     "biasIndicators": {},
     "logicalFallacies": [],
     "timestamp": "2025-08-20T16:37:57.201Z"
+  },
+  "analysis_1755709042851": {
+    "wordCount": 50,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "easy",
+    "keyTopics": [
+      "technology",
+      "environment",
+      "science"
+    ],
+    "credibility": {
+      "score": 0.5,
+      "level": "medium",
+      "reason": "Standard content assessment"
+    },
+    "summary": "This article discusses climate crisis and the need for gun control.  John Smith and Mary Johnson support the Green New Deal and Medicare for all.  This is clearly a false dichotomy because you either support us or you are against us.",
+    "biasIndicators": {
+      "opinionated": [
+        "clearly"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "FALSE_DICHOTOMY",
+        "confidence": 0.8,
+        "explanation": "False Dichotomy: Presenting only two options when others exist.",
+        "excerpt": "This is clearly a false dichotomy because you either support us or you are against us",
+        "startIndex": 145,
+        "endIndex": 230
+      },
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.8,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "According to research, this will lead to devastating consequences.",
+        "startIndex": 232,
+        "endIndex": 298
+      },
+      {
+        "type": "SLIPPERY_SLOPE",
+        "confidence": 0.8,
+        "explanation": "Slippery Slope: Claiming a small step will inevitably lead to a severe outcome.",
+        "excerpt": "According to research, this will lead to devastating consequences.",
+        "startIndex": 232,
+        "endIndex": 298
+      }
+    ],
+    "bias": {
+      "direction": "left",
+      "confidence": 1,
+      "explanation": "Detected more left-leaning indicators in language.",
+      "indicators": {
+        "left": 6,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "This",
+          "count": 2
+        },
+        {
+          "name": "John",
+          "count": 1
+        },
+        {
+          "name": "Smith",
+          "count": 1
+        },
+        {
+          "name": "Mary",
+          "count": 1
+        },
+        {
+          "name": "Johnson",
+          "count": 1
+        },
+        {
+          "name": "Green",
+          "count": 1
+        },
+        {
+          "name": "New",
+          "count": 1
+        },
+        {
+          "name": "Deal",
+          "count": 1
+        },
+        {
+          "name": "Medicare",
+          "count": 1
+        },
+        {
+          "name": "According",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "This",
+          "count": 2
+        },
+        {
+          "name": "John",
+          "count": 1
+        },
+        {
+          "name": "Smith",
+          "count": 1
+        },
+        {
+          "name": "Mary",
+          "count": 1
+        },
+        {
+          "name": "Johnson",
+          "count": 1
+        }
+      ],
+      "entityCount": 10
+    },
+    "timestamp": "2025-08-20T16:57:22.850Z"
+  },
+  "analysis_1755709822630": {
+    "wordCount": 24,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "easy",
+    "keyTopics": [
+      "science"
+    ],
+    "credibility": {
+      "score": 0.1,
+      "level": "low",
+      "reason": "3 sensationalist words detected; Clickbait patterns detected"
+    },
+    "summary": "You won't believe what they don't want you to know.  This amazing secret will blow your mind.  According to research shows, this is incredible.",
+    "biasIndicators": {
+      "emotional": [
+        "amazing"
+      ],
+      "sensationalist": [
+        "shocking",
+        "revealed",
+        "secret"
+      ]
+    },
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "You",
+          "count": 1
+        },
+        {
+          "name": "This",
+          "count": 1
+        },
+        {
+          "name": "According",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "You",
+          "count": 1
+        },
+        {
+          "name": "This",
+          "count": 1
+        },
+        {
+          "name": "According",
+          "count": 1
+        }
+      ],
+      "entityCount": 3
+    },
+    "timestamp": "2025-08-20T17:10:22.630Z"
+  },
+  "analysis_1755709829485": {
+    "wordCount": 76,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "environment",
+      "science",
+      "sports",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "According to research published in Nature, climate change is having significant impacts on coastal regions.  The study, conducted by Dr.  Sarah Johnson at MIT, analyzed data from 50 coastal monitoring stations.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "The",
+          "count": 2
+        },
+        {
+          "name": "According",
+          "count": 1
+        },
+        {
+          "name": "Nature",
+          "count": 1
+        },
+        {
+          "name": "Sarah",
+          "count": 1
+        },
+        {
+          "name": "Johnson",
+          "count": 1
+        },
+        {
+          "name": "Statistics",
+          "count": 1
+        },
+        {
+          "name": "Evidence",
+          "count": 1
+        },
+        {
+          "name": "This",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "The",
+          "count": 2
+        },
+        {
+          "name": "According",
+          "count": 1
+        },
+        {
+          "name": "Nature",
+          "count": 1
+        },
+        {
+          "name": "Sarah",
+          "count": 1
+        },
+        {
+          "name": "Johnson",
+          "count": 1
+        }
+      ],
+      "entityCount": 8
+    },
+    "timestamp": "2025-08-20T17:10:29.485Z"
+  },
+  "analysis_1755709836375": {
+    "wordCount": 81,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics"
+    ],
+    "credibility": {
+      "score": 0.5,
+      "level": "medium",
+      "reason": "Clickbait patterns detected; Substantial content length"
+    },
+    "summary": "You won't believe what these extremists are planning.  According to President Biden and Senator Smith, they want to implement socialist policies that will inevitably lead to economic collapse.  This is clearly a slippery slope that will destroy our way of life.",
+    "biasIndicators": {
+      "emotional": [
+        "outrageous"
+      ],
+      "opinionated": [
+        "clearly"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "AD_HOMINEM",
+        "confidence": 0.65,
+        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
+        "excerpt": "You won't believe what these extremists are planning",
+        "startIndex": 0,
+        "endIndex": 52
+      },
+      {
+        "type": "AD_HOMINEM",
+        "confidence": 0.65,
+        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
+        "excerpt": "Everyone knows that these radical leftists are corrupt and cannot be trusted",
+        "startIndex": 260,
+        "endIndex": 336
+      },
+      {
+        "type": "AD_HOMINEM",
+        "confidence": 0.8,
+        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
+        "excerpt": "Everyone knows that these radical leftists are corrupt and cannot be trusted",
+        "startIndex": 260,
+        "endIndex": 336
+      },
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.8,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "Think of the children",
+        "startIndex": 419,
+        "endIndex": 440
+      },
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.65,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "This outrageous plan will devastate families across America.",
+        "startIndex": 442,
+        "endIndex": 502
+      },
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.65,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "This outrageous plan will devastate families across America.",
+        "startIndex": 442,
+        "endIndex": 502
+      }
+    ],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "This",
+          "count": 2
+        },
+        {
+          "name": "You",
+          "count": 1
+        },
+        {
+          "name": "According",
+          "count": 1
+        },
+        {
+          "name": "President",
+          "count": 1
+        },
+        {
+          "name": "Biden",
+          "count": 1
+        },
+        {
+          "name": "Senator",
+          "count": 1
+        },
+        {
+          "name": "Smith",
+          "count": 1
+        },
+        {
+          "name": "Everyone",
+          "count": 1
+        },
+        {
+          "name": "The",
+          "count": 1
+        },
+        {
+          "name": "Think",
+          "count": 1
+        },
+        {
+          "name": "America",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "This",
+          "count": 2
+        },
+        {
+          "name": "You",
+          "count": 1
+        },
+        {
+          "name": "According",
+          "count": 1
+        },
+        {
+          "name": "President",
+          "count": 1
+        },
+        {
+          "name": "Biden",
+          "count": 1
+        }
+      ],
+      "entityCount": 11
+    },
+    "timestamp": "2025-08-20T17:10:36.375Z"
   }
 }

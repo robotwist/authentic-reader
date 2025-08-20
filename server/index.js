@@ -117,15 +117,22 @@ function assessBasicCredibility(url, title, content) {
   const titleText = (title || '').toLowerCase();
   const contentText = (content || '').toLowerCase();
   
-  // Enhanced credibility assessment
+  // Enhanced credibility assessment with multiple dimensions
   const credibleDomains = [
     'bbc.com', 'reuters.com', 'ap.org', 'npr.org', 'pbs.org', 'nytimes.com', 
-    'washingtonpost.com', 'wsj.com', 'economist.com', 'nature.com', 'science.org'
+    'washingtonpost.com', 'wsj.com', 'economist.com', 'nature.com', 'science.org',
+    'bloomberg.com', 'cnn.com', 'abcnews.go.com', 'cbsnews.com', 'nbcnews.com'
+  ];
+  
+  const lowCredibilityDomains = [
+    'infowars.com', 'breitbart.com', 'dailycaller.com', 'gatewaypundit.com',
+    'naturalnews.com', 'beforeitsnews.com', 'veteranstoday.com'
   ];
   
   const suspiciousWords = [
     'shocking', 'amazing', 'you won\'t believe', 'incredible', 'secret', 'conspiracy',
-    'they don\'t want you to know', 'hidden truth', 'exposed', 'revealed', 'scandal'
+    'they don\'t want you to know', 'hidden truth', 'exposed', 'revealed', 'scandal',
+    'bombshell', 'explosive', 'devastating', 'outrageous', 'appalling', 'terrifying'
   ];
   
   const sensationalistPatterns = [
@@ -134,41 +141,86 @@ function assessBasicCredibility(url, title, content) {
     /URGENT/, // Urgent alerts
     /\d+\s+ways/, // Numbered lists
     /you'll never guess/, // Clickbait patterns
+    /one weird trick/, // Clickbait
+    /doctors hate/, // Clickbait
+    /celebrities are/, // Gossip patterns
+  ];
+  
+  const credibleIndicators = [
+    'according to', 'research shows', 'study finds', 'data indicates',
+    'statistics show', 'analysis reveals', 'evidence suggests', 'experts say',
+    'official statement', 'confirmed by', 'verified sources'
   ];
   
   let score = 0.5; // Base score
   let reasons = [];
   
-  // Domain reputation
+  // Domain reputation (strongest factor)
   if (domain && credibleDomains.some(d => domain.includes(d))) {
     score += 0.3;
     reasons.push('Reputable news source');
+  } else if (domain && lowCredibilityDomains.some(d => domain.includes(d))) {
+    score -= 0.3;
+    reasons.push('Low credibility domain');
   }
   
   // Sensationalist language detection
-  const suspiciousCount = suspiciousWords.filter(word => titleText.includes(word)).length;
+  const suspiciousCount = suspiciousWords.filter(word => 
+    titleText.includes(word) || contentText.includes(word)
+  ).length;
   if (suspiciousCount > 0) {
-    score -= 0.2 * suspiciousCount;
+    score -= 0.15 * Math.min(suspiciousCount, 3); // Cap the penalty
     reasons.push(`${suspiciousCount} sensationalist words detected`);
   }
   
   // Sensationalist patterns
-  const patternMatches = sensationalistPatterns.filter(pattern => pattern.test(titleText)).length;
+  const patternMatches = sensationalistPatterns.filter(pattern => 
+    pattern.test(titleText) || pattern.test(contentText)
+  ).length;
   if (patternMatches > 0) {
     score -= 0.1 * patternMatches;
     reasons.push('Clickbait patterns detected');
   }
   
+  // Credible language indicators
+  const credibleCount = credibleIndicators.filter(indicator => 
+    contentText.includes(indicator)
+  ).length;
+  if (credibleCount > 0) {
+    score += 0.1 * Math.min(credibleCount, 2); // Cap the bonus
+    reasons.push('Contains credible reporting language');
+  }
+  
   // Content length and structure
-  if (contentText.length > 500) {
-    score += 0.1;
+  if (contentText.length > 1000) {
+    score += 0.15;
     reasons.push('Substantial content length');
+  } else if (contentText.length > 500) {
+    score += 0.1;
+    reasons.push('Adequate content length');
+  } else if (contentText.length < 200) {
+    score -= 0.1;
+    reasons.push('Very short content');
   }
   
   // External links presence
-  if (contentText.includes('http') || contentText.includes('www')) {
+  const linkCount = (contentText.match(/https?:\/\/[^\s]+/g) || []).length;
+  if (linkCount > 2) {
     score += 0.1;
+    reasons.push('Contains multiple external references');
+  } else if (linkCount > 0) {
+    score += 0.05;
     reasons.push('Contains external references');
+  }
+  
+  // Quote detection (indicates primary sources)
+  const quoteCount = (contentText.match(/[""][^""]+[""]/g) || []).length;
+  if (quoteCount > 2) {
+    score += 0.1;
+    reasons.push('Contains multiple direct quotes');
+  } else if (quoteCount > 0) {
+    score += 0.05;
+    reasons.push('Contains direct quotes');
   }
   
   // Balance score
@@ -256,35 +308,75 @@ function splitIntoSentences(text) {
 
 const fallacyPatterns = {
   AD_HOMINEM: [
-    /(liar|corrupt|stupid|ignorant|crazy|insane|extremist)/i,
+    /(liar|corrupt|stupid|ignorant|crazy|insane|extremist|radical|fanatic|delusional|brainwashed)/i,
     /cannot\s+be\s+trusted/i,
     /has\s+no\s+credibility/i,
-    /typical\s+(liberal|conservative|leftist|right[- ]wing)/i
+    /typical\s+(liberal|conservative|leftist|right[- ]wing|democrat|republican)/i,
+    /(obviously|clearly)\s+(wrong|mistaken|lying)/i,
+    /(name[- ]calling|personal\s+attack)/i,
+    /(character\s+assassination|smear\s+campaign)/i
   ],
   STRAW_MAN: [
     /they\s+would\s+have\s+you\s+believe/i,
     /they\s+claim\s+that/i,
-    /their\s+argument\s+boils\s+down\s+to/i
+    /their\s+argument\s+boils\s+down\s+to/i,
+    /(misrepresent|distort|twist)\s+(the\s+)?(argument|position|view)/i,
+    /(oversimplify|exaggerate)\s+(the\s+)?(opposition|other\s+side)/i,
+    /(nobody\s+is\s+saying|no\s+one\s+believes)\s+that/i
   ],
   APPEAL_TO_EMOTION: [
-    /(horrific|terrifying|devastating|heartbreaking|outrageous)/i,
-    /think(\s+of)?\s+the\s+children/i,
-    /(fear|anger|outrage|panic)/i
+    /(horrific|terrifying|devastating|heartbreaking|outrageous|shocking|appalling)/i,
+    /think(\s+of)?\s+the\s+(children|families|victims)/i,
+    /(fear|anger|outrage|panic|hate|love)\s+(mongering|politics)/i,
+    /(emotional|sentimental)\s+(appeal|argument)/i,
+    /(manipulate|exploit)\s+(emotions|feelings)/i,
+    /(scare\s+tactics|fear\s+factor)/i
   ],
   FALSE_DICHOTOMY: [
     /either\s+.*\s+or/i,
     /only\s+two\s+choices/i,
-    /you\'re\s+either\s+with\s+us\s+or\s+against\s+us/i
+    /you\'re\s+either\s+with\s+us\s+or\s+against\s+us/i,
+    /(black\s+or\s+white|all\s+or\s+nothing)/i,
+    /(no\s+middle\s+ground|no\s+compromise)/i,
+    /(us\s+versus\s+them|friend\s+or\s+foe)/i
   ],
   SLIPPERY_SLOPE: [
     /will\s+lead\s+to/i,
     /opens\s+the\s+door\s+to/i,
-    /before\s+you\s+know\s+it/i
+    /before\s+you\s+know\s+it/i,
+    /(slippery\s+slope|domino\s+effect)/i,
+    /(inevitably|necessarily)\s+result\s+in/i,
+    /(cascade|chain\s+reaction)\s+of\s+events/i,
+    /(snowball|spiral)\s+out\s+of\s+control/i
   ],
   HASTY_GENERALIZATION: [
     /they\s+always/i,
     /all\s+of\s+them\s+are/i,
-    /never\s+once\s+has/i
+    /never\s+once\s+has/i,
+    /(everyone|nobody)\s+(knows|believes|thinks)/i,
+    /(always|never)\s+(right|wrong|good|bad)/i,
+    /(typical|stereotypical)\s+(behavior|response)/i
+  ],
+  APPEAL_TO_AUTHORITY: [
+    /(expert|scientist|doctor|professor)\s+says/i,
+    /(studies|research)\s+show/i,
+    /(authority|official)\s+source/i,
+    /(trust\s+the\s+science|follow\s+the\s+experts)/i
+  ],
+  BEGGING_THE_QUESTION: [
+    /(obviously|clearly|naturally)\s+(true|correct|right)/i,
+    /(self[- ]evident|common\s+sense)/i,
+    /(everyone\s+knows|it\'s\s+obvious)/i
+  ],
+  RED_HERRING: [
+    /(but\s+what\s+about|what\s+about\s+the\s+time)/i,
+    /(that\'s\s+not\s+the\s+point|irrelevant)/i,
+    /(distract|deflect)\s+(from|attention)/i
+  ],
+  APPEAL_TO_POPULARITY: [
+    /(everyone|most\s+people)\s+(agrees|believes)/i,
+    /(popular|mainstream)\s+(opinion|view)/i,
+    /(bandwagon|trending)\s+(argument|position)/i
   ]
 };
 
@@ -295,7 +387,11 @@ function getFallacyExplanation(type) {
     APPEAL_TO_EMOTION: 'Appeal to Emotion: Manipulating emotions instead of using facts.',
     FALSE_DICHOTOMY: 'False Dichotomy: Presenting only two options when others exist.',
     SLIPPERY_SLOPE: 'Slippery Slope: Claiming a small step will inevitably lead to a severe outcome.',
-    HASTY_GENERALIZATION: 'Hasty Generalization: Drawing a broad conclusion from insufficient evidence.'
+    HASTY_GENERALIZATION: 'Hasty Generalization: Drawing a broad conclusion from insufficient evidence.',
+    APPEAL_TO_AUTHORITY: 'Appeal to Authority: Relying on authority rather than evidence.',
+    BEGGING_THE_QUESTION: 'Begging the Question: Assuming the conclusion in the premise.',
+    RED_HERRING: 'Red Herring: Introducing irrelevant information to distract from the issue.',
+    APPEAL_TO_POPULARITY: 'Appeal to Popularity: Arguing something is true because many people believe it.'
   };
   return map[type] || 'Logical fallacy detected.';
 }
@@ -360,16 +456,65 @@ function decodeHtmlEntities(input) {
   return str;
 }
 
-// Basic bias assessment (left/right/center) using simple keyword counts
+// Enhanced bias assessment with multiple dimensions
 function assessBiasDirection(title, content) {
   const text = `${title || ''} ${content || ''}`.toLowerCase();
-  const leftTerms = ['social justice','equity','progressive','climate crisis','gun control','reproductive rights','wealth tax','green new deal','medicare for all','systemic'];
-  const rightTerms = ['free market','law and order','border security','small government','second amendment','pro-life','lower taxes','states\' rights','america first','patriotic'];
-  let leftScore = 0; let rightScore = 0;
-  leftTerms.forEach(t => { if (text.includes(t)) leftScore++; });
-  rightTerms.forEach(t => { if (text.includes(t)) rightScore++; });
+  
+  // Political bias indicators
+  const leftTerms = [
+    'social justice', 'equity', 'progressive', 'climate crisis', 'gun control', 
+    'reproductive rights', 'wealth tax', 'green new deal', 'medicare for all', 
+    'systemic racism', 'defund police', 'universal healthcare', 'minimum wage',
+    'union rights', 'environmental protection', 'renewable energy', 'affordable housing',
+    'student debt', 'income inequality', 'corporate greed', 'tax the rich'
+  ];
+  
+  const rightTerms = [
+    'free market', 'law and order', 'border security', 'small government', 
+    'second amendment', 'pro-life', 'lower taxes', 'states\' rights', 
+    'america first', 'patriotic', 'family values', 'traditional marriage',
+    'deregulation', 'trickle down', 'personal responsibility', 'meritocracy',
+    'national security', 'military strength', 'religious freedom', 'constitutional rights'
+  ];
+  
+  // Emotional bias indicators
+  const sensationalistTerms = [
+    'shocking', 'outrageous', 'scandalous', 'explosive', 'bombshell', 'devastating',
+    'terrifying', 'horrific', 'appalling', 'disgusting', 'incredible', 'amazing'
+  ];
+  
+  const neutralTerms = [
+    'according to', 'research shows', 'data indicates', 'study finds',
+    'analysis reveals', 'evidence suggests', 'statistics show'
+  ];
+  
+  // Calculate scores
+  let leftScore = 0, rightScore = 0, sensationalistScore = 0, neutralScore = 0;
+  
+  leftTerms.forEach(term => { 
+    const matches = (text.match(new RegExp(term, 'g')) || []).length;
+    leftScore += matches;
+  });
+  
+  rightTerms.forEach(term => { 
+    const matches = (text.match(new RegExp(term, 'g')) || []).length;
+    rightScore += matches;
+  });
+  
+  sensationalistTerms.forEach(term => { 
+    const matches = (text.match(new RegExp(term, 'g')) || []).length;
+    sensationalistScore += matches;
+  });
+  
+  neutralTerms.forEach(term => { 
+    const matches = (text.match(new RegExp(term, 'g')) || []).length;
+    neutralScore += matches;
+  });
+  
+  // Determine direction and confidence
   let direction = 'center';
   let confidence = 0.5;
+  
   if (leftScore > rightScore) {
     direction = 'left';
     confidence = Math.min(1, (leftScore - rightScore) / Math.max(1, leftScore + rightScore) + 0.5);
@@ -377,37 +522,123 @@ function assessBiasDirection(title, content) {
     direction = 'right';
     confidence = Math.min(1, (rightScore - leftScore) / Math.max(1, leftScore + rightScore) + 0.5);
   }
-  const explanation = direction === 'center'
-    ? 'No strong directional bias detected.'
-    : `Detected more ${direction}-leaning indicators in language.`;
+  
+  // Adjust confidence based on sensationalism and neutrality
+  if (sensationalistScore > 3) {
+    confidence = Math.min(1, confidence + 0.2); // Higher confidence if sensationalist
+  }
+  if (neutralScore > 2) {
+    confidence = Math.max(0.3, confidence - 0.1); // Lower confidence if neutral language
+  }
+  
+  // Generate explanation
+  let explanation = '';
+  if (direction === 'center') {
+    explanation = 'No strong directional bias detected.';
+  } else {
+    explanation = `Detected more ${direction}-leaning indicators in language.`;
+    if (sensationalistScore > 2) {
+      explanation += ' Content uses sensationalist language.';
+    }
+    if (neutralScore > 1) {
+      explanation += ' Some neutral reporting language present.';
+    }
+  }
+  
   return {
     direction,
     confidence: Math.round(confidence * 100) / 100,
     explanation,
     indicators: {
       left: leftScore,
-      right: rightScore
+      right: rightScore,
+      sensationalist: sensationalistScore,
+      neutral: neutralScore
     }
   };
 }
 
-// Very simple network context: extract capitalized tokens as entities and rank by frequency
+// Enhanced network analysis with entity extraction and relationship detection
 function buildNetworkSummary(text) {
-  if (!text) return { entities: [], topEntities: [], entityCount: 0 };
+  if (!text) return { entities: [], topEntities: [], entityCount: 0, relationships: [] };
+  
   const entityCounts = new Map();
-  const words = String(text).split(/\s+/);
-  for (const w of words) {
-    const token = w.replace(/[^A-Za-z]/g, '');
-    if (token.length >= 3 && token[0] === token[0].toUpperCase() && token.slice(1) === token.slice(1).toLowerCase()) {
-      entityCounts.set(token, (entityCounts.get(token) || 0) + 1);
+  const relationships = [];
+  const sentences = splitIntoSentences(text);
+  
+  // Enhanced entity patterns
+  const entityPatterns = [
+    // Proper nouns (names, places, organizations)
+    /\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b/g,
+    // Acronyms
+    /\b[A-Z]{2,}\b/g,
+    // Titles with names
+    /\b(?:President|Senator|Representative|Governor|Mayor|CEO|Dr\.|Mr\.|Ms\.|Mrs\.)\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b/g,
+    // Organizations
+    /\b(?:Congress|Senate|House|White House|Supreme Court|FBI|CIA|EPA|FDA|CDC)\b/g
+  ];
+  
+  // Extract entities from each sentence
+  sentences.forEach(sentence => {
+    const sentenceEntities = new Set();
+    
+    entityPatterns.forEach(pattern => {
+      const matches = sentence.match(pattern) || [];
+      matches.forEach(match => {
+        const cleanMatch = match.replace(/[^\w\s]/g, '').trim();
+        if (cleanMatch.length >= 2) {
+          sentenceEntities.add(cleanMatch);
+          entityCounts.set(cleanMatch, (entityCounts.get(cleanMatch) || 0) + 1);
+        }
+      });
+    });
+    
+    // Detect relationships between entities in the same sentence
+    const entityArray = Array.from(sentenceEntities);
+    for (let i = 0; i < entityArray.length; i++) {
+      for (let j = i + 1; j < entityArray.length; j++) {
+        const relationship = {
+          source: entityArray[i],
+          target: entityArray[j],
+          context: sentence.substring(0, 100) + '...'
+        };
+        relationships.push(relationship);
+      }
     }
-  }
-  const entities = Array.from(entityCounts.entries()).map(([name, count]) => ({ name, count }));
-  entities.sort((a, b) => b.count - a.count);
+  });
+  
+  // Filter and rank entities
+  const entities = Array.from(entityCounts.entries())
+    .filter(([name, count]) => count >= 1 && name.length >= 2)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count);
+  
+  // Categorize entities
+  const categorizedEntities = entities.map(entity => {
+    const name = entity.name.toLowerCase();
+    let category = 'other';
+    
+    if (name.includes('president') || name.includes('biden') || name.includes('trump')) {
+      category = 'political_leader';
+    } else if (name.includes('congress') || name.includes('senate') || name.includes('house')) {
+      category = 'government_body';
+    } else if (name.includes('court') || name.includes('judge')) {
+      category = 'judicial';
+    } else if (name.includes('police') || name.includes('fbi') || name.includes('cia')) {
+      category = 'law_enforcement';
+    } else if (name.includes('company') || name.includes('corp') || name.includes('inc')) {
+      category = 'business';
+    }
+    
+    return { ...entity, category };
+  });
+  
   return {
-    entities,
-    topEntities: entities.slice(0, 5),
-    entityCount: entities.length
+    entities: categorizedEntities,
+    topEntities: categorizedEntities.slice(0, 8),
+    entityCount: categorizedEntities.length,
+    relationships: relationships.slice(0, 10), // Limit relationships
+    networkDensity: relationships.length / Math.max(1, categorizedEntities.length)
   };
 }
 
