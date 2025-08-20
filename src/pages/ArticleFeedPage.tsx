@@ -121,13 +121,16 @@ const ArticleFeedPage: React.FC = () => {
   }
 
   return (
-    <div className="article-feed-page">
+    <div className="article-feed-page" role="main" aria-label="Article feed">
       <div className="feed-header">
         <div className="source-selector">
+          <label htmlFor="source-select" className="sr-only">Select news source</label>
           <select 
+            id="source-select"
             value={currentSource} 
             onChange={(e) => setCurrentSource(e.target.value)}
             className="source-select"
+            aria-label="Select news source"
           >
             {defaultSources.map(source => (
               <option key={source.id} value={source.id}>
@@ -139,22 +142,27 @@ const ArticleFeedPage: React.FC = () => {
         
         <div className="feed-info">
           <h1>Latest Articles</h1>
-          <p>{articles.length} articles loaded</p>
+          <p aria-live="polite">{articles.length} articles loaded</p>
         </div>
       </div>
 
-      <div className="articles-container">
+      <div className="articles-container" role="feed" aria-label="Articles list">
         {articles.map((article, index) => (
-          <article key={article.articleId || index} className="article-card">
+          <article key={article.articleId || index} className="article-card" role="article">
             <div className="article-header">
               <h2 className="article-title">
-                <a href={article.link} target="_blank" rel="noopener noreferrer">
+                <a 
+                  href={article.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-describedby={`article-${index}-meta`}
+                >
                   {article.title}
                 </a>
               </h2>
-              <div className="article-meta">
-                <span className="article-author">{article.author}</span>
-                <span className="article-date">{formatDate(article.pubDate)}</span>
+              <div className="article-meta" id={`article-${index}-meta`}>
+                <span className="article-author" aria-label="Author">{article.author}</span>
+                <span className="article-date" aria-label="Publication date">{formatDate(article.pubDate)}</span>
               </div>
             </div>
 
@@ -163,33 +171,34 @@ const ArticleFeedPage: React.FC = () => {
             </div>
 
             {article.analysis && (
-              <div className="article-analysis">
+              <div className="article-analysis" role="region" aria-label="Content analysis">
                 <div className="analysis-header">
                   <h3>Content Analysis</h3>
                 </div>
                 
-                <div className="analysis-grid">
-                  <div className="analysis-item">
+                <div className="analysis-grid" role="list">
+                  <div className="analysis-item" role="listitem">
                     <span className="analysis-label">Reading Time:</span>
                     <span className="analysis-value">{article.analysis.readingTime} min</span>
                   </div>
                   
-                  <div className="analysis-item">
+                  <div className="analysis-item" role="listitem">
                     <span className="analysis-label">Word Count:</span>
                     <span className="analysis-value">{article.analysis.wordCount}</span>
                   </div>
                   
-                  <div className="analysis-item">
+                  <div className="analysis-item" role="listitem">
                     <span className="analysis-label">Credibility:</span>
                     <span 
                       className="analysis-value credibility-badge"
                       style={{ backgroundColor: getCredibilityColor(article.analysis.credibility.level) }}
+                      aria-label={`Credibility level: ${article.analysis.credibility.level}`}
                     >
                       {article.analysis.credibility.level}
                     </span>
                   </div>
                   
-                  <div className="analysis-item">
+                  <div className="analysis-item" role="listitem">
                     <span className="analysis-label">Topics:</span>
                     <span className="analysis-value">
                       {article.analysis.keyTopics.join(', ')}
@@ -218,6 +227,7 @@ const ArticleFeedPage: React.FC = () => {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="read-button"
+                aria-label={`Read full article: ${article.title}`}
               >
                 Read Full Article
               </a>
@@ -227,7 +237,7 @@ const ArticleFeedPage: React.FC = () => {
       </div>
 
       {articles.length === 0 && !loading && (
-        <div className="no-articles">
+        <div className="no-articles" role="status" aria-live="polite">
           <h2>No articles found</h2>
           <p>Try selecting a different source or check your connection.</p>
         </div>
