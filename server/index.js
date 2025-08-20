@@ -747,6 +747,8 @@ app.post('/api/analyze-article', async (req, res) => {
       summary: generateBasicSummary(content),
       biasIndicators: detectBiasIndicators(title, content),
       logicalFallacies: detectLogicalFallacies(content || ''),
+      bias: assessBiasDirection(title, content),
+      network: buildNetworkSummary(content),
       timestamp: new Date().toISOString()
     };
 

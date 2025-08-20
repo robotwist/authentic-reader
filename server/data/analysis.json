@@ -1,25 +1,21 @@
 {
-  "analysis_article_1755707667900_18": {
-    "wordCount": 278,
-    "readingTime": 2,
+  "analysis_article_1755707786224_9": {
+    "wordCount": 1125,
+    "readingTime": 6,
     "hasExternalLinks": false,
-    "complexity": "medium",
+    "complexity": "hard",
     "keyTopics": [
+      "politics",
       "technology",
-      "entertainment",
       "international"
     ],
     "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
     },
-    "summary": "Eurovision, the World’s Largest Live Music Event, Set for Vienna in 2026 Harold Cunningham/Getty Breitbart News 20 Aug 2025 VIENNA (AP) — The Eurovision Song Contest 2026 will take place in Vienna.  Austria’s public broadcaster ORF, which will organize the world’s largest live music event, announced...",
-    "biasIndicators": {
-      "emotional": [
-        "wonderful"
-      ]
-    },
+    "summary": "Kremlin plays down Zelensky talks as Trump warns Putin may not want to make deal 2 hours ago Share Save Laura Gozzi BBC News Share Save Getty Images Putin received a warm welcome in Alaska on Friday The Kremlin has played down talk of an imminent summit between Russian President Vladimir Putin and U...",
+    "biasIndicators": {},
     "logicalFallacies": [],
     "bias": {
       "direction": "center",
@@ -33,59 +29,163 @@
     "network": {
       "entities": [
         {
-          "name": "Vienna",
-          "count": 6
+          "name": "Putin",
+          "count": 16
         },
         {
-          "name": "Eurovision",
-          "count": 5
+          "name": "Trump",
+          "count": 15
         },
         {
-          "name": "May",
-          "count": 5
+          "name": "Ukraine",
+          "count": 14
+        },
+        {
+          "name": "Zelensky",
+          "count": 13
         },
         {
           "name": "The",
+          "count": 8
+        },
+        {
+          "name": "Russian",
+          "count": 6
+        },
+        {
+          "name": "Tuesday",
+          "count": 5
+        },
+        {
+          "name": "Russia",
+          "count": 5
+        },
+        {
+          "name": "President",
+          "count": 4
+        },
+        {
+          "name": "European",
+          "count": 4
+        },
+        {
+          "name": "Kyiv",
+          "count": 4
+        },
+        {
+          "name": "Kremlin",
           "count": 3
         },
         {
-          "name": "Austrias",
+          "name": "Ukrainexs",
+          "count": 3
+        },
+        {
+          "name": "White",
+          "count": 3
+        },
+        {
+          "name": "House",
+          "count": 3
+        },
+        {
+          "name": "Monday",
+          "count": 3
+        },
+        {
+          "name": "Watch",
+          "count": 3
+        },
+        {
+          "name": "Moscow",
+          "count": 3
+        },
+        {
+          "name": "Kyivxs",
+          "count": 3
+        },
+        {
+          "name": "Trumpxs",
+          "count": 3
+        },
+        {
+          "name": "Macron",
+          "count": 3
+        },
+        {
+          "name": "Share",
           "count": 2
         },
         {
-          "name": "Viennas",
+          "name": "Save",
           "count": 2
         },
         {
-          "name": "Worlds",
+          "name": "Getty",
+          "count": 2
+        },
+        {
+          "name": "Images",
+          "count": 2
+        },
+        {
+          "name": "Alaska",
+          "count": 2
+        },
+        {
+          "name": "Minister",
+          "count": 2
+        },
+        {
+          "name": "Meanwhile",
+          "count": 2
+        },
+        {
+          "name": "Ukrainian",
+          "count": 2
+        },
+        {
+          "name": "Washington",
+          "count": 2
+        },
+        {
+          "name": "Moscowxs",
+          "count": 2
+        },
+        {
+          "name": "Oval",
+          "count": 2
+        },
+        {
+          "name": "Office",
+          "count": 2
+        },
+        {
+          "name": "Europeans",
+          "count": 2
+        },
+        {
+          "name": "Emmanuel",
+          "count": 2
+        },
+        {
+          "name": "Budapest",
+          "count": 2
+        },
+        {
+          "name": "Orban",
+          "count": 2
+        },
+        {
+          "name": "Europe",
+          "count": 2
+        },
+        {
+          "name": "Laura",
           "count": 1
         },
         {
-          "name": "Largest",
-          "count": 1
-        },
-        {
-          "name": "Live",
-          "count": 1
-        },
-        {
-          "name": "Music",
-          "count": 1
-        },
-        {
-          "name": "Event",
-          "count": 1
-        },
-        {
-          "name": "Set",
-          "count": 1
-        },
-        {
-          "name": "Harold",
-          "count": 1
-        },
-        {
-          "name": "Breitbart",
+          "name": "Gozzi",
           "count": 1
         },
         {
@@ -93,15 +193,63 @@
           "count": 1
         },
         {
-          "name": "Aug",
+          "name": "Friday",
           "count": 1
         },
         {
-          "name": "Song",
+          "name": "Vladimir",
           "count": 1
         },
         {
-          "name": "Contest",
+          "name": "Volodymyr",
+          "count": 1
+        },
+        {
+          "name": "Donald",
+          "count": 1
+        },
+        {
+          "name": "Key",
+          "count": 1
+        },
+        {
+          "name": "Despite",
+          "count": 1
+        },
+        {
+          "name": "Foreign",
+          "count": 1
+        },
+        {
+          "name": "Sergei",
+          "count": 1
+        },
+        {
+          "name": "Lavrov",
+          "count": 1
+        },
+        {
+          "name": "Any",
+          "count": 1
+        },
+        {
+          "name": "Dmitry",
+          "count": 1
+        },
+        {
+          "name": "Polyanskiy",
+          "count": 1
+        },
+        {
+          "name": "Odesa",
+          "count": 1
+        },
+        {
+          "name": "Sumy",
+          "count": 1
+        },
+        {
+          "name": "Natoxs",
           "count": 1
         },
         {
@@ -109,31 +257,39 @@
           "count": 1
         },
         {
-          "name": "Following",
+          "name": "Admiral",
           "count": 1
         },
         {
-          "name": "Austrian",
+          "name": "Tony",
           "count": 1
         },
         {
-          "name": "Wasted",
+          "name": "Radakin",
           "count": 1
         },
         {
-          "name": "Love",
+          "name": "Russiaxs",
           "count": 1
         },
         {
-          "name": "Basel",
+          "name": "Talks",
           "count": 1
         },
         {
-          "name": "Wiener",
+          "name": "Four",
           "count": 1
         },
         {
-          "name": "Stadthalle",
+          "name": "Why",
+          "count": 1
+        },
+        {
+          "name": "While",
+          "count": 1
+        },
+        {
+          "name": "France",
           "count": 1
         },
         {
@@ -141,7 +297,835 @@
           "count": 1
         },
         {
-          "name": "Director",
+          "name": "Downing",
+          "count": 1
+        },
+        {
+          "name": "Street",
+          "count": 1
+        },
+        {
+          "name": "Following",
+          "count": 1
+        },
+        {
+          "name": "Since",
+          "count": 1
+        },
+        {
+          "name": "West",
+          "count": 1
+        },
+        {
+          "name": "For",
+          "count": 1
+        },
+        {
+          "name": "Still",
+          "count": 1
+        },
+        {
+          "name": "French",
+          "count": 1
+        },
+        {
+          "name": "Swiss",
+          "count": 1
+        },
+        {
+          "name": "Geneva",
+          "count": 1
+        },
+        {
+          "name": "Hugarian",
+          "count": 1
+        },
+        {
+          "name": "Prime",
+          "count": 1
+        },
+        {
+          "name": "Viktor",
+          "count": 1
+        },
+        {
+          "name": "However",
+          "count": 1
+        },
+        {
+          "name": "Two",
+          "count": 1
+        },
+        {
+          "name": "Finnish",
+          "count": 1
+        },
+        {
+          "name": "Alexander",
+          "count": 1
+        },
+        {
+          "name": "Stubb",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "War",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Putin",
+          "count": 16
+        },
+        {
+          "name": "Trump",
+          "count": 15
+        },
+        {
+          "name": "Ukraine",
+          "count": 14
+        },
+        {
+          "name": "Zelensky",
+          "count": 13
+        },
+        {
+          "name": "The",
+          "count": 8
+        }
+      ],
+      "entityCount": 87
+    },
+    "timestamp": "2025-08-20T16:36:26.226Z"
+  },
+  "analysis_article_1755707786308_8": {
+    "wordCount": 709,
+    "readingTime": 4,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy",
+      "environment"
+    ],
+    "credibility": {
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
+    },
+    "summary": "Government prepares to take over UK&#x27;s third largest steelworks Just now Share Save Simon Jack Business editor, BBC News Share Save PA Media The government is preparing to take control of the UK&#x27;s third largest steelworks in a bid to save the business and protect 1,500 jobs.  Managers have ...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Liberty",
+          "count": 8
+        },
+        {
+          "name": "Steel",
+          "count": 7
+        },
+        {
+          "name": "The",
+          "count": 6
+        },
+        {
+          "name": "Gupta",
+          "count": 4
+        },
+        {
+          "name": "Share",
+          "count": 2
+        },
+        {
+          "name": "Save",
+          "count": 2
+        },
+        {
+          "name": "Scunthorpe",
+          "count": 2
+        },
+        {
+          "name": "Steelxs",
+          "count": 2
+        },
+        {
+          "name": "High",
+          "count": 2
+        },
+        {
+          "name": "Court",
+          "count": 2
+        },
+        {
+          "name": "Lawyers",
+          "count": 2
+        },
+        {
+          "name": "Tuesday",
+          "count": 2
+        },
+        {
+          "name": "Jingye",
+          "count": 2
+        },
+        {
+          "name": "Government",
+          "count": 1
+        },
+        {
+          "name": "Just",
+          "count": 1
+        },
+        {
+          "name": "Simon",
+          "count": 1
+        },
+        {
+          "name": "Jack",
+          "count": 1
+        },
+        {
+          "name": "Business",
+          "count": 1
+        },
+        {
+          "name": "News",
+          "count": 1
+        },
+        {
+          "name": "Media",
+          "count": 1
+        },
+        {
+          "name": "Managers",
+          "count": 1
+        },
+        {
+          "name": "Speciality",
+          "count": 1
+        },
+        {
+          "name": "Steels",
+          "count": 1
+        },
+        {
+          "name": "South",
+          "count": 1
+        },
+        {
+          "name": "Yorkshire",
+          "count": 1
+        },
+        {
+          "name": "British",
+          "count": 1
+        },
+        {
+          "name": "But",
+          "count": 1
+        },
+        {
+          "name": "Rotherham",
+          "count": 1
+        },
+        {
+          "name": "Sheffield",
+          "count": 1
+        },
+        {
+          "name": "Sanjeev",
+          "count": 1
+        },
+        {
+          "name": "Alliance",
+          "count": 1
+        },
+        {
+          "name": "Creditors",
+          "count": 1
+        },
+        {
+          "name": "Greensill",
+          "count": 1
+        },
+        {
+          "name": "Capital",
+          "count": 1
+        },
+        {
+          "name": "Sources",
+          "count": 1
+        },
+        {
+          "name": "Blackrock",
+          "count": 1
+        },
+        {
+          "name": "Unappealing",
+          "count": 1
+        },
+        {
+          "name": "While",
+          "count": 1
+        },
+        {
+          "name": "Allow",
+          "count": 1
+        },
+        {
+          "name": "Official",
+          "count": 1
+        },
+        {
+          "name": "Receiver",
+          "count": 1
+        },
+        {
+          "name": "Treasury",
+          "count": 1
+        },
+        {
+          "name": "Chinese",
+          "count": 1
+        },
+        {
+          "name": "April",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Liberty",
+          "count": 8
+        },
+        {
+          "name": "Steel",
+          "count": 7
+        },
+        {
+          "name": "The",
+          "count": 6
+        },
+        {
+          "name": "Gupta",
+          "count": 4
+        },
+        {
+          "name": "Share",
+          "count": 2
+        }
+      ],
+      "entityCount": 44
+    },
+    "timestamp": "2025-08-20T16:36:26.309Z"
+  },
+  "analysis_article_1755707786315_2": {
+    "wordCount": 963,
+    "readingTime": 5,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy",
+      "environment",
+      "science",
+      "education",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
+    },
+    "summary": "Why are food prices still rising by so much.  3 hours ago Share Save Pritti Mistry and Emer Moreau Business reporters, BBC News Share Save Getty Images Food price inflation has risen for four months in a row The cost of everyday food items from instant coffee to beef and fruit juices has continued t...",
+    "biasIndicators": {
+      "emotional": [
+        "terrible"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.65,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "Pea shortage fears over earliest harvest in years Inflation Cost of Living UK economy",
+        "startIndex": 5558,
+        "endIndex": 5643
+      }
+    ],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "The",
+          "count": 4
+        },
+        {
+          "name": "July",
+          "count": 3
+        },
+        {
+          "name": "Ukraine",
+          "count": 3
+        },
+        {
+          "name": "Matthews",
+          "count": 3
+        },
+        {
+          "name": "Why",
+          "count": 2
+        },
+        {
+          "name": "Share",
+          "count": 2
+        },
+        {
+          "name": "Save",
+          "count": 2
+        },
+        {
+          "name": "Business",
+          "count": 2
+        },
+        {
+          "name": "News",
+          "count": 2
+        },
+        {
+          "name": "Food",
+          "count": 2
+        },
+        {
+          "name": "Clare",
+          "count": 2
+        },
+        {
+          "name": "Jane",
+          "count": 2
+        },
+        {
+          "name": "Ice",
+          "count": 2
+        },
+        {
+          "name": "Cream",
+          "count": 2
+        },
+        {
+          "name": "Farm",
+          "count": 2
+        },
+        {
+          "name": "Cheshire",
+          "count": 2
+        },
+        {
+          "name": "Resolution",
+          "count": 2
+        },
+        {
+          "name": "Foundation",
+          "count": 2
+        },
+        {
+          "name": "People",
+          "count": 2
+        },
+        {
+          "name": "Bank",
+          "count": 2
+        },
+        {
+          "name": "Pritti",
+          "count": 1
+        },
+        {
+          "name": "Mistry",
+          "count": 1
+        },
+        {
+          "name": "Emer",
+          "count": 1
+        },
+        {
+          "name": "Moreau",
+          "count": 1
+        },
+        {
+          "name": "Getty",
+          "count": 1
+        },
+        {
+          "name": "Images",
+          "count": 1
+        },
+        {
+          "name": "February",
+          "count": 1
+        },
+        {
+          "name": "And",
+          "count": 1
+        },
+        {
+          "name": "One",
+          "count": 1
+        },
+        {
+          "name": "Drought",
+          "count": 1
+        },
+        {
+          "name": "Lewis",
+          "count": 1
+        },
+        {
+          "name": "Manchester",
+          "count": 1
+        },
+        {
+          "name": "Itxs",
+          "count": 1
+        },
+        {
+          "name": "Global",
+          "count": 1
+        },
+        {
+          "name": "Russia",
+          "count": 1
+        },
+        {
+          "name": "National",
+          "count": 1
+        },
+        {
+          "name": "Insurance",
+          "count": 1
+        },
+        {
+          "name": "Contributions",
+          "count": 1
+        },
+        {
+          "name": "April",
+          "count": 1
+        },
+        {
+          "name": "But",
+          "count": 1
+        },
+        {
+          "name": "She",
+          "count": 1
+        },
+        {
+          "name": "Research",
+          "count": 1
+        },
+        {
+          "name": "Tuesday",
+          "count": 1
+        },
+        {
+          "name": "Elaine",
+          "count": 1
+        },
+        {
+          "name": "Doran",
+          "count": 1
+        },
+        {
+          "name": "For",
+          "count": 1
+        },
+        {
+          "name": "Rapid",
+          "count": 1
+        },
+        {
+          "name": "Lalitha",
+          "count": 1
+        },
+        {
+          "name": "Try",
+          "count": 1
+        },
+        {
+          "name": "Danni",
+          "count": 1
+        },
+        {
+          "name": "Hewson",
+          "count": 1
+        },
+        {
+          "name": "Bell",
+          "count": 1
+        },
+        {
+          "name": "Even",
+          "count": 1
+        },
+        {
+          "name": "While",
+          "count": 1
+        },
+        {
+          "name": "England",
+          "count": 1
+        },
+        {
+          "name": "Bankxs",
+          "count": 1
+        },
+        {
+          "name": "Budget",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "Air",
+          "count": 1
+        },
+        {
+          "name": "Pea",
+          "count": 1
+        },
+        {
+          "name": "Inflation",
+          "count": 1
+        },
+        {
+          "name": "Cost",
+          "count": 1
+        },
+        {
+          "name": "Living",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "The",
+          "count": 4
+        },
+        {
+          "name": "July",
+          "count": 3
+        },
+        {
+          "name": "Ukraine",
+          "count": 3
+        },
+        {
+          "name": "Matthews",
+          "count": 3
+        },
+        {
+          "name": "Why",
+          "count": 2
+        }
+      ],
+      "entityCount": 63
+    },
+    "timestamp": "2025-08-20T16:36:26.316Z"
+  },
+  "analysis_article_1755707786325_5": {
+    "wordCount": 678,
+    "readingTime": 4,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "environment",
+      "entertainment",
+      "sports"
+    ],
+    "credibility": {
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
+    },
+    "summary": "Decision over Kneecap rapper terror charge delayed 2 hours ago Share Save Julian O&#x27;Neill Crime and justice correspondent, BBC News NI Share Save Kneecap rapper Liam Óg Ó hAnnaidh arriving in court on Wednesday morning A decision over whether a member of rap group Kneecap will stand trial for al...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Kneecap",
+          "count": 8
+        },
+        {
+          "name": "The",
+          "count": 6
+        },
+        {
+          "name": "Liam",
+          "count": 4
+        },
+        {
+          "name": "Share",
+          "count": 2
+        },
+        {
+          "name": "Save",
+          "count": 2
+        },
+        {
+          "name": "Wednesday",
+          "count": 2
+        },
+        {
+          "name": "London",
+          "count": 2
+        },
+        {
+          "name": "Chara",
+          "count": 2
+        },
+        {
+          "name": "Gaza",
+          "count": 2
+        },
+        {
+          "name": "Palestine",
+          "count": 2
+        },
+        {
+          "name": "Irish",
+          "count": 2
+        },
+        {
+          "name": "Charaquot",
+          "count": 2
+        },
+        {
+          "name": "Michael",
+          "count": 2
+        },
+        {
+          "name": "Mgla",
+          "count": 2
+        },
+        {
+          "name": "Bap",
+          "count": 2
+        },
+        {
+          "name": "Prva",
+          "count": 2
+        },
+        {
+          "name": "Any",
+          "count": 2
+        },
+        {
+          "name": "Decision",
+          "count": 1
+        },
+        {
+          "name": "Julian",
+          "count": 1
+        },
+        {
+          "name": "Crime",
+          "count": 1
+        },
+        {
+          "name": "News",
+          "count": 1
+        },
+        {
+          "name": "Hezbollah",
+          "count": 1
+        },
+        {
+          "name": "Westminster",
+          "count": 1
+        },
+        {
+          "name": "Magistratesx",
+          "count": 1
+        },
+        {
+          "name": "Court",
+          "count": 1
+        },
+        {
+          "name": "Palestinian",
+          "count": 1
+        },
+        {
+          "name": "September",
+          "count": 1
+        },
+        {
+          "name": "His",
+          "count": 1
+        },
+        {
+          "name": "Media",
+          "count": 1
+        },
+        {
+          "name": "Seaseann",
+          "count": 1
+        },
+        {
+          "name": "Muid",
+          "count": 1
+        },
+        {
+          "name": "Brenda",
+          "count": 1
+        },
+        {
+          "name": "Campbell",
+          "count": 1
+        },
+        {
+          "name": "Attorney",
           "count": 1
         },
         {
@@ -149,132 +1133,209 @@
           "count": 1
         },
         {
-          "name": "Roland",
+          "name": "May",
           "count": 1
         },
         {
-          "name": "Weissmann",
+          "name": "Prosecutor",
           "count": 1
         },
         {
-          "name": "Innsbruck",
+          "name": "Bisgrove",
           "count": 1
         },
         {
-          "name": "Austria",
+          "name": "Chief",
           "count": 1
         },
         {
-          "name": "Mayor",
+          "name": "Paul",
           "count": 1
         },
         {
-          "name": "Michael",
+          "name": "Goldspring",
           "count": 1
         },
         {
-          "name": "Ludwig",
+          "name": "June",
           "count": 1
         },
         {
-          "name": "Eurovisions",
+          "name": "Band",
           "count": 1
         },
         {
-          "name": "State",
+          "name": "Naoise",
           "count": 1
         },
         {
-          "name": "Opera",
+          "name": "Caireallin",
           "count": 1
         },
         {
-          "name": "Johannes",
+          "name": "Dochartaigh",
           "count": 1
         },
         {
-          "name": "Pietsch",
+          "name": "Tuesday",
           "count": 1
         },
         {
-          "name": "Conchita",
+          "name": "Metropolitan",
           "count": 1
         },
         {
-          "name": "Wurst",
+          "name": "Police",
           "count": 1
         },
         {
-          "name": "Udo",
+          "name": "Public",
           "count": 1
         },
         {
-          "name": "Jrgens",
+          "name": "Order",
           "count": 1
         },
         {
-          "name": "Europeans",
+          "name": "Act",
           "count": 1
         },
         {
-          "name": "Entertainment",
+          "name": "Who",
           "count": 1
         },
         {
-          "name": "London",
+          "name": "Irishspeaking",
           "count": 1
         },
         {
-          "name": "Europe",
+          "name": "Their",
+          "count": 1
+        },
+        {
+          "name": "Oscarnominated",
+          "count": 1
+        },
+        {
+          "name": "Fassbender",
+          "count": 1
+        },
+        {
+          "name": "British",
+          "count": 1
+        },
+        {
+          "name": "Academy",
+          "count": 1
+        },
+        {
+          "name": "Film",
+          "count": 1
+        },
+        {
+          "name": "Award",
+          "count": 1
+        },
+        {
+          "name": "Bafta",
+          "count": 1
+        },
+        {
+          "name": "February",
+          "count": 1
+        },
+        {
+          "name": "April",
+          "count": 1
+        },
+        {
+          "name": "Coachella",
+          "count": 1
+        },
+        {
+          "name": "November",
+          "count": 1
+        },
+        {
+          "name": "Kemi",
+          "count": 1
+        },
+        {
+          "name": "Badenoch",
+          "count": 1
+        },
+        {
+          "name": "Belfast",
+          "count": 1
+        },
+        {
+          "name": "Northern",
+          "count": 1
+        },
+        {
+          "name": "Ireland",
+          "count": 1
+        },
+        {
+          "name": "Hiphop",
+          "count": 1
+        },
+        {
+          "name": "Music",
           "count": 1
         }
       ],
       "topEntities": [
         {
-          "name": "Vienna",
-          "count": 6
-        },
-        {
-          "name": "Eurovision",
-          "count": 5
-        },
-        {
-          "name": "May",
-          "count": 5
+          "name": "Kneecap",
+          "count": 8
         },
         {
           "name": "The",
-          "count": 3
+          "count": 6
         },
         {
-          "name": "Austrias",
+          "name": "Liam",
+          "count": 4
+        },
+        {
+          "name": "Share",
+          "count": 2
+        },
+        {
+          "name": "Save",
           "count": 2
         }
       ],
-      "entityCount": 49
+      "entityCount": 73
     },
-    "timestamp": "2025-08-20T16:34:27.901Z"
+    "timestamp": "2025-08-20T16:36:26.326Z"
   },
-  "analysis_article_1755707667927_19": {
-    "wordCount": 562,
-    "readingTime": 3,
+  "analysis_article_1755707786329_11": {
+    "wordCount": 2135,
+    "readingTime": 11,
     "hasExternalLinks": false,
-    "complexity": "hard",
+    "complexity": "medium",
     "keyTopics": [
       "politics",
       "technology",
-      "sports",
+      "health",
+      "economy",
+      "science",
+      "entertainment",
       "international"
     ],
     "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
     },
-    "summary": "Report: Illegal Trucker Behind Fatal U-Turn Failed English Language Test 859 St.  Lucie County Sheriff&#039;s Office/U.  Marshals Elizabeth Weibel 19 Aug 2025 The semi-truck driver, who allegedly killed three Americans while making an illegal U-turn in Florida, failed an English language proficiency...",
+    "summary": "Empty homes are on the rise.  So why aren&#x27;t they being used to solve the housing shortage.  17 hours ago Share Save Gerry Georgieva England Data Unit, BBC News • @Gerghana Share Save BBC In 1980, when Corina Poore, 36 years old and pregnant, first opened the door to a derelict house in New Cros...",
     "biasIndicators": {
+      "political": [
+        "conservative"
+      ],
       "sensationalist": [
-        "revealed",
         "secret"
       ]
     },
@@ -291,95 +1352,75 @@
     "network": {
       "entities": [
         {
-          "name": "Florida",
+          "name": "The",
+          "count": 11
+        },
+        {
+          "name": "Empty",
           "count": 7
         },
         {
-          "name": "Singh",
+          "name": "Corina",
           "count": 7
         },
         {
-          "name": "English",
+          "name": "England",
           "count": 6
         },
         {
-          "name": "The",
+          "name": "But",
+          "count": 6
+        },
+        {
+          "name": "Homes",
+          "count": 6
+        },
+        {
+          "name": "Housing",
           "count": 5
         },
         {
-          "name": "State",
+          "name": "Labour",
           "count": 4
         },
         {
-          "name": "Drivers",
+          "name": "Cliff",
           "count": 4
-        },
-        {
-          "name": "California",
-          "count": 4
-        },
-        {
-          "name": "Uturn",
-          "count": 3
-        },
-        {
-          "name": "Department",
-          "count": 3
-        },
-        {
-          "name": "Transportation",
-          "count": 3
-        },
-        {
-          "name": "Harjinder",
-          "count": 3
-        },
-        {
-          "name": "Commercial",
-          "count": 3
-        },
-        {
-          "name": "License",
-          "count": 3
-        },
-        {
-          "name": "Troopers",
-          "count": 3
-        },
-        {
-          "name": "Language",
-          "count": 2
-        },
-        {
-          "name": "Motor",
-          "count": 2
-        },
-        {
-          "name": "Safety",
-          "count": 2
-        },
-        {
-          "name": "During",
-          "count": 2
-        },
-        {
-          "name": "Sean",
-          "count": 2
-        },
-        {
-          "name": "Duffy",
-          "count": 2
         },
         {
           "name": "This",
+          "count": 4
+        },
+        {
+          "name": "Poore",
+          "count": 3
+        },
+        {
+          "name": "New",
+          "count": 3
+        },
+        {
+          "name": "Lewisham",
+          "count": 3
+        },
+        {
+          "name": "Council",
+          "count": 3
+        },
+        {
+          "name": "And",
+          "count": 3
+        },
+        {
+          "name": "Radstone",
+          "count": 3
+        },
+        {
+          "name": "Share",
           "count": 2
         },
         {
-          "name": "July",
-          "count": 2
-        },
-        {
-          "name": "Breitbart",
+          "name": "Save",
           "count": 2
         },
         {
@@ -387,163 +1428,215 @@
           "count": 2
         },
         {
-          "name": "United",
+          "name": "London",
           "count": 2
         },
         {
-          "name": "States",
+          "name": "Corinaxs",
           "count": 2
         },
         {
-          "name": "Immigration",
+          "name": "Victorian",
           "count": 2
         },
         {
-          "name": "Fort",
+          "name": "Some",
           "count": 2
         },
         {
-          "name": "Pierce",
+          "name": "Your",
           "count": 2
         },
         {
-          "name": "August",
+          "name": "However",
           "count": 2
         },
         {
-          "name": "Report",
+          "name": "Meanwhile",
+          "count": 2
+        },
+        {
+          "name": "Ann",
+          "count": 2
+        },
+        {
+          "name": "Devereaux",
+          "count": 2
+        },
+        {
+          "name": "Programme",
+          "count": 2
+        },
+        {
+          "name": "Bonus",
+          "count": 2
+        },
+        {
+          "name": "Councils",
+          "count": 2
+        },
+        {
+          "name": "English",
+          "count": 2
+        },
+        {
+          "name": "Kent",
+          "count": 2
+        },
+        {
+          "name": "Use",
+          "count": 2
+        },
+        {
+          "name": "Matthew",
+          "count": 2
+        },
+        {
+          "name": "Pennycook",
+          "count": 2
+        },
+        {
+          "name": "You",
+          "count": 2
+        },
+        {
+          "name": "More",
+          "count": 2
+        },
+        {
+          "name": "One",
+          "count": 2
+        },
+        {
+          "name": "Basran",
+          "count": 2
+        },
+        {
+          "name": "Angela",
+          "count": 2
+        },
+        {
+          "name": "Rayner",
+          "count": 2
+        },
+        {
+          "name": "Communities",
+          "count": 2
+        },
+        {
+          "name": "Gerry",
           "count": 1
         },
         {
-          "name": "Illegal",
+          "name": "Georgieva",
           "count": 1
         },
         {
-          "name": "Trucker",
+          "name": "Data",
           "count": 1
         },
         {
-          "name": "Behind",
+          "name": "Unit",
           "count": 1
         },
         {
-          "name": "Fatal",
+          "name": "Gerghana",
           "count": 1
         },
         {
-          "name": "Failed",
+          "name": "Cross",
           "count": 1
         },
         {
-          "name": "Test",
+          "name": "Gate",
           "count": 1
         },
         {
-          "name": "Lucie",
+          "name": "Inside",
           "count": 1
         },
         {
-          "name": "County",
+          "name": "Pigeons",
           "count": 1
         },
         {
-          "name": "Sheriffs",
+          "name": "Still",
           "count": 1
         },
         {
-          "name": "Marshals",
+          "name": "After",
           "count": 1
         },
         {
-          "name": "Elizabeth",
+          "name": "Voice",
           "count": 1
         },
         {
-          "name": "Weibel",
+          "name": "Just",
           "count": 1
         },
         {
-          "name": "Aug",
+          "name": "October",
           "count": 1
         },
         {
-          "name": "Americans",
+          "name": "Mike",
           "count": 1
         },
         {
-          "name": "Federal",
+          "name": "Pictures",
           "count": 1
         },
         {
-          "name": "Carrier",
+          "name": "Getty",
           "count": 1
         },
         {
-          "name": "Administration",
+          "name": "Images",
           "count": 1
         },
         {
-          "name": "Proficiency",
+          "name": "Bringing",
           "count": 1
         },
         {
-          "name": "Secretary",
+          "name": "Rising",
           "count": 1
         },
         {
-          "name": "Nonenforcement",
+          "name": "Not",
           "count": 1
         },
         {
-          "name": "Washington",
+          "name": "Wales",
           "count": 1
         },
         {
-          "name": "Highway",
+          "name": "Scotland",
           "count": 1
         },
         {
-          "name": "Vehicles",
+          "name": "Northern",
           "count": 1
         },
         {
-          "name": "Saturday",
+          "name": "Ireland",
           "count": 1
         },
         {
-          "name": "Customs",
+          "name": "Fixing",
           "count": 1
         },
         {
-          "name": "Enforcement",
+          "name": "Werburghxs",
           "count": 1
         },
         {
-          "name": "Mexico",
+          "name": "Bristol",
           "count": 1
         },
         {
-          "name": "Defendant",
-          "count": 1
-        },
-        {
-          "name": "Turnpike",
-          "count": 1
-        },
-        {
-          "name": "President",
-          "count": 1
-        },
-        {
-          "name": "Donald",
-          "count": 1
-        },
-        {
-          "name": "Trump",
-          "count": 1
-        },
-        {
-          "name": "April",
+          "name": "Coalition",
           "count": 1
         },
         {
@@ -551,38 +1644,2813 @@
           "count": 1
         },
         {
-          "name": "Crime",
+          "name": "Between",
           "count": 1
         },
         {
-          "name": "India",
+          "name": "Action",
+          "count": 1
+        },
+        {
+          "name": "Coalitionxs",
+          "count": 1
+        },
+        {
+          "name": "Currently",
+          "count": 1
+        },
+        {
+          "name": "Benjamin",
+          "count": 1
+        },
+        {
+          "name": "Other",
+          "count": 1
+        },
+        {
+          "name": "Though",
+          "count": 1
+        },
+        {
+          "name": "Nearly",
+          "count": 1
+        },
+        {
+          "name": "Now",
+          "count": 1
+        },
+        {
+          "name": "Last",
+          "count": 1
+        },
+        {
+          "name": "Elsewhere",
+          "count": 1
+        },
+        {
+          "name": "Almost",
+          "count": 1
+        },
+        {
+          "name": "Spot",
+          "count": 1
+        },
+        {
+          "name": "Property",
+          "count": 1
+        },
+        {
+          "name": "Adam",
+          "count": 1
+        },
+        {
+          "name": "Network",
+          "count": 1
+        },
+        {
+          "name": "County",
+          "count": 1
+        },
+        {
+          "name": "Part",
+          "count": 1
+        },
+        {
+          "name": "Office",
+          "count": 1
+        },
+        {
+          "name": "National",
+          "count": 1
+        },
+        {
+          "name": "Statisticsx",
+          "count": 1
+        },
+        {
+          "name": "Katie",
+          "count": 1
+        },
+        {
+          "name": "Watson",
+          "count": 1
+        },
+        {
+          "name": "Finders",
+          "count": 1
+        },
+        {
+          "name": "International",
+          "count": 1
+        },
+        {
+          "name": "Then",
+          "count": 1
+        },
+        {
+          "name": "Jasmine",
+          "count": 1
+        },
+        {
+          "name": "Crisis",
+          "count": 1
+        },
+        {
+          "name": "When",
+          "count": 1
+        },
+        {
+          "name": "For",
+          "count": 1
+        },
+        {
+          "name": "Grimshaw",
+          "count": 1
+        },
+        {
+          "name": "Conservative",
+          "count": 1
+        },
+        {
+          "name": "March",
+          "count": 1
+        },
+        {
+          "name": "House",
+          "count": 1
+        },
+        {
+          "name": "Simon",
+          "count": 1
+        },
+        {
+          "name": "Hoare",
+          "count": 1
+        },
+        {
+          "name": "Secretary",
+          "count": 1
+        },
+        {
+          "name": "Ministry",
+          "count": 1
+        },
+        {
+          "name": "Local",
+          "count": 1
+        },
+        {
+          "name": "Government",
+          "count": 1
+        },
+        {
+          "name": "Britainxs",
+          "count": 1
+        },
+        {
+          "name": "Back",
+          "count": 1
+        },
+        {
+          "name": "She",
+          "count": 1
+        },
+        {
+          "name": "Sounds",
+          "count": 1
+        },
+        {
+          "name": "Affordable",
+          "count": 1
+        },
+        {
+          "name": "Department",
+          "count": 1
+        },
+        {
+          "name": "Levelling",
+          "count": 1
+        },
+        {
+          "name": "Social",
           "count": 1
         }
       ],
       "topEntities": [
         {
-          "name": "Florida",
+          "name": "The",
+          "count": 11
+        },
+        {
+          "name": "Empty",
           "count": 7
         },
         {
-          "name": "Singh",
+          "name": "Corina",
           "count": 7
+        },
+        {
+          "name": "England",
+          "count": 6
+        },
+        {
+          "name": "But",
+          "count": 6
+        }
+      ],
+      "entityCount": 121
+    },
+    "timestamp": "2025-08-20T16:36:26.331Z"
+  },
+  "analysis_article_1755707786335_1": {
+    "wordCount": 1085,
+    "readingTime": 6,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "health",
+      "economy",
+      "education",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
+    },
+    "summary": "Difficult decisions lie ahead after asylum seeker hotel ruling 2 hours ago Share Save Dominic Casciani Home and Legal Correspondent • @BBCDomC Share Save Getty Images A string of protests took place outside The Bell Hotel in Epping over the summer, which police said became violent on occasion The Hi...",
+    "biasIndicators": {
+      "political": [
+        "conservative"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.65,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "In short, the council argued the hotel had breached local planning controls by changing its use, and that in turn had led to events that changed the area: unlawful protests, fear of crime, concerns for 1,800 children going to school from September",
+        "startIndex": 1018,
+        "endIndex": 1265
+      },
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.65,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "&quot;[Local] Fear of crime resulting from the use of the Bell, the need to address lawful protests and the consequences of the actions taken to address unlawful activity are relevant factors in support of interim relief,&quot; said the judge",
+        "startIndex": 1686,
+        "endIndex": 1928
+      },
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.65,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "In other words, the council showed him some limited evidence of impact, rather that just a fear of impact, and that justified a temporary injunction to prevent irreparable harm",
+        "startIndex": 1930,
+        "endIndex": 2106
+      },
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.65,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "More asylum hotels face legal challenge after court ruling Asylum hotel ruling leaves ministers with major headache Council &#x27;has money&#x27; to fight asylum hotel appeal If other councils want to use the ruling, they can&#x27;t just knock on the court&#x27;s doors to ask that asylum seekers are removed from a hotel because they fear protests",
+        "startIndex": 2108,
+        "endIndex": 2456
+      },
+      {
+        "type": "FALSE_DICHOTOMY",
+        "confidence": 0.8,
+        "explanation": "False Dichotomy: Presenting only two options when others exist.",
+        "excerpt": "Those people were either being settled and had permission to pay their own way by getting a job, or they were facing removal from the UK",
+        "startIndex": 4688,
+        "endIndex": 4824
+      }
+    ],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "The",
+          "count": 11
+        },
+        {
+          "name": "Home",
+          "count": 9
+        },
+        {
+          "name": "Office",
+          "count": 8
+        },
+        {
+          "name": "Epping",
+          "count": 4
+        },
+        {
+          "name": "Council",
+          "count": 3
+        },
+        {
+          "name": "Those",
+          "count": 3
+        },
+        {
+          "name": "Share",
+          "count": 2
+        },
+        {
+          "name": "Save",
+          "count": 2
+        },
+        {
+          "name": "Getty",
+          "count": 2
+        },
+        {
+          "name": "Images",
+          "count": 2
+        },
+        {
+          "name": "Bell",
+          "count": 2
+        },
+        {
+          "name": "But",
+          "count": 2
+        },
+        {
+          "name": "There",
+          "count": 2
+        },
+        {
+          "name": "Parliament",
+          "count": 2
+        },
+        {
+          "name": "All",
+          "count": 2
+        },
+        {
+          "name": "That",
+          "count": 2
+        },
+        {
+          "name": "Difficult",
+          "count": 1
+        },
+        {
+          "name": "Dominic",
+          "count": 1
+        },
+        {
+          "name": "Casciani",
+          "count": 1
+        },
+        {
+          "name": "Legal",
+          "count": 1
+        },
+        {
+          "name": "Correspondent",
+          "count": 1
+        },
+        {
+          "name": "Hotel",
+          "count": 1
+        },
+        {
+          "name": "High",
+          "count": 1
+        },
+        {
+          "name": "Courtxs",
+          "count": 1
+        },
+        {
+          "name": "Individual",
+          "count": 1
+        },
+        {
+          "name": "Mondayxs",
+          "count": 1
+        },
+        {
+          "name": "September",
+          "count": 1
+        },
+        {
+          "name": "Justice",
+          "count": 1
+        },
+        {
+          "name": "Eyrexs",
+          "count": 1
+        },
+        {
+          "name": "Fear",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "Asylum",
+          "count": 1
+        },
+        {
+          "name": "And",
+          "count": 1
+        },
+        {
+          "name": "What",
+          "count": 1
+        },
+        {
+          "name": "Critics",
+          "count": 1
+        },
+        {
+          "name": "Conservatives",
+          "count": 1
+        },
+        {
+          "name": "Bibi",
+          "count": 1
+        },
+        {
+          "name": "Stockholm",
+          "count": 1
+        },
+        {
+          "name": "Dorset",
+          "count": 1
+        },
+        {
+          "name": "Napier",
+          "count": 1
+        },
+        {
+          "name": "Folkestone",
+          "count": 1
+        },
+        {
+          "name": "Kent",
+          "count": 1
+        },
+        {
+          "name": "Both",
+          "count": 1
+        },
+        {
+          "name": "Officials",
+          "count": 1
+        },
+        {
+          "name": "French",
+          "count": 1
+        },
+        {
+          "name": "Spanish",
+          "count": 1
+        },
+        {
+          "name": "Germany",
+          "count": 1
+        },
+        {
+          "name": "Twenty",
+          "count": 1
+        },
+        {
+          "name": "Tony",
+          "count": 1
+        },
+        {
+          "name": "Blairxs",
+          "count": 1
+        },
+        {
+          "name": "How",
+          "count": 1
+        },
+        {
+          "name": "Thatxs",
+          "count": 1
         },
         {
           "name": "English",
+          "count": 1
+        },
+        {
+          "name": "Channel",
+          "count": 1
+        },
+        {
+          "name": "Rwanda",
+          "count": 1
+        },
+        {
+          "name": "They",
+          "count": 1
+        },
+        {
+          "name": "Ipswich",
+          "count": 1
+        },
+        {
+          "name": "Borough",
+          "count": 1
+        },
+        {
+          "name": "East",
+          "count": 1
+        },
+        {
+          "name": "Riding",
+          "count": 1
+        },
+        {
+          "name": "Yorkshire",
+          "count": 1
+        },
+        {
+          "name": "Ministers",
+          "count": 1
+        },
+        {
+          "name": "Great",
+          "count": 1
+        },
+        {
+          "name": "Yarmouth",
+          "count": 1
+        },
+        {
+          "name": "Refugees",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "The",
+          "count": 11
+        },
+        {
+          "name": "Home",
+          "count": 9
+        },
+        {
+          "name": "Office",
+          "count": 8
+        },
+        {
+          "name": "Epping",
+          "count": 4
+        },
+        {
+          "name": "Council",
+          "count": 3
+        }
+      ],
+      "entityCount": 65
+    },
+    "timestamp": "2025-08-20T16:36:26.336Z"
+  },
+  "analysis_article_1755707786344_0": {
+    "wordCount": 578,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "technology",
+      "economy",
+      "entertainment",
+      "sports"
+    ],
+    "credibility": {
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
+    },
+    "summary": "Ex-priest found guilty of 17 indecent assaults 34 minutes ago Share Save Share Save PA Media Chris Brain had stood trial at Inner London Crown Court A former priest accused of abusing members of a church group he led has been found guilty of 17 counts of indecent assault against nine women.  Chris B...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Brain",
+          "count": 11
+        },
+        {
+          "name": "The",
+          "count": 8
+        },
+        {
+          "name": "Chris",
+          "count": 3
+        },
+        {
+          "name": "Sheffield",
+          "count": 3
+        },
+        {
+          "name": "Church",
+          "count": 3
+        },
+        {
+          "name": "Priest",
+          "count": 3
+        },
+        {
+          "name": "Expriest",
+          "count": 2
+        },
+        {
+          "name": "Share",
+          "count": 2
+        },
+        {
+          "name": "Save",
+          "count": 2
+        },
+        {
+          "name": "Inner",
+          "count": 2
+        },
+        {
+          "name": "London",
+          "count": 2
+        },
+        {
+          "name": "Crown",
+          "count": 2
+        },
+        {
+          "name": "Court",
+          "count": 2
+        },
+        {
+          "name": "Nine",
+          "count": 2
+        },
+        {
+          "name": "Service",
+          "count": 2
+        },
+        {
+          "name": "Wilmslow",
+          "count": 2
+        },
+        {
+          "name": "England",
+          "count": 2
+        },
+        {
+          "name": "Media",
+          "count": 1
+        },
+        {
+          "name": "Cheshire",
+          "count": 1
+        },
+        {
+          "name": "Wearing",
+          "count": 1
+        },
+        {
+          "name": "Thursday",
+          "count": 1
+        },
+        {
+          "name": "During",
+          "count": 1
+        },
+        {
+          "name": "Tim",
+          "count": 1
+        },
+        {
+          "name": "Clark",
+          "count": 1
+        },
+        {
+          "name": "Trust",
+          "count": 1
+        },
+        {
+          "name": "Prosecutors",
+          "count": 1
+        },
+        {
+          "name": "Robert",
+          "count": 1
+        },
+        {
+          "name": "Niro",
+          "count": 1
+        },
+        {
+          "name": "Mission",
+          "count": 1
+        },
+        {
+          "name": "Ponds",
+          "count": 1
+        },
+        {
+          "name": "Forge",
+          "count": 1
+        },
+        {
+          "name": "But",
+          "count": 1
+        },
+        {
+          "name": "Brainxs",
+          "count": 1
+        },
+        {
+          "name": "Listen",
+          "count": 1
+        },
+        {
+          "name": "South",
+          "count": 1
+        },
+        {
+          "name": "Yorkshire",
+          "count": 1
+        },
+        {
+          "name": "Sounds",
+          "count": 1
+        },
+        {
+          "name": "Look",
+          "count": 1
+        },
+        {
+          "name": "North",
+          "count": 1
+        },
+        {
+          "name": "Related",
+          "count": 1
+        },
+        {
+          "name": "Courts",
+          "count": 1
+        },
+        {
+          "name": "Tribunals",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Brain",
+          "count": 11
+        },
+        {
+          "name": "The",
+          "count": 8
+        },
+        {
+          "name": "Chris",
+          "count": 3
+        },
+        {
+          "name": "Sheffield",
+          "count": 3
+        },
+        {
+          "name": "Church",
+          "count": 3
+        }
+      ],
+      "entityCount": 43
+    },
+    "timestamp": "2025-08-20T16:36:26.344Z"
+  },
+  "analysis_article_1755707786351_10": {
+    "wordCount": 1253,
+    "readingTime": 7,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "health",
+      "science",
+      "education",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
+    },
+    "summary": "MND left her without a voice.  Eight seconds of scratchy audio gave it back to her 12 hours ago Share Save Beth Rose BBC Access All Share Save Hear the difference between Sarah&#x27;s old robotic voice and her new AI-generated one &quot;After such a long time, I couldn&#x27;t really remember my voic...",
+    "biasIndicators": {
+      "emotional": [
+        "amazing"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.65,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "&quot;It was difficult to watch strangers care for my kids, but I&#x27;m grateful,&quot; says Sarah, sitting with Aviva and Eric",
+        "startIndex": 2873,
+        "endIndex": 3001
+      }
+    ],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Sarah",
+          "count": 24
+        },
+        {
+          "name": "Aviva",
+          "count": 9
+        },
+        {
+          "name": "The",
+          "count": 8
+        },
+        {
+          "name": "Eric",
+          "count": 8
+        },
+        {
+          "name": "But",
+          "count": 7
+        },
+        {
+          "name": "Sarahxs",
           "count": 6
+        },
+        {
+          "name": "Ezekiel",
+          "count": 5
+        },
+        {
+          "name": "All",
+          "count": 4
+        },
+        {
+          "name": "Access",
+          "count": 3
+        },
+        {
+          "name": "Eventually",
+          "count": 3
+        },
+        {
+          "name": "Simon",
+          "count": 3
+        },
+        {
+          "name": "Share",
+          "count": 2
+        },
+        {
+          "name": "Save",
+          "count": 2
+        },
+        {
+          "name": "Itxs",
+          "count": 2
+        },
+        {
+          "name": "Smartbox",
+          "count": 2
+        },
+        {
+          "name": "Her",
+          "count": 2
+        },
+        {
+          "name": "She",
+          "count": 2
+        },
+        {
+          "name": "And",
+          "count": 2
+        },
+        {
+          "name": "Eight",
+          "count": 1
+        },
+        {
+          "name": "Beth",
+          "count": 1
+        },
+        {
+          "name": "Rose",
+          "count": 1
+        },
+        {
+          "name": "Hear",
+          "count": 1
+        },
+        {
+          "name": "Bristolbased",
+          "count": 1
+        },
+        {
+          "name": "Barely",
+          "count": 1
+        },
+        {
+          "name": "Londoner",
+          "count": 1
+        },
+        {
+          "name": "Married",
+          "count": 1
+        },
+        {
+          "name": "Unexpectedly",
+          "count": 1
+        },
+        {
+          "name": "Ixd",
+          "count": 1
+        },
+        {
+          "name": "Within",
+          "count": 1
+        },
+        {
+          "name": "With",
+          "count": 1
+        },
+        {
+          "name": "Ixm",
+          "count": 1
+        },
+        {
+          "name": "Unable",
+          "count": 1
+        },
+        {
+          "name": "Being",
+          "count": 1
+        },
+        {
+          "name": "Five",
+          "count": 1
+        },
+        {
+          "name": "Stephen",
+          "count": 1
+        },
+        {
+          "name": "Hawking",
+          "count": 1
+        },
+        {
+          "name": "Association",
+          "count": 1
+        },
+        {
+          "name": "Lifelites",
+          "count": 1
+        },
+        {
+          "name": "Bristol",
+          "count": 1
+        },
+        {
+          "name": "Poole",
+          "count": 1
+        },
+        {
+          "name": "Rob",
+          "count": 1
+        },
+        {
+          "name": "Burrow",
+          "count": 1
+        },
+        {
+          "name": "Voice",
+          "count": 1
+        },
+        {
+          "name": "Isolator",
+          "count": 1
+        },
+        {
+          "name": "American",
+          "count": 1
+        },
+        {
+          "name": "Hearing",
+          "count": 1
+        },
+        {
+          "name": "Voices",
+          "count": 1
+        },
+        {
+          "name": "Susan",
+          "count": 1
+        },
+        {
+          "name": "Oman",
+          "count": 1
+        },
+        {
+          "name": "Sheffield",
+          "count": 1
+        },
+        {
+          "name": "University",
+          "count": 1
+        },
+        {
+          "name": "You",
+          "count": 1
+        },
+        {
+          "name": "Sounds",
+          "count": 1
+        },
+        {
+          "name": "Subscribe",
+          "count": 1
+        },
+        {
+          "name": "Motor",
+          "count": 1
+        },
+        {
+          "name": "Artificial",
+          "count": 1
+        },
+        {
+          "name": "Disability",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Sarah",
+          "count": 24
+        },
+        {
+          "name": "Aviva",
+          "count": 9
+        },
+        {
+          "name": "The",
+          "count": 8
+        },
+        {
+          "name": "Eric",
+          "count": 8
+        },
+        {
+          "name": "But",
+          "count": 7
+        }
+      ],
+      "entityCount": 57
+    },
+    "timestamp": "2025-08-20T16:36:26.354Z"
+  },
+  "analysis_article_1755707786544_13": {
+    "wordCount": 908,
+    "readingTime": 5,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy",
+      "education"
+    ],
+    "credibility": {
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
+    },
+    "summary": "Jewellery, cash or first cars: Do rewards boost exam grades.  9 hours ago Share Save Vanessa Clarke Education reporter Share Save Imogen Farmer Imogen Farmer was taken shopping in London as a reward for her A-level grades last year Hundreds of thousands of GCSE students are nervously waiting for the...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Imogen",
+          "count": 6
+        },
+        {
+          "name": "Alevel",
+          "count": 4
+        },
+        {
+          "name": "Jess",
+          "count": 4
+        },
+        {
+          "name": "Leon",
+          "count": 4
+        },
+        {
+          "name": "Farmer",
+          "count": 3
+        },
+        {
+          "name": "Cooper",
+          "count": 3
+        },
+        {
+          "name": "Smith",
+          "count": 3
+        },
+        {
+          "name": "Share",
+          "count": 2
+        },
+        {
+          "name": "Save",
+          "count": 2
+        },
+        {
+          "name": "London",
+          "count": 2
+        },
+        {
+          "name": "Thursday",
+          "count": 2
+        },
+        {
+          "name": "Ixm",
+          "count": 2
+        },
+        {
+          "name": "Alevels",
+          "count": 2
+        },
+        {
+          "name": "The",
+          "count": 2
+        },
+        {
+          "name": "Zach",
+          "count": 2
+        },
+        {
+          "name": "Manny",
+          "count": 2
+        },
+        {
+          "name": "Jewellery",
+          "count": 1
+        },
+        {
+          "name": "Vanessa",
+          "count": 1
+        },
+        {
+          "name": "Clarke",
+          "count": 1
+        },
+        {
+          "name": "Education",
+          "count": 1
+        },
+        {
+          "name": "Hundreds",
+          "count": 1
+        },
+        {
+          "name": "Ahead",
+          "count": 1
+        },
+        {
+          "name": "News",
+          "count": 1
+        },
+        {
+          "name": "Essex",
+          "count": 1
+        },
+        {
+          "name": "Vivienne",
+          "count": 1
+        },
+        {
+          "name": "Westwood",
+          "count": 1
+        },
+        {
+          "name": "Birmingham",
+          "count": 1
+        },
+        {
+          "name": "Both",
+          "count": 1
+        },
+        {
+          "name": "Student",
+          "count": 1
+        },
+        {
+          "name": "Some",
+          "count": 1
+        },
+        {
+          "name": "Surrey",
+          "count": 1
+        },
+        {
+          "name": "Isiah",
+          "count": 1
+        },
+        {
+          "name": "Year",
+          "count": 1
+        },
+        {
+          "name": "Sats",
+          "count": 1
+        },
+        {
+          "name": "Reah",
+          "count": 1
+        },
+        {
+          "name": "Mumoftwo",
+          "count": 1
+        },
+        {
+          "name": "Elaine",
+          "count": 1
+        },
+        {
+          "name": "Dean",
+          "count": 1
+        },
+        {
+          "name": "Manchester",
+          "count": 1
+        },
+        {
+          "name": "What",
+          "count": 1
+        },
+        {
+          "name": "When",
+          "count": 1
+        },
+        {
+          "name": "Experts",
+          "count": 1
+        },
+        {
+          "name": "Rewarding",
+          "count": 1
+        },
+        {
+          "name": "Natasha",
+          "count": 1
+        },
+        {
+          "name": "Tiwari",
+          "count": 1
+        },
+        {
+          "name": "She",
+          "count": 1
+        },
+        {
+          "name": "Different",
+          "count": 1
+        },
+        {
+          "name": "Botwe",
+          "count": 1
+        },
+        {
+          "name": "Association",
+          "count": 1
+        },
+        {
+          "name": "School",
+          "count": 1
+        },
+        {
+          "name": "College",
+          "count": 1
+        },
+        {
+          "name": "Leaders",
+          "count": 1
+        },
+        {
+          "name": "Secondary",
+          "count": 1
+        },
+        {
+          "name": "From",
+          "count": 1
+        },
+        {
+          "name": "Additional",
+          "count": 1
+        },
+        {
+          "name": "Emily",
+          "count": 1
+        },
+        {
+          "name": "Doughty",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "Pupils",
+          "count": 1
+        },
+        {
+          "name": "Why",
+          "count": 1
+        },
+        {
+          "name": "Joy",
+          "count": 1
+        },
+        {
+          "name": "Five",
+          "count": 1
+        },
+        {
+          "name": "Exams",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Imogen",
+          "count": 6
+        },
+        {
+          "name": "Alevel",
+          "count": 4
+        },
+        {
+          "name": "Jess",
+          "count": 4
+        },
+        {
+          "name": "Leon",
+          "count": 4
+        },
+        {
+          "name": "Farmer",
+          "count": 3
+        }
+      ],
+      "entityCount": 63
+    },
+    "timestamp": "2025-08-20T16:36:26.545Z"
+  },
+  "analysis_article_1755707786549_14": {
+    "wordCount": 96,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "easy",
+    "keyTopics": [
+      "technology",
+      "environment",
+      "sports",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
+    },
+    "summary": " Published 12 August 2025 Updated 20 August 2025 05:24 BST What information do we collect from this quiz.  Britain&#x27;s true national sport is complaining about the weather.  But does the Sun really shine brighter everywhere else, or is this quite a green and pleasant land after all.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Cooler",
+          "count": 2
+        },
+        {
+          "name": "Than",
+          "count": 2
+        },
+        {
+          "name": "August",
+          "count": 2
+        },
+        {
+          "name": "Play",
+          "count": 1
+        },
+        {
+          "name": "Published",
+          "count": 1
+        },
+        {
+          "name": "Updated",
+          "count": 1
+        },
+        {
+          "name": "What",
+          "count": 1
+        },
+        {
+          "name": "Britainxs",
+          "count": 1
+        },
+        {
+          "name": "But",
+          "count": 1
+        },
+        {
+          "name": "Sun",
+          "count": 1
+        },
+        {
+          "name": "Compare",
+          "count": 1
+        },
+        {
+          "name": "You",
+          "count": 1
+        },
+        {
+          "name": "Weather",
+          "count": 1
+        },
+        {
+          "name": "Want",
+          "count": 1
+        },
+        {
+          "name": "Read",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Cooler",
+          "count": 2
+        },
+        {
+          "name": "Than",
+          "count": 2
+        },
+        {
+          "name": "August",
+          "count": 2
+        },
+        {
+          "name": "Play",
+          "count": 1
+        },
+        {
+          "name": "Published",
+          "count": 1
+        }
+      ],
+      "entityCount": 15
+    },
+    "timestamp": "2025-08-20T16:36:26.549Z"
+  },
+  "analysis_article_1755707786626_16": {
+    "wordCount": 556,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "health",
+      "entertainment",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
+    },
+    "summary": "Aubrey Plaza says grief is a &#x27;giant ocean of awfulness&#x27; 7 hours ago Share Save Ian Youngs Culture reporter Share Save Getty Images Aubrey Plaza speaks publicly for the first time since Jeff Baena&#x27;s suicide seven months ago The actress married the film-maker in 2021 and they separated ...",
+    "biasIndicators": {
+      "opinionated": [
+        "obviously"
+      ]
+    },
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Plaza",
+          "count": 13
+        },
+        {
+          "name": "The",
+          "count": 9
+        },
+        {
+          "name": "Aubrey",
+          "count": 6
+        },
+        {
+          "name": "Baena",
+          "count": 5
+        },
+        {
+          "name": "Jeff",
+          "count": 4
+        },
+        {
+          "name": "Ixm",
+          "count": 4
+        },
+        {
+          "name": "Share",
+          "count": 2
+        },
+        {
+          "name": "Save",
+          "count": 2
+        },
+        {
+          "name": "Getty",
+          "count": 2
+        },
+        {
+          "name": "Images",
+          "count": 2
+        },
+        {
+          "name": "January",
+          "count": 2
+        },
+        {
+          "name": "Little",
+          "count": 2
+        },
+        {
+          "name": "Hours",
+          "count": 2
+        },
+        {
+          "name": "Los",
+          "count": 2
+        },
+        {
+          "name": "Angeles",
+          "count": 2
+        },
+        {
+          "name": "Ian",
+          "count": 1
+        },
+        {
+          "name": "Youngs",
+          "count": 1
+        },
+        {
+          "name": "Culture",
+          "count": 1
+        },
+        {
+          "name": "Baenaxs",
+          "count": 1
+        },
+        {
+          "name": "Actress",
+          "count": 1
+        },
+        {
+          "name": "Parks",
+          "count": 1
+        },
+        {
+          "name": "Recreation",
+          "count": 1
+        },
+        {
+          "name": "Amy",
+          "count": 1
+        },
+        {
+          "name": "Poehlerxs",
+          "count": 1
+        },
+        {
+          "name": "Asked",
+          "count": 1
+        },
+        {
+          "name": "But",
+          "count": 1
+        },
+        {
+          "name": "Life",
+          "count": 1
+        },
+        {
+          "name": "After",
+          "count": 1
+        },
+        {
+          "name": "Beth",
+          "count": 1
+        },
+        {
+          "name": "Good",
+          "count": 1
+        },
+        {
+          "name": "Hang",
+          "count": 1
+        },
+        {
+          "name": "Poehler",
+          "count": 1
+        },
+        {
+          "name": "Gorge",
+          "count": 1
+        },
+        {
+          "name": "That",
+          "count": 1
+        },
+        {
+          "name": "Miles",
+          "count": 1
+        },
+        {
+          "name": "Teller",
+          "count": 1
+        },
+        {
+          "name": "Anya",
+          "count": 1
+        },
+        {
+          "name": "Did",
+          "count": 1
+        },
+        {
+          "name": "Gorgequot",
+          "count": 1
+        },
+        {
+          "name": "September",
+          "count": 1
+        },
+        {
+          "name": "County",
+          "count": 1
+        },
+        {
+          "name": "Coroner",
+          "count": 1
+        },
+        {
+          "name": "Investigator",
+          "count": 1
+        },
+        {
+          "name": "White",
+          "count": 1
+        },
+        {
+          "name": "Lotus",
+          "count": 1
+        },
+        {
+          "name": "Marvel",
+          "count": 1
+        },
+        {
+          "name": "Agatha",
+          "count": 1
+        },
+        {
+          "name": "All",
+          "count": 1
+        },
+        {
+          "name": "Along",
+          "count": 1
+        },
+        {
+          "name": "Honey",
+          "count": 1
+        },
+        {
+          "name": "Donxt",
+          "count": 1
+        },
+        {
+          "name": "Heart",
+          "count": 1
+        },
+        {
+          "name": "Huckabees",
+          "count": 1
+        },
+        {
+          "name": "Joshy",
+          "count": 1
+        },
+        {
+          "name": "Horse",
+          "count": 1
+        },
+        {
+          "name": "Girl",
+          "count": 1
+        },
+        {
+          "name": "Action",
+          "count": 1
+        },
+        {
+          "name": "Line",
+          "count": 1
+        },
+        {
+          "name": "News",
+          "count": 1
+        },
+        {
+          "name": "Find",
+          "count": 1
+        },
+        {
+          "name": "Filmmaker",
+          "count": 1
+        },
+        {
+          "name": "Television",
+          "count": 1
+        },
+        {
+          "name": "Film",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Plaza",
+          "count": 13
+        },
+        {
+          "name": "The",
+          "count": 9
+        },
+        {
+          "name": "Aubrey",
+          "count": 6
+        },
+        {
+          "name": "Baena",
+          "count": 5
+        },
+        {
+          "name": "Jeff",
+          "count": 4
+        }
+      ],
+      "entityCount": 63
+    },
+    "timestamp": "2025-08-20T16:36:26.627Z"
+  },
+  "analysis_article_1755707786656_15": {
+    "wordCount": 817,
+    "readingTime": 5,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "science"
+    ],
+    "credibility": {
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
+    },
+    "summary": "Leaked report shows 10,000 shortfall in probation staff 12 hours ago Share Save Sima Kotecha Senior UK correspondent • @Sima_Kotecha Share Save BBC There is a shortfall of around 10,000 probation staff to manage offenders serving sentences in the community, documents seen by the BBC show.  Probation...",
+    "biasIndicators": {
+      "sensationalist": [
+        "secret"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.65,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "&quot;Someone is going to get seriously hurt because when you&#x27;re stressed and overworked you can&#x27;t get everything right - it&#x27;s just human nature - and that&#x27;s why they need thousands of more staff because it could be dangerous otherwise,&quot; another probation officer said",
+        "startIndex": 3144,
+        "endIndex": 3437
+      },
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.65,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "Probation: &#x27;Too few staff, with too little experience, managing too many offenders&#x27; Violence, overcrowding, self-harm: BBC goes inside one of Britain’s most dangerous prisons Prison gangs: ‘I&#x27;ve chopped people, attacked staff, hidden drugs’ Ministry of Justice Criminal justice system",
+        "startIndex": 4993,
+        "endIndex": 5292
+      }
+    ],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Probation",
+          "count": 6
+        },
+        {
+          "name": "Justice",
+          "count": 3
+        },
+        {
+          "name": "The",
+          "count": 3
+        },
+        {
+          "name": "March",
+          "count": 3
+        },
+        {
+          "name": "Share",
+          "count": 2
+        },
+        {
+          "name": "Save",
+          "count": 2
+        },
+        {
+          "name": "They",
+          "count": 2
+        },
+        {
+          "name": "Ministry",
+          "count": 2
+        },
+        {
+          "name": "According",
+          "count": 2
+        },
+        {
+          "name": "September",
+          "count": 2
+        },
+        {
+          "name": "This",
+          "count": 2
+        },
+        {
+          "name": "Prison",
+          "count": 2
+        },
+        {
+          "name": "Leaked",
+          "count": 1
+        },
+        {
+          "name": "Sima",
+          "count": 1
+        },
+        {
+          "name": "Kotecha",
+          "count": 1
+        },
+        {
+          "name": "Senior",
+          "count": 1
+        },
+        {
+          "name": "There",
+          "count": 1
+        },
+        {
+          "name": "His",
+          "count": 1
+        },
+        {
+          "name": "Majestyxs",
+          "count": 1
+        },
+        {
+          "name": "Service",
+          "count": 1
+        },
+        {
+          "name": "Between",
+          "count": 1
+        },
+        {
+          "name": "February",
+          "count": 1
+        },
+        {
+          "name": "Secretary",
+          "count": 1
+        },
+        {
+          "name": "Shabana",
+          "count": 1
+        },
+        {
+          "name": "Mahmood",
+          "count": 1
+        },
+        {
+          "name": "April",
+          "count": 1
+        },
+        {
+          "name": "Staff",
+          "count": 1
+        },
+        {
+          "name": "And",
+          "count": 1
+        },
+        {
+          "name": "Last",
+          "count": 1
+        },
+        {
+          "name": "Inspectorate",
+          "count": 1
+        },
+        {
+          "name": "England",
+          "count": 1
+        },
+        {
+          "name": "Wales",
+          "count": 1
+        },
+        {
+          "name": "Sentence",
+          "count": 1
+        },
+        {
+          "name": "One",
+          "count": 1
+        },
+        {
+          "name": "Many",
+          "count": 1
+        },
+        {
+          "name": "Independent",
+          "count": 1
+        },
+        {
+          "name": "Sentencing",
+          "count": 1
+        },
+        {
+          "name": "Review",
+          "count": 1
+        },
+        {
+          "name": "Violence",
+          "count": 1
+        },
+        {
+          "name": "Britains",
+          "count": 1
+        },
+        {
+          "name": "Ixve",
+          "count": 1
+        },
+        {
+          "name": "Criminal",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Probation",
+          "count": 6
+        },
+        {
+          "name": "Justice",
+          "count": 3
+        },
+        {
+          "name": "The",
+          "count": 3
+        },
+        {
+          "name": "March",
+          "count": 3
+        },
+        {
+          "name": "Share",
+          "count": 2
+        }
+      ],
+      "entityCount": 42
+    },
+    "timestamp": "2025-08-20T16:36:26.657Z"
+  },
+  "analysis_article_1755707786693_17": {
+    "wordCount": 751,
+    "readingTime": 4,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "health",
+      "education"
+    ],
+    "credibility": {
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
+    },
+    "summary": "Man who shot PC with crossbow jailed for nine years 1 hour ago Share Save Julita Waleskiewicz BBC News, Buckinghamshire Reporting from Amersham Law Courts Brian Farmer BBC News, Buckinghamshire Share Save Jason King attacked a neighbour before shooting a police officer with a crossbow A man who shot...",
+    "biasIndicators": {
+      "opinionated": [
+        "clearly"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.65,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "He told King he was &quot;clearly beside yourself&quot; with anger during the incident",
+        "startIndex": 2085,
+        "endIndex": 2171
+      }
+    ],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "King",
+          "count": 17
+        },
+        {
+          "name": "Foster",
+          "count": 5
         },
         {
           "name": "The",
           "count": 5
         },
         {
-          "name": "State",
+          "name": "Thames",
+          "count": 4
+        },
+        {
+          "name": "Valley",
+          "count": 4
+        },
+        {
+          "name": "Police",
+          "count": 4
+        },
+        {
+          "name": "Buckinghamshire",
+          "count": 3
+        },
+        {
+          "name": "Jason",
+          "count": 3
+        },
+        {
+          "name": "May",
+          "count": 3
+        },
+        {
+          "name": "Judge",
+          "count": 3
+        },
+        {
+          "name": "Cooper",
+          "count": 3
+        },
+        {
+          "name": "Man",
+          "count": 2
+        },
+        {
+          "name": "Share",
+          "count": 2
+        },
+        {
+          "name": "Save",
+          "count": 2
+        },
+        {
+          "name": "News",
+          "count": 2
+        },
+        {
+          "name": "Amersham",
+          "count": 2
+        },
+        {
+          "name": "Downley",
+          "count": 2
+        },
+        {
+          "name": "Barrister",
+          "count": 2
+        },
+        {
+          "name": "Smith",
+          "count": 2
+        },
+        {
+          "name": "Kimsey",
+          "count": 2
+        },
+        {
+          "name": "Julita",
+          "count": 1
+        },
+        {
+          "name": "Waleskiewicz",
+          "count": 1
+        },
+        {
+          "name": "Reporting",
+          "count": 1
+        },
+        {
+          "name": "Law",
+          "count": 1
+        },
+        {
+          "name": "Courts",
+          "count": 1
+        },
+        {
+          "name": "Brian",
+          "count": 1
+        },
+        {
+          "name": "Farmer",
+          "count": 1
+        },
+        {
+          "name": "Curtis",
+          "count": 1
+        },
+        {
+          "name": "Crown",
+          "count": 1
+        },
+        {
+          "name": "Court",
+          "count": 1
+        },
+        {
+          "name": "Jonathan",
+          "count": 1
+        },
+        {
+          "name": "School",
+          "count": 1
+        },
+        {
+          "name": "Close",
+          "count": 1
+        },
+        {
+          "name": "Kingxs",
+          "count": 1
+        },
+        {
+          "name": "Graham",
+          "count": 1
+        },
+        {
+          "name": "Mark",
+          "count": 1
+        },
+        {
+          "name": "Egyptian",
+          "count": 1
+        },
+        {
+          "name": "Follow",
+          "count": 1
+        },
+        {
+          "name": "Beds",
+          "count": 1
+        },
+        {
+          "name": "Herts",
+          "count": 1
+        },
+        {
+          "name": "Bucks",
+          "count": 1
+        },
+        {
+          "name": "Sounds",
+          "count": 1
+        },
+        {
+          "name": "Facebook",
+          "count": 1
+        },
+        {
+          "name": "Instagram",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "Related",
+          "count": 1
+        },
+        {
+          "name": "High",
+          "count": 1
+        },
+        {
+          "name": "Wycombe",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "King",
+          "count": 17
+        },
+        {
+          "name": "Foster",
+          "count": 5
+        },
+        {
+          "name": "The",
+          "count": 5
+        },
+        {
+          "name": "Thames",
+          "count": 4
+        },
+        {
+          "name": "Valley",
           "count": 4
         }
       ],
-      "entityCount": 67
+      "entityCount": 48
     },
-    "timestamp": "2025-08-20T16:34:27.928Z"
+    "timestamp": "2025-08-20T16:36:26.694Z"
+  },
+  "analysis_article_1755707786709_19": {
+    "wordCount": 520,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "health",
+      "economy"
+    ],
+    "credibility": {
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
+    },
+    "summary": "Sanex shower gel ad banned over racial stereotype 18 hours ago Share Save Emer Moreau Business reporter, BBC News Share Save Sanex A shot from the now banned Sanex advert A TV advert for Sanex shower gel which showed black skin as cracked and white skin as smooth has been banned for reinforcing a ra...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Sanex",
+          "count": 8
+        },
+        {
+          "name": "The",
+          "count": 8
+        },
+        {
+          "name": "Advertising",
+          "count": 3
+        },
+        {
+          "name": "Share",
+          "count": 2
+        },
+        {
+          "name": "Save",
+          "count": 2
+        },
+        {
+          "name": "News",
+          "count": 2
+        },
+        {
+          "name": "Standards",
+          "count": 2
+        },
+        {
+          "name": "Authority",
+          "count": 2
+        },
+        {
+          "name": "Emer",
+          "count": 1
+        },
+        {
+          "name": "Moreau",
+          "count": 1
+        },
+        {
+          "name": "Business",
+          "count": 1
+        },
+        {
+          "name": "June",
+          "count": 1
+        },
+        {
+          "name": "Another",
+          "count": 1
+        },
+        {
+          "name": "For",
+          "count": 1
+        },
+        {
+          "name": "Clearcast",
+          "count": 1
+        },
+        {
+          "name": "One",
+          "count": 1
+        },
+        {
+          "name": "Councilxs",
+          "count": 1
+        },
+        {
+          "name": "Our",
+          "count": 1
+        },
+        {
+          "name": "Skin",
+          "count": 1
+        },
+        {
+          "name": "Therapy",
+          "count": 1
+        },
+        {
+          "name": "Companies",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Sanex",
+          "count": 8
+        },
+        {
+          "name": "The",
+          "count": 8
+        },
+        {
+          "name": "Advertising",
+          "count": 3
+        },
+        {
+          "name": "Share",
+          "count": 2
+        },
+        {
+          "name": "Save",
+          "count": 2
+        }
+      ],
+      "entityCount": 21
+    },
+    "timestamp": "2025-08-20T16:36:26.709Z"
+  },
+  "analysis_article_1755707786768_18": {
+    "wordCount": 172,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology"
+    ],
+    "credibility": {
+      "score": 0.9,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length"
+    },
+    "summary": "Labour MSP Colin Smyth charged over indecent images 1 hour ago Share Save Andrew Kerr and Angus Cochrane BBC Scotland News Share Save Getty Images Scottish Labour MSP Colin Smyth has been arrested and charged over possession of indecent images.  The 52-year-old, who has represented South Scotland si...",
+    "biasIndicators": {
+      "sensationalist": [
+        "secret"
+      ]
+    },
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Smyth",
+          "count": 6
+        },
+        {
+          "name": "Labour",
+          "count": 5
+        },
+        {
+          "name": "Scottish",
+          "count": 5
+        },
+        {
+          "name": "Scotland",
+          "count": 4
+        },
+        {
+          "name": "Colin",
+          "count": 3
+        },
+        {
+          "name": "Share",
+          "count": 2
+        },
+        {
+          "name": "Save",
+          "count": 2
+        },
+        {
+          "name": "News",
+          "count": 2
+        },
+        {
+          "name": "Dumfries",
+          "count": 2
+        },
+        {
+          "name": "Andrew",
+          "count": 1
+        },
+        {
+          "name": "Kerr",
+          "count": 1
+        },
+        {
+          "name": "Angus",
+          "count": 1
+        },
+        {
+          "name": "Cochrane",
+          "count": 1
+        },
+        {
+          "name": "Getty",
+          "count": 1
+        },
+        {
+          "name": "Images",
+          "count": 1
+        },
+        {
+          "name": "The",
+          "count": 1
+        },
+        {
+          "name": "South",
+          "count": 1
+        },
+        {
+          "name": "Sheriff",
+          "count": 1
+        },
+        {
+          "name": "Court",
+          "count": 1
+        },
+        {
+          "name": "April",
+          "count": 1
+        },
+        {
+          "name": "Labourxs",
+          "count": 1
+        },
+        {
+          "name": "His",
+          "count": 1
+        },
+        {
+          "name": "Parliament",
+          "count": 1
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Smyth",
+          "count": 6
+        },
+        {
+          "name": "Labour",
+          "count": 5
+        },
+        {
+          "name": "Scottish",
+          "count": 5
+        },
+        {
+          "name": "Scotland",
+          "count": 4
+        },
+        {
+          "name": "Colin",
+          "count": 3
+        }
+      ],
+      "entityCount": 23
+    },
+    "timestamp": "2025-08-20T16:36:26.768Z"
+  },
+  "analysis_1755707796025": {
+    "wordCount": 30,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology"
+    ],
+    "credibility": {
+      "score": 0.5,
+      "level": "medium",
+      "reason": "Standard content assessment"
+    },
+    "summary": "This is clearly a false dichotomy because you either support us or you are against us.  This is obviously an ad hominem attack on the person rather than the argument.",
+    "biasIndicators": {
+      "opinionated": [
+        "clearly",
+        "obviously"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "FALSE_DICHOTOMY",
+        "confidence": 0.8,
+        "explanation": "False Dichotomy: Presenting only two options when others exist.",
+        "excerpt": "This is clearly a false dichotomy because you either support us or you are against us",
+        "startIndex": 0,
+        "endIndex": 85
+      }
+    ],
+    "timestamp": "2025-08-20T16:36:36.025Z"
+  },
+  "analysis_1755707801948": {
+    "wordCount": 30,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology"
+    ],
+    "credibility": {
+      "score": 0.5,
+      "level": "medium",
+      "reason": "Standard content assessment"
+    },
+    "summary": "This is clearly a false dichotomy because you either support us or you are against us.  This is obviously an ad hominem attack on the person rather than the argument.",
+    "biasIndicators": {
+      "opinionated": [
+        "clearly",
+        "obviously"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "FALSE_DICHOTOMY",
+        "confidence": 0.8,
+        "explanation": "False Dichotomy: Presenting only two options when others exist.",
+        "excerpt": "This is clearly a false dichotomy because you either support us or you are against us",
+        "startIndex": 0,
+        "endIndex": 85
+      }
+    ],
+    "timestamp": "2025-08-20T16:36:41.948Z"
+  },
+  "analysis_1755707829139": {
+    "wordCount": 30,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology"
+    ],
+    "credibility": {
+      "score": 0.5,
+      "level": "medium",
+      "reason": "Standard content assessment"
+    },
+    "summary": "This is clearly a false dichotomy because you either support us or you are against us.  This is obviously an ad hominem attack on the person rather than the argument.",
+    "biasIndicators": {
+      "opinionated": [
+        "clearly",
+        "obviously"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "FALSE_DICHOTOMY",
+        "confidence": 0.8,
+        "explanation": "False Dichotomy: Presenting only two options when others exist.",
+        "excerpt": "This is clearly a false dichotomy because you either support us or you are against us",
+        "startIndex": 0,
+        "endIndex": 85
+      }
+    ],
+    "timestamp": "2025-08-20T16:37:09.139Z"
+  },
+  "analysis_1755707849454": {
+    "wordCount": 41,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "easy",
+    "keyTopics": [
+      "technology",
+      "environment"
+    ],
+    "credibility": {
+      "score": 0.5,
+      "level": "medium",
+      "reason": "Standard content assessment"
+    },
+    "summary": "This article discusses climate crisis and the need for gun control.  John Smith and Mary Johnson support the Green New Deal and Medicare for all.  This is clearly a false dichotomy because you either support us or you are against us.",
+    "biasIndicators": {
+      "opinionated": [
+        "clearly"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "FALSE_DICHOTOMY",
+        "confidence": 0.8,
+        "explanation": "False Dichotomy: Presenting only two options when others exist.",
+        "excerpt": "This is clearly a false dichotomy because you either support us or you are against us.",
+        "startIndex": 145,
+        "endIndex": 231
+      }
+    ],
+    "timestamp": "2025-08-20T16:37:29.454Z"
+  },
+  "analysis_1755707857466": {
+    "wordCount": 10,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "easy",
+    "keyTopics": [
+      "environment"
+    ],
+    "credibility": {
+      "score": 0.5,
+      "level": "medium",
+      "reason": "Standard content assessment"
+    },
+    "summary": "John Smith and Mary Johnson support the Green New Deal.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T16:37:37.466Z"
+  },
+  "analysis_1755707877201": {
+    "wordCount": 10,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "easy",
+    "keyTopics": [
+      "environment"
+    ],
+    "credibility": {
+      "score": 0.5,
+      "level": "medium",
+      "reason": "Standard content assessment"
+    },
+    "summary": "John Smith and Mary Johnson support the Green New Deal.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T16:37:57.201Z"
   }
 }
