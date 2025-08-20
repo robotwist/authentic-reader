@@ -28,6 +28,58 @@ const PORT = process.env.PORT || 3000;
 // Initialize monitoring service
 monitorService.init();
 
+// Helper functions for basic analysis
+function extractKeyTopics(title, content) {
+  const text = `${title || ''} ${content || ''}`.toLowerCase();
+  const topics = [];
+  
+  // Simple keyword extraction
+  const keywords = {
+    'politics': ['election', 'vote', 'democrat', 'republican', 'congress', 'senate', 'president'],
+    'technology': ['tech', 'ai', 'artificial intelligence', 'software', 'digital', 'computer'],
+    'health': ['health', 'medical', 'doctor', 'hospital', 'disease', 'vaccine'],
+    'economy': ['economy', 'market', 'stock', 'business', 'finance', 'money'],
+    'environment': ['climate', 'environment', 'green', 'pollution', 'sustainability']
+  };
+
+  for (const [topic, words] of Object.entries(keywords)) {
+    if (words.some(word => text && text.includes(word))) {
+      topics.push(topic);
+    }
+  }
+
+  return topics.length > 0 ? topics : ['general'];
+}
+
+function assessBasicCredibility(url, title) {
+  const domain = url ? new URL(url).hostname.toLowerCase() : '';
+  const titleText = (title || '').toLowerCase();
+  
+  // Basic credibility indicators
+  const credibleDomains = ['bbc.com', 'reuters.com', 'ap.org', 'npr.org', 'pbs.org'];
+  const suspiciousWords = ['shocking', 'amazing', 'you won\'t believe', 'incredible', 'secret'];
+  
+  if (domain && credibleDomains.some(d => domain.includes(d))) {
+    return { score: 0.8, level: 'high', reason: 'Reputable news source' };
+  }
+  
+  if (suspiciousWords.some(word => titleText.includes(word))) {
+    return { score: 0.3, level: 'low', reason: 'Sensationalist language detected' };
+  }
+  
+  return { score: 0.6, level: 'medium', reason: 'Standard content' };
+}
+
+function generateBasicSummary(content) {
+  if (!content) return '';
+  
+  // Simple extractive summarization (first few sentences)
+  const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 10);
+  const summary = sentences.slice(0, 2).join('. ') + '.';
+  
+  return summary.length > 200 ? summary.substring(0, 200) + '...' : summary;
+}
+
 // Middleware
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
@@ -64,27 +116,75 @@ app.use(express.urlencoded({ extended: true }));
 //   }
 // }));
 
-// API routes
-app.use('/api/users', userRoutes);
-app.use('/api/sources', sourceRoutes);
-app.use('/api/articles', articleRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/onnx', onnxRoutes);
-app.use('/api/analysis', analysisRoutes);
-app.use('/api/monitor', monitorRoutes);
-
-// Enable verbose login debugging
-app.use((req, res, next) => {
-  if (req.path === '/api/auth/login' && req.method === 'POST') {
-    console.log('LOGIN ATTEMPT DETECTED:');
-    console.log('Body:', JSON.stringify(req.body, null, 2));
-  }
-  next();
-});
-
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
+});
+
+// Simple article analysis endpoint (no authentication required) - REGISTER FIRST
+app.post('/api/analyze-article', async (req, res) => {
+  console.log('Analysis endpoint hit!');
+  try {
+    const { title, content, url } = req.body;
+    
+    if (!title && !content) {
+      return res.status(400).json({ error: 'Title or content is required' });
+    }
+
+    // Basic content analysis (no external AI services needed)
+    const analysis = {
+      wordCount: content ? content.split(' ').length : 0,
+      readingTime: content ? Math.ceil(content.split(' ').length / 200) : 0, // 200 words per minute
+      hasExternalLinks: content ? (content.includes('http') || content.includes('www')) : false,
+      complexity: 'medium', // Basic complexity assessment
+      keyTopics: extractKeyTopics(title, content),
+      credibility: assessBasicCredibility(url, title),
+      summary: generateBasicSummary(content),
+      timestamp: new Date().toISOString()
+    };
+
+    // Save analysis to JSON storage
+    const analysisId = `analysis_${Date.now()}`;
+    await jsonStorage.saveAnalysis(analysisId, analysis);
+
+    res.json({
+      success: true,
+      analysis,
+      analysisId
+    });
+
+  } catch (error) {
+    console.error('Analysis error:', error);
+    res.status(500).json({ 
+      error: 'Analysis failed',
+      message: error.message 
+    });
+  }
+});
+
+// Get stored analyses (no authentication required) - REGISTER FIRST
+app.get('/api/analyses-list', async (req, res) => {
+  console.log('Analyses endpoint hit!');
+  try {
+    const analyses = await jsonStorage.getAnalysis();
+    const analysisList = Object.entries(analyses).map(([id, analysis]) => ({
+      id,
+      ...analysis
+    }));
+
+    res.json({
+      success: true,
+      analyses: analysisList,
+      count: analysisList.length
+    });
+
+  } catch (error) {
+    console.error('Error fetching analyses:', error);
+    res.status(500).json({ 
+      error: 'Failed to fetch analyses',
+      message: error.message 
+    });
+  }
 });
 
 /**
@@ -98,202 +198,105 @@ app.get('/api/rss', async (req, res) => {
     if (!feedUrl) {
       return res.status(400).json({ error: 'URL parameter is required' });
     }
-    
+
     console.log(`Fetching RSS feed from: ${feedUrl}`);
     
-    // Fix for specific problematic feeds
-    let adjustedFeedUrl = feedUrl;
-    if (feedUrl.includes('reuters.com')) {
-      // Use alternative Reuters feed URL if needed
-      if (feedUrl === 'https://feeds.reuters.com/reuters/topNews') {
-        // Reuters API has changed, use a different news source as fallback
-        adjustedFeedUrl = 'https://www.cnbc.com/id/100003114/device/rss/rss.html';
-        console.log(`Redirecting Reuters feed to CNBC News feed: ${adjustedFeedUrl}`);
+    const response = await axios.get(feedUrl, {
+      timeout: 10000,
+      headers: {
+        'User-Agent': 'AuthenticReader/1.0 (RSS Reader)'
       }
-    }
-    
-    // Fetch the RSS feed with retry logic
-    let response;
-    let attempts = 0;
-    const maxAttempts = 3;
-    
-    while (attempts < maxAttempts) {
-      try {
-        attempts++;
-        response = await axios.get(adjustedFeedUrl, {
-          headers: {
-            'User-Agent': 'Authentic Reader RSS Fetcher/1.0',
-            'Accept': 'application/rss+xml, application/xml, text/xml, */*'
-          },
-          timeout: 15000, // 15 second timeout
-          validateStatus: status => status < 500 // Accept any status < 500
-        });
-        
-        if (response.status === 200) {
-          break; // Success, exit the retry loop
-        } else {
-          console.log(`Attempt ${attempts} failed with status ${response.status}. ${attempts < maxAttempts ? 'Retrying...' : 'Giving up.'}`);
-          
-          if (attempts >= maxAttempts) {
-            throw new Error(`Failed after ${maxAttempts} attempts. Last status: ${response.status}`);
-          }
-          
-          // Wait before retry
-          await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-      } catch (error) {
-        console.error(`Attempt ${attempts} error:`, error.message);
-        
-        if (attempts >= maxAttempts) {
-          throw error;
-        }
-        
-        // Wait before retry
-        await new Promise(resolve => setTimeout(resolve, 1000));
-      }
-    }
-    
-    // Log response details for debugging
+    });
+
     console.log(`Feed response status: ${response.status}, Content type: ${response.headers['content-type']}`);
-    
-    try {
-      // Parse XML to JSON with more forgiving options
-      const result = await parseStringPromise(response.data, {
-        explicitArray: false,
-        mergeAttrs: true,
-        normalize: true,
-        normalizeTags: false,
-        trim: true
-      });
-      
-      // Process the parsed feed into a standardized format for the client
-      let standardizedFeed = {
-        title: 'Unknown Feed',
-        description: '',
-        link: adjustedFeedUrl,
-        items: []
-      };
-      
-      // Extract feed data from different possible formats
-      if (result.rss && result.rss.channel) {
-        // Standard RSS format
-        const channel = result.rss.channel;
-        standardizedFeed.title = channel.title || 'RSS Feed';
-        standardizedFeed.description = channel.description || '';
-        standardizedFeed.link = channel.link || adjustedFeedUrl;
-        
-        // Handle items, ensuring we have an array
-        let items = channel.item || [];
-        if (!Array.isArray(items)) items = [items];
-        
-        standardizedFeed.items = items.map(item => {
-          // Process GUID - handle string or object with '_' property
-          let guid = item.guid;
-          if (typeof guid === 'object' && guid && guid._) {
-            guid = guid._;
-          }
-          
-          // Process link - handle string or object with '_' property
-          let link = item.link;
-          if (typeof link === 'object' && link && link._) {
-            link = link._;
-          }
-          
-          return {
-            title: item.title || 'Untitled',
-            link: link || guid || '',
-            guid: guid || link || '',
-            pubDate: item.pubDate || item.date || new Date().toISOString(),
-            author: item.author || item['dc:creator'] || standardizedFeed.title,
-            content: item['content:encoded'] || item.content || item.description || '',
-            description: item.description || item.summary || '',
-            categories: Array.isArray(item.category) ? item.category : 
-                       (item.category ? [item.category] : [])
-          };
-        });
-      } else if (result.feed) {
-        // Atom format
-        const feed = result.feed;
-        standardizedFeed.title = feed.title || 'Atom Feed';
-        standardizedFeed.description = feed.subtitle || '';
-        standardizedFeed.link = (feed.link && feed.link.href) || adjustedFeedUrl;
-        
-        // Handle entries, ensuring we have an array
-        let entries = feed.entry || [];
-        if (!Array.isArray(entries)) entries = [entries];
-        
-        standardizedFeed.items = entries.map(entry => {
-          // Handle link which could be an array or object
-          let link = '';
-          if (entry.link) {
-            if (Array.isArray(entry.link)) {
-              const alternateLink = entry.link.find(l => l.rel === 'alternate');
-              link = alternateLink ? alternateLink.href : (entry.link[0].href || '');
-            } else if (typeof entry.link === 'object') {
-              link = entry.link.href || '';
-            } else {
-              link = entry.link || '';
-            }
-          }
-          
-          return {
-            title: entry.title || 'Untitled',
-            link: link,
-            guid: entry.id || link,
-            pubDate: entry.published || entry.updated || new Date().toISOString(),
-            author: (entry.author && entry.author.name) || standardizedFeed.title,
-            content: entry.content || entry.summary || '',
-            description: entry.summary || '',
-            categories: Array.isArray(entry.category) ? 
-                       entry.category.map(c => c.term || c) : 
-                       (entry.category ? [entry.category.term || entry.category] : [])
-          };
-        });
-      } else if (result.rdf) {
-        // RDF format
-        const rdf = result.rdf;
-        standardizedFeed.title = rdf.channel?.title || 'RDF Feed';
-        standardizedFeed.description = rdf.channel?.description || '';
-        standardizedFeed.link = rdf.channel?.link || adjustedFeedUrl;
-        
-        // Handle items, ensuring we have an array
-        let items = rdf.item || [];
-        if (!Array.isArray(items)) items = [items];
-        
-        standardizedFeed.items = items.map(item => {
-          return {
-            title: item.title || 'Untitled',
-            link: item.link || '',
-            guid: item.guid || item.link || '',
-            pubDate: item.date || item['dc:date'] || new Date().toISOString(),
-            author: item['dc:creator'] || standardizedFeed.title,
-            content: item['content:encoded'] || item.description || '',
-            description: item.description || '',
-            categories: []
-          };
-        });
-      } else {
-        throw new Error('Unsupported feed format');
-      }
-      
-      // Return the standardized feed
-      res.json(standardizedFeed);
-    } catch (parseError) {
-      console.error(`XML parsing error:`, parseError);
-      
-      // Return a more meaningful error
-      res.status(422).json({ 
-        error: 'Failed to parse XML feed',
-        message: parseError.message,
-        feedUrl: adjustedFeedUrl
+
+    if (response.status !== 200) {
+      return res.status(response.status).json({ 
+        error: 'Failed to fetch RSS feed',
+        status: response.status 
       });
     }
-  } catch (error) {
-    console.error(`Error fetching RSS feed from ${req.query.url}:`, error);
+
+    const xmlData = response.data;
+    const result = await parseStringPromise(xmlData);
     
-    // Return a meaningful error response
+    if (!result.rss && !result.feed) {
+      return res.status(400).json({ error: 'Invalid RSS/Atom feed format' });
+    }
+
+    // Extract feed information
+    const feed = result.rss?.channel?.[0] || result.feed;
+    const items = feed.item || feed.entry || [];
+    
+    // Process and analyze each article
+    const processedItems = await Promise.all(items.map(async (item, index) => {
+      const title = item.title?.[0] || item['media:title']?.[0] || '';
+      const link = item.link?.[0] || item.link?.[0]?.$?.href || '';
+      const description = item.description?.[0] || item.summary?.[0] || item['media:description']?.[0] || '';
+      const pubDate = item.pubDate?.[0] || item.published?.[0] || '';
+      const author = item.author?.[0] || item['dc:creator']?.[0] || '';
+      
+      // Basic content extraction
+      const content = item['content:encoded']?.[0] || description;
+      
+      // Analyze the article
+      const analysis = {
+        wordCount: content ? content.split(' ').length : 0,
+        readingTime: content ? Math.ceil(content.split(' ').length / 200) : 0,
+        hasExternalLinks: content ? (content.includes('http') || content.includes('www')) : false,
+        complexity: 'medium',
+        keyTopics: extractKeyTopics(title, content),
+        credibility: assessBasicCredibility(link, title),
+        summary: generateBasicSummary(content),
+        timestamp: new Date().toISOString()
+      };
+
+      // Save article and analysis to storage
+      const articleId = `article_${Date.now()}_${index}`;
+      const articleData = {
+        title,
+        link,
+        description,
+        pubDate,
+        author,
+        content,
+        analysis,
+        source: feedUrl,
+        fetchedAt: new Date().toISOString()
+      };
+
+      await jsonStorage.saveArticle(articleId, articleData);
+      await jsonStorage.saveAnalysis(`analysis_${articleId}`, analysis);
+
+      return {
+        title,
+        link,
+        description,
+        pubDate,
+        author,
+        content: content.substring(0, 500) + (content.length > 500 ? '...' : ''), // Truncate for response
+        analysis,
+        articleId
+      };
+    }));
+
+    const feedInfo = {
+      title: feed.title?.[0] || 'Unknown Feed',
+      description: feed.description?.[0] || feed.subtitle?.[0] || '',
+      link: feed.link?.[0] || feedUrl,
+      itemCount: processedItems.length,
+      lastUpdated: new Date().toISOString()
+    };
+
+    res.json({
+      ...feedInfo,
+      items: processedItems
+    });
+
+  } catch (error) {
+    console.error('RSS fetch error:', error);
     res.status(500).json({ 
-      error: 'Failed to fetch RSS feed',
+      error: 'Failed to fetch content',
       message: error.message,
       url: req.query.url
     });
@@ -365,6 +368,15 @@ app.get('/api/content', async (req, res) => {
   }
 });
 
+// API routes - REGISTER AFTER CUSTOM ROUTES
+app.use('/api/users', userRoutes);
+app.use('/api/sources', sourceRoutes);
+app.use('/api/articles', articleRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/onnx', onnxRoutes);
+app.use('/api/analysis', analysisRoutes);
+app.use('/api/monitor', monitorRoutes);
+
 // Apply error monitoring middleware
 app.use(errorMonitor);
 
@@ -383,6 +395,11 @@ app.use((err, req, res, next) => {
 app.use('*', (req, res) => {
   res.status(404).json({ message: 'API endpoint not found' });
 });
+
+/**
+ * Proxy endpoint for fetching article content
+ * Example: /api/content?url=https://www.bbc.com/news/world-us-canada-12345
+ */
 
 let serverInstance = null;
 

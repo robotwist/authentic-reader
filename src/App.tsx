@@ -25,6 +25,7 @@ import LibraryPage from './pages/LibraryPage';
 import SettingsPage from './pages/SettingsPage';
 import ArticlePage from './pages/ArticlePage';
 import AnalysisPage from './pages/AnalysisPage';
+import ArticleFeedPage from './pages/ArticleFeedPage';
 import { UserPreferences } from './types';
 import { logger } from './utils/logger';
 import NLPBenchmark from './components/NLPBenchmark';
@@ -304,13 +305,11 @@ function App() {
               <Routes>
                 <Route 
                   path="/" 
-                  element={
-                    <FeedContainer 
-                      isInitialized={isInitialized}
-                      qualityFilters={userPreferences}
-                      onQualityFilterChange={handlePreferenceChange}
-                    />
-                  } 
+                  element={<ArticleFeedPage />} 
+                />
+                <Route 
+                  path="/feed" 
+                  element={<ArticleFeedPage />} 
                 />
                 <Route 
                   path="/profile" 

@@ -104,18 +104,113 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ preferences, onPreferenceCh
           
           <div className="setting-item">
             <div className="setting-info">
-              <h3>Notifications</h3>
-              <p className="setting-description">Receive notifications about new content and features</p>
+              <h3>Show Article Analysis</h3>
+              <p className="setting-description">Display content analysis for each article</p>
             </div>
             <div className="setting-control">
               <label className="toggle-switch">
                 <input 
                   type="checkbox" 
-                  checked={preferences.notificationsEnabled || false}
-                  onChange={() => handleToggleChange('notificationsEnabled')}
+                  checked={preferences.showAnalysis !== false}
+                  onChange={() => onPreferenceChange('showAnalysis', !preferences.showAnalysis)}
                 />
                 <span className="toggle-slider"></span>
               </label>
+            </div>
+          </div>
+          
+          <div className="setting-item">
+            <div className="setting-info">
+              <h3>Filter Low Credibility Content</h3>
+              <p className="setting-description">Hide articles with low credibility ratings</p>
+            </div>
+            <div className="setting-control">
+              <label className="toggle-switch">
+                <input 
+                  type="checkbox" 
+                  checked={preferences.filterLowCredibility || false}
+                  onChange={() => handleToggleChange('filterLowCredibility')}
+                />
+                <span className="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div className="setting-item">
+            <div className="setting-info">
+              <h3>Mute Outrage Content</h3>
+              <p className="setting-description">Filter out sensationalist or outrage-inducing content</p>
+            </div>
+            <div className="setting-control">
+              <label className="toggle-switch">
+                <input 
+                  type="checkbox" 
+                  checked={preferences.muteOutrage || false}
+                  onChange={() => handleToggleChange('muteOutrage')}
+                />
+                <span className="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div className="setting-item">
+            <div className="setting-info">
+              <h3>Block Doomscroll Content</h3>
+              <p className="setting-description">Filter out negative or anxiety-inducing content</p>
+            </div>
+            <div className="setting-control">
+              <label className="toggle-switch">
+                <input 
+                  type="checkbox" 
+                  checked={preferences.blockDoomscroll || false}
+                  onChange={() => handleToggleChange('blockDoomscroll')}
+                />
+                <span className="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </section>
+        
+        <section className="settings-section">
+          <h2>RSS Sources</h2>
+          <p className="section-description">Manage your news sources and customize your feed</p>
+          
+          <div className="setting-item">
+            <div className="setting-info">
+              <h3>Default News Source</h3>
+              <p className="setting-description">Choose your preferred news source for the main feed</p>
+            </div>
+            <div className="setting-control">
+              <select 
+                value={preferences.defaultSource || 'npr'} 
+                onChange={(e) => handleSelectChange(e, 'defaultSource')}
+                className="settings-select"
+              >
+                <option value="npr">NPR News</option>
+                <option value="bbc">BBC News</option>
+                <option value="reuters">Reuters</option>
+                <option value="techcrunch">TechCrunch</option>
+              </select>
+            </div>
+          </div>
+          
+          <div className="setting-item">
+            <div className="setting-info">
+              <h3>Auto-refresh Interval</h3>
+              <p className="setting-description">How often to automatically refresh articles (in minutes)</p>
+            </div>
+            <div className="setting-control">
+              <select 
+                value={preferences.refreshInterval || '30'} 
+                onChange={(e) => handleSelectChange(e, 'refreshInterval')}
+                className="settings-select"
+              >
+                <option value="15">15 minutes</option>
+                <option value="30">30 minutes</option>
+                <option value="60">1 hour</option>
+                <option value="120">2 hours</option>
+                <option value="0">Manual refresh only</option>
+              </select>
             </div>
           </div>
         </section>

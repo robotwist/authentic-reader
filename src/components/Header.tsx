@@ -100,110 +100,110 @@ const Header = ({}: HeaderProps) => {
                 role="menuitem"
                 tabIndex={0}
               >
-                Home
+                Articles
               </Link>
             </li>
             
             <li role="none">
               <Link 
-                to="/library" 
-                className={isActive('/library') ? 'active' : ''} 
-                aria-current={isActive('/library') ? 'page' : undefined}
+                to="/settings" 
+                className={isActive('/settings') ? 'active' : ''} 
+                aria-current={isActive('/settings') ? 'page' : undefined}
                 role="menuitem"
                 tabIndex={0}
               >
-                My Library
+                <FiSettings />
+                Settings
               </Link>
             </li>
             
-            {/* Analysis Dropdown - Simplified */}
-            <li ref={analysisDropdownRef} className="dropdown">
-              <button 
-                className={`nav-link dropdown-toggle ${isActivePrefix('/analysis') ? 'active' : ''}`}
-                onClick={() => setIsAnalysisDropdownOpen(!isAnalysisDropdownOpen)}
-                aria-expanded={isAnalysisDropdownOpen}
-                aria-haspopup="true"
+            <li role="none">
+              <Link 
+                to="/about" 
+                className={isActive('/about') ? 'active' : ''} 
+                aria-current={isActive('/about') ? 'page' : undefined}
                 role="menuitem"
                 tabIndex={0}
               >
-                Analysis Tools <FiChevronDown className={`dropdown-icon ${isAnalysisDropdownOpen ? 'open' : ''}`} />
+                About
+              </Link>
+            </li>
+            
+            {/* Analysis Dropdown */}
+            <li role="none" ref={analysisDropdownRef}>
+              <button
+                className={`dropdown-toggle ${isActivePrefix('/analysis') ? 'active' : ''}`}
+                onClick={() => setIsAnalysisDropdownOpen(!isAnalysisDropdownOpen)}
+                aria-expanded={isAnalysisDropdownOpen}
+                role="menuitem"
+                tabIndex={0}
+              >
+                Analysis
+                <FiChevronDown />
               </button>
-              
               {isAnalysisDropdownOpen && (
-                <div className="dropdown-menu" role="menu">
-                  <Link to="/analysis" className="dropdown-item" role="menuitem">
-                    Analysis Dashboard
-                  </Link>
-                  <Link to="/article/:id" className="dropdown-item" role="menuitem">
-                    Critical Reader
-                  </Link>
-                  <div className="dropdown-divider"></div>
-                  <Link to="/analysis/bias" className="dropdown-item" role="menuitem">
-                    Bias Detection
-                  </Link>
-                  <Link to="/analysis/rhetorical" className="dropdown-item" role="menuitem">
-                    Rhetorical Analysis
-                  </Link>
-                  <Link to="/analysis/entity" className="dropdown-item" role="menuitem">
-                    Entity Relationships
-                  </Link>
-                </div>
+                <ul className="dropdown-menu" role="menu">
+                  <li role="none">
+                    <Link to="/analysis" role="menuitem" tabIndex={0}>
+                      Content Analysis
+                    </Link>
+                  </li>
+                  <li role="none">
+                    <Link to="/analysis/bias" role="menuitem" tabIndex={0}>
+                      Bias Detection
+                    </Link>
+                  </li>
+                  <li role="none">
+                    <Link to="/analysis/rhetorical" role="menuitem" tabIndex={0}>
+                      Rhetorical Analysis
+                    </Link>
+                  </li>
+                </ul>
               )}
             </li>
             
-            {/* User-specific Navigation */}
+            {/* User Menu */}
             {isLoggedIn ? (
-              <li ref={userDropdownRef} className="dropdown user-dropdown">
-                <button 
-                  className={`nav-link dropdown-toggle ${isActivePrefix('/profile') || isActivePrefix('/settings') ? 'active' : ''}`}
+              <li role="none" ref={userDropdownRef}>
+                <button
+                  className="dropdown-toggle user-dropdown"
                   onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
                   aria-expanded={isUserDropdownOpen}
-                  aria-haspopup="true"
                   role="menuitem"
                   tabIndex={0}
                 >
-                  <FiUser className="nav-icon" /> <FiChevronDown className={`dropdown-icon ${isUserDropdownOpen ? 'open' : ''}`} />
+                  <FiUser />
+                  {user?.username || 'User'}
+                  <FiChevronDown />
                 </button>
-                
                 {isUserDropdownOpen && (
-                  <div className="dropdown-menu user-menu" role="menu">
-                    <div className="dropdown-header">
-                      Signed in as <strong>{user?.username}</strong>
-                    </div>
-                    <Link to="/profile" className="dropdown-item" role="menuitem">
-                      <FiUser className="dropdown-icon-left" /> Profile
-                    </Link>
-                    <Link to="/saved" className="dropdown-item" role="menuitem">
-                      <FiBook className="dropdown-icon-left" /> Saved Articles
-                    </Link>
-                    <Link to="/settings" className="dropdown-item" role="menuitem">
-                      <FiSettings className="dropdown-icon-left" /> Settings
-                    </Link>
-                    {user?.isAdmin && (
-                      <Link to="/admin" className="dropdown-item" role="menuitem">
-                        Admin Dashboard
+                  <ul className="dropdown-menu" role="menu">
+                    <li role="none">
+                      <Link to="/library" role="menuitem" tabIndex={0}>
+                        <FiBook />
+                        Library
                       </Link>
-                    )}
-                    <div className="dropdown-divider"></div>
-                    <button className="dropdown-item" onClick={handleLogout} role="menuitem">
-                      Sign Out
-                    </button>
-                  </div>
+                    </li>
+                    <li role="none">
+                      <button onClick={handleLogout} role="menuitem" tabIndex={0}>
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
                 )}
               </li>
             ) : (
-              <>
-                <li><button className="nav-button" onClick={handleLogin}>Sign In</button></li>
-                <li><button className="nav-button primary" onClick={handleRegister}>Register</button></li>
-              </>
+              <li role="none">
+                <button
+                  onClick={handleLogin}
+                  className="auth-button"
+                  role="menuitem"
+                  tabIndex={0}
+                >
+                  Login
+                </button>
+              </li>
             )}
-            
-            {/* Search button - could be expanded to a full search bar */}
-            <li className="search-button">
-              <button className="icon-button" aria-label="Search">
-                <FiSearch />
-              </button>
-            </li>
           </ul>
         </nav>
       </div>
