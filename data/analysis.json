@@ -1,192 +1,29 @@
 {
-  "analysis_article_1755707462933_10": {
-    "wordCount": 622,
-    "readingTime": 4,
+  "analysis_article_1755713307662_18": {
+    "wordCount": 360,
+    "readingTime": 2,
     "hasExternalLinks": false,
-    "complexity": "hard",
+    "complexity": "medium",
     "keyTopics": [
       "politics",
       "technology",
-      "environment",
-      "sports",
-      "international"
+      "education"
     ],
     "credibility": {
       "score": 0.6,
       "level": "medium",
       "reason": "Substantial content length"
     },
-    "summary": "Leftist Councils Vow to Take Down English Flags Amid Patriotic Uprising 26 Leon Neal/Getty Images Kurt Zindulka 20 Aug 2025 Left-wing councils across England have jumped into action, rapidly removing English and British flags put up by &#8220;raise the colours&#8221; patriotic groups in an act of ci...",
-    "biasIndicators": {
-      "political": [
-        "conservative",
-        "left-wing"
-      ]
-    },
-    "logicalFallacies": [
-      {
-        "type": "APPEAL_TO_EMOTION",
-        "confidence": 0.65,
-        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
-        "excerpt": "The council had previously left up Palestinian flags for &#8220;over a year&#8221;, according to Conservative councillor Robert Alden, who said that maintenance workers would only remove such flags with a police escort for fear of &#8220;trouble&#8221; from residents",
-        "startIndex": 1076,
-        "endIndex": 1343
-      },
-      {
-        "type": "APPEAL_TO_EMOTION",
-        "confidence": 0.65,
-        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
-        "excerpt": "Perhaps fearful of sparking a similar backlash to that seen following the Southport mass stabbing last year, when he branded those taking to the streets in anger over the murder of three young girls as &#8220;far-right&#8221;, Prime Minsiter Sir Kier Starmer refused to criticise the &#8220;raise the colours&#8221; movement",
-        "startIndex": 2669,
-        "endIndex": 2993
-      }
-    ],
-    "timestamp": "2025-08-20T16:31:02.933Z"
-  },
-  "analysis_article_1755707462979_11": {
-    "wordCount": 569,
-    "readingTime": 3,
-    "hasExternalLinks": false,
-    "complexity": "hard",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "economy",
-      "environment"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": " Golden: I Get &#8216;Eyerolls&#8217; from Other Dems When I Try to Fix Regulations, Dems Shouldn&#8217;t Defend &#8216;Every&#8217; Gov&#8217;t Job 1 Ian Hanchett 20 Aug 2025 During an interview with Maine Public Radio&#8217;s &#8220;Maine Calling&#8221; on Monday, Rep.  Jared Golden (D-ME) said th...",
+    "summary": "Trump Predicts &#8216;Loser&#8217; MSNBC Host Nicolle Wallace Will Be Fired Following On-Air Rant 438 Dia Dipasupil/Getty Images Alana Mastrangelo 19 Aug 2025 President Donald Trump is predicting that &#8220;loser&#8221; MSNBC host Nicolle Wallace will be fired from her job following her on-air rant...",
     "biasIndicators": {
       "political": [
         "democrat"
       ]
     },
     "logicalFallacies": [],
-    "timestamp": "2025-08-20T16:31:02.980Z"
+    "timestamp": "2025-08-20T18:08:27.662Z"
   },
-  "analysis_article_1755707463051_12": {
-    "wordCount": 380,
-    "readingTime": 2,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics",
-      "technology"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": " Golden: Hamas Stealing Aid &#8216;Well-Documented&#8217;, Media Doesn&#8217;t Cover It 1 Ian Hanchett 20 Aug 2025 During an interview with Maine Public Radio&#8217;s &#8220;Maine Calling&#8221; on Monday, Rep.  Jared Golden (D-ME) said that in Gaza, it&#8217;s &#8220;well-documented&#8221; that &#8...",
-    "biasIndicators": {},
-    "logicalFallacies": [
-      {
-        "type": "FALSE_DICHOTOMY",
-        "confidence": 0.8,
-        "explanation": "False Dichotomy: Presenting only two options when others exist.",
-        "excerpt": "Jared Golden (D-ME) said that in Gaza, it&#8217;s &#8220;well-documented&#8221; that &#8220;a lot of the aid that is being distributed is being either given to Hamas or taken by Hamas or other armed elements within that society&#8221; but it&#8217;s &#8220;not well-covered in the media, nevertheless.&#8221; Golden said, [relevant remarks begin around 24:50] &#8220;Just in the last few days, I have really paid attention to reports that it is well-known by the U.N",
-        "startIndex": 219,
-        "endIndex": 685
-      },
-      {
-        "type": "FALSE_DICHOTOMY",
-        "confidence": 0.8,
-        "explanation": "False Dichotomy: Presenting only two options when others exist.",
-        "excerpt": "agencies who are distributing aid that it is not actually a tactic of the government of Israel to try and starve people, which would be a genocidal act, but rather, that a lot of the aid that is being distributed is being either given to Hamas or taken by Hamas or other armed elements within that society and they are either selling it at exorbitant prices for profit, either because they&#8217;re greedy or because they are selling it to then arm themselves to continue fighting with Israel or they&#8217;re using it as a tool of recruitment, if you join us and take up arms with us, you can have food for your family.&#8221; He continued, &#8220;And this is actually well-documented and not well-covered in the media, nevertheless",
-        "startIndex": 687,
-        "endIndex": 1420
-      }
-    ],
-    "timestamp": "2025-08-20T16:31:03.051Z"
-  },
-  "analysis_article_1755707463098_13": {
-    "wordCount": 323,
-    "readingTime": 2,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "technology",
-      "economy",
-      "entertainment"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Last Sugar Beet Factory to Leave California, Devastating Local Industry 27 California sugar beets (Gosia Wozniacka / Associated Press) Joel B.  Pollak 20 Aug 2025 The last sugar beet factory is to leave California, costing hundreds of jobs and devastating the local industry despite the fact that gro...",
-    "biasIndicators": {},
-    "logicalFallacies": [
-      {
-        "type": "APPEAL_TO_EMOTION",
-        "confidence": 0.8,
-        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
-        "excerpt": "Last Sugar Beet Factory to Leave California, Devastating Local Industry 27 California sugar beets (Gosia Wozniacka / Associated Press) Joel B",
-        "startIndex": 0,
-        "endIndex": 141
-      },
-      {
-        "type": "APPEAL_TO_EMOTION",
-        "confidence": 0.8,
-        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
-        "excerpt": "Pollak 20 Aug 2025 The last sugar beet factory is to leave California, costing hundreds of jobs and devastating the local industry despite the fact that growing conditions in the Imperial Valley are ideal for the crop",
-        "startIndex": 143,
-        "endIndex": 360
-      }
-    ],
-    "timestamp": "2025-08-20T16:31:03.098Z"
-  },
-  "analysis_article_1755707463105_14": {
-    "wordCount": 302,
-    "readingTime": 2,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "technology",
-      "entertainment",
-      "sports"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Bizarre Fire Alarm at Fenway Park Delays Red Sox Game Against Orioles Joe Sullivan/MLB Photos via Getty Images Paul Bois 20 Aug 2025 A bizarre fire alarm set off at Fenway Park temporarily halted the Boston Red Sox matchup against the Baltimore Orioles at the top of the eighth inning on Tuesday nigh...",
-    "biasIndicators": {},
-    "logicalFallacies": [],
-    "timestamp": "2025-08-20T16:31:03.106Z"
-  },
-  "analysis_article_1755707463149_16": {
-    "wordCount": 442,
-    "readingTime": 3,
-    "hasExternalLinks": true,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "entertainment"
-    ],
-    "credibility": {
-      "score": 0.5,
-      "level": "medium",
-      "reason": "1 sensationalist words detected; Substantial content length; Contains external references"
-    },
-    "summary": "‘Weak Ass President,’ ‘Pee Pee Tapes,’ Hollywood Celebrities Throw Conspiracy-Filled Tantrums over Trump’s Russia-Ukraine Peace Talks 93 Kevin Winter/Getty Images Warner Todd Huston 19 Aug 2025 The peace talks being hosted by President Donald Trump in the White House have spurred a throng of left-wi...",
-    "biasIndicators": {
-      "political": [
-        "left-wing",
-        "democrat"
-      ]
-    },
-    "logicalFallacies": [],
-    "timestamp": "2025-08-20T16:31:03.150Z"
-  },
-  "analysis_article_1755707463156_15": {
+  "analysis_article_1755713307729_19": {
     "wordCount": 340,
     "readingTime": 2,
     "hasExternalLinks": false,
@@ -201,7 +38,7 @@
       "level": "medium",
       "reason": "Substantial content length"
     },
-    "summary": "Pop Star Kesha Comes Out as ‘Omnisexual’ 25 Gotham/GC Images Simon Kent 20 Aug 2025 We live in troubled times.  The world is beset by turmoil, wars, and rumors of wars, but if you were worrying about just what sexuality pop star Kesha embraces amidst that panopoly of woes, rest easy.  The singer is ...",
+    "summary": "Pop Star Kesha Comes Out as ‘Omnisexual’ 1,325 Gotham/GC Images Simon Kent 20 Aug 2025 We live in troubled times.  The world is beset by turmoil, wars, and rumors of wars, but if you were worrying about just what sexuality pop star Kesha embraces amidst that panopoly of woes, rest easy.  The singer ...",
     "biasIndicators": {},
     "logicalFallacies": [
       {
@@ -209,85 +46,10 @@
         "confidence": 0.65,
         "explanation": "Ad Hominem: Attacking the person instead of the argument.",
         "excerpt": "The singer is now identifying herself as &#8220;omnisexual.&#8221; On dating app Feeld, &#8220;BOY CRAZY&#8221; hitmaker Kesha calls her sexuality “omnisexual” as well as noting her interest in “being dominant” and “kink,” all while offering to send &#8220;feet pics.&#8221; Yes, really",
-        "startIndex": 284,
-        "endIndex": 570
+        "startIndex": 287,
+        "endIndex": 573
       }
     ],
-    "timestamp": "2025-08-20T16:31:03.156Z"
-  },
-  "analysis_article_1755707463231_18": {
-    "wordCount": 278,
-    "readingTime": 2,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "technology",
-      "entertainment",
-      "international"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Eurovision, the World’s Largest Live Music Event, Set for Vienna in 2026 Harold Cunningham/Getty Breitbart News 20 Aug 2025 VIENNA (AP) — The Eurovision Song Contest 2026 will take place in Vienna.  Austria’s public broadcaster ORF, which will organize the world’s largest live music event, announced...",
-    "biasIndicators": {
-      "emotional": [
-        "wonderful"
-      ]
-    },
-    "logicalFallacies": [],
-    "timestamp": "2025-08-20T16:31:03.231Z"
-  },
-  "analysis_article_1755707463243_17": {
-    "wordCount": 314,
-    "readingTime": 2,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "entertainment"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Rocker Jack White Approves of CA Gov.  Newsom Using &#8216;Seven Nation Army&#8217; for Anti-Trump Meme: &#8216;Keep Hitting Him Back Gavin.  Rodriguez/WireImage Alana Mastrangelo 19 Aug 2025 Rocker Jack White approved of California Gov.",
-    "biasIndicators": {
-      "political": [
-        "democrat",
-        "republican"
-      ]
-    },
-    "logicalFallacies": [],
-    "timestamp": "2025-08-20T16:31:03.243Z"
-  },
-  "analysis_article_1755707463288_19": {
-    "wordCount": 562,
-    "readingTime": 3,
-    "hasExternalLinks": false,
-    "complexity": "hard",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "sports",
-      "international"
-    ],
-    "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
-    },
-    "summary": "Report: Illegal Trucker Behind Fatal U-Turn Failed English Language Test 859 St.  Lucie County Sheriff&#039;s Office/U.  Marshals Elizabeth Weibel 19 Aug 2025 The semi-truck driver, who allegedly killed three Americans while making an illegal U-turn in Florida, failed an English language proficiency...",
-    "biasIndicators": {
-      "sensationalist": [
-        "revealed",
-        "secret"
-      ]
-    },
-    "logicalFallacies": [],
-    "timestamp": "2025-08-20T16:31:03.289Z"
+    "timestamp": "2025-08-20T18:08:27.729Z"
   }
 }
