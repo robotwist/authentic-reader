@@ -16,7 +16,7 @@
     "test:coverage": "vitest run --coverage",
     "test:frontend": "vitest run",
     "test:backend": "cd server && npm test",
-    "prepare": "husky install",
+    "prepare": "husky install || echo 'husky not installed'",
     "security:check": "node scripts/check-tokens.js",
     "security:rotate": "node scripts/rotate-token.js",
     "monitor": "node server-monitor.js",
