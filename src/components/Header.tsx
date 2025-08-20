@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { FiChevronDown, FiUser, FiBook, FiSearch, FiSettings } from 'react-icons/fi';
+import { FiChevronDown, FiUser, FiBook, FiSearch, FiSettings, FiTarget } from 'react-icons/fi';
 import '../styles/Header.css';
 import AuthModal from './AuthModal';
 import authenticLogo from '/public/authentic-internet-logo.png';
@@ -128,6 +128,19 @@ const Header = ({}: HeaderProps) => {
               >
                 <FiBook />
                 Media Literacy
+              </Link>
+            </li>
+            
+            <li role="none">
+              <Link 
+                to="/political-analysis" 
+                className={isActive('/political-analysis') ? 'active' : ''} 
+                aria-current={isActive('/political-analysis') ? 'page' : undefined}
+                role="menuitem"
+                tabIndex={0}
+              >
+                <FiTarget />
+                Political Analysis
               </Link>
             </li>
             
