@@ -1,53 +1,56 @@
 {
-  "analysis_1755673700721": {
-    "wordCount": 21,
+  "analysis_article_1755674248997_8": {
+    "wordCount": 60,
     "readingTime": 1,
-    "hasExternalLinks": false,
-    "complexity": "easy",
+    "hasExternalLinks": true,
+    "complexity": "medium",
     "keyTopics": [
       "technology"
+    ],
+    "credibility": {
+      "score": 1,
+      "level": "high",
+      "reason": "Reputable news source; Substantial content length; Contains external references"
+    },
+    "summary": "Forecasts nudge Erin's likely path to the west, increasing the risks at U.  Tropical storm conditions are expected in North Carolina's Outer Banks starting late Wednesday.  (Image credit: Pablo Martinez Monsivais).",
+    "biasIndicators": {},
+    "logicalFallacies": [
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.65,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "Forecasters warn of dangerous rip currents along the East Coast.'/><p>Forecasts nudge Erin's likely path to the west, increasing the risks at U.S",
+        "startIndex": 320,
+        "endIndex": 465
+      }
+    ],
+    "timestamp": "2025-08-20T07:17:28.997Z"
+  },
+  "analysis_article_1755674249277_19": {
+    "wordCount": 43,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "science"
     ],
     "credibility": {
       "score": 0.5,
       "level": "medium",
       "reason": "Standard content assessment"
     },
-    "summary": "These people are stupid and cannot be trusted.  You are either with us or against us.  This will lead to collapse.",
+    "summary": "The Justice Department has opened an investigation into whether police officials in Washington, D. , have falsified data to make crime rates appear lower than they are, according to two people familiar with the probe who weren't authorized to publicly discuss an open investigation.",
     "biasIndicators": {},
     "logicalFallacies": [
       {
         "type": "AD_HOMINEM",
         "confidence": 0.65,
         "explanation": "Ad Hominem: Attacking the person instead of the argument.",
-        "excerpt": "These people are stupid and cannot be trusted",
+        "excerpt": "The Justice Department has opened an investigation into whether police officials in Washington, D.C., have falsified data to make crime rates appear lower than they are, according to two people familiar with the probe who weren't authorized to publicly discuss an open investigation",
         "startIndex": 0,
-        "endIndex": 45
-      },
-      {
-        "type": "AD_HOMINEM",
-        "confidence": 0.8,
-        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
-        "excerpt": "These people are stupid and cannot be trusted",
-        "startIndex": 0,
-        "endIndex": 45
-      },
-      {
-        "type": "FALSE_DICHOTOMY",
-        "confidence": 0.8,
-        "explanation": "False Dichotomy: Presenting only two options when others exist.",
-        "excerpt": "You are either with us or against us",
-        "startIndex": 47,
-        "endIndex": 83
-      },
-      {
-        "type": "SLIPPERY_SLOPE",
-        "confidence": 0.8,
-        "explanation": "Slippery Slope: Claiming a small step will inevitably lead to a severe outcome.",
-        "excerpt": "This will lead to collapse.",
-        "startIndex": 85,
-        "endIndex": 112
+        "endIndex": 282
       }
     ],
-    "timestamp": "2025-08-20T07:08:20.721Z"
+    "timestamp": "2025-08-20T07:17:29.277Z"
   }
 }

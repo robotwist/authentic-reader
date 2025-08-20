@@ -1,0 +1,65 @@
+{
+  "article_1755674249277_19": {
+    "title": [
+      "Trump's Justice Department is investigating whether D.C. police officials falsified crime data\n"
+    ],
+    "link": [
+      "https://www.washingtontimes.com/news/2025/aug/19/donald-trumps-justice-department-investigating-whether-dc-police/"
+    ],
+    "description": [
+      "The Justice Department has opened an investigation into whether police officials in Washington, D.C., have falsified data to make crime rates appear lower than they are, according to two people familiar with the probe who weren't authorized to publicly discuss an open investigation.\n"
+    ],
+    "dc:creator": [
+      {
+        "_": "Alanna Durkin Richer and Michael Kunzelman",
+        "$": {
+          "xmlns:dc": "http://purl.org/dc/elements/1.1/"
+        }
+      }
+    ],
+    "pubDate": [
+      "Tue, 19 Aug 2025 16:08:20 -0400"
+    ],
+    "guid": [
+      "https://www.washingtontimes.com/news/2025/aug/19/donald-trumps-justice-department-investigating-whether-dc-police/"
+    ],
+    "media:content": [
+      {
+        "$": {
+          "url": "https://twt-thumbs.washtimes.com/media/image/2025/08/17/Trump-DC_Takeover-Black_Mayors_70257_s1440x959.jpg?38ee4b81f9b4ccf2a99f00d05e55ab87790d4572",
+          "medium": "image",
+          "height": "959",
+          "width": "1440"
+        }
+      }
+    ],
+    "enclosure": [
+      {
+        "$": {
+          "url": "https://twt-thumbs.washtimes.com/media/image/2025/08/17/Trump-DC_Takeover-Black_Mayors_70257_s1440x959.jpg?38ee4b81f9b4ccf2a99f00d05e55ab87790d4572",
+          "length": "918518",
+          "type": "image/jpeg"
+        }
+      }
+    ],
+    "articleId": "article_1755674249277_19",
+    "content": "The Justice Department has opened an investigation into whether police officials in Washington, D.C., have falsified data to make crime rates appear lower than they are, according to two people familiar with the probe who weren't authorized to publicly discuss an open investigation.\n",
+    "analysis": {
+      "wordCount": 43,
+      "readingTime": 1,
+      "hasExternalLinks": false,
+      "complexity": "medium",
+      "keyTopics": [
+        "science"
+      ],
+      "credibility": {
+        "score": 0.5,
+        "level": "medium",
+        "reason": "Standard content assessment"
+      },
+      "summary": "The Justice Department has opened an investigation into whether police officials in Washington, D. , have falsified data to make crime rates appear lower than they are, according to two people familiar with the probe who weren't authorized to publicly discuss an open investigation.",
+      "biasIndicators": {},
+      "timestamp": "2025-08-20T07:17:29.277Z"
+    }
+  }
+}

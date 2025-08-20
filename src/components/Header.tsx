@@ -4,7 +4,14 @@ import { useAuth } from '../contexts/AuthContext';
 import { FiChevronDown, FiUser, FiBook, FiSearch, FiSettings, FiTarget } from 'react-icons/fi';
 import '../styles/Header.css';
 import AuthModal from './AuthModal';
-import authenticLogo from '/public/authentic-internet-logo.png';
+// Use public asset path directly to avoid Vite warning about importing from public
+const AUTHENTIC_LOGO_URL = '/authentic-internet-logo.png';
+
+// Minimal type for the beforeinstallprompt event
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice?: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
+}
 
 interface HeaderProps {}
 
@@ -20,6 +27,8 @@ const Header = ({}: HeaderProps) => {
   const { user, isLoggedIn, logout } = useAuth();
   const analysisDropdownRef = useRef<HTMLLIElement>(null);
   const userDropdownRef = useRef<HTMLLIElement>(null);
+  const [deferredInstallEvent, setDeferredInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
+  const [isStandalone, setIsStandalone] = useState<boolean>(false);
   
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -44,6 +53,38 @@ const Header = ({}: HeaderProps) => {
     setIsUserDropdownOpen(false);
     setIsMenuOpen(false);
   }, [location.pathname]);
+
+  // PWA install prompt handling
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setDeferredInstallEvent(e as BeforeInstallPromptEvent);
+    };
+    const installedHandler = () => {
+      setDeferredInstallEvent(null);
+    };
+    // Detect standalone display mode
+    const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || (navigator as any).standalone === true;
+    setIsStandalone(standalone);
+
+    window.addEventListener('beforeinstallprompt', handler as EventListener);
+    window.addEventListener('appinstalled', installedHandler);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler as EventListener);
+      window.removeEventListener('appinstalled', installedHandler);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredInstallEvent) return;
+    try {
+      await deferredInstallEvent.prompt();
+      // Optionally inspect userChoice here
+      setDeferredInstallEvent(null);
+    } catch (_err) {
+      // Dismissed or error; keep the button available
+    }
+  };
   
   const handleLogin = () => {
     setAuthModalView('login');
@@ -74,7 +115,7 @@ const Header = ({}: HeaderProps) => {
       <div className="header-container">
         <div className="header-left">
           <div className="logo-container">
-            <img src={authenticLogo} alt="Authentic Internet Logo" className="logo-image" />
+            <img src={AUTHENTIC_LOGO_URL} alt="Authentic Internet Logo" className="logo-image" />
             <h1 className="app-title">Authentic Reader</h1>
           </div>
         </div>
@@ -189,6 +230,20 @@ const Header = ({}: HeaderProps) => {
               )}
             </li>
             
+            {/* Install App (PWA) */}
+            {!isStandalone && deferredInstallEvent && (
+              <li role="none">
+                <button
+                  onClick={handleInstallClick}
+                  className="auth-button"
+                  role="menuitem"
+                  tabIndex={0}
+                >
+                  Install App
+                </button>
+              </li>
+            )}
+
             {/* User Menu */}
             {isLoggedIn ? (
               <li role="none" ref={userDropdownRef}>
