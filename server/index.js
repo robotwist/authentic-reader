@@ -251,11 +251,12 @@ function detectBiasIndicators(title, content) {
 // Middleware
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://authentic-reader.netlify.app', 'https://authentic-reader-3069d55d-ae95-404d-9983-3dd4f5b3795f.netlify.app', 'http://localhost:5173']
-    : '*',
+    ? ['https://authentic-reader.netlify.app', 'https://authentic-reader-3069d55d-ae95-404d-9983-3dd4f5b3795f.netlify.app', 'http://localhost:5173', 'http://localhost:5174']
+    : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions));
@@ -287,73 +288,6 @@ app.use(express.urlencoded({ extended: true }));
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
-});
-
-// Simple article analysis endpoint (no authentication required) - REGISTER FIRST
-app.post('/api/analyze-article', async (req, res) => {
-  console.log('Analysis endpoint hit!');
-  try {
-    const { title, content, url } = req.body;
-    
-    if (!title && !content) {
-      return res.status(400).json({ error: 'Title or content is required' });
-    }
-
-    // Enhanced content analysis
-    const analysis = {
-      wordCount: content ? content.split(' ').length : 0,
-      readingTime: content ? Math.ceil(content.split(' ').length / 200) : 0, // 200 words per minute
-      hasExternalLinks: content ? (content.includes('http') || content.includes('www')) : false,
-      complexity: analyzeContentComplexity(content),
-      keyTopics: extractKeyTopics(title, content),
-      credibility: assessBasicCredibility(url, title, content),
-      summary: generateBasicSummary(content),
-      biasIndicators: detectBiasIndicators(title, content),
-      timestamp: new Date().toISOString()
-    };
-
-    // Save analysis to JSON storage
-    const analysisId = `analysis_${Date.now()}`;
-    await jsonStorage.saveAnalysis(analysisId, analysis);
-
-    res.json({
-      success: true,
-      analysis,
-      analysisId
-    });
-
-  } catch (error) {
-    console.error('Analysis error:', error);
-    res.status(500).json({ 
-      error: 'Analysis failed',
-      message: error.message 
-    });
-  }
-});
-
-// Get stored analyses (no authentication required) - REGISTER FIRST
-app.get('/api/analyses-list', async (req, res) => {
-  console.log('Analyses endpoint hit!');
-  try {
-    const analyses = await jsonStorage.getAnalysis();
-    const analysisList = Object.entries(analyses).map(([id, analysis]) => ({
-      id,
-      ...analysis
-    }));
-
-    res.json({
-      success: true,
-      analyses: analysisList,
-      count: analysisList.length
-    });
-
-  } catch (error) {
-    console.error('Error fetching analyses:', error);
-    res.status(500).json({ 
-      error: 'Failed to fetch analyses',
-      message: error.message 
-    });
-  }
 });
 
 /**
@@ -514,127 +448,6 @@ app.get('/api/rss', async (req, res) => {
   }
 });
 
-// Helper function to generate detailed credibility explanations
-function generateCredibilityExplanation(credibilityAssessment) {
-  const { sourceReputation, authorCredibility, historicalAccuracy, transparency } = credibilityAssessment;
-  
-  let explanation = '';
-  
-  // Source reputation explanation
-  if (sourceReputation.score > 0.8) {
-    explanation += `This source has a strong reputation for accuracy and fact-checking. `;
-  } else if (sourceReputation.score < 0.4) {
-    explanation += `This source has a history of publishing unreliable or sensationalist content. `;
-  }
-  
-  // Historical accuracy explanation
-  if (historicalAccuracy.accuracyRate > 0.8) {
-    explanation += `Fact-checking organizations have found this source to be accurate ${Math.round(historicalAccuracy.accuracyRate * 100)}% of the time. `;
-  } else if (historicalAccuracy.accuracyRate < 0.6) {
-    explanation += `Fact-checking organizations have found this source to be inaccurate ${Math.round((1 - historicalAccuracy.accuracyRate) * 100)}% of the time. `;
-  }
-  
-  // Author credibility explanation
-  if (authorCredibility.score > 0.8) {
-    explanation += `The author has a strong track record of accurate reporting. `;
-  } else if (authorCredibility.score < 0.4) {
-    explanation += `The author has a history of publishing questionable content. `;
-  }
-  
-  // Transparency explanation
-  if (transparency.score > 0.8) {
-    explanation += `The article provides clear sources and citations. `;
-  } else if (transparency.score < 0.4) {
-    explanation += `The article lacks transparency in its sources and methodology. `;
-  }
-  
-  return explanation || 'Standard credibility assessment based on source reputation and content analysis.';
-}
-
-// Helper function to generate enhanced summaries
-function generateEnhancedSummary(content) {
-  if (!content) return '';
-  
-  // Remove HTML tags and clean content
-  const cleanContent = content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-  
-  // Extract meaningful sentences
-  const sentences = cleanContent.split(/[.!?]+/).filter(s => s.trim().length > 20);
-  
-  if (sentences.length === 0) return '';
-  
-  // Take first 2-3 meaningful sentences
-  const summary = sentences.slice(0, Math.min(3, sentences.length)).join('. ') + '.';
-  
-  // Limit length for readability
-  return summary.length > 300 ? summary.substring(0, 300) + '...' : summary;
-}
-
-/**
- * Proxy endpoint for fetching article content
- * Example: /api/content?url=https://www.bbc.com/news/world-us-canada-12345
- */
-app.get('/api/content', async (req, res) => {
-  try {
-    const contentUrl = req.query.url;
-    
-    if (!contentUrl) {
-      return res.status(400).json({ error: 'URL parameter is required' });
-    }
-    
-    console.log(`Fetching content from: ${contentUrl}`);
-    
-    // Try multiple user agents if the first one fails
-    const userAgents = [
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Safari/605.1.15',
-      'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36'
-    ];
-    
-    let response;
-    let error;
-    
-    // Try with different user agents
-    for (const userAgent of userAgents) {
-      try {
-        response = await axios.get(contentUrl, {
-          headers: {
-            'User-Agent': userAgent,
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-            'Referer': 'https://www.google.com/'
-          },
-          timeout: 15000 // 15 second timeout
-        });
-        
-        if (response && response.data) {
-          break; // Success, exit the loop
-        }
-      } catch (err) {
-        console.error(`Attempt with user agent "${userAgent}" failed:`, err.message);
-        error = err;
-      }
-    }
-    
-    if (!response || !response.data) {
-      throw error || new Error('Failed to fetch content with all user agents');
-    }
-    
-    // Return the content
-    res.set('Access-Control-Allow-Origin', '*');
-    res.set('Content-Type', 'text/html');
-    res.send(response.data);
-    
-  } catch (error) {
-    console.error(`Error fetching content: ${error.message}`);
-    res.status(500).json({ 
-      error: 'Failed to fetch content',
-      message: error.message,
-      url: req.query.url
-    });
-  }
-});
-
 // Endpoint to fetch articles from all balanced sources
 app.get('/api/balanced-feed', async (req, res) => {
   try {
@@ -741,6 +554,143 @@ app.get('/api/source-stats', async (req, res) => {
   }
 });
 
+// Simple article analysis endpoint (no authentication required) - REGISTER FIRST
+app.post('/api/analyze-article', async (req, res) => {
+  console.log('Analysis endpoint hit!');
+  try {
+    const { title, content, url } = req.body;
+    
+    if (!title && !content) {
+      return res.status(400).json({ error: 'Title or content is required' });
+    }
+
+    // Enhanced content analysis
+    const analysis = {
+      wordCount: content ? content.split(' ').length : 0,
+      readingTime: content ? Math.ceil(content.split(' ').length / 200) : 0, // 200 words per minute
+      hasExternalLinks: content ? (content.includes('http') || content.includes('www')) : false,
+      complexity: analyzeContentComplexity(content),
+      keyTopics: extractKeyTopics(title, content),
+      credibility: assessBasicCredibility(url, title, content),
+      summary: generateBasicSummary(content),
+      biasIndicators: detectBiasIndicators(title, content),
+      timestamp: new Date().toISOString()
+    };
+
+    // Save analysis to JSON storage
+    const analysisId = `analysis_${Date.now()}`;
+    await jsonStorage.saveAnalysis(analysisId, analysis);
+
+    res.json({
+      success: true,
+      analysis,
+      analysisId
+    });
+
+  } catch (error) {
+    console.error('Analysis error:', error);
+    res.status(500).json({ 
+      error: 'Analysis failed',
+      message: error.message 
+    });
+  }
+});
+
+// Get stored analyses (no authentication required) - REGISTER FIRST
+app.get('/api/analyses-list', async (req, res) => {
+  console.log('Analyses endpoint hit!');
+  try {
+    const analyses = await jsonStorage.getAnalysis();
+    const analysisList = Object.entries(analyses).map(([id, analysis]) => ({
+      id,
+      ...analysis
+    }));
+
+    res.json({
+      success: true,
+      analyses: analysisList,
+      count: analysisList.length
+    });
+
+  } catch (error) {
+    console.error('Error fetching analyses:', error);
+    res.status(500).json({ 
+      error: 'Failed to fetch analyses',
+      message: error.message 
+    });
+  }
+});
+
+// Test endpoint to verify route registration
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'Test endpoint working', timestamp: new Date().toISOString() });
+});
+
+/**
+ * Proxy endpoint for fetching article content
+ * Example: /api/content?url=https://www.bbc.com/news/world-us-canada-12345
+ */
+app.get('/api/content', async (req, res) => {
+  try {
+    const contentUrl = req.query.url;
+    
+    if (!contentUrl) {
+      return res.status(400).json({ error: 'URL parameter is required' });
+    }
+    
+    console.log(`Fetching content from: ${contentUrl}`);
+    
+    // Try multiple user agents if the first one fails
+    const userAgents = [
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Safari/605.1.15',
+      'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36'
+    ];
+    
+    let response;
+    let error;
+    
+    // Try with different user agents
+    for (const userAgent of userAgents) {
+      try {
+        response = await axios.get(contentUrl, {
+          headers: {
+            'User-Agent': userAgent,
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Referer': 'https://www.google.com/'
+          },
+          timeout: 15000 // 15 second timeout
+        });
+        
+        if (response && response.data) {
+          break; // Success, exit the loop
+        }
+      } catch (err) {
+        console.error(`Attempt with user agent "${userAgent}" failed:`, err.message);
+        error = err;
+      }
+    }
+    
+    if (!response || !response.data) {
+      throw error || new Error('Failed to fetch content with all user agents');
+    }
+    
+    // Return the content
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Content-Type', 'text/html');
+    res.send(response.data);
+    
+  } catch (error) {
+    console.error(`Error fetching content: ${error.message}`);
+    res.status(500).json({ 
+      error: 'Failed to fetch content',
+      message: error.message,
+      url: req.query.url
+    });
+  }
+});
+
 // API routes - REGISTER AFTER CUSTOM ROUTES
 app.use('/api/users', userRoutes);
 app.use('/api/sources', sourceRoutes);
@@ -764,15 +714,15 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Fallback route
-app.use('*', (req, res) => {
-  res.status(404).json({ message: 'API endpoint not found' });
-});
-
 /**
  * Proxy endpoint for fetching article content
  * Example: /api/content?url=https://www.bbc.com/news/world-us-canada-12345
  */
+
+// Fallback route - must be last
+app.use('*', (req, res) => {
+  res.status(404).json({ message: 'API endpoint not found' });
+});
 
 let serverInstance = null;
 
@@ -844,6 +794,67 @@ async function initializeDefaultData() {
     console.log('Default sources initialized.');
   }
 }
+
+// Helper function to generate detailed credibility explanations
+function generateCredibilityExplanation(credibilityAssessment) {
+  const { sourceReputation, authorCredibility, historicalAccuracy, transparency } = credibilityAssessment;
+  
+  let explanation = '';
+  
+  // Source reputation explanation
+  if (sourceReputation.score > 0.8) {
+    explanation += `This source has a strong reputation for accuracy and fact-checking. `;
+  } else if (sourceReputation.score < 0.4) {
+    explanation += `This source has a history of publishing unreliable or sensationalist content. `;
+  }
+  
+  // Historical accuracy explanation
+  if (historicalAccuracy.accuracyRate > 0.8) {
+    explanation += `Fact-checking organizations have found this source to be accurate ${Math.round(historicalAccuracy.accuracyRate * 100)}% of the time. `;
+  } else if (historicalAccuracy.accuracyRate < 0.6) {
+    explanation += `Fact-checking organizations have found this source to be inaccurate ${Math.round((1 - historicalAccuracy.accuracyRate) * 100)}% of the time. `;
+  }
+  
+  // Author credibility explanation
+  if (authorCredibility.score > 0.8) {
+    explanation += `The author has a strong track record of accurate reporting. `;
+  } else if (authorCredibility.score < 0.4) {
+    explanation += `The author has a history of publishing questionable content. `;
+  }
+  
+  // Transparency explanation
+  if (transparency.score > 0.8) {
+    explanation += `The article provides clear sources and citations. `;
+  } else if (transparency.score < 0.4) {
+    explanation += `The article lacks transparency in its sources and methodology. `;
+  }
+  
+  return explanation || 'Standard credibility assessment based on source reputation and content analysis.';
+}
+
+// Helper function to generate enhanced summaries
+function generateEnhancedSummary(content) {
+  if (!content) return '';
+  
+  // Remove HTML tags and clean content
+  const cleanContent = content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  
+  // Extract meaningful sentences
+  const sentences = cleanContent.split(/[.!?]+/).filter(s => s.trim().length > 20);
+  
+  if (sentences.length === 0) return '';
+  
+  // Take first 2-3 meaningful sentences
+  const summary = sentences.slice(0, Math.min(3, sentences.length)).join('. ') + '.';
+  
+  // Limit length for readability
+  return summary.length > 300 ? summary.substring(0, 300) + '...' : summary;
+}
+
+/**
+ * Proxy endpoint for fetching article content
+ * Example: /api/content?url=https://www.bbc.com/news/world-us-canada-12345
+ */
 
 // Call startServer only if this file is run directly (not required by tests)
 if (process.argv[1] && process.argv[1].endsWith('index.js')) {
