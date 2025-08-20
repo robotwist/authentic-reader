@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { FiChevronDown, FiUser, FiBook, FiSearch, FiSettings } from 'react-icons/fi';
 import '../styles/Header.css';
 import AuthModal from './AuthModal';
+import authenticLogo from '/public/authentic-internet-logo.png';
 
 interface HeaderProps {}
 
@@ -71,11 +72,11 @@ const Header = ({}: HeaderProps) => {
   return (
     <header className="app-header">
       <div className="header-container">
-        <div className="logo">
-          <Link to="/">
-            <h1>Authentic Reader</h1>
-            <p className="tagline">Content that respects your intelligence</p>
-          </Link>
+        <div className="header-left">
+          <div className="logo-container">
+            <img src={authenticLogo} alt="Authentic Internet Logo" className="logo-image" />
+            <h1 className="app-title">Authentic Reader</h1>
+          </div>
         </div>
         
         <button 
