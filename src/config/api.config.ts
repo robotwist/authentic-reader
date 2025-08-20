@@ -29,7 +29,7 @@ export const API_BASE_URL = (() => {
   
   // Default to localhost development server
   console.log('[API Config] Using default localhost URL');
-  return 'http://localhost:3000';
+  return 'http://localhost:3001';
 })();
 
 // Log the final API base URL
