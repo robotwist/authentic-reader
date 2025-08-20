@@ -192,31 +192,15 @@ const BalancedFeedPage: React.FC = () => {
     setError(null);
     
     try {
-      const allArticles: Article[] = [];
-      
-      // Fetch from all active sources
-      for (const source of balancedSources.filter(s => activeFilters.includes(s.category))) {
-        try {
-          const response = await fetch(`http://localhost:3000/api/rss?url=${encodeURIComponent(source.url)}`);
-          if (response.ok) {
-            const data = await response.json();
-            const sourceArticles = (data.items || []).map((item: any) => ({
-              ...item,
-              source: source.name,
-              sourceCategory: source.category,
-              biasRating: source.biasRating,
-              reliability: source.reliability
-            }));
-            allArticles.push(...sourceArticles);
-          }
-        } catch (err) {
-          console.warn(`Failed to fetch from ${source.name}:`, err);
-        }
+      // Use the new balanced feed endpoint
+      const response = await fetch(`http://localhost:3000/api/balanced-feed?categories=${activeFilters.join(',')}&limit=50`);
+      if (response.ok) {
+        const data = await response.json();
+        const sortedArticles = sortArticles(data.articles, sortBy);
+        setArticles(sortedArticles);
+      } else {
+        throw new Error('Failed to fetch balanced feed');
       }
-      
-      // Sort articles based on user preference
-      const sortedArticles = sortArticles(allArticles, sortBy);
-      setArticles(sortedArticles);
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load articles');

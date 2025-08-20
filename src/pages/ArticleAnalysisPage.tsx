@@ -20,6 +20,22 @@ interface Article {
       score: number;
       level: string;
       reason: string;
+      detailedReasons?: string[];
+      sourceReputation?: {
+        score: number;
+        factors: string[];
+      };
+      authorCredibility?: {
+        score: number;
+        factors: string[];
+      };
+      historicalAccuracy?: {
+        accuracyRate: number;
+      };
+      transparency?: {
+        score: number;
+        factors: string[];
+      };
     };
     summary: string;
     timestamp: string;
@@ -229,16 +245,79 @@ const ArticleAnalysisPage: React.FC = () => {
                 </div>
               </div>
               
-              <div className="credibility-factors">
-                <h4>Factors Considered:</h4>
-                <ul>
-                  <li>Source reputation and history</li>
-                  <li>Author expertise and credentials</li>
-                  <li>Fact-checking and verification</li>
-                  <li>Bias assessment and transparency</li>
-                  <li>Citation quality and references</li>
-                </ul>
-              </div>
+              {/* Detailed Credibility Breakdown */}
+              {article.analysis.credibility.detailedReasons && (
+                <div className="credibility-breakdown">
+                  <h4>Detailed Assessment:</h4>
+                  <ul className="credibility-factors">
+                    {article.analysis.credibility.detailedReasons.map((reason, index) => (
+                      <li key={index}>{reason}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              
+              {/* Source Reputation */}
+              {article.analysis.credibility.sourceReputation && (
+                <div className="source-reputation">
+                  <h4>Source Reputation:</h4>
+                  <div className="reputation-score">
+                    <span className="score-label">Reputation Score:</span>
+                    <span className="score-value">{Math.round(article.analysis.credibility.sourceReputation.score * 100)}%</span>
+                  </div>
+                  <ul className="reputation-factors">
+                    {article.analysis.credibility.sourceReputation.factors.map((factor, index) => (
+                      <li key={index}>{factor}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              
+              {/* Author Credibility */}
+              {article.analysis.credibility.authorCredibility && (
+                <div className="author-credibility">
+                  <h4>Author Assessment:</h4>
+                  <div className="author-score">
+                    <span className="score-label">Author Score:</span>
+                    <span className="score-value">{Math.round(article.analysis.credibility.authorCredibility.score * 100)}%</span>
+                  </div>
+                  <ul className="author-factors">
+                    {article.analysis.credibility.authorCredibility.factors.map((factor, index) => (
+                      <li key={index}>{factor}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              
+              {/* Historical Accuracy */}
+              {article.analysis.credibility.historicalAccuracy && (
+                <div className="historical-accuracy">
+                  <h4>Historical Accuracy:</h4>
+                  <div className="accuracy-rate">
+                    <span className="rate-label">Accuracy Rate:</span>
+                    <span className="rate-value">{Math.round(article.analysis.credibility.historicalAccuracy.accuracyRate * 100)}%</span>
+                  </div>
+                  <p className="accuracy-description">
+                    Based on fact-checking organizations' assessments of this source's past reporting.
+                  </p>
+                </div>
+              )}
+              
+              {/* Transparency Assessment */}
+              {article.analysis.credibility.transparency && (
+                <div className="transparency-assessment">
+                  <h4>Transparency:</h4>
+                  <div className="transparency-score">
+                    <span className="score-label">Transparency Score:</span>
+                    <span className="score-value">{Math.round(article.analysis.credibility.transparency.score * 100)}%</span>
+                  </div>
+                  <ul className="transparency-factors">
+                    {article.analysis.credibility.transparency.factors.map((factor, index) => (
+                      <li key={index}>{factor}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           )}
         </div>

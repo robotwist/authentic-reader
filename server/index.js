@@ -5,6 +5,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { parseStringPromise } from 'xml2js';
 import jsonStorage from './services/jsonStorageService.js';
+import comprehensiveAnalysis from './services/comprehensiveAnalysisService.js';
 
 // Import monitoring tools
 import monitorService from './services/monitorService.js';
@@ -27,6 +28,61 @@ const PORT = process.env.PORT || 3000;
 
 // Initialize monitoring service
 monitorService.init();
+
+// Enhanced balanced sources with comprehensive coverage
+const balancedSources = [
+  // Far Left Sources
+  { id: 'jacobin', name: 'Jacobin', url: 'https://jacobin.com/feed.xml', category: 'far-left', description: 'Socialist perspective on politics and economics', biasRating: 'far-left', reliability: 'medium' },
+  { id: 'commondreams', name: 'Common Dreams', url: 'https://www.commondreams.org/feed', category: 'far-left', description: 'Progressive news and views', biasRating: 'far-left', reliability: 'medium' },
+  { id: 'truthout', name: 'Truthout', url: 'https://truthout.org/feed/', category: 'far-left', description: 'Progressive investigative journalism', biasRating: 'far-left', reliability: 'medium' },
+  { id: 'counterpunch', name: 'CounterPunch', url: 'https://www.counterpunch.org/feed/', category: 'far-left', description: 'Radical left perspectives', biasRating: 'far-left', reliability: 'low' },
+  
+  // Left Sources
+  { id: 'npr', name: 'NPR News', url: 'https://feeds.npr.org/1001/rss.xml', category: 'left', description: 'Center-left public radio news', biasRating: 'left', reliability: 'high' },
+  { id: 'msnbc', name: 'MSNBC', url: 'https://www.msnbc.com/feeds/latest.xml', category: 'left', description: 'Liberal cable news network', biasRating: 'left', reliability: 'medium' },
+  { id: 'huffpost', name: 'HuffPost', url: 'https://www.huffpost.com/section/front-page/feed', category: 'left', description: 'Liberal digital media outlet', biasRating: 'left', reliability: 'medium' },
+  { id: 'vox', name: 'Vox', url: 'https://www.vox.com/rss/index.xml', category: 'left', description: 'Liberal explanatory journalism', biasRating: 'left', reliability: 'medium' },
+  { id: 'motherjones', name: 'Mother Jones', url: 'https://www.motherjones.com/feed/', category: 'left', description: 'Progressive investigative journalism', biasRating: 'left', reliability: 'medium' },
+  { id: 'slate', name: 'Slate', url: 'https://slate.com/feed', category: 'left', description: 'Liberal online magazine', biasRating: 'left', reliability: 'medium' },
+  
+  // Center Sources
+  { id: 'reuters', name: 'Reuters', url: 'https://feeds.reuters.com/reuters/topNews', category: 'center', description: 'International news agency', biasRating: 'center', reliability: 'high' },
+  { id: 'bbc', name: 'BBC News', url: 'http://feeds.bbci.co.uk/news/world/rss.xml', category: 'center', description: 'British public service broadcaster', biasRating: 'center', reliability: 'high' },
+  { id: 'ap', name: 'Associated Press', url: 'https://feeds.ap.org/ap/topnews', category: 'center', description: 'Non-profit news cooperative', biasRating: 'center', reliability: 'high' },
+  { id: 'pbs', name: 'PBS NewsHour', url: 'https://www.pbs.org/newshour/feed/podcast/newshour-full-show', category: 'center', description: 'Public broadcasting news', biasRating: 'center', reliability: 'high' },
+  { id: 'npr-politics', name: 'NPR Politics', url: 'https://feeds.npr.org/510313/rss.xml', category: 'center', description: 'NPR political coverage', biasRating: 'center', reliability: 'high' },
+  { id: 'cspan', name: 'C-SPAN', url: 'https://www.c-span.org/rss/', category: 'center', description: 'Unfiltered government coverage', biasRating: 'center', reliability: 'high' },
+  { id: 'politico', name: 'Politico', url: 'https://www.politico.com/rss/politicopicks.xml', category: 'center', description: 'Political news and analysis', biasRating: 'center', reliability: 'high' },
+  { id: 'rollcall', name: 'Roll Call', url: 'https://www.rollcall.com/feed/', category: 'center', description: 'Congressional news and analysis', biasRating: 'center', reliability: 'high' },
+  
+  // Right Sources
+  { id: 'wsj', name: 'Wall Street Journal', url: 'https://feeds.wsj.com/public/rss/2_0.xml', category: 'right', description: 'Conservative business newspaper', biasRating: 'right', reliability: 'high' },
+  { id: 'nationalreview', name: 'National Review', url: 'https://www.nationalreview.com/feed/', category: 'right', description: 'Conservative magazine', biasRating: 'right', reliability: 'medium' },
+  { id: 'foxnews', name: 'Fox News', url: 'https://feeds.foxnews.com/foxnews/latest', category: 'right', description: 'Conservative cable news network', biasRating: 'right', reliability: 'medium' },
+  { id: 'nypost', name: 'New York Post', url: 'https://nypost.com/feed/', category: 'right', description: 'Conservative tabloid', biasRating: 'right', reliability: 'medium' },
+  { id: 'washingtontimes', name: 'Washington Times', url: 'https://www.washingtontimes.com/rss/headlines/', category: 'right', description: 'Conservative newspaper', biasRating: 'right', reliability: 'medium' },
+  { id: 'washingtonexaminer', name: 'Washington Examiner', url: 'https://www.washingtonexaminer.com/feed', category: 'right', description: 'Conservative news outlet', biasRating: 'right', reliability: 'medium' },
+  { id: 'dailycaller', name: 'Daily Caller', url: 'https://dailycaller.com/feed/', category: 'right', description: 'Conservative news website', biasRating: 'right', reliability: 'low' },
+  { id: 'townhall', name: 'Townhall', url: 'https://townhall.com/rss.xml', category: 'right', description: 'Conservative news and opinion', biasRating: 'right', reliability: 'low' },
+  
+  // Far Right Sources
+  { id: 'breitbart', name: 'Breitbart', url: 'https://www.breitbart.com/feed/', category: 'far-right', description: 'Far-right news and opinion', biasRating: 'far-right', reliability: 'low' },
+  { id: 'infowars', name: 'InfoWars', url: 'https://www.infowars.com/feed/', category: 'far-right', description: 'Far-right conspiracy theory outlet', biasRating: 'far-right', reliability: 'low' },
+  { id: 'gatewaypundit', name: 'Gateway Pundit', url: 'https://www.thegatewaypundit.com/feed/', category: 'far-right', description: 'Far-right news blog', biasRating: 'far-right', reliability: 'low' },
+  { id: 'zerohedge', name: 'Zero Hedge', url: 'https://feeds.feedburner.com/zerohedge/feed', category: 'far-right', description: 'Far-right financial news', biasRating: 'far-right', reliability: 'low' },
+  
+  // International Sources
+  { id: 'aljazeera', name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml', category: 'international', description: 'Qatar-based international news', biasRating: 'center-left', reliability: 'medium' },
+  { id: 'dw', name: 'Deutsche Welle', url: 'https://rss.dw.com/xml/rss-en-all', category: 'international', description: 'German international broadcaster', biasRating: 'center', reliability: 'high' },
+  { id: 'france24', name: 'France 24', url: 'https://www.france24.com/en/rss', category: 'international', description: 'French international news', biasRating: 'center', reliability: 'high' },
+  { id: 'scmp', name: 'South China Morning Post', url: 'https://www.scmp.com/rss/91/feed', category: 'international', description: 'Hong Kong-based international news', biasRating: 'center', reliability: 'medium' },
+  
+  // Fact-Checking Sources
+  { id: 'factcheck', name: 'FactCheck.org', url: 'https://www.factcheck.org/feed/', category: 'fact-checking', description: 'Non-partisan fact-checking', biasRating: 'center', reliability: 'high' },
+  { id: 'snopes', name: 'Snopes', url: 'https://www.snopes.com/feed/', category: 'fact-checking', description: 'Fact-checking and urban legend debunking', biasRating: 'center', reliability: 'high' },
+  { id: 'politifact', name: 'PolitiFact', url: 'https://www.politifact.com/rss/all/', category: 'fact-checking', description: 'Political fact-checking', biasRating: 'center', reliability: 'high' },
+  { id: 'reuters-factcheck', name: 'Reuters Fact Check', url: 'https://www.reuters.com/fact-check/feed', category: 'fact-checking', description: 'Reuters fact-checking service', biasRating: 'center', reliability: 'high' }
+];
 
 // Helper functions for comprehensive analysis
 function extractKeyTopics(title, content) {
@@ -304,6 +360,7 @@ app.get('/api/analyses-list', async (req, res) => {
  * Proxy endpoint for fetching RSS feeds
  * Example: /api/rss?url=https://feeds.bbci.co.uk/news/world/rss.xml
  */
+// RSS endpoint with comprehensive analysis
 app.get('/api/rss', async (req, res) => {
   try {
     const feedUrl = req.query.url;
@@ -311,76 +368,115 @@ app.get('/api/rss', async (req, res) => {
     if (!feedUrl) {
       return res.status(400).json({ error: 'URL parameter is required' });
     }
-
+    
     console.log(`Fetching RSS feed from: ${feedUrl}`);
     
     const response = await axios.get(feedUrl, {
       timeout: 10000,
       headers: {
-        'User-Agent': 'AuthenticReader/1.0 (RSS Reader)'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
       }
     });
-
-    console.log(`Feed response status: ${response.status}, Content type: ${response.headers['content-type']}`);
-
-    if (response.status !== 200) {
-      return res.status(response.status).json({ 
-        error: 'Failed to fetch RSS feed',
-        status: response.status 
-      });
-    }
-
-    const xmlData = response.data;
-    const result = await parseStringPromise(xmlData);
     
-    if (!result.rss && !result.feed) {
-      return res.status(400).json({ error: 'Invalid RSS/Atom feed format' });
-    }
-
-    // Extract feed information
-    const feed = result.rss?.channel?.[0] || result.feed;
-    const items = feed.item || feed.entry || [];
+    const feed = await parseStringPromise(response.data);
+    const items = feed.rss?.channel?.[0]?.item || feed.feed?.entry || [];
     
-    // Process and analyze each article
-    const processedItems = await Promise.all(items.map(async (item, index) => {
+    console.log(`Found ${items.length} items in RSS feed`);
+    
+    // Process and analyze each article with comprehensive analysis
+    const processedItems = await Promise.all(items.slice(0, 20).map(async (item, index) => {
       const title = item.title?.[0] || item['media:title']?.[0] || '';
       const link = item.link?.[0] || item.link?.[0]?.$?.href || '';
       const description = item.description?.[0] || item.summary?.[0] || item['media:description']?.[0] || '';
       const pubDate = item.pubDate?.[0] || item.published?.[0] || '';
       const author = item.author?.[0] || item['dc:creator']?.[0] || '';
       
-      // Basic content extraction
-      const content = item['content:encoded']?.[0] || description;
+      // Extract full content if available
+      let fullContent = item['content:encoded']?.[0] || description;
       
-      // Analyze the article with enhanced analysis
-      const analysis = {
-        wordCount: content ? content.split(' ').length : 0,
-        readingTime: content ? Math.ceil(content.split(' ').length / 200) : 0,
-        hasExternalLinks: content ? (content.includes('http') || content.includes('www')) : false,
-        complexity: analyzeContentComplexity(content),
-        keyTopics: extractKeyTopics(title, content),
-        credibility: assessBasicCredibility(link, title, content),
-        summary: generateBasicSummary(content),
-        biasIndicators: detectBiasIndicators(title, content),
-        timestamp: new Date().toISOString()
-      };
-
-      // Save article and analysis to storage
-      const articleId = `article_${Date.now()}_${index}`;
+      // Try to fetch full article content if we have a link
+      if (link && fullContent.length < 1000) {
+        try {
+          const contentResponse = await axios.get(link, {
+            timeout: 5000,
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+          });
+          
+          // Extract main content from HTML (basic extraction)
+          const htmlContent = contentResponse.data;
+          const contentMatch = htmlContent.match(/<article[^>]*>([\s\S]*?)<\/article>/i) ||
+                              htmlContent.match(/<main[^>]*>([\s\S]*?)<\/main>/i) ||
+                              htmlContent.match(/<div[^>]*class="[^"]*content[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
+          
+          if (contentMatch && contentMatch[1]) {
+            const extractedContent = contentMatch[1].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+            if (extractedContent.length > fullContent.length) {
+              fullContent = extractedContent;
+            }
+          }
+        } catch (contentError) {
+          console.log(`Could not fetch full content for ${link}:`, contentError.message);
+        }
+      }
+      
+      // Prepare article data for comprehensive analysis
       const articleData = {
         title,
         link,
         description,
         pubDate,
         author,
-        content,
-        analysis,
+        content: fullContent,
         source: feedUrl,
         fetchedAt: new Date().toISOString()
       };
+      
+      // Perform comprehensive analysis
+      const comprehensiveAnalysisResult = await comprehensiveAnalysis.analyzeFullArticle(articleData);
+      
+      // Create enhanced article data with detailed analysis
+      const articleId = `article_${Date.now()}_${index}`;
+      const enhancedArticleData = {
+        ...articleData,
+        articleId,
+        analysis: {
+          // Content analysis
+          wordCount: comprehensiveAnalysisResult.contentAnalysis.wordCount,
+          readingTime: comprehensiveAnalysisResult.contentAnalysis.readingTime,
+          hasExternalLinks: comprehensiveAnalysisResult.contentAnalysis.hasExternalLinks,
+          complexity: comprehensiveAnalysisResult.contentAnalysis.complexity,
+          keyTopics: comprehensiveAnalysisResult.contentAnalysis.keyTopics,
+          
+          // Enhanced credibility assessment with detailed explanations
+          credibility: {
+            score: comprehensiveAnalysisResult.credibilityAssessment.overallScore,
+            level: comprehensiveAnalysisResult.credibilityAssessment.level,
+            reason: generateCredibilityExplanation(comprehensiveAnalysisResult.credibilityAssessment),
+            detailedReasons: comprehensiveAnalysisResult.credibilityAssessment.detailedReasons,
+            sourceReputation: comprehensiveAnalysisResult.credibilityAssessment.sourceReputation,
+            authorCredibility: comprehensiveAnalysisResult.credibilityAssessment.authorCredibility,
+            historicalAccuracy: comprehensiveAnalysisResult.credibilityAssessment.historicalAccuracy,
+            transparency: comprehensiveAnalysisResult.credibilityAssessment.transparency
+          },
+          
+          // Political analysis
+          politicalAnalysis: comprehensiveAnalysisResult.politicalAnalysis,
+          
+          // Bias detection
+          biasIndicators: comprehensiveAnalysisResult.biasDetection,
+          
+          // Summary
+          summary: generateEnhancedSummary(fullContent),
+          
+          timestamp: new Date().toISOString()
+        }
+      };
 
-      await jsonStorage.saveArticle(articleId, articleData);
-      await jsonStorage.saveAnalysis(`analysis_${articleId}`, analysis);
+      // Save to storage
+      await jsonStorage.saveArticle(articleId, enhancedArticleData);
+      await jsonStorage.saveAnalysis(`analysis_${articleId}`, comprehensiveAnalysisResult);
 
       return {
         title,
@@ -388,16 +484,17 @@ app.get('/api/rss', async (req, res) => {
         description,
         pubDate,
         author,
-        content: content.substring(0, 500) + (content.length > 500 ? '...' : ''), // Truncate for response
-        analysis,
-        articleId
+        content: fullContent.substring(0, 500) + (fullContent.length > 500 ? '...' : ''),
+        analysis: enhancedArticleData.analysis,
+        articleId,
+        source: feedUrl
       };
     }));
 
     const feedInfo = {
-      title: feed.title?.[0] || 'Unknown Feed',
-      description: feed.description?.[0] || feed.subtitle?.[0] || '',
-      link: feed.link?.[0] || feedUrl,
+      title: feed.rss?.channel?.[0]?.title?.[0] || feed.feed?.title?.[0] || 'Unknown Feed',
+      description: feed.rss?.channel?.[0]?.description?.[0] || feed.feed?.subtitle?.[0] || '',
+      link: feed.rss?.channel?.[0]?.link?.[0] || feedUrl,
       itemCount: processedItems.length,
       lastUpdated: new Date().toISOString()
     };
@@ -416,6 +513,62 @@ app.get('/api/rss', async (req, res) => {
     });
   }
 });
+
+// Helper function to generate detailed credibility explanations
+function generateCredibilityExplanation(credibilityAssessment) {
+  const { sourceReputation, authorCredibility, historicalAccuracy, transparency } = credibilityAssessment;
+  
+  let explanation = '';
+  
+  // Source reputation explanation
+  if (sourceReputation.score > 0.8) {
+    explanation += `This source has a strong reputation for accuracy and fact-checking. `;
+  } else if (sourceReputation.score < 0.4) {
+    explanation += `This source has a history of publishing unreliable or sensationalist content. `;
+  }
+  
+  // Historical accuracy explanation
+  if (historicalAccuracy.accuracyRate > 0.8) {
+    explanation += `Fact-checking organizations have found this source to be accurate ${Math.round(historicalAccuracy.accuracyRate * 100)}% of the time. `;
+  } else if (historicalAccuracy.accuracyRate < 0.6) {
+    explanation += `Fact-checking organizations have found this source to be inaccurate ${Math.round((1 - historicalAccuracy.accuracyRate) * 100)}% of the time. `;
+  }
+  
+  // Author credibility explanation
+  if (authorCredibility.score > 0.8) {
+    explanation += `The author has a strong track record of accurate reporting. `;
+  } else if (authorCredibility.score < 0.4) {
+    explanation += `The author has a history of publishing questionable content. `;
+  }
+  
+  // Transparency explanation
+  if (transparency.score > 0.8) {
+    explanation += `The article provides clear sources and citations. `;
+  } else if (transparency.score < 0.4) {
+    explanation += `The article lacks transparency in its sources and methodology. `;
+  }
+  
+  return explanation || 'Standard credibility assessment based on source reputation and content analysis.';
+}
+
+// Helper function to generate enhanced summaries
+function generateEnhancedSummary(content) {
+  if (!content) return '';
+  
+  // Remove HTML tags and clean content
+  const cleanContent = content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  
+  // Extract meaningful sentences
+  const sentences = cleanContent.split(/[.!?]+/).filter(s => s.trim().length > 20);
+  
+  if (sentences.length === 0) return '';
+  
+  // Take first 2-3 meaningful sentences
+  const summary = sentences.slice(0, Math.min(3, sentences.length)).join('. ') + '.';
+  
+  // Limit length for readability
+  return summary.length > 300 ? summary.substring(0, 300) + '...' : summary;
+}
 
 /**
  * Proxy endpoint for fetching article content
@@ -478,6 +631,112 @@ app.get('/api/content', async (req, res) => {
       error: 'Failed to fetch content',
       message: error.message,
       url: req.query.url
+    });
+  }
+});
+
+// Endpoint to fetch articles from all balanced sources
+app.get('/api/balanced-feed', async (req, res) => {
+  try {
+    const { categories = 'all', limit = 50 } = req.query;
+    
+    // Filter sources based on categories
+    let sourcesToFetch = balancedSources;
+    if (categories !== 'all') {
+      const categoryList = categories.split(',');
+      sourcesToFetch = balancedSources.filter(source => 
+        categoryList.includes(source.category)
+      );
+    }
+    
+    console.log(`Fetching from ${sourcesToFetch.length} sources`);
+    
+    const allArticles = [];
+    
+    // Fetch from each source (with concurrency limit to avoid overwhelming servers)
+    const concurrencyLimit = 5;
+    for (let i = 0; i < sourcesToFetch.length; i += concurrencyLimit) {
+      const batch = sourcesToFetch.slice(i, i + concurrencyLimit);
+      
+      const batchPromises = batch.map(async (source) => {
+        try {
+          const response = await axios.get(`/api/rss?url=${encodeURIComponent(source.url)}`, {
+            baseURL: `http://localhost:${PORT}`,
+            timeout: 15000
+          });
+          
+          if (response.data && response.data.items) {
+            return response.data.items.map(article => ({
+              ...article,
+              source: source.name,
+              sourceCategory: source.category,
+              biasRating: source.biasRating,
+              reliability: source.reliability,
+              sourceDescription: source.description
+            }));
+          }
+          return [];
+        } catch (error) {
+          console.log(`Failed to fetch from ${source.name}:`, error.message);
+          return [];
+        }
+      });
+      
+      const batchResults = await Promise.all(batchPromises);
+      allArticles.push(...batchResults.flat());
+    }
+    
+    // Sort by date and limit results
+    const sortedArticles = allArticles
+      .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
+      .slice(0, parseInt(limit));
+    
+    res.json({
+      articles: sortedArticles,
+      totalSources: sourcesToFetch.length,
+      totalArticles: sortedArticles.length,
+      categories: categories,
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error('Balanced feed error:', error);
+    res.status(500).json({ 
+      error: 'Failed to fetch balanced feed',
+      message: error.message
+    });
+  }
+});
+
+// Endpoint to get source statistics
+app.get('/api/source-stats', async (req, res) => {
+  try {
+    const stats = {
+      totalSources: balancedSources.length,
+      byCategory: {},
+      byReliability: {},
+      byBias: {}
+    };
+    
+    // Calculate statistics
+    balancedSources.forEach(source => {
+      // By category
+      stats.byCategory[source.category] = (stats.byCategory[source.category] || 0) + 1;
+      
+      // By reliability
+      stats.byReliability[source.reliability] = (stats.byReliability[source.reliability] || 0) + 1;
+      
+      // By bias
+      stats.byBias[source.biasRating] = (stats.byBias[source.biasRating] || 0) + 1;
+    });
+    
+    res.json(stats);
+    
+  } catch (error) {
+    console.error('Source stats error:', error);
+    res.status(500).json({ 
+      error: 'Failed to get source statistics',
+      message: error.message
     });
   }
 });
