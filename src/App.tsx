@@ -27,6 +27,8 @@ import ArticlePage from './pages/ArticlePage';
 import AnalysisPage from './pages/AnalysisPage';
 import ArticleFeedPage from './pages/ArticleFeedPage';
 import ArticleAnalysisPage from './pages/ArticleAnalysisPage';
+import BalancedFeedPage from './pages/BalancedFeedPage';
+import MediaLiteracyGuide from './pages/MediaLiteracyGuide';
 import { UserPreferences } from './types';
 import { logger } from './utils/logger';
 import NLPBenchmark from './components/NLPBenchmark';
@@ -306,7 +308,7 @@ function App() {
               <Routes>
                 <Route 
                   path="/" 
-                  element={<ArticleFeedPage />} 
+                  element={<BalancedFeedPage />} 
                 />
                 <Route 
                   path="/feed" 
@@ -432,6 +434,7 @@ function App() {
                 } />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/media-literacy-guide" element={<MediaLiteracyGuide />} />
                 
                 <Route 
                   path="*" 

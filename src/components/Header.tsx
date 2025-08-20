@@ -100,7 +100,7 @@ const Header = ({}: HeaderProps) => {
                 role="menuitem"
                 tabIndex={0}
               >
-                Articles
+                Balanced Feed
               </Link>
             </li>
             
@@ -114,6 +114,19 @@ const Header = ({}: HeaderProps) => {
               >
                 <FiSettings />
                 Settings
+              </Link>
+            </li>
+            
+            <li role="none">
+              <Link 
+                to="/media-literacy-guide" 
+                className={isActive('/media-literacy-guide') ? 'active' : ''} 
+                aria-current={isActive('/media-literacy-guide') ? 'page' : undefined}
+                role="menuitem"
+                tabIndex={0}
+              >
+                <FiBook />
+                Media Literacy
               </Link>
             </li>
             
