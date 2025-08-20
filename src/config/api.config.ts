@@ -27,6 +27,13 @@ export const API_BASE_URL = (() => {
     return craUrl;
   }
   
+  // Check for Railway URL (will be set by Railway)
+  const railwayUrl = import.meta.env?.VITE_RAILWAY_URL;
+  if (railwayUrl) {
+    console.log('[API Config] Using Railway API URL:', railwayUrl);
+    return railwayUrl;
+  }
+  
   // Default to localhost development server
   console.log('[API Config] Using default localhost URL');
   return 'http://localhost:3001';

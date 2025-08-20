@@ -11,8 +11,11 @@
   
 # Set environment variables for production
 [context.production.environment]
+  # Railway backend URL (will be updated after Railway deployment)
   VITE_API_URL = "https://authentic-reader-api-8b0a83fb7d96.herokuapp.com/api"
   VITE_BACKEND_URL = "https://authentic-reader-api-8b0a83fb7d96.herokuapp.com"
+  # Railway fallback (will be updated after Railway deployment)
+  VITE_RAILWAY_URL = ""
   # Disable ChromaDB in production as it's not available
   VITE_ENABLE_CHROMA = "false"
   VITE_ENABLE_FEEDBACK_LOOP = "false"
