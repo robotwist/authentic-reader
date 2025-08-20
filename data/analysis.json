@@ -1,56 +1,530 @@
 {
-  "analysis_article_1755674248997_8": {
-    "wordCount": 60,
-    "readingTime": 1,
-    "hasExternalLinks": true,
+  "analysis_article_1755674316525_1": {
+    "wordCount": 468,
+    "readingTime": 3,
+    "hasExternalLinks": false,
     "complexity": "medium",
     "keyTopics": [
       "technology"
     ],
     "credibility": {
-      "score": 1,
-      "level": "high",
-      "reason": "Reputable news source; Substantial content length; Contains external references"
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
     },
-    "summary": "Forecasts nudge Erin's likely path to the west, increasing the risks at U.  Tropical storm conditions are expected in North Carolina's Outer Banks starting late Wednesday.  (Image credit: Pablo Martinez Monsivais).",
+    "summary": "DHS Blames Gavin Newsom After Illegal Alien Is Charged with Killing Three Americans: &#8216;How Many More Innocent People Must Die.  Schaben/Los Angeles Times via Getty Images John Binder 19 Aug 2025 Department of Homeland Security (DHS) officials are blaming Gov.  Gavin Newsom (D) and his continued...",
+    "biasIndicators": {
+      "sensationalist": [
+        "secret"
+      ]
+    },
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:36.526Z"
+  },
+  "analysis_article_1755674316534_0": {
+    "wordCount": 562,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "sports",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Report: Illegal Trucker Behind Fatal U-Turn Failed English Language Test 364 St.  Lucie County Sheriff&#039;s Office/U.  Marshals Elizabeth Weibel 19 Aug 2025 The semi-truck driver, who allegedly killed three Americans while making an illegal U-turn in Florida, failed an English language proficiency...",
+    "biasIndicators": {
+      "sensationalist": [
+        "revealed",
+        "secret"
+      ]
+    },
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:36.534Z"
+  },
+  "analysis_article_1755674316583_2": {
+    "wordCount": 387,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "entertainment"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "House Oversight Committee to Make Epstein Files Public After Issuing Subpoena to DOJ 35 Joe Schildhorn/Patrick McMullan via Getty Images Paul Bois 19 Aug 2025 The House Oversight Committee will release some documents pertaining to the Jeffrey Epstein case later this week, after it issued a subpoena ...",
     "biasIndicators": {},
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:36.583Z"
+  },
+  "analysis_article_1755674316587_3": {
+    "wordCount": 53,
+    "readingTime": 1,
+    "hasExternalLinks": true,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.7,
+      "level": "high",
+      "reason": "Substantial content length; Contains external references"
+    },
+    "summary": "Monday marked a historic day in the pursuit of peace in the Ukraine War, and Breitbart News had a front row seat in the press pool to the high-stakes meeting among world leaders.  The post Breitbart in the Oval Office: Inside Zelensky&#8217;s White House Visit 2. 0 appeared first on Breitbart .",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:36.587Z"
+  },
+  "analysis_article_1755674316643_5": {
+    "wordCount": 508,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "health",
+      "science"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "&#8216;Disturbing Evidence:&#8217; Senate Judiciary Committee Reveals Biden&#8217;s HHS Placed Over 11,000 Migrant Children in U.  Homes with Unvetted Adults 381 Jim WATSON/AFP via Getty Images John Binder 19 Aug 2025 Senate Judiciary Committee Chairman Chuck Grassley (R-IA) revealed in a bombshell ...",
+    "biasIndicators": {
+      "sensationalist": [
+        "revealed",
+        "secret"
+      ]
+    },
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:36.644Z"
+  },
+  "analysis_article_1755674316649_4": {
+    "wordCount": 554,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "‘Downright False’: Karoline Leavitt Torches Media over Russia-Ukraine Negotiation Coverage 31 AP Photo/Evan Vucci Jasmyn Jordan 19 Aug 2025 Press Secretary Karoline Leavitt tore into the media’s handling of Trump’s recent negotiations with Russia, Ukraine, and European leaders during a White House b...",
+    "biasIndicators": {
+      "political": [
+        "left-wing"
+      ],
+      "sensationalist": [
+        "secret"
+      ]
+    },
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:36.650Z"
+  },
+  "analysis_article_1755674316710_6": {
+    "wordCount": 442,
+    "readingTime": 3,
+    "hasExternalLinks": true,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "entertainment"
+    ],
+    "credibility": {
+      "score": 0.5,
+      "level": "medium",
+      "reason": "1 sensationalist words detected; Substantial content length; Contains external references"
+    },
+    "summary": "‘Weak Ass President,’ ‘Pee Pee Tapes,’ Hollywood Celebrities Throw Conspiracy-Filled Tantrums over Trump’s Russia-Ukraine Peace Talks 32 Kevin Winter/Getty Images Warner Todd Huston 19 Aug 2025 The peace talks being hosted by President Donald Trump in the White House have spurred a throng of left-wi...",
+    "biasIndicators": {
+      "political": [
+        "left-wing",
+        "democrat"
+      ]
+    },
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:36.711Z"
+  },
+  "analysis_article_1755674316729_7": {
+    "wordCount": 956,
+    "readingTime": 5,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy",
+      "environment",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Breitbart Business Digest: What if We Had Listened to Pat Buchanan.  24 AP Photo/Bob Galbraith John Carney 19 Aug 2025 Patrick J.  Buchanan: The Prophet of American Trade Policy When Pat Buchanan campaigned for the Republican presidential nomination in the 1990s, he made tariffs a central pillar of ...",
+    "biasIndicators": {
+      "political": [
+        "republican"
+      ]
+    },
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:36.730Z"
+  },
+  "analysis_article_1755674316805_9": {
+    "wordCount": 1641,
+    "readingTime": 9,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "health",
+      "economy",
+      "environment",
+      "science",
+      "education",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Citizenship Chief Says Federal Work Permits for Foreign Grads Are &#8216;Depressing Wages&#8217; 29 AP Photo/Carlos Osorio Neil Munro 19 Aug 2025 President Joe Biden&#8217;s pro-migration deputies allowed at least 400,000 foreign students at U.  white-collar jobs in 2024.  Biden&#8217;s 400,000 give...",
+    "biasIndicators": {
+      "political": [
+        "conservative",
+        "republican"
+      ]
+    },
     "logicalFallacies": [
       {
         "type": "APPEAL_TO_EMOTION",
         "confidence": 0.65,
         "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
-        "excerpt": "Forecasters warn of dangerous rip currents along the East Coast.'/><p>Forecasts nudge Erin's likely path to the west, increasing the risks at U.S",
-        "startIndex": 320,
-        "endIndex": 465
+        "excerpt": "&#8230; &#8220;It&#8217;s terrifying,&#8221; a 26-year-old postgraduate student from Hyderabad, currently residing in Houston, told The Times of India",
+        "startIndex": 9371,
+        "endIndex": 9521
       }
     ],
-    "timestamp": "2025-08-20T07:17:28.997Z"
+    "timestamp": "2025-08-20T07:18:36.807Z"
   },
-  "analysis_article_1755674249277_19": {
-    "wordCount": 43,
-    "readingTime": 1,
+  "analysis_article_1755674316842_10": {
+    "wordCount": 567,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Pope Leo Prays for Success in Peace Efforts 8 TIZIANA FABI/AFP via Getty Images John Hayward 19 Aug 2025 Pope Leo XIV offered a prayer on Sunday for the success of peacemaking efforts.  The pope did not reference any conflict in particular, but the peace effort drawing the most attention over the we...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:36.842Z"
+  },
+  "analysis_article_1755674316843_8": {
+    "wordCount": 310,
+    "readingTime": 2,
     "hasExternalLinks": false,
     "complexity": "medium",
     "keyTopics": [
-      "science"
+      "technology"
     ],
     "credibility": {
-      "score": 0.5,
+      "score": 0.6,
       "level": "medium",
-      "reason": "Standard content assessment"
+      "reason": "Substantial content length"
     },
-    "summary": "The Justice Department has opened an investigation into whether police officials in Washington, D. , have falsified data to make crime rates appear lower than they are, according to two people familiar with the probe who weren't authorized to publicly discuss an open investigation.",
-    "biasIndicators": {},
+    "summary": "WATCH: Boeing Plane Makes Emergency Landing After Flames Seemingly Shoot Out of Engine: &#8216;An Incredibly Horrible Experience&#8217; 35 Marcos del Mazo/LightRocket via Getty Images Hannah Knudsen 19 Aug 2025 A Boeing plane made an emergency landing in Italy on Saturday after flames were seen shoo...",
+    "biasIndicators": {
+      "emotional": [
+        "horrible"
+      ]
+    },
     "logicalFallacies": [
       {
-        "type": "AD_HOMINEM",
+        "type": "APPEAL_TO_EMOTION",
         "confidence": 0.65,
-        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
-        "excerpt": "The Justice Department has opened an investigation into whether police officials in Washington, D.C., have falsified data to make crime rates appear lower than they are, according to two people familiar with the probe who weren't authorized to publicly discuss an open investigation",
-        "startIndex": 0,
-        "endIndex": 282
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "A Condor Airlines spokesperson told People the incident was the result of a chemical reaction in the engine&#8217;s combustion chamber and that no one was ever in true danger",
+        "startIndex": 1332,
+        "endIndex": 1506
       }
     ],
-    "timestamp": "2025-08-20T07:17:29.277Z"
+    "timestamp": "2025-08-20T07:18:36.843Z"
+  },
+  "analysis_article_1755674316855_11": {
+    "wordCount": 400,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Report: Freed Palestinian Terrorists to Address Detroit Conference 52 AP Photo/Andres Kudacki Joel B.  Pollak 19 Aug 2025 Two Palestinian terrorists who were released by Israel during temporary ceasefires with Hamas are set to address a pro-Palestinian conference in Detroit, Michigan, in late August...",
+    "biasIndicators": {
+      "political": [
+        "democrat"
+      ]
+    },
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:36.856Z"
+  },
+  "analysis_article_1755674316907_12": {
+    "wordCount": 223,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "health",
+      "sports"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Milwaukee Father Faces Charge in Fentanyl Death of Toddler 4 Getty Katherine Hamilton 19 Aug 2025 A man in Milwaukee, Wisconsin is facing charges related to the fentanyl death of his 14-month-old son.  Demetrius Hubanks, 28, told police he and his son fell asleep on the couch while the child&#8217;s...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:36.907Z"
+  },
+  "analysis_article_1755674316930_13": {
+    "wordCount": 314,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "entertainment"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Rocker Jack White Approves of CA Gov.  Newsom Using &#8216;Seven Nation Army&#8217; for Anti-Trump Meme: &#8216;Keep Hitting Him Back Gavin.  Rodriguez/WireImage Alana Mastrangelo 19 Aug 2025 Rocker Jack White approved of California Gov.",
+    "biasIndicators": {
+      "political": [
+        "democrat",
+        "republican"
+      ]
+    },
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:36.930Z"
+  },
+  "analysis_article_1755674316966_14": {
+    "wordCount": 648,
+    "readingTime": 4,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "health",
+      "environment",
+      "science",
+      "education",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Costco Will Not Sell Abortion Pills in Its U.  Pharmacies 59 Damian Dovarganes/AP Katherine Hamilton 19 Aug 2025 Costco said it will not sell the abortion pill mifepristone at any of its U.  pharmacies, citing &#8220;lack of demand.",
+    "biasIndicators": {
+      "political": [
+        "conservative"
+      ],
+      "sensationalist": [
+        "shocking"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.65,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "Students for Life worked hard to call on pharmacies to reject these dangerous drugs,&#8221; Students for Life President Kristan Hawkins said in a post to X",
+        "startIndex": 792,
+        "endIndex": 947
+      }
+    ],
+    "timestamp": "2025-08-20T07:18:36.967Z"
+  },
+  "analysis_article_1755674317018_15": {
+    "wordCount": 267,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "sports"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Indiana Fever&#8217;s Sophie Cunningham Out for the Season with Knee Injury 4 Sean M.  Haffey/Getty Images Warner Todd Huston 19 Aug 2025 Indiana Fever guard Sophie Cunningham is out for the rest of the season after suffering a knee injury on Sunday.  Cunningham was seen rolling on the court in pain...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:37.018Z"
+  },
+  "analysis_article_1755674317056_16": {
+    "wordCount": 509,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "sports",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Transgender Democrat Rep.  Sarah McBride Accuses President Trump of ‘All-Out Assault’ on ‘American Democracy’ 50 Jemal Countess/Getty Images for Families Over Billionaires Katherine Hamilton 19 Aug 2025 Democrat Rep.  Sarah McBride (D-DE), a man who identifies as a woman, claimed President Trump is ...",
+    "biasIndicators": {
+      "emotional": [
+        "horrible"
+      ],
+      "political": [
+        "democrat",
+        "republican"
+      ]
+    },
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:37.057Z"
+  },
+  "analysis_article_1755674317061_17": {
+    "wordCount": 537,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "health"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Retired Navy SEAL Rep.  Derrick Van Orden Uses Makeshift Tourniquets to Save 11-Year-Old: ‘He Would’ve Bled to Death’ 260 Tom Williams/CQ-Roll Call, Inc via Getty Images Jasmyn Jordan 19 Aug 2025 Rep.  Derrick Van Orden (R-WI), a retired Navy SEAL, helped save the life of an 11-year-old boy injured ...",
+    "biasIndicators": {
+      "emotional": [
+        "amazing"
+      ],
+      "political": [
+        "conservative"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.8,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "Van Orden and his wife, Sara, were driving south on Interstate 35 near Osceola, Iowa, on Saturday when they witnessed a devastating crash involving a Dodge Grand Caravan that veered off the road at around 70 miles per hour",
+        "startIndex": 540,
+        "endIndex": 762
+      }
+    ],
+    "timestamp": "2025-08-20T07:18:37.062Z"
+  },
+  "analysis_article_1755674317121_19": {
+    "wordCount": 933,
+    "readingTime": 5,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "President Trump Says American Planes in the Air But Not Boots on the Ground for Ukraine Security Mission 687 SAUL LOEB/AFP via Getty Images Oliver JJ Lane 19 Aug 2025 U.  President Donald Trump gave his personal assurance that there will be no American boots on the ground in a post-peace deal Ukrain...",
+    "biasIndicators": {
+      "political": [
+        "left-wing"
+      ],
+      "sensationalist": [
+        "revealed"
+      ]
+    },
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:37.122Z"
+  },
+  "analysis_article_1755674317124_18": {
+    "wordCount": 624,
+    "readingTime": 4,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy",
+      "sports"
+    ],
+    "credibility": {
+      "score": 0.6,
+      "level": "medium",
+      "reason": "Substantial content length"
+    },
+    "summary": "Exclusive &#8212; Trump CFPB Closes Biden-Era Weaponized Investigation Against Public Square, Credova 165 Daniel Karmann/picture alliance via Getty Images Sean Moran 19 Aug 2025 The Consumer Financial Protection Bureau (CFPB) under Director Russ Vought on Tuesday closed a Biden-era investigation aga...",
+    "biasIndicators": {
+      "political": [
+        "democrat"
+      ],
+      "opinionated": [
+        "clearly"
+      ]
+    },
+    "logicalFallacies": [],
+    "timestamp": "2025-08-20T07:18:37.124Z"
   }
 }
