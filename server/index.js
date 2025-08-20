@@ -47,7 +47,7 @@ const balancedSources = [
   
   // Center Sources
   { id: 'reuters', name: 'Reuters', url: 'https://feeds.reuters.com/reuters/topNews', category: 'center', description: 'International news agency', biasRating: 'center', reliability: 'high' },
-  { id: 'bbc', name: 'BBC News', url: 'http://feeds.bbci.co.uk/news/world/rss.xml', category: 'center', description: 'British public service broadcaster', biasRating: 'center', reliability: 'high' },
+  { id: 'bbc', name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/world/rss.xml', category: 'center', description: 'British public service broadcaster', biasRating: 'center', reliability: 'high' },
   { id: 'ap', name: 'Associated Press', url: 'https://feeds.ap.org/ap/topnews', category: 'center', description: 'Non-profit news cooperative', biasRating: 'center', reliability: 'high' },
   { id: 'pbs', name: 'PBS NewsHour', url: 'https://www.pbs.org/newshour/feed/podcast/newshour-full-show', category: 'center', description: 'Public broadcasting news', biasRating: 'center', reliability: 'high' },
   { id: 'npr-politics', name: 'NPR Politics', url: 'https://feeds.npr.org/510313/rss.xml', category: 'center', description: 'NPR political coverage', biasRating: 'center', reliability: 'high' },
