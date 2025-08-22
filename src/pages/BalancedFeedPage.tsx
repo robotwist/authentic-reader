@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiClock, FiShield, FiTag, FiTrendingUp, FiFilter, FiRefreshCw, FiDatabase, FiWifi, FiWifiOff } from 'react-icons/fi';
+import { FiClock, FiShield, FiTag, FiTrendingUp, FiFilter, FiRefreshCw, FiDatabase, FiWifi, FiWifiOff, FiInfo } from 'react-icons/fi';
 import { articleService, Article } from '../services/articleService';
+import AnalysisTooltip from '../components/AnalysisTooltip';
 import '../styles/BalancedFeedPage.css';
 
 // Article interface is now imported from articleService
@@ -278,40 +279,70 @@ const BalancedFeedPage: React.FC = () => {
             {article.analysis && (
               <div className="article-analysis">
                 <div className="analysis-grid">
-                  <div className="analysis-item">
-                    <FiClock className="analysis-icon" />
-                    <span className="analysis-value">{article.analysis.readingTime} min</span>
-                  </div>
-
-                  <div className="analysis-item">
-                    <FiShield className="analysis-icon" />
-                    <span
-                      className="analysis-value credibility-badge"
-                      style={{ backgroundColor: getCredibilityColor(article.analysis.credibility.level) }}
-                    >
-                      {article.analysis.credibility.level}
-                    </span>
-                  </div>
-
-                  {article.analysis.biasAnalysis && article.analysis.biasAnalysis.direction && (
+                  <AnalysisTooltip
+                    title="Reading Time"
+                    explanation="Estimated time to read this article based on word count and complexity. Longer articles may contain more detailed analysis but require more time investment."
+                    icon={<FiClock />}
+                    className="metric-tooltip"
+                  >
                     <div className="analysis-item">
-                      <FiTag className="analysis-icon" />
-                      <span className="analysis-value">
-                        Bias: {typeof article.analysis.biasAnalysis.direction === 'string' 
-                          ? article.analysis.biasAnalysis.direction 
-                          : article.analysis.biasAnalysis.direction.type || 'Unknown'} 
-                        ({Math.round((article.analysis.biasAnalysis.confidence || 0) * 100)}%)
+                      <FiClock className="analysis-icon" />
+                      <span className="analysis-value">{article.analysis.readingTime} min</span>
+                    </div>
+                  </AnalysisTooltip>
+
+                  <AnalysisTooltip
+                    title="Credibility Score"
+                    explanation={`This article has a ${article.analysis.credibility.level} credibility rating based on source reputation, fact-checking, citation quality, and historical accuracy. ${article.analysis.credibility.reason}`}
+                    icon={<FiShield />}
+                    className="credibility-tooltip"
+                  >
+                    <div className="analysis-item">
+                      <FiShield className="analysis-icon" />
+                      <span
+                        className="analysis-value credibility-badge"
+                        style={{ backgroundColor: getCredibilityColor(article.analysis.credibility.level) }}
+                      >
+                        {article.analysis.credibility.level}
                       </span>
                     </div>
+                  </AnalysisTooltip>
+
+                  {article.analysis.biasAnalysis && article.analysis.biasAnalysis.direction && (
+                    <AnalysisTooltip
+                      title="Bias Analysis"
+                      explanation={`This article shows ${typeof article.analysis.biasAnalysis.direction === 'string' 
+                        ? article.analysis.biasAnalysis.direction 
+                        : article.analysis.biasAnalysis.direction.type || 'Unknown'} bias with ${Math.round((article.analysis.biasAnalysis.confidence || 0) * 100)}% confidence. This indicates the political or ideological leaning detected in the content, language, and framing of the article.`}
+                      icon={<FiTag />}
+                      className="bias-tooltip"
+                    >
+                      <div className="analysis-item">
+                        <FiTag className="analysis-icon" />
+                        <span className="analysis-value">
+                          Bias: {typeof article.analysis.biasAnalysis.direction === 'string' 
+                            ? article.analysis.biasAnalysis.direction 
+                            : article.analysis.biasAnalysis.direction.type || 'Unknown'} 
+                          ({Math.round((article.analysis.biasAnalysis.confidence || 0) * 100)}%)
+                        </span>
+                      </div>
+                    </AnalysisTooltip>
                   )}
 
                   {article.analysis.logicalFallacies && article.analysis.logicalFallacies.length > 0 && (
-                    <div className="analysis-item">
-                      <FiTrendingUp className="analysis-icon" />
-                      <span className="analysis-value">
-                        {article.analysis.logicalFallacies.length} fallac{article.analysis.logicalFallacies.length === 1 ? 'y' : 'ies'} detected
-                      </span>
-                    </div>
+                    <AnalysisTooltip
+                      title="Logical Fallacies Detected"
+                      explanation={`${article.analysis.logicalFallacies.length} logical fallacy${article.analysis.logicalFallacies.length === 1 ? 'y' : 'ies'} found in this article. Logical fallacies are errors in reasoning that can weaken arguments and mislead readers. Common types include ad hominem attacks, straw man arguments, and false dilemmas.`}
+                      icon={<FiTrendingUp />}
+                      className="fallacy-tooltip"
+                    >
+                      <div className="analysis-item">
+                        <FiTrendingUp className="analysis-icon" />
+                        <span className="analysis-value">
+                          {article.analysis.logicalFallacies.length} fallac{article.analysis.logicalFallacies.length === 1 ? 'y' : 'ies'} detected
+                        </span>
+                      </div>
+                    </AnalysisTooltip>
                   )}
                 </div>
 

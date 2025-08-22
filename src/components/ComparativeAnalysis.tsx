@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FiBarChart2, FiCheckCircle, FiInfo, FiTarget, FiUsers, FiAlertTriangle, FiTrendingUp } from 'react-icons/fi';
+import { FiBarChart2, FiCheckCircle, FiInfo, FiTarget, FiUsers, FiAlertTriangle, FiTrendingUp, FiShield, FiAlertCircle } from 'react-icons/fi';
 import { useLlamaAnalysis } from '../hooks/useLlamaAnalysis';
+import AnalysisTooltip from './AnalysisTooltip';
 import '../styles/ComparativeAnalysis.css';
 
 interface Article {
@@ -856,7 +857,14 @@ const ComparativeAnalysis: React.FC<ComparativeAnalysisProps> = ({
           
           <div className="results-grid">
             <div className="result-section">
-              <h4><FiUsers /> Event Similarities</h4>
+              <AnalysisTooltip
+                title="Event Similarities"
+                explanation="This section shows what different sources agree on about the event, including common topics, key phrases, and shared factual claims. High similarity suggests reliable reporting, while low similarity may indicate different events or conflicting information."
+                icon={<FiUsers />}
+                className="metric-tooltip"
+              >
+                <h4><FiUsers /> Event Similarities</h4>
+              </AnalysisTooltip>
               <div className="similarities">
                 <div className="topics">
                   <h5>Common Topics</h5>
@@ -886,7 +894,14 @@ const ComparativeAnalysis: React.FC<ComparativeAnalysisProps> = ({
             </div>
             
             <div className="result-section">
-              <h4><FiAlertTriangle /> Conflicts & Discrepancies</h4>
+              <AnalysisTooltip
+                title="Conflicts & Discrepancies"
+                explanation="This section highlights disagreements between sources, including conflicting claims, different perspectives, and bias variations. These discrepancies are crucial for identifying potential misinformation or different interpretations of events."
+                icon={<FiAlertTriangle />}
+                className="fallacy-tooltip"
+              >
+                <h4><FiAlertTriangle /> Conflicts & Discrepancies</h4>
+              </AnalysisTooltip>
               <div className="differences">
                 <div className="conflicting-claims">
                   <h5>Conflicting Claims</h5>
@@ -918,17 +933,32 @@ const ComparativeAnalysis: React.FC<ComparativeAnalysisProps> = ({
           <div className="analysis-summary">
             <h4>Truth Detection Summary</h4>
             <div className="summary-metrics">
-              <div className="metric">
-                <span>Event Consensus:</span>
-                <span>{(comparativeResult.analysis.overallConsensus * 100).toFixed(0)}%</span>
-              </div>
-              <div className="metric">
-                <span>Truth Reliability:</span>
-                <span className={comparativeResult.analysis.reliabilityScore > 0.7 ? 'high-reliability' : 
-                                 comparativeResult.analysis.reliabilityScore < 0.4 ? 'low-reliability' : 'medium-reliability'}>
-                  {(comparativeResult.analysis.reliabilityScore * 100).toFixed(0)}%
-                </span>
-              </div>
+              <AnalysisTooltip
+                title="Event Consensus"
+                explanation="This percentage indicates how much the different sources agree on the basic facts of the event. Higher consensus suggests more reliable reporting, while low consensus may indicate conflicting information or different interpretations of events."
+                icon={<FiUsers />}
+                className="metric-tooltip"
+              >
+                <div className="metric">
+                  <span>Event Consensus:</span>
+                  <span>{(comparativeResult.analysis.overallConsensus * 100).toFixed(0)}%</span>
+                </div>
+              </AnalysisTooltip>
+              
+              <AnalysisTooltip
+                title="Truth Reliability Score"
+                explanation={`This ${(comparativeResult.analysis.reliabilityScore * 100).toFixed(0)}% reliability score is based on source diversity, citation quality, conflict level, and bias consistency. Higher scores indicate more trustworthy information, while lower scores suggest potential misinformation or bias.`}
+                icon={<FiShield />}
+                className="credibility-tooltip"
+              >
+                <div className="metric">
+                  <span>Truth Reliability:</span>
+                  <span className={comparativeResult.analysis.reliabilityScore > 0.7 ? 'high-reliability' : 
+                                   comparativeResult.analysis.reliabilityScore < 0.4 ? 'low-reliability' : 'medium-reliability'}>
+                    {(comparativeResult.analysis.reliabilityScore * 100).toFixed(0)}%
+                  </span>
+                </div>
+              </AnalysisTooltip>
             </div>
             <div className="recommendations">
               <h5>Truth Detection Recommendations</h5>
