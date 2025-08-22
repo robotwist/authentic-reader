@@ -293,11 +293,14 @@ const BalancedFeedPage: React.FC = () => {
                     </span>
                   </div>
 
-                  {article.analysis.biasAnalysis && typeof article.analysis.biasAnalysis.direction === 'string' && (
+                  {article.analysis.biasAnalysis && article.analysis.biasAnalysis.direction && (
                     <div className="analysis-item">
                       <FiTag className="analysis-icon" />
                       <span className="analysis-value">
-                        Bias: {article.analysis.biasAnalysis.direction} ({Math.round((article.analysis.biasAnalysis.confidence || 0) * 100)}%)
+                        Bias: {typeof article.analysis.biasAnalysis.direction === 'string' 
+                          ? article.analysis.biasAnalysis.direction 
+                          : article.analysis.biasAnalysis.direction.type || 'Unknown'} 
+                        ({Math.round((article.analysis.biasAnalysis.confidence || 0) * 100)}%)
                       </span>
                     </div>
                   )}
