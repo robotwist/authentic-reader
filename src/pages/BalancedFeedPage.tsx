@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FiClock, FiShield, FiTag, FiTrendingUp, FiFilter, FiRefreshCw, FiDatabase, FiWifi, FiWifiOff, FiInfo } from 'react-icons/fi';
 import { articleService, Article } from '../services/articleService';
 import AnalysisTooltip from '../components/AnalysisTooltip';
+import { processArticleDescription } from '../utils/htmlUtils';
 import '../styles/BalancedFeedPage.css';
 
 // Article interface is now imported from articleService
@@ -273,7 +274,12 @@ const BalancedFeedPage: React.FC = () => {
             </div>
 
             <div className="article-content">
-              <p className="article-description">{typeof article.description === 'string' ? article.description : 'No description available'}</p>
+              <p className="article-description">
+                {(() => {
+                  const processed = processArticleDescription(article.description || '', 200);
+                  return processed.truncated;
+                })()}
+              </p>
             </div>
 
             {article.analysis && (

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { processArticleDescription } from '../utils/htmlUtils';
 import '../styles/ArticleFeedPage.css';
 
 interface Article {
@@ -168,7 +169,12 @@ const ArticleFeedPage: React.FC = () => {
             </div>
 
             <div className="article-content">
-              <p className="article-description">{article.description}</p>
+              <p className="article-description">
+                {(() => {
+                  const processed = processArticleDescription(article.description || '', 200);
+                  return processed.truncated;
+                })()}
+              </p>
             </div>
 
             {article.analysis && (

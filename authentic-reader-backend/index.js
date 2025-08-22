@@ -726,7 +726,7 @@ app.get('/api/rss', async (req, res) => {
       const title = decodeHtmlEntities(rawTitle);
       const link = item.link?.[0] || item.link?.[0]?.$?.href || '';
       const rawDesc = item.description?.[0] || item.summary?.[0] || item['media:description']?.[0] || '';
-      const description = decodeHtmlEntities(rawDesc);
+      const description = decodeHtmlEntities(rawDesc).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
       const pubDate = item.pubDate?.[0] || item.published?.[0] || '';
       const author = item.author?.[0] || item['dc:creator']?.[0] || '';
       

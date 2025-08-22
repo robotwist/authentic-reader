@@ -1,83 +1,842 @@
 {
-  "analysis_article_1755884519670_7": {
-    "wordCount": 12,
-    "readingTime": 1,
+  "analysis_article_1755884929885_14": {
+    "wordCount": 825,
+    "readingTime": 5,
     "hasExternalLinks": false,
-    "complexity": "medium",
+    "complexity": "hard",
     "keyTopics": [
-      "general"
+      "politics",
+      "technology",
+      "international"
     ],
     "credibility": {
-      "score": 0.4,
-      "level": "low",
-      "reason": "Very short content"
+      "score": 0.45,
+      "level": "medium",
+      "reason": "Low credibility domain; Contains credible reporting language; Substantial content length"
     },
-    "summary": "Bush Hager teased what fans should expect next week during Friday's broadcast.",
+    "summary": "Kim Jong-un Calls North Korea ‘the Most Powerful Army in the World’ in Praise of Ukraine War Units STR/KCNA VIA KNS/AFP via Getty Images Frances Martel 22 Aug 2025 North Korean state media reported on Thursday that communist dictator Kim Jong-un held a special event to honor his commanding officers ...",
     "biasIndicators": {},
     "logicalFallacies": [],
     "bias": {
-      "direction": "center",
-      "confidence": 0.5,
-      "explanation": "No strong directional bias detected.",
+      "direction": "right",
+      "confidence": 1,
+      "explanation": "Detected more right-leaning indicators in language.",
       "indicators": {
         "left": 0,
-        "right": 0,
+        "right": 1,
         "sensationalist": 0,
-        "neutral": 0
+        "neutral": 1
       }
     },
     "network": {
       "entities": [
         {
-          "name": "Bush Hager",
+          "name": "North Korean",
+          "count": 10,
+          "category": "other"
+        },
+        {
+          "name": "Ukraine",
+          "count": 9,
+          "category": "other"
+        },
+        {
+          "name": "Kim",
+          "count": 9,
+          "category": "other"
+        },
+        {
+          "name": "Russian",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Russia",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "North Korea",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "It",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Putin",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Trump",
+          "count": 4,
+          "category": "political_leader"
+        },
+        {
+          "name": "White House",
+          "count": 4,
+          "category": "government_body"
+        },
+        {
+          "name": "Kim Jong",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Pyongyang",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Kursk",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "President Donald Trump",
+          "count": 3,
+          "category": "political_leader"
+        },
+        {
+          "name": "KCNA",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "June",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Rodong Sinmun",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Calls North Korea",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Friday",
+          "name": "Most Powerful Army",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "World",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Praise",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Ukraine War Units",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images Frances Martel",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Thursday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "STR",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "VIA",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "KNS",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "AFP",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Korean Central News Agency",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Russian Foreign Minister Sergey Lavrov",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Choe Son Hui",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Vladimir Putin",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Shortly",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Ukrainian",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "April",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "August",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "South Korean",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "North Koreans",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "American President Donald Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Ukrainian President Volodymyr Zelensky",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "European",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Monday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "President Volodymyr Zelensky",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "The North Korean",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "After",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Comrade Kim Jong Un",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Kursk Region",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Russian Federation",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Ours",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Such",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Our",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "July",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Ukrainian",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "January",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Zelensky",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "He",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "South Korea",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Moscow",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "China",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Russian",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Korean",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "American",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "According",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Korean People",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Army",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Kremlin",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "DPRK",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow Frances Martel",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Facebook",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Twitter",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Asia National Security Politics Communism Kim Jong",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "North Korea Russia Ukraine Volodymyr Zelensky",
           "count": 1,
           "category": "other"
         }
       ],
       "topEntities": [
         {
-          "name": "Bush Hager",
-          "count": 1,
+          "name": "North Korean",
+          "count": 10,
           "category": "other"
         },
         {
-          "name": "Friday",
-          "count": 1,
+          "name": "Ukraine",
+          "count": 9,
+          "category": "other"
+        },
+        {
+          "name": "Kim",
+          "count": 9,
+          "category": "other"
+        },
+        {
+          "name": "Russian",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Russia",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "North Korea",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "It",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Putin",
+          "count": 4,
           "category": "other"
         }
       ],
-      "entityCount": 2,
+      "entityCount": 74,
       "relationships": [
         {
-          "source": "Bush Hager",
-          "target": "Friday",
-          "context": "Bush Hager teased what fans should expect next week during Friday's broadcast...."
+          "source": "Kim Jong",
+          "target": "Calls North Korea",
+          "context": "Kim Jong-un Calls North Korea ‘the Most Powerful Army in the World’ in Praise of Ukraine War Units S..."
+        },
+        {
+          "source": "Kim Jong",
+          "target": "Most Powerful Army",
+          "context": "Kim Jong-un Calls North Korea ‘the Most Powerful Army in the World’ in Praise of Ukraine War Units S..."
+        },
+        {
+          "source": "Kim Jong",
+          "target": "World",
+          "context": "Kim Jong-un Calls North Korea ‘the Most Powerful Army in the World’ in Praise of Ukraine War Units S..."
+        },
+        {
+          "source": "Kim Jong",
+          "target": "Praise",
+          "context": "Kim Jong-un Calls North Korea ‘the Most Powerful Army in the World’ in Praise of Ukraine War Units S..."
+        },
+        {
+          "source": "Kim Jong",
+          "target": "Ukraine War Units",
+          "context": "Kim Jong-un Calls North Korea ‘the Most Powerful Army in the World’ in Praise of Ukraine War Units S..."
+        },
+        {
+          "source": "Kim Jong",
+          "target": "Getty Images Frances Martel",
+          "context": "Kim Jong-un Calls North Korea ‘the Most Powerful Army in the World’ in Praise of Ukraine War Units S..."
+        },
+        {
+          "source": "Kim Jong",
+          "target": "Aug",
+          "context": "Kim Jong-un Calls North Korea ‘the Most Powerful Army in the World’ in Praise of Ukraine War Units S..."
+        },
+        {
+          "source": "Kim Jong",
+          "target": "North Korean",
+          "context": "Kim Jong-un Calls North Korea ‘the Most Powerful Army in the World’ in Praise of Ukraine War Units S..."
+        },
+        {
+          "source": "Kim Jong",
+          "target": "Thursday",
+          "context": "Kim Jong-un Calls North Korea ‘the Most Powerful Army in the World’ in Praise of Ukraine War Units S..."
+        },
+        {
+          "source": "Kim Jong",
+          "target": "Russian",
+          "context": "Kim Jong-un Calls North Korea ‘the Most Powerful Army in the World’ in Praise of Ukraine War Units S..."
         }
       ],
-      "networkDensity": 0.5
+      "networkDensity": 5.108108108108108
     },
-    "timestamp": "2025-08-22T17:41:59.670Z"
+    "timestamp": "2025-08-22T17:48:49.886Z"
   },
-  "analysis_article_1755884519776_9": {
-    "wordCount": 25,
-    "readingTime": 1,
+  "analysis_article_1755884929913_17": {
+    "wordCount": 365,
+    "readingTime": 2,
     "hasExternalLinks": false,
     "complexity": "medium",
     "keyTopics": [
-      "general"
+      "politics",
+      "technology"
     ],
     "credibility": {
-      "score": 0.4,
-      "level": "low",
-      "reason": "Very short content"
+      "score": 0.45,
+      "level": "medium",
+      "reason": "Low credibility domain; Contains credible reporting language; Substantial content length"
     },
-    "summary": "Invasion is as much about human relationships that evolve in the face of an extinction event as much as it is about thwarting the invasion.",
+    "summary": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Federal Spaces Michael Siluk/UCG/Universal Images Group via Getty Images Nick Gilbertson 21 Aug 2025 President Donald Trump signed an executive order on Thursday aimed at improving the usability and aest...",
     "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 2
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "White House",
+          "count": 7,
+          "category": "government_body"
+        },
+        {
+          "name": "Trump",
+          "count": 4,
+          "category": "political_leader"
+        },
+        {
+          "name": "National Design Studio",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "President Donald Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "Thursday",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "America",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Design",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The Order",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Chief Design Officer",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Federal",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Americans",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Trump Signs Order Establishing",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Improve Digital",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Physical Federal Spaces Michael Siluk",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Universal Images Group",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images Nick Gilbertson",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "UCG",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The National Design Studio",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Chief Design Officer",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "This",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "United States Web Design System",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Century",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Act",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "USWDS",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "IDEA",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "In",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Government",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Nation",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "According",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "United States",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Legacy",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "As",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Social Security",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "Call",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Politics Digital Donald Trump Executive Order White House",
+          "count": 1,
+          "category": "political_leader"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "White House",
+          "count": 7,
+          "category": "government_body"
+        },
+        {
+          "name": "Trump",
+          "count": 4,
+          "category": "political_leader"
+        },
+        {
+          "name": "National Design Studio",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "President Donald Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "Thursday",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "America",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Design",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The Order",
+          "count": 2,
+          "category": "other"
+        }
+      ],
+      "entityCount": 37,
+      "relationships": [
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "National Design Studio",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "Improve Digital",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "Physical Federal Spaces Michael Siluk",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "Universal Images Group",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "Getty Images Nick Gilbertson",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "Aug",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "President Donald Trump",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "Thursday",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "UCG",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "National Design Studio",
+          "target": "Improve Digital",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        }
+      ],
+      "networkDensity": 3.4324324324324325
+    },
+    "timestamp": "2025-08-22T17:48:49.914Z"
+  },
+  "analysis_article_1755884929979_18": {
+    "wordCount": 512,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "education",
+      "entertainment",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.2,
+      "level": "low",
+      "reason": "Low credibility domain; 1 sensationalist words detected; Substantial content length"
+    },
+    "summary": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty Images for Chopard Paul Bois 22 Aug 2025 British pop star Robbie Williams, whose acclaimed 2024 biopic Better Man may go down as one of the best movies of the decade, banned his four children from ha...",
+    "biasIndicators": {
+      "sensationalist": [
+        "revealed"
+      ]
+    },
     "logicalFallacies": [],
     "bias": {
       "direction": "center",
@@ -93,22 +852,855 @@
     "network": {
       "entities": [
         {
-          "name": "Invasion",
+          "name": "They",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Momoa",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "How",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "We",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "TV",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "He",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "You",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "LAUSD",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Pop Star Robbie Williams",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Giving Phones",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Children Is",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Abuse",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Pascal Le Segretain",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Chopard Paul Bois",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "British",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Robbie Williams",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Better Man",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Williams",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "News London",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Camden",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "ITV",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Tough",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "That",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "It",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Breitbart News",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "April",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Jason Momoa",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Minecraft Movie",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "My",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Everyone",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "As Breitbart News",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Los Angeles Unified School District",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Our",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Nick Melvoin",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Paul Roland Bois",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Christian",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Rotten Tomatoes",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Tubi",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Fawesome",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "EXEMPLUM",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "FREE",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Better",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Killers",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Flower Moon",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Mark Judge",
+          "count": 1,
+          "category": "judicial"
+        },
+        {
+          "name": "Christian Toto",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Google Play",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Vimeo",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Demand",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Movies",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Instagram",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Entertainment London",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Europe Tech Britain Internet",
           "count": 1,
           "category": "other"
         }
       ],
       "topEntities": [
         {
-          "name": "Invasion",
+          "name": "They",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Momoa",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "How",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "We",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "TV",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "He",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "You",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "LAUSD",
+          "count": 2,
+          "category": "other"
+        }
+      ],
+      "entityCount": 56,
+      "relationships": [
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Giving Phones",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Children Is",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Abuse",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Pascal Le Segretain",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Getty Images",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Chopard Paul Bois",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Aug",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "British",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Robbie Williams",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Better Man",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        }
+      ],
+      "networkDensity": 2.2857142857142856
+    },
+    "timestamp": "2025-08-22T17:48:49.980Z"
+  },
+  "analysis_article_1755884929986_19": {
+    "wordCount": 494,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "sports"
+    ],
+    "credibility": {
+      "score": 0.2,
+      "level": "low",
+      "reason": "Low credibility domain; 1 sensationalist words detected; Substantial content length"
+    },
+    "summary": "Podcaster Gavin Newsom Imitates Joe Biden: Says He&#8217;ll Punch &#8216;Sons of Bitches&#8217; Trump, Republicans &#8216;In the Mouth&#8217; Marcio Jose Sanchez / Associated Press Joel B.  Pollak 21 Aug 2025 Podcaster Gavin Newsom, who is also the Governor of California, did his best Joe Biden imit...",
+    "biasIndicators": {
+      "political": [
+        "liberal",
+        "conservative",
+        "democrat",
+        "republican"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "AD_HOMINEM",
+        "confidence": 0.65,
+        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
+        "excerpt": "This is radical rigging of a midterm election, radical rigging of an election, destroying, vandalizing this democracy",
+        "startIndex": 1478,
+        "endIndex": 1595
+      }
+    ],
+    "bias": {
+      "direction": "right",
+      "confidence": 1,
+      "explanation": "Detected more right-leaning indicators in language.",
+      "indicators": {
+        "left": 0,
+        "right": 1,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "He",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "Trump",
+          "count": 5,
+          "category": "political_leader"
+        },
+        {
+          "name": "Republicans",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Newsom",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "This",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Putin",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Pollak",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "President Donald Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "President Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "Podcaster Gavin Newsom Imitates Joe Biden",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Says He",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Punch",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Sons",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Bitches",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "In",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Mouth",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Marcio Jose Sanchez",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Associated Press Joel",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Podcaster Gavin Newsom",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Governor",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "California",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Joe Biden",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Wednesday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Siren Podcast",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "And",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Republican Party",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Republican Party",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Look",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Republican",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Texas Gov",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Greg Abbott",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "What",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Nothing",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "So",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "But",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "We",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Oh",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Biden",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "American",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "National Guard",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Los Angeles",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Marines",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The California",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Democratic Party",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Democrats",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Joel",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Senior Editor",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Large",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Breitbart News",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Breitbart News Sunday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Sirius",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Patriot",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Sunday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "XM",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "ET",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "PT",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Zionist Conspiracy Wants You",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Amazon",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Robert Novak Journalism Alumni Fellowship",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Twitter",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Law",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Order Media Politics",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Gavin Newsom Violence",
           "count": 1,
           "category": "other"
         }
       ],
-      "entityCount": 1,
-      "relationships": [],
-      "networkDensity": 0
+      "topEntities": [
+        {
+          "name": "He",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "Trump",
+          "count": 5,
+          "category": "political_leader"
+        },
+        {
+          "name": "Republicans",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Newsom",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "This",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Putin",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Pollak",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "President Donald Trump",
+          "count": 2,
+          "category": "political_leader"
+        }
+      ],
+      "entityCount": 65,
+      "relationships": [
+        {
+          "source": "Podcaster Gavin Newsom Imitates Joe Biden",
+          "target": "Says He",
+          "context": "Podcaster Gavin Newsom Imitates Joe Biden: Says He&#8217;ll Punch &#8216;Sons of Bitches&#8217; Trum..."
+        },
+        {
+          "source": "Podcaster Gavin Newsom Imitates Joe Biden",
+          "target": "Punch",
+          "context": "Podcaster Gavin Newsom Imitates Joe Biden: Says He&#8217;ll Punch &#8216;Sons of Bitches&#8217; Trum..."
+        },
+        {
+          "source": "Podcaster Gavin Newsom Imitates Joe Biden",
+          "target": "Sons",
+          "context": "Podcaster Gavin Newsom Imitates Joe Biden: Says He&#8217;ll Punch &#8216;Sons of Bitches&#8217; Trum..."
+        },
+        {
+          "source": "Podcaster Gavin Newsom Imitates Joe Biden",
+          "target": "Bitches",
+          "context": "Podcaster Gavin Newsom Imitates Joe Biden: Says He&#8217;ll Punch &#8216;Sons of Bitches&#8217; Trum..."
+        },
+        {
+          "source": "Podcaster Gavin Newsom Imitates Joe Biden",
+          "target": "Trump",
+          "context": "Podcaster Gavin Newsom Imitates Joe Biden: Says He&#8217;ll Punch &#8216;Sons of Bitches&#8217; Trum..."
+        },
+        {
+          "source": "Podcaster Gavin Newsom Imitates Joe Biden",
+          "target": "Republicans",
+          "context": "Podcaster Gavin Newsom Imitates Joe Biden: Says He&#8217;ll Punch &#8216;Sons of Bitches&#8217; Trum..."
+        },
+        {
+          "source": "Podcaster Gavin Newsom Imitates Joe Biden",
+          "target": "In",
+          "context": "Podcaster Gavin Newsom Imitates Joe Biden: Says He&#8217;ll Punch &#8216;Sons of Bitches&#8217; Trum..."
+        },
+        {
+          "source": "Podcaster Gavin Newsom Imitates Joe Biden",
+          "target": "Mouth",
+          "context": "Podcaster Gavin Newsom Imitates Joe Biden: Says He&#8217;ll Punch &#8216;Sons of Bitches&#8217; Trum..."
+        },
+        {
+          "source": "Podcaster Gavin Newsom Imitates Joe Biden",
+          "target": "Marcio Jose Sanchez",
+          "context": "Podcaster Gavin Newsom Imitates Joe Biden: Says He&#8217;ll Punch &#8216;Sons of Bitches&#8217; Trum..."
+        },
+        {
+          "source": "Podcaster Gavin Newsom Imitates Joe Biden",
+          "target": "Associated Press Joel",
+          "context": "Podcaster Gavin Newsom Imitates Joe Biden: Says He&#8217;ll Punch &#8216;Sons of Bitches&#8217; Trum..."
+        }
+      ],
+      "networkDensity": 3.0307692307692307
     },
-    "timestamp": "2025-08-22T17:41:59.776Z"
+    "timestamp": "2025-08-22T17:48:49.987Z"
   }
 }
