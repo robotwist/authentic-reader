@@ -70,7 +70,338 @@ const ComparativeAnalysis: React.FC<ComparativeAnalysisProps> = ({
     'crime': ['crime', 'police', 'arrest', 'investigation', 'court', 'justice', 'law', 'criminal'],
     'education': ['education', 'school', 'university', 'student', 'learning', 'academic', 'college'],
     'entertainment': ['movie', 'music', 'celebrity', 'film', 'entertainment', 'culture', 'artist'],
-    'sports': ['sport', 'football', 'basketball', 'baseball', 'athlete', 'team', 'championship', 'game']
+    'sports': ['sport', 'football', 'basketball', 'baseball', 'athlete', 'team', 'championship', 'game'],
+    'breaking-news': ['breaking', 'update', 'developing', 'just in', 'latest', 'reports', 'announcement', 'statement'],
+    'investigation': ['investigation', 'probe', 'inquiry', 'allegation', 'accusation', 'charges', 'evidence', 'witness'],
+    'disaster': ['disaster', 'accident', 'tragedy', 'emergency', 'crisis', 'casualty', 'victim', 'damage']
+  };
+
+  // Enhanced claim patterns for truth detection
+  const claimPatterns = {
+    factual: [
+      /\d+ people/gi,
+      /\d+ percent/gi,
+      /\$\d+/g,
+      /on \w+ \d{1,2},? \d{4}/gi,
+      /at \d{1,2}:\d{2}/gi,
+      /according to [^,]+/gi,
+      /officials said/gi,
+      /police reported/gi,
+      /witnesses said/gi,
+      /the investigation found/gi,
+      /data shows/gi,
+      /statistics indicate/gi
+    ],
+    conflicting: [
+      /denied/gi,
+      /contradicts/gi,
+      /disputed/gi,
+      /challenged/gi,
+      /refuted/gi,
+      /rejected/gi,
+      /disagreed/gi,
+      /conflicting/gi,
+      /different/gi,
+      /alternative/gi
+    ],
+    sources: [
+      /police/gi,
+      /officials/gi,
+      /witnesses/gi,
+      /experts/gi,
+      /authorities/gi,
+      /investigators/gi,
+      /spokesperson/gi,
+      /anonymous/gi,
+      /sources/gi
+    ]
+  };
+
+  // Enhanced similarity calculation for event-based grouping
+  const calculateEventSimilarity = (article1: Article, article2: Article): number => {
+    const text1 = `${article1.title} ${article1.content || article1.description || ''}`.toLowerCase();
+    const text2 = `${article2.title} ${article2.content || article2.description || ''}`.toLowerCase();
+    
+    // Extract key event identifiers
+    const extractEventIdentifiers = (text: string) => {
+      const identifiers = new Set<string>();
+      
+      // Extract dates
+      const dates = text.match(/\b\d{1,2}\/\d{1,2}\/\d{4}\b|\b\d{4}-\d{2}-\d{2}\b|\b\w+ \d{1,2},? \d{4}\b/g) || [];
+      dates.forEach(date => identifiers.add(date));
+      
+      // Extract locations
+      const locations = text.match(/\b[A-Z][a-z]+(?: [A-Z][a-z]+)*,? [A-Z]{2}\b|\b[A-Z][a-z]+(?: [A-Z][a-z]+)*,? [A-Z][a-z]+\b/g) || [];
+      locations.forEach(location => identifiers.add(location));
+      
+      // Extract names (simple pattern)
+      const names = text.match(/\b[A-Z][a-z]+ [A-Z][a-z]+\b/g) || [];
+      names.forEach(name => identifiers.add(name));
+      
+      // Extract key terms (words longer than 5 characters)
+      const words = text.match(/\b\w{6,}\b/g) || [];
+      words.forEach(word => identifiers.add(word));
+      
+      return identifiers;
+    };
+    
+    const identifiers1 = extractEventIdentifiers(text1);
+    const identifiers2 = extractEventIdentifiers(text2);
+    
+    if (identifiers1.size === 0 || identifiers2.size === 0) return 0;
+    
+    const intersection = new Set([...identifiers1].filter(x => identifiers2.has(x)));
+    const union = new Set([...identifiers1, ...identifiers2]);
+    
+    return intersection.size / union.size;
+  };
+
+  // Enhanced claim extraction for truth detection
+  const extractClaimsForTruthDetection = (texts: string[]): Array<{claim: string, type: string, sources: string[], confidence: number}> => {
+    const claims = [];
+    
+    texts.forEach((text, textIndex) => {
+      // Extract factual claims
+      claimPatterns.factual.forEach(pattern => {
+        const matches = text.match(pattern);
+        if (matches) {
+          matches.forEach(match => {
+            // Find the sentence containing this claim
+            const sentences = text.split(/[.!?]+/);
+            const sentence = sentences.find(s => s.includes(match)) || match;
+            
+            // Extract sources mentioned
+            const sources = [];
+            claimPatterns.sources.forEach(sourcePattern => {
+              const sourceMatches = sentence.match(sourcePattern);
+              if (sourceMatches) {
+                sources.push(...sourceMatches);
+              }
+            });
+            
+            claims.push({
+              claim: sentence.trim(),
+              type: 'factual',
+              sources: [...new Set(sources)],
+              confidence: sources.length > 0 ? 0.8 : 0.5
+            });
+          });
+        }
+      });
+      
+      // Extract conflicting claims
+      claimPatterns.conflicting.forEach(pattern => {
+        const matches = text.match(pattern);
+        if (matches) {
+          matches.forEach(match => {
+            const sentences = text.split(/[.!?]+/);
+            const sentence = sentences.find(s => s.includes(match)) || match;
+            
+            claims.push({
+              claim: sentence.trim(),
+              type: 'conflicting',
+              sources: [],
+              confidence: 0.7
+            });
+          });
+        }
+      });
+    });
+    
+    return claims;
+  };
+
+  // Enhanced conflict detection for truth analysis
+  const detectConflictingClaims = (articleAnalyses: any[]): Array<{claim1: string, claim2: string, type: string, severity: string}> => {
+    const conflicts = [];
+    const allClaims = extractClaimsForTruthDetection(articleAnalyses.map(a => a.textContent));
+    
+    // Group claims by similar topics
+    const claimGroups = new Map<string, string[]>();
+    allClaims.forEach(({claim}) => {
+      const keyTerms = claim.toLowerCase().match(/\b\w{5,}\b/g) || [];
+      const key = keyTerms.slice(0, 3).join(' ');
+      if (!claimGroups.has(key)) {
+        claimGroups.set(key, []);
+      }
+      claimGroups.get(key)!.push(claim);
+    });
+    
+    // Find conflicts within each group
+    claimGroups.forEach((claims, key) => {
+      if (claims.length > 1) {
+        for (let i = 0; i < claims.length; i++) {
+          for (let j = i + 1; j < claims.length; j++) {
+            const conflict = analyzeClaimConflict(claims[i], claims[j]);
+            if (conflict) {
+              conflicts.push(conflict);
+            }
+          }
+        }
+      }
+    });
+    
+    return conflicts.slice(0, 5); // Return top 5 conflicts
+  };
+
+  // Analyze conflict between two claims
+  const analyzeClaimConflict = (claim1: string, claim2: string): {claim1: string, claim2: string, type: string, severity: string} | null => {
+    const text1 = claim1.toLowerCase();
+    const text2 = claim2.toLowerCase();
+    
+    // Check for direct contradictions
+    const contradictions = [
+      { positive: ['confirmed', 'verified', 'true', 'accurate'], negative: ['denied', 'false', 'inaccurate', 'wrong'] },
+      { positive: ['increased', 'rose', 'grew'], negative: ['decreased', 'fell', 'dropped'] },
+      { positive: ['support', 'agree', 'endorse'], negative: ['oppose', 'disagree', 'reject'] },
+      { positive: ['guilty', 'convicted', 'responsible'], negative: ['innocent', 'acquitted', 'not responsible'] }
+    ];
+    
+    for (const contradiction of contradictions) {
+      const hasPositive1 = contradiction.positive.some(word => text1.includes(word));
+      const hasNegative1 = contradiction.negative.some(word => text1.includes(word));
+      const hasPositive2 = contradiction.positive.some(word => text2.includes(word));
+      const hasNegative2 = contradiction.negative.some(word => text2.includes(word));
+      
+      if ((hasPositive1 && hasNegative2) || (hasNegative1 && hasPositive2)) {
+        return {
+          claim1,
+          claim2,
+          type: 'direct_contradiction',
+          severity: 'high'
+        };
+      }
+    }
+    
+    // Check for different numbers/statistics
+    const numbers1 = text1.match(/\d+/g) || [];
+    const numbers2 = text2.match(/\d+/g) || [];
+    
+    if (numbers1.length > 0 && numbers2.length > 0) {
+      const num1 = parseInt(numbers1[0]);
+      const num2 = parseInt(numbers2[0]);
+      if (Math.abs(num1 - num2) > Math.max(num1, num2) * 0.2) { // 20% difference threshold
+        return {
+          claim1,
+          claim2,
+          type: 'statistical_discrepancy',
+          severity: 'medium'
+        };
+      }
+    }
+    
+    // Check for different sources/citations
+    const sources1 = claim1.match(/(?:according to|said by|reported by) ([^,]+)/gi) || [];
+    const sources2 = claim2.match(/(?:according to|said by|reported by) ([^,]+)/gi) || [];
+    
+    if (sources1.length > 0 && sources2.length > 0 && sources1[0] !== sources2[0]) {
+      return {
+        claim1,
+        claim2,
+        type: 'different_sources',
+        severity: 'low'
+      };
+    }
+    
+    return null;
+  };
+
+  // Enhanced reliability scoring for truth detection
+  const calculateTruthReliability = (articleAnalyses: any[]): {score: number, factors: string[]} => {
+    const factors = [];
+    let score = 0.5; // Start with neutral score
+    
+    // Factor 1: Source diversity
+    const sources = new Set(articleAnalyses.map(a => a.article.source));
+    const sourceDiversity = sources.size / articleAnalyses.length;
+    if (sourceDiversity > 0.6) {
+      score += 0.2;
+      factors.push(`High source diversity (${sources.size} different sources)`);
+    } else if (sourceDiversity < 0.3) {
+      score -= 0.1;
+      factors.push(`Low source diversity (${sources.size} sources)`);
+    }
+    
+    // Factor 2: Citation quality
+    const allClaims = extractClaimsForTruthDetection(articleAnalyses.map(a => a.textContent));
+    const claimsWithSources = allClaims.filter(claim => claim.sources.length > 0);
+    const citationRate = claimsWithSources.length / allClaims.length;
+    
+    if (citationRate > 0.5) {
+      score += 0.15;
+      factors.push(`Good citation rate (${(citationRate * 100).toFixed(0)}% of claims cited)`);
+    } else if (citationRate < 0.2) {
+      score -= 0.1;
+      factors.push(`Poor citation rate (${(citationRate * 100).toFixed(0)}% of claims cited)`);
+    }
+    
+    // Factor 3: Conflict level
+    const conflicts = detectConflictingClaims(articleAnalyses);
+    const highSeverityConflicts = conflicts.filter(c => c.severity === 'high').length;
+    
+    if (highSeverityConflicts === 0) {
+      score += 0.1;
+      factors.push('No high-severity conflicts detected');
+    } else if (highSeverityConflicts > 2) {
+      score -= 0.2;
+      factors.push(`${highSeverityConflicts} high-severity conflicts detected`);
+    }
+    
+    // Factor 4: Bias consistency
+    const biasTypes = articleAnalyses.map(a => determineBiasType(a.biasResult));
+    const biasDiversity = new Set(biasTypes).size;
+    
+    if (biasDiversity > 1) {
+      score += 0.1;
+      factors.push('Multiple bias perspectives present');
+    } else {
+      score -= 0.05;
+      factors.push('Limited bias diversity');
+    }
+    
+    return {
+      score: Math.max(0, Math.min(1, score)),
+      factors
+    };
+  };
+
+  // Enhanced recommendations for truth detection
+  const generateTruthRecommendations = (articleAnalyses: any[], conflicts: any[], reliability: any): string[] => {
+    const recommendations = [];
+    
+    // Based on conflicts
+    const highSeverityConflicts = conflicts.filter(c => c.severity === 'high').length;
+    if (highSeverityConflicts > 0) {
+      recommendations.push(`⚠️ ${highSeverityConflicts} high-severity conflicts detected - verify claims with additional sources`);
+    }
+    
+    // Based on source diversity
+    const sources = new Set(articleAnalyses.map(a => a.article.source));
+    if (sources.size < 3) {
+      recommendations.push(`📰 Seek additional sources (currently only ${sources.size} sources)`);
+    }
+    
+    // Based on citation quality
+    const allClaims = extractClaimsForTruthDetection(articleAnalyses.map(a => a.textContent));
+    const claimsWithSources = allClaims.filter(claim => claim.sources.length > 0);
+    const citationRate = claimsWithSources.length / allClaims.length;
+    
+    if (citationRate < 0.3) {
+      recommendations.push(`🔍 Many claims lack citations - fact-check key statements`);
+    }
+    
+    // Based on reliability score
+    if (reliability.score < 0.4) {
+      recommendations.push(`⚠️ Low reliability score - exercise caution and verify independently`);
+    } else if (reliability.score > 0.7) {
+      recommendations.push(`✅ High reliability score - information appears trustworthy`);
+    }
+    
+    // General recommendations
+    recommendations.push(`📊 Cross-reference statistics and numbers with official sources`);
+    recommendations.push(`👥 Check for eyewitness accounts and official statements`);
+    
+    return recommendations;
   };
 
   // Group articles by topic using intelligent keyword matching
@@ -225,8 +556,8 @@ const ComparativeAnalysis: React.FC<ComparativeAnalysisProps> = ({
     const keyPhrases = extractKeyPhrases(allTexts);
     const sharedClaims = extractSharedClaims(allTexts);
 
-    // Find differences and conflicts
-    const conflictingClaims = findConflictingClaims(articleAnalyses);
+    // Enhanced truth detection analysis
+    const conflicts = detectConflictingClaims(articleAnalyses);
     const differentPerspectives = findDifferentPerspectives(articleAnalyses);
     const biasVariations = articleAnalyses.map(a => ({
       source: a.article.source || new URL(a.article.link).hostname,
@@ -234,10 +565,10 @@ const ComparativeAnalysis: React.FC<ComparativeAnalysisProps> = ({
       biasType: determineBiasType(a.biasResult)
     }));
 
-    // Calculate overall metrics
+    // Enhanced reliability scoring for truth detection
+    const reliability = calculateTruthReliability(articleAnalyses);
     const overallConsensus = calculateConsensus(articleAnalyses);
-    const reliabilityScore = calculateReliability(articleAnalyses);
-    const recommendations = generateRecommendations(articleAnalyses, conflictingClaims);
+    const recommendations = generateTruthRecommendations(articleAnalyses, conflicts, reliability);
 
     return {
       similarities: {
@@ -246,13 +577,13 @@ const ComparativeAnalysis: React.FC<ComparativeAnalysisProps> = ({
         sharedClaims
       },
       differences: {
-        conflictingClaims,
+        conflictingClaims: conflicts.map(c => `${c.type.toUpperCase()}: ${c.claim1.substring(0, 100)}... vs ${c.claim2.substring(0, 100)}...`),
         differentPerspectives,
         biasVariations
       },
       analysis: {
         overallConsensus,
-        reliabilityScore,
+        reliabilityScore: reliability.score,
         recommendations
       }
     };
@@ -434,8 +765,8 @@ const ComparativeAnalysis: React.FC<ComparativeAnalysisProps> = ({
         <div className="header-content">
           <FiBarChart2 className="header-icon" />
           <div>
-            <h2>Comparative Analysis</h2>
-            <p>Compare multiple articles on the same subject to identify similarities, differences, and potential biases</p>
+            <h2>Truth Detection Analysis</h2>
+            <p>When multiple news sources report on the same event with conflicting information, this tool helps identify who is telling the truth by analyzing claims, sources, and discrepancies</p>
           </div>
         </div>
       </div>
@@ -521,11 +852,11 @@ const ComparativeAnalysis: React.FC<ComparativeAnalysisProps> = ({
       {/* Results */}
       {comparativeResult && (
         <div className="analysis-results">
-          <h3>Comparative Analysis Results</h3>
+          <h3>Truth Detection Analysis Results</h3>
           
           <div className="results-grid">
             <div className="result-section">
-              <h4><FiUsers /> Similarities</h4>
+              <h4><FiUsers /> Event Similarities</h4>
               <div className="similarities">
                 <div className="topics">
                   <h5>Common Topics</h5>
@@ -543,26 +874,39 @@ const ComparativeAnalysis: React.FC<ComparativeAnalysisProps> = ({
                     ))}
                   </ul>
                 </div>
+                <div className="shared-claims">
+                  <h5>Shared Claims</h5>
+                  <ul>
+                    {comparativeResult.similarities.sharedClaims.map((claim, index) => (
+                      <li key={index}>{claim}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
             
             <div className="result-section">
-              <h4><FiAlertTriangle /> Differences</h4>
+              <h4><FiAlertTriangle /> Conflicts & Discrepancies</h4>
               <div className="differences">
                 <div className="conflicting-claims">
                   <h5>Conflicting Claims</h5>
                   <ul>
                     {comparativeResult.differences.conflictingClaims.map((claim, index) => (
-                      <li key={index}>{claim}</li>
+                      <li key={index} className="conflict-item">
+                        <span className="conflict-type">{claim.split(':')[0]}</span>
+                        <div className="conflict-content">{claim.split(':').slice(1).join(':')}</div>
+                      </li>
                     ))}
                   </ul>
                 </div>
                 <div className="bias-variations">
-                  <h5>Bias Variations</h5>
+                  <h5>Source Bias Analysis</h5>
                   <ul>
                     {comparativeResult.differences.biasVariations.map((variation, index) => (
-                      <li key={index}>
-                        {variation.source}: {variation.biasType} ({(variation.biasScore * 100).toFixed(0)}%)
+                      <li key={index} className="bias-item">
+                        <span className="source-name">{variation.source}</span>
+                        <span className="bias-type">{variation.biasType}</span>
+                        <span className="bias-score">{(variation.biasScore * 100).toFixed(0)}%</span>
                       </li>
                     ))}
                   </ul>
@@ -572,22 +916,25 @@ const ComparativeAnalysis: React.FC<ComparativeAnalysisProps> = ({
           </div>
           
           <div className="analysis-summary">
-            <h4>Analysis Summary</h4>
+            <h4>Truth Detection Summary</h4>
             <div className="summary-metrics">
               <div className="metric">
-                <span>Consensus Level:</span>
+                <span>Event Consensus:</span>
                 <span>{(comparativeResult.analysis.overallConsensus * 100).toFixed(0)}%</span>
               </div>
               <div className="metric">
-                <span>Reliability Score:</span>
-                <span>{(comparativeResult.analysis.reliabilityScore * 100).toFixed(0)}%</span>
+                <span>Truth Reliability:</span>
+                <span className={comparativeResult.analysis.reliabilityScore > 0.7 ? 'high-reliability' : 
+                                 comparativeResult.analysis.reliabilityScore < 0.4 ? 'low-reliability' : 'medium-reliability'}>
+                  {(comparativeResult.analysis.reliabilityScore * 100).toFixed(0)}%
+                </span>
               </div>
             </div>
             <div className="recommendations">
-              <h5>Recommendations</h5>
+              <h5>Truth Detection Recommendations</h5>
               <ul>
                 {comparativeResult.analysis.recommendations.map((rec, index) => (
-                  <li key={index}>{rec}</li>
+                  <li key={index} className="recommendation-item">{rec}</li>
                 ))}
               </ul>
             </div>

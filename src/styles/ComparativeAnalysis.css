@@ -764,3 +764,334 @@
   transform: none;
   box-shadow: none;
 }
+
+/* Truth Detection Specific Styles */
+.conflict-item {
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid #ef4444;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+.conflict-type {
+  display: inline-block;
+  background: #ef4444;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.conflict-content {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-color);
+}
+
+.bias-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--background-color);
+  border-radius: 6px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.source-name {
+  font-weight: 600;
+  color: var(--text-color);
+  flex: 1;
+}
+
+.bias-type {
+  background: var(--primary-color);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  margin: 0 8px;
+}
+
+.bias-score {
+  font-weight: 600;
+  color: var(--primary-color);
+  min-width: 40px;
+  text-align: right;
+}
+
+.high-reliability {
+  color: #10b981;
+  font-weight: 700;
+}
+
+.medium-reliability {
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+.low-reliability {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.recommendation-item {
+  background: rgba(59, 130, 246, 0.05);
+  border-left: 3px solid var(--primary-color);
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.shared-claims {
+  margin-top: 16px;
+}
+
+.shared-claims h5 {
+  margin: 16px 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.shared-claims ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.shared-claims li {
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--text-color);
+  line-height: 1.4;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 8px;
+  border-radius: 4px;
+  border-left: 3px solid #10b981;
+}
+
+/* Enhanced Topic Groups for Event Detection */
+.topic-group.breaking-news {
+  border-left: 4px solid #ef4444;
+}
+
+.topic-group.investigation {
+  border-left: 4px solid #f59e0b;
+}
+
+.topic-group.disaster {
+  border-left: 4px solid #8b5cf6;
+}
+
+.topic-group.crime {
+  border-left: 4px solid #dc2626;
+}
+
+/* Event Similarity Indicators */
+.event-similarity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.similarity-indicator {
+  width: 60px;
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.similarity-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981);
+  transition: width 0.3s ease;
+}
+
+.similarity-label {
+  font-size: 12px;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+/* Truth Detection Header */
+.truth-detection-header {
+  background: linear-gradient(135deg, #1e40af, #3b82f6);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.truth-detection-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.truth-detection-header p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Enhanced Analysis Results */
+.analysis-results h3 {
+  background: linear-gradient(135deg, #1e40af, #3b82f6);
+  color: white;
+  padding: 16px 20px;
+  border-radius: 8px 8px 0 0;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.analysis-results {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Reliability Score Visualization */
+.reliability-visualization {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.reliability-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.reliability-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.reliability-fill.high {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.reliability-fill.medium {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.reliability-fill.low {
+  background: linear-gradient(90deg, #ef4444, #f87171);
+}
+
+/* Source Credibility Indicators */
+.source-credibility {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.credibility-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.credibility-indicator.high {
+  background: #10b981;
+}
+
+.credibility-indicator.medium {
+  background: #f59e0b;
+}
+
+.credibility-indicator.low {
+  background: #ef4444;
+}
+
+/* Enhanced Article Cards for Event Detection */
+.article-card.event-detected {
+  border-left: 4px solid #3b82f6;
+  background: rgba(59, 130, 246, 0.02);
+}
+
+.article-card.event-detected:hover {
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.event-indicator {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #3b82f6;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Conflict Severity Indicators */
+.conflict-severity-high {
+  border-left-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.conflict-severity-medium {
+  border-left-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.conflict-severity-low {
+  border-left-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Enhanced Recommendations */
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.recommendation-category {
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.recommendation-category h6 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.recommendation-category ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.recommendation-category li {
+  margin-bottom: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+}
