@@ -29,6 +29,12 @@ const PORT = process.env.PORT || 3000;
 // Initialize monitoring service
 monitorService.init();
 
+// Handle monitor service errors to prevent unhandled error crashes
+monitorService.on('error', (errorData) => {
+  console.error('Monitor service error:', errorData);
+  // Don't throw, just log the error
+});
+
 // Enhanced balanced sources with comprehensive coverage
 const balancedSources = [
   // Far Left Sources
@@ -1203,7 +1209,7 @@ const startServer = async () => {
     serverInstance.on('error', (error) => {
       if (error.syscall !== 'listen') {
         monitorService.recordError('server', error);
-        throw error;
+        return; // Don't throw, just log the error
       }
       switch (error.code) {
         case 'EACCES':
@@ -1214,12 +1220,12 @@ const startServer = async () => {
         case 'EADDRINUSE':
           console.error(`Port ${PORT} is already in use`);
           monitorService.recordError('server', new Error(`Port ${PORT} is already in use`));
-          // Attempt to gracefully handle or notify, instead of exiting immediately
-          // process.exit(1);
+          // Don't exit, just log the error and continue
           break;
         default:
           monitorService.recordError('server', error);
-          throw error;
+          // Don't throw, just log the error
+          break;
       }
     });
 
