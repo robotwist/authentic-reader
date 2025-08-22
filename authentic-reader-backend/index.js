@@ -31,6 +31,7 @@ import onnxRoutes from './routes/onnx.js';
 import analysisRoutes from './routes/analysis.js';
 import factCheckRoutes from './routes/factCheckRoutes.js';
 import sourceCredibilityRoutes from './routes/sourceCredibilityRoutes.js';
+import networkAnalysisRoutes from './routes/networkAnalysisRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -1184,6 +1185,7 @@ app.use('/api/onnx', analysisLimiter, onnxRoutes);
 app.use('/api/analysis', analysisLimiter, analysisRoutes);
 app.use('/api/fact-check', publicLimiter, factCheckRoutes);
 app.use('/api/sources', publicLimiter, sourceCredibilityRoutes);
+app.use('/api/network', publicLimiter, networkAnalysisRoutes);
 app.use('/api/monitor', adminLimiter, monitorRoutes);
 
 // Apply error monitoring middleware
