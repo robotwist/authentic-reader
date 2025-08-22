@@ -35,7 +35,7 @@ const FALLBACK_ARTICLES: Article[] = [
     title: "AI Breakthrough: GPT-5 Achieves Human-Level Reasoning",
     link: "https://example.com/ai-breakthrough",
     description: "OpenAI announces significant progress in artificial intelligence capabilities",
-    pubDate: "2024-01-15T10:00:00Z",
+    pubDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days ago
     author: "Tech Reporter",
     content: "OpenAI announced today that GPT-5 has achieved human-level reasoning capabilities. The new model scored 95% on standardized intelligence tests, surpassing previous benchmarks. According to the study, GPT-5 can now solve complex problems that previously required human experts. This breakthrough represents a significant milestone in artificial intelligence development.",
     articleId: "fallback-1",
@@ -53,7 +53,7 @@ const FALLBACK_ARTICLES: Article[] = [
     title: "Researchers Question AI Claims",
     link: "https://example.com/ai-skepticism",
     description: "Independent researchers challenge recent AI breakthrough claims",
-    pubDate: "2024-01-16T14:30:00Z",
+    pubDate: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(), // 6 days ago
     author: "Science Writer",
     content: "Leading AI researchers are disputing claims that GPT-5 has achieved human-level reasoning. Independent testing shows the model scored only 72% on intelligence tests, not the 95% claimed. Experts say the methodology used in the original study was flawed. This controversy highlights the need for more rigorous AI evaluation standards.",
     articleId: "fallback-2",
@@ -71,7 +71,7 @@ const FALLBACK_ARTICLES: Article[] = [
     title: "Climate Change Study Shows Temperature Increases",
     link: "https://example.com/climate-study",
     description: "New research indicates significant global temperature changes",
-    pubDate: "2024-01-17T09:15:00Z",
+    pubDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago
     author: "Environmental Reporter",
     content: "A comprehensive study published in Nature shows that global temperatures have increased by 2.5% over the past decade. Scientists from leading universities confirm these findings. The research indicates significant climate change impacts that require immediate attention from policymakers worldwide.",
     articleId: "fallback-3",
@@ -89,7 +89,7 @@ const FALLBACK_ARTICLES: Article[] = [
     title: "Economic Recovery Shows Mixed Results",
     link: "https://example.com/economic-recovery",
     description: "Latest economic data reveals uneven recovery patterns",
-    pubDate: "2024-01-18T11:45:00Z",
+    pubDate: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(), // 4 days ago
     author: "Economics Correspondent",
     content: "The latest economic indicators show a mixed picture of recovery. While employment numbers are improving, inflation remains a concern. The Federal Reserve's latest report indicates that while some sectors are thriving, others continue to struggle. This uneven recovery pattern suggests the need for targeted economic policies.",
     articleId: "fallback-4",
@@ -107,7 +107,7 @@ const FALLBACK_ARTICLES: Article[] = [
     title: "Healthcare System Faces Challenges",
     link: "https://example.com/healthcare-challenges",
     description: "Healthcare providers report ongoing challenges in service delivery",
-    pubDate: "2024-01-19T16:20:00Z",
+    pubDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
     author: "Health Reporter",
     content: "Healthcare providers across the country are reporting significant challenges in maintaining service quality. Staff shortages, increased patient loads, and rising costs are creating pressure on the system. Experts warn that without intervention, these issues could impact patient care quality.",
     articleId: "fallback-5",

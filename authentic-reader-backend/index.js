@@ -922,7 +922,7 @@ app.get('/api/balanced-feed', async (req, res) => {
             title: `Sample article from ${source.name}`,
             link: `https://example.com/${source.id}`,
             description: `This is a sample article from ${source.name} to demonstrate the analysis features. The source is currently unavailable.`,
-            pubDate: new Date().toISOString(),
+            pubDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days ago
             author: source.name,
             content: fallbackContent,
             source: source.name,
@@ -930,7 +930,7 @@ app.get('/api/balanced-feed', async (req, res) => {
             biasRating: source.biasRating,
             reliability: source.reliability,
             sourceDescription: source.description,
-            articleId: `fallback_${source.id}_${Date.now()}`,
+            articleId: `fallback_${source.id}_${Date.now() - 7 * 24 * 60 * 60 * 1000}`,
             analysis: {
               wordCount: analysis.wordCount,
               readingTime: analysis.readingTime,
@@ -953,9 +953,24 @@ app.get('/api/balanced-feed', async (req, res) => {
       allArticles.push(...batchResults.flat());
     }
     
-    // Sort by date and limit results
-    const sortedArticles = allArticles
-      .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
+    // Separate real articles from sample articles
+    const realArticles = allArticles.filter(article => !article.articleId.startsWith('fallback_'));
+    const sampleArticles = allArticles.filter(article => article.articleId.startsWith('fallback_'));
+    
+    console.log(`Total articles: ${allArticles.length}, Real: ${realArticles.length}, Sample: ${sampleArticles.length}`);
+    
+    // Sort real articles by date (most recent first)
+    const sortedRealArticles = realArticles
+      .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+    
+    // Sort sample articles by date (most recent first)
+    const sortedSampleArticles = sampleArticles
+      .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+    
+    console.log(`Sorted real articles: ${sortedRealArticles.length}, Sample: ${sortedSampleArticles.length}`);
+    
+    // Combine: real articles first, then sample articles
+    const sortedArticles = [...sortedRealArticles, ...sortedSampleArticles]
       .slice(0, parseInt(limit));
     
     res.json({
