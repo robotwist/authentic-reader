@@ -29,6 +29,7 @@ import articleRoutes from './routes/article.js';
 import adminRoutes from './routes/admin.js';
 import onnxRoutes from './routes/onnx.js';
 import analysisRoutes from './routes/analysis.js';
+import factCheckRoutes from './routes/factCheckRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -1180,6 +1181,7 @@ app.use('/api/articles', apiLimiter, articleRoutes);
 app.use('/api/admin', adminLimiter, adminRoutes);
 app.use('/api/onnx', analysisLimiter, onnxRoutes);
 app.use('/api/analysis', analysisLimiter, analysisRoutes);
+app.use('/api/fact-check', publicLimiter, factCheckRoutes);
 app.use('/api/monitor', adminLimiter, monitorRoutes);
 
 // Apply error monitoring middleware
