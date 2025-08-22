@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FiBarChart2, FiCheckCircle, FiInfo, FiTarget, FiUsers, FiAlertTriangle, FiTrendingUp } from 'react-icons/fi';
 import { useLlamaAnalysis } from '../hooks/useLlamaAnalysis';
-import './ComparativeAnalysis.css';
+import '../styles/ComparativeAnalysis.css';
 
 interface Article {
   title: string;

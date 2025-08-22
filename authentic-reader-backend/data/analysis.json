@@ -1,18 +1,18 @@
 {
-  "analysis_article_1755878976536_10": {
-    "wordCount": 16,
+  "analysis_article_1755882895412_9": {
+    "wordCount": 68,
     "readingTime": 1,
-    "hasExternalLinks": false,
-    "complexity": "hard",
+    "hasExternalLinks": true,
+    "complexity": "medium",
     "keyTopics": [
-      "politics"
+      "health"
     ],
     "credibility": {
-      "score": 0.5,
-      "level": "medium",
-      "reason": "Contains credible reporting language; Very short content"
+      "score": 0.95,
+      "level": "high",
+      "reason": "Reputable news source; Adequate content length; Contains external references"
     },
-    "summary": "President Donald Trump needs Congress to keep control of Washington, D. , police, experts say National Military.",
+    "summary": "The Trump administration has moved to end temporary protected status for immigrants from Honduras and other countries.  Among them are health care workers tending to older and disabled people.  (Image credit: Jackie Lay).",
     "biasIndicators": {},
     "logicalFallacies": [],
     "bias": {
@@ -29,286 +29,74 @@
     "network": {
       "entities": [
         {
-          "name": "President Donald Trump",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "Congress",
-          "count": 2,
-          "category": "government_body"
-        },
-        {
-          "name": "Washington",
+          "name": "Immigrants",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "National Military",
+          "name": "Now",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Honduras",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Among",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Image",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Jackie Lay",
           "count": 1,
           "category": "other"
         }
       ],
       "topEntities": [
         {
-          "name": "President Donald Trump",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "Congress",
-          "count": 2,
-          "category": "government_body"
-        },
-        {
-          "name": "Washington",
+          "name": "Immigrants",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "National Military",
-          "count": 1,
-          "category": "other"
-        }
-      ],
-      "entityCount": 4,
-      "relationships": [
-        {
-          "source": "President Donald Trump",
-          "target": "Congress",
-          "context": "President Donald Trump needs Congress to keep control of Washington, D.C., police, experts say Natio..."
-        },
-        {
-          "source": "President Donald Trump",
-          "target": "Washington",
-          "context": "President Donald Trump needs Congress to keep control of Washington, D.C., police, experts say Natio..."
-        },
-        {
-          "source": "President Donald Trump",
-          "target": "National Military",
-          "context": "President Donald Trump needs Congress to keep control of Washington, D.C., police, experts say Natio..."
-        },
-        {
-          "source": "Congress",
-          "target": "Washington",
-          "context": "President Donald Trump needs Congress to keep control of Washington, D.C., police, experts say Natio..."
-        },
-        {
-          "source": "Congress",
-          "target": "National Military",
-          "context": "President Donald Trump needs Congress to keep control of Washington, D.C., police, experts say Natio..."
-        },
-        {
-          "source": "Washington",
-          "target": "National Military",
-          "context": "President Donald Trump needs Congress to keep control of Washington, D.C., police, experts say Natio..."
-        }
-      ],
-      "networkDensity": 1.5
-    },
-    "timestamp": "2025-08-22T16:09:36.536Z"
-  },
-  "analysis_article_1755878976562_12": {
-    "wordCount": 21,
-    "readingTime": 1,
-    "hasExternalLinks": false,
-    "complexity": "easy",
-    "keyTopics": [
-      "politics",
-      "economy",
-      "international"
-    ],
-    "credibility": {
-      "score": 0.4,
-      "level": "low",
-      "reason": "Very short content"
-    },
-    "summary": "Republicans say latest US consumer price report is a boon.  Democrats say it’s a bust.  National Economy Trade.",
-    "biasIndicators": {
-      "political": [
-        "democrat",
-        "republican"
-      ]
-    },
-    "logicalFallacies": [],
-    "bias": {
-      "direction": "center",
-      "confidence": 0.5,
-      "explanation": "No strong directional bias detected.",
-      "indicators": {
-        "left": 0,
-        "right": 0,
-        "sensationalist": 0,
-        "neutral": 0
-      }
-    },
-    "network": {
-      "entities": [
-        {
-          "name": "Republicans",
+          "name": "Now",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "US",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Democrats",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Which",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "National Economy Trade",
-          "count": 1,
-          "category": "other"
-        }
-      ],
-      "topEntities": [
-        {
-          "name": "Republicans",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "US",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Democrats",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Which",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "National Economy Trade",
-          "count": 1,
-          "category": "other"
-        }
-      ],
-      "entityCount": 5,
-      "relationships": [
-        {
-          "source": "Republicans",
-          "target": "US",
-          "context": "Republicans say latest US consumer price report is a boon..."
-        }
-      ],
-      "networkDensity": 0.2
-    },
-    "timestamp": "2025-08-22T16:09:36.562Z"
-  },
-  "analysis_article_1755878976581_13": {
-    "wordCount": 17,
-    "readingTime": 1,
-    "hasExternalLinks": false,
-    "complexity": "hard",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "international"
-    ],
-    "credibility": {
-      "score": 0.4,
-      "level": "low",
-      "reason": "Very short content"
-    },
-    "summary": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National Foreign Policy Ukraine Russia.",
-    "biasIndicators": {},
-    "logicalFallacies": [],
-    "bias": {
-      "direction": "center",
-      "confidence": 0.5,
-      "explanation": "No strong directional bias detected.",
-      "indicators": {
-        "left": 0,
-        "right": 0,
-        "sensationalist": 0,
-        "neutral": 0
-      }
-    },
-    "network": {
-      "entities": [
-        {
-          "name": "Fact",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Donald Trump",
+          "name": "The Trump",
           "count": 1,
           "category": "political_leader"
         },
         {
-          "name": "Vladimir Putin",
+          "name": "Honduras",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Alaska",
+          "name": "Among",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Russia",
+          "name": "Image",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Ukraine",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "National Foreign Policy Ukraine Russia",
-          "count": 1,
-          "category": "other"
-        }
-      ],
-      "topEntities": [
-        {
-          "name": "Fact",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Donald Trump",
-          "count": 1,
-          "category": "political_leader"
-        },
-        {
-          "name": "Vladimir Putin",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Alaska",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Russia",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Ukraine",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "National Foreign Policy Ukraine Russia",
+          "name": "Jackie Lay",
           "count": 1,
           "category": "other"
         }
@@ -316,227 +104,88 @@
       "entityCount": 7,
       "relationships": [
         {
-          "source": "Fact",
-          "target": "Donald Trump",
-          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
+          "source": "The Trump",
+          "target": "Honduras",
+          "context": "are losing those protections.'/><p>The Trump administration has moved to end temporary protected sta..."
         },
         {
-          "source": "Fact",
-          "target": "Vladimir Putin",
-          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
+          "source": "Among",
+          "target": "Image",
+          "context": "Among them are health care workers tending to older and disabled people.</p><p>(Image credit: Jackie..."
         },
         {
-          "source": "Fact",
-          "target": "Alaska",
-          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
+          "source": "Among",
+          "target": "Jackie Lay",
+          "context": "Among them are health care workers tending to older and disabled people.</p><p>(Image credit: Jackie..."
         },
         {
-          "source": "Fact",
-          "target": "Russia",
-          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
-        },
-        {
-          "source": "Fact",
-          "target": "Ukraine",
-          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
-        },
-        {
-          "source": "Fact",
-          "target": "National Foreign Policy Ukraine Russia",
-          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
-        },
-        {
-          "source": "Donald Trump",
-          "target": "Vladimir Putin",
-          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
-        },
-        {
-          "source": "Donald Trump",
-          "target": "Alaska",
-          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
-        },
-        {
-          "source": "Donald Trump",
-          "target": "Russia",
-          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
-        },
-        {
-          "source": "Donald Trump",
-          "target": "Ukraine",
-          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
+          "source": "Image",
+          "target": "Jackie Lay",
+          "context": "Among them are health care workers tending to older and disabled people.</p><p>(Image credit: Jackie..."
         }
       ],
-      "networkDensity": 3
+      "networkDensity": 0.5714285714285714
     },
-    "timestamp": "2025-08-22T16:09:36.582Z"
-  },
-  "analysis_article_1755878976598_11": {
-    "wordCount": 29,
-    "readingTime": 1,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "education"
-    ],
-    "credibility": {
-      "score": 0.4,
-      "level": "low",
-      "reason": "Very short content"
-    },
-    "summary": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families into a 400‑year property tax increase. ” Education States Taxes Wisconsin Americans for Prosperity.",
-    "biasIndicators": {},
-    "logicalFallacies": [],
-    "bias": {
-      "direction": "center",
-      "confidence": 0.5,
-      "explanation": "No strong directional bias detected.",
-      "indicators": {
-        "left": 0,
-        "right": 0,
-        "sensationalist": 0,
-        "neutral": 0
-      }
-    },
-    "network": {
-      "entities": [
-        {
-          "name": "Prosperity",
-          "count": 2,
-          "category": "other"
+    "timestamp": "2025-08-22T17:14:55.412Z"
+  }
+}ightspotcdn.com/dims3/default/strip/false/crop/3949x2632+0+0/resize/3949x263..."
         },
         {
-          "name": "Americans",
-          "count": 1,
-          "category": "other"
+          "source": "Former Thai Prime Minister Thaksin Shinawatra",
+          "target": "Friday",
+          "context": "<img src='https://npr.brightspotcdn.com/dims3/default/strip/false/crop/3949x2632+0+0/resize/3949x263..."
         },
         {
-          "name": "July",
-          "count": 1,
-          "category": "other"
+          "source": "Former Thai Prime Minister Thaksin Shinawatra",
+          "target": "Aug",
+          "context": "<img src='https://npr.brightspotcdn.com/dims3/default/strip/false/crop/3949x2632+0+0/resize/3949x263..."
         },
         {
-          "name": "The",
-          "count": 1,
-          "category": "other"
+          "source": "Criminal Court",
+          "target": "Bangkok",
+          "context": "<img src='https://npr.brightspotcdn.com/dims3/default/strip/false/crop/3949x2632+0+0/resize/3949x263..."
         },
         {
-          "name": "Evers",
-          "count": 1,
-          "category": "other"
+          "source": "Criminal Court",
+          "target": "Friday",
+          "context": "<img src='https://npr.brightspotcdn.com/dims3/default/strip/false/crop/3949x2632+0+0/resize/3949x263..."
         },
         {
-          "name": "Era",
-          "count": 1,
-          "category": "other"
+          "source": "Criminal Court",
+          "target": "Aug",
+          "context": "<img src='https://npr.brightspotcdn.com/dims3/default/strip/false/crop/3949x2632+0+0/resize/3949x263..."
         },
         {
-          "name": "Wisconsin",
-          "count": 1,
-          "category": "other"
+          "source": "Bangkok",
+          "target": "Friday",
+          "context": "<img src='https://npr.brightspotcdn.com/dims3/default/strip/false/crop/3949x2632+0+0/resize/3949x263..."
         },
         {
-          "name": "Education States Taxes Wisconsin Americans",
-          "count": 1,
-          "category": "other"
+          "source": "Bangkok",
+          "target": "Aug",
+          "context": "<img src='https://npr.brightspotcdn.com/dims3/default/strip/false/crop/3949x2632+0+0/resize/3949x263..."
+        },
+        {
+          "source": "Friday",
+          "target": "Aug",
+          "context": "<img src='https://npr.brightspotcdn.com/dims3/default/strip/false/crop/3949x2632+0+0/resize/3949x263..."
         }
       ],
-      "topEntities": [
-        {
-          "name": "Prosperity",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "Americans",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "July",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "The",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Evers",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Era",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Wisconsin",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Education States Taxes Wisconsin Americans",
-          "count": 1,
-          "category": "other"
-        }
-      ],
-      "entityCount": 8,
-      "relationships": [
-        {
-          "source": "Americans",
-          "target": "Prosperity",
-          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
-        },
-        {
-          "source": "Americans",
-          "target": "July",
-          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
-        },
-        {
-          "source": "Americans",
-          "target": "The",
-          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
-        },
-        {
-          "source": "Americans",
-          "target": "Evers",
-          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
-        },
-        {
-          "source": "Americans",
-          "target": "Era",
-          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
-        },
-        {
-          "source": "Americans",
-          "target": "Wisconsin",
-          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
-        },
-        {
-          "source": "Americans",
-          "target": "Education States Taxes Wisconsin Americans",
-          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
-        },
-        {
-          "source": "Prosperity",
-          "target": "July",
-          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
-        },
-        {
-          "source": "Prosperity",
-          "target": "The",
-          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
-        },
-        {
-          "source": "Prosperity",
-          "target": "Evers",
-          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
-        }
-      ],
-      "networkDensity": 3.5
+      "networkDensity": 2.5
     },
-    "timestamp": "2025-08-22T16:09:36.598Z"
+    "timestamp": "2025-08-22T17:14:55.411Z"
+  }
+}"target": "Trump",
+          "context": "On Friday he was elected to serve as the Republican National Committee's new leader.'/><p>Joe Gruter..."
+        },
+        {
+          "source": "On Friday",
+          "target": "Florida",
+          "context": "On Friday he was elected to serve as the Republican National Committee's new leader.'/><p>Joe Gruter..."
+        }
+      ],
+      "networkDensity": 2.2666666666666666
+    },
+    "timestamp": "2025-08-22T17:14:55.408Z"
   }
 }
