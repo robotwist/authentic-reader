@@ -120,6 +120,12 @@ class MonitorService extends EventEmitter {
         cpu: this.metrics.cpu.loadAvg.map(load => load.toFixed(2)).join(', '),
         requests: this.metrics.requests.total
       });
+      
+      // Force garbage collection if available and memory usage is high
+      if (this.metrics.memory.usagePercent > 80 && global.gc) {
+        global.gc();
+        logger.info('Forced garbage collection due to high memory usage');
+      }
     }
   }
 

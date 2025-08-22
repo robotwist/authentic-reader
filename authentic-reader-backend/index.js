@@ -959,19 +959,26 @@ app.get('/api/balanced-feed', async (req, res) => {
     
     console.log(`Total articles: ${allArticles.length}, Real: ${realArticles.length}, Sample: ${sampleArticles.length}`);
     
-    // Sort real articles by date (most recent first)
+    // Sort real articles by date (most recent first) and limit to prevent memory issues
     const sortedRealArticles = realArticles
-      .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+      .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
+      .slice(0, parseInt(limit) * 2); // Keep more real articles for better selection
     
-    // Sort sample articles by date (most recent first)
+    // Sort sample articles by date (most recent first) and limit
     const sortedSampleArticles = sampleArticles
-      .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+      .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
+      .slice(0, parseInt(limit) / 2); // Keep fewer sample articles
     
     console.log(`Sorted real articles: ${sortedRealArticles.length}, Sample: ${sortedSampleArticles.length}`);
     
     // Combine: real articles first, then sample articles
     const sortedArticles = [...sortedRealArticles, ...sortedSampleArticles]
       .slice(0, parseInt(limit));
+    
+    // Clear large arrays to free memory
+    allArticles.length = 0;
+    realArticles.length = 0;
+    sampleArticles.length = 0;
     
     res.json({
       articles: sortedArticles,

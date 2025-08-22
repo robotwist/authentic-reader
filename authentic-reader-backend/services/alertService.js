@@ -57,15 +57,15 @@ class AlertService extends EventEmitter {
     }
 
     // Memory usage alert
-    if (metrics.memory?.usage > this.thresholds.memoryUsage) {
+    if (metrics.memory?.usagePercent > (this.thresholds.memoryUsage * 100)) {
       alerts.push({
         type: 'resource',
         severity: 'warning',
-        message: `High memory usage: ${(metrics.memory.usage * 100).toFixed(1)}%`,
+        message: `High memory usage: ${metrics.memory.usagePercent}%`,
         timestamp: new Date().toISOString(),
         metric: 'memoryUsage',
-        value: metrics.memory.usage,
-        threshold: this.thresholds.memoryUsage
+        value: metrics.memory.usagePercent,
+        threshold: this.thresholds.memoryUsage * 100
       });
     }
 
