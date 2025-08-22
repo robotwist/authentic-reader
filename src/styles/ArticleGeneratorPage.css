@@ -1,0 +1,118 @@
+.article-generator-page {
+  min-height: 100vh;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.page-header {
+  padding: 30px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--card-background);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.back-button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+  background: var(--primary-dark);
+}
+
+.header-info h1 {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.header-info p {
+  margin: 0;
+  color: var(--text-light);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.quick-actions {
+  padding: 30px;
+  background: var(--card-background);
+  border-top: 1px solid var(--border-color);
+}
+
+.quick-actions h3 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.action-card {
+  background: var(--background-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.action-card:hover {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.action-card svg {
+  font-size: 24px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+  }
+  
+  .header-info h1 {
+    font-size: 24px;
+  }
+  
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .action-card {
+    flex-direction: row;
+    justify-content: center;
+  }
+}

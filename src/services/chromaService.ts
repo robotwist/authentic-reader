@@ -48,11 +48,11 @@ class ChromaService {
       ? `${protocol}://${CHROMA_HOST}`  // Production URL without port
       : `${protocol}://${CHROMA_HOST}:${CHROMA_PORT}`; // Development URL with port
     
-    // Check if ChromaDB config exists
-    this.isConfigured = !!CHROMA_HOST;
+    // Temporarily disable ChromaDB to prevent connection errors
+    this.isConfigured = false;
     
     if (!this.isConfigured) {
-      logger.warn('ChromaDB service is not configured. Vector storage unavailable.');
+      logger.warn('ChromaDB service is temporarily disabled. Vector storage unavailable.');
     } else {
       logger.info(`ChromaDB service initialized with endpoint: ${this.baseUrl}`);
       // Initialize collection

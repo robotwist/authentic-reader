@@ -6,7 +6,7 @@
 
 import axios from 'axios';
 
-const LLAMA_SERVICE_URL = import.meta.env.VITE_LLAMA_SERVICE_URL || '';
+const LLAMA_SERVICE_URL = import.meta.env.VITE_LLAMA_SERVICE_URL || 'http://localhost:8105';
 
 // Types for API requests and responses
 export interface GenerateRequest {
@@ -32,6 +32,9 @@ export interface LlamaResponse {
   model_used: string;
   processing_time: number;
   tokens_used?: number;
+  parsed_analysis?: any;
+  raw_response?: string;
+  error?: string;
 }
 
 export interface LlamaServiceStatus {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, NavLink } from 'react-router-dom';
 import './App.css'
 import Header from './components/Header'
+import SkipLinks from './components/SkipLinks';
 import FeedContainer from './components/FeedContainer'
 import UserProfile from './components/UserProfile';
 import AdminDashboard from './components/AdminDashboard';
@@ -38,6 +39,18 @@ import BiasDetection from './components/BiasDetection';
 import RhetoricalAnalysis from './components/RhetoricalAnalysis';
 import EntityRelationship from './components/EntityRelationship';
 import DarkPatternDetection from './components/DarkPatternDetection';
+import ComparativeAnalysis from './components/ComparativeAnalysis';
+import ComparativeAnalysisPage from './pages/ComparativeAnalysisPage';
+import FactCheckingPage from './pages/FactCheckingPage';
+import SentimentAnalysisPage from './pages/SentimentAnalysisPage';
+import ArticleGeneratorPage from './pages/ArticleGeneratorPage';
+import AIAgentOrchestratorPage from './pages/AIAgentOrchestratorPage';
+import AutonomousLearningPage from './pages/AutonomousLearningPage';
+import CollaborativeAINetworkPage from './pages/CollaborativeAINetworkPage';
+import AgenticAIDashboard from './components/AgenticAIDashboard';
+import AnalyticsDashboard from './components/AnalyticsDashboard';
+import EnhancedBiasDetection from './components/EnhancedBiasDetection';
+import JournalistRating from './components/JournalistRating';
 import EnhancedArticleView from './components/EnhancedArticleView';
 import InteractiveArticleView from './components/InteractiveArticleView';
 import ArticleImporter from './components/ArticleImporter';
@@ -305,8 +318,9 @@ function App() {
       <AuthProvider>
         <Router>
           <div className="app dark-mode">
+            <SkipLinks />
             <Header />
-            <main className="main-content">
+            <main className="main-content" id="main-content">
               <Routes>
                 <Route 
                   path="/" 
@@ -423,6 +437,17 @@ function App() {
                 <Route path="/analysis/rhetorical" element={<RhetoricalAnalysis />} />
                 <Route path="/analysis/entity" element={<EntityRelationship />} />
                 <Route path="/analysis/darkpattern" element={<DarkPatternDetection />} />
+                <Route path="/analysis/comparative" element={<ComparativeAnalysisPage />} />
+<Route path="/fact-check" element={<FactCheckingPage />} />
+<Route path="/sentiment-analysis" element={<SentimentAnalysisPage />} />
+<Route path="/article-generator" element={<ArticleGeneratorPage />} />
+<Route path="/ai-orchestrator" element={<AIAgentOrchestratorPage />} />
+<Route path="/autonomous-learning" element={<AutonomousLearningPage />} />
+<Route path="/collaborative-network" element={<CollaborativeAINetworkPage />} />
+<Route path="/agentic-dashboard" element={<AgenticAIDashboard />} />
+                <Route path="/analytics" element={<AnalyticsDashboard />} />
+                <Route path="/analysis/enhanced-bias" element={<EnhancedBiasDetection />} />
+                <Route path="/journalists" element={<JournalistRating />} />
                 
                 {/* Legacy Analysis Routes */}
                 <Route path="/benchmark" element={<NLPBenchmark />} />

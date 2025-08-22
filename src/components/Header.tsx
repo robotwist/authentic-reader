@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { FiChevronDown, FiUser, FiBook, FiSearch, FiSettings, FiTarget } from 'react-icons/fi';
+import { FiChevronDown, FiUser, FiBook, FiSearch, FiSettings, FiTarget, FiCpu } from 'react-icons/fi';
 import '../styles/Header.css';
 import AuthModal from './AuthModal';
 // Use public asset path directly to avoid Vite warning about importing from public
@@ -224,6 +224,32 @@ const Header = ({}: HeaderProps) => {
                   <li role="none">
                     <Link to="/analysis/rhetorical" role="menuitem" tabIndex={0}>
                       Rhetorical Analysis
+                    </Link>
+                  </li>
+                  <li role="none">
+                    <Link to="/analysis/comparative" role="menuitem" tabIndex={0}>
+                      Comparative Analysis
+                    </Link>
+                  </li>
+                  <li role="none">
+                    <Link to="/analytics" role="menuitem" tabIndex={0}>
+                      Analytics Dashboard
+                    </Link>
+                  </li>
+                  <li role="none">
+                    <Link to="/analysis/enhanced-bias" role="menuitem" tabIndex={0}>
+                      Enhanced Bias Detection
+                    </Link>
+                  </li>
+                  <li role="none">
+                    <Link to="/journalists" role="menuitem" tabIndex={0}>
+                      Journalist Ratings
+                    </Link>
+                  </li>
+                  <li role="none">
+                    <Link to="/agentic-dashboard" role="menuitem" tabIndex={0}>
+                      <FiCpu />
+                      Agentic AI Dashboard
                     </Link>
                   </li>
                 </ul>

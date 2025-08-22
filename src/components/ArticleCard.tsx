@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import '../styles/ArticleCard.css';
 import { Article } from '../types/Article';
 import { formatDate, truncateText } from '../utils/textUtils';
@@ -11,6 +11,7 @@ import { Badge } from './ui/Badge';
 import { getArticleTypeIcon } from '../utils/articleUtils';
 import defaultImage from '../assets/default-article.svg';
 import { logger } from '../utils/logger';
+import EnhancedArticleAnalysis from './EnhancedArticleAnalysis';
 
 interface ArticleCardProps {
   article: Article;
@@ -22,6 +23,7 @@ interface ArticleCardProps {
 const ArticleCard = memo(({ article, onSave, onAnalyze, isSaved = false, isRead = false }: ArticleCardProps) => {
   const [imageError, setImageError] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [showAnalysis, setShowAnalysis] = useState(false);
 
   // Check if article has a valid image
   const hasValidImage = article.image && !imageError;
@@ -90,6 +92,9 @@ const ArticleCard = memo(({ article, onSave, onAnalyze, isSaved = false, isRead 
     logger.debug('🔍 Analyze button clicked for article:', article.title);
     
     try {
+      // Show the enhanced analysis modal
+      setShowAnalysis(true);
+      
       if (onAnalyze) {
         // Pass the whole article object to the handler
         await onAnalyze(article);
@@ -191,6 +196,13 @@ const ArticleCard = memo(({ article, onSave, onAnalyze, isSaved = false, isRead 
           </a>
         </div>
       </div>
+      
+      {/* Enhanced Article Analysis Modal */}
+      <EnhancedArticleAnalysis
+        article={article}
+        isOpen={showAnalysis}
+        onClose={() => setShowAnalysis(false)}
+      />
     </div>
   );
 });

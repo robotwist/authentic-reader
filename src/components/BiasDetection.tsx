@@ -180,6 +180,21 @@ const BiasDetection: React.FC<BiasDetectionProps> = ({ defaultText = '' }) => {
               <FiCpu className="icon" />
               Model: {result.model_used}
             </div>
+            {result.analysis_method && (
+              <div className="metadata-item">
+                <FiBarChart2 className="icon" />
+                Method: {result.analysis_method === 'llama_ai' ? 'AI Analysis' : 'Local Analysis'}
+                {result.fallback_reason && (
+                  <span className="fallback-note"> (Fallback: {result.fallback_reason})</span>
+                )}
+              </div>
+            )}
+            {result.confidence && (
+              <div className="metadata-item">
+                <FiCheck className="icon" />
+                Confidence: {(result.confidence * 100).toFixed(0)}%
+              </div>
+            )}
           </div>
         </div>
       )}

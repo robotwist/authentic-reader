@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
-import { FiArrowLeft, FiExternalLink, FiClock, FiFileText, FiShield, FiTag, FiTrendingUp, FiAlertTriangle, FiCheckCircle, FiInfo } from 'react-icons/fi';
+import { FiArrowLeft, FiExternalLink, FiClock, FiFileText, FiShield, FiTag, FiTrendingUp, FiAlertTriangle, FiCheckCircle, FiInfo, FiTarget, FiActivity, FiAlertCircle, FiMessageSquare } from 'react-icons/fi';
+import useLlamaAnalysis from '../hooks/useLlamaAnalysis';
 import '../styles/ArticleAnalysisPage.css';
 
 interface Article {
@@ -50,7 +51,10 @@ const ArticleAnalysisPage: React.FC = () => {
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [expandedSections, setExpandedSections] = useState<string[]>(['credibility', 'summary']);
+  const [expandedSections, setExpandedSections] = useState<string[]>(['credibility', 'summary', 'bias']);
+  const [enhancedAnalysis, setEnhancedAnalysis] = useState<any>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const { analyzeBias, serviceStatus } = useLlamaAnalysis();
 
   useEffect(() => {
     // Get article data from navigation state
@@ -59,6 +63,8 @@ const ArticleAnalysisPage: React.FC = () => {
     if (passedArticle) {
       setArticle(passedArticle);
       setLoading(false);
+      // Perform enhanced analysis immediately
+      performEnhancedAnalysis(passedArticle);
     } else {
       // Fallback to mock data if no article passed
       const mockArticle: Article = {
@@ -87,8 +93,165 @@ const ArticleAnalysisPage: React.FC = () => {
       
       setArticle(mockArticle);
       setLoading(false);
+      // Perform enhanced analysis immediately
+      performEnhancedAnalysis(mockArticle);
     }
   }, [id, location.state]);
+
+  const performEnhancedAnalysis = async (articleData: Article) => {
+    if (!articleData.content && !articleData.description) {
+      return;
+    }
+
+    setIsAnalyzing(true);
+    try {
+      const textContent = articleData.content || articleData.description || articleData.title;
+      const biasResult = await analyzeBias(textContent);
+      
+      if (biasResult) {
+        const comprehensiveAnalysis = await generateComprehensiveAnalysis(textContent, biasResult);
+        setEnhancedAnalysis(comprehensiveAnalysis);
+      }
+    } catch (err) {
+      console.error('Enhanced analysis failed:', err);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const generateComprehensiveAnalysis = async (text: string, biasResult: any): Promise<any> => {
+    // Enhanced analysis with more sophisticated detection
+    const politicalBias = biasResult.bias_scores?.political || biasResult.political_bias || 5;
+    const emotionalBias = biasResult.bias_scores?.ideological || biasResult.emotional_bias || 5;
+    const cognitiveBias = biasResult.bias_scores?.partisan || biasResult.cognitive_bias || 5;
+    const overallBias = (politicalBias + emotionalBias + cognitiveBias) / 3;
+
+    const logicalFallacies = generateLogicalFallacies(text, biasResult);
+    const rhetoricalDevices = generateRhetoricalAnalysis(text, biasResult);
+    const credibility = generateCredibilityAssessment(article, biasResult);
+
+    return {
+      bias: {
+        political: politicalBias,
+        emotional: emotionalBias,
+        cognitive: cognitiveBias,
+        overall: overallBias
+      },
+      logicalFallacies,
+      rhetoricalDevices,
+      credibility,
+      biasPhrases: biasResult.detected_bias_phrases || [],
+      overallAssessment: biasResult.overall_bias_assessment || "Analysis completed"
+    };
+  };
+
+  const generateLogicalFallacies = (text: string, biasResult: any) => {
+    const fallacies = [];
+    const biasLevel = biasResult.overall_bias_assessment || biasResult.overall_bias || 5;
+    
+    // Enhanced logical fallacy detection
+    if (biasLevel > 6 || text.toLowerCase().includes('everyone knows') || text.toLowerCase().includes('obviously')) {
+      fallacies.push({
+        type: 'Appeal to Common Belief',
+        description: 'Assumes something is true because many people believe it',
+        examples: ['"Everyone knows..."', '"Obviously..."', 'Appeals to popular opinion'],
+        severity: 'medium'
+      });
+    }
+    
+    if (biasLevel > 7 || text.toLowerCase().includes('if you don\'t support') || text.toLowerCase().includes('real americans')) {
+      fallacies.push({
+        type: 'False Dilemma',
+        description: 'Presents only two options when more exist',
+        examples: ['"If you don\'t support X, you support Y"', '"Real Americans believe..."'],
+        severity: 'high'
+      });
+    }
+    
+    if (text.toLowerCase().includes('appeals to authority') || text.toLowerCase().includes('experts say')) {
+      fallacies.push({
+        type: 'Appeal to Authority',
+        description: 'Uses authority figures to support claims without evidence',
+        examples: ['"Experts say..." without citation', 'Appeals to unnamed authorities'],
+        severity: 'medium'
+      });
+    }
+    
+    if (text.toLowerCase().includes('slippery slope') || text.toLowerCase().includes('if we allow')) {
+      fallacies.push({
+        type: 'Slippery Slope',
+        description: 'Suggests one action will inevitably lead to extreme consequences',
+        examples: ['"If we allow X, then Y will happen"', 'Chain of unlikely events'],
+        severity: 'high'
+      });
+    }
+    
+    return fallacies;
+  };
+
+  const generateRhetoricalAnalysis = (text: string, biasResult: any) => {
+    const devices = [];
+    const biasLevel = biasResult.overall_bias_assessment || biasResult.overall_bias || 5;
+    
+    // Enhanced rhetorical device detection
+    if (biasLevel > 5 || text.toLowerCase().includes('shocking') || text.toLowerCase().includes('outrageous')) {
+      devices.push({
+        type: 'Loaded Language',
+        description: 'Uses emotionally charged words to influence perception',
+        impact: 'negative',
+        examples: ['Emotionally charged vocabulary', '"Shocking"', '"Outrageous"']
+      });
+    }
+    
+    if (text.toLowerCase().includes('we') || text.toLowerCase().includes('us') || text.toLowerCase().includes('our')) {
+      devices.push({
+        type: 'Inclusive Language',
+        description: 'Uses "we" and "us" to create group identity',
+        impact: 'neutral',
+        examples: ['"We must..."', '"Our country..."', 'Group identification']
+      });
+    }
+    
+    if (text.toLowerCase().includes('rhetorical questions') || text.match(/\?/g)?.length > 3) {
+      devices.push({
+        type: 'Rhetorical Questions',
+        description: 'Asks questions not meant to be answered',
+        impact: 'persuasive',
+        examples: ['Questions without expected answers', 'Leading questions']
+      });
+    }
+    
+    if (text.toLowerCase().includes('repetition') || text.toLowerCase().includes('again and again')) {
+      devices.push({
+        type: 'Repetition',
+        description: 'Repeats key phrases for emphasis',
+        impact: 'emphasizing',
+        examples: ['Repeated phrases', 'Key term repetition']
+      });
+    }
+    
+    return devices;
+  };
+
+  const generateCredibilityAssessment = (articleData: Article | null, biasResult: any) => {
+    if (!articleData) return { score: 5, factors: [], warnings: [] };
+    
+    const factors = [];
+    const warnings = [];
+    let score = 7; // Base score
+    
+    if (biasResult.overall_bias_assessment && biasResult.overall_bias_assessment.toLowerCase().includes('high bias')) {
+      score -= 2;
+      warnings.push('High bias detected may affect objectivity');
+    }
+    
+    if (articleData.analysis.credibility.score > 0.8) {
+      score += 1;
+      factors.push('Good source reputation');
+    }
+    
+    return { score, factors, warnings };
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -213,6 +376,76 @@ const ArticleAnalysisPage: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Immediate Analysis Summary - Always Visible */}
+      <div className="immediate-analysis-summary">
+        <div className="summary-header">
+          <FiTarget className="summary-icon" />
+          <h3>AI Analysis Summary</h3>
+          {isAnalyzing && <span className="analyzing-badge">Analyzing...</span>}
+        </div>
+        
+        {isAnalyzing ? (
+          <div className="analysis-loading">
+            <div className="loading-spinner"></div>
+            <p>Performing comprehensive AI analysis...</p>
+          </div>
+        ) : enhancedAnalysis ? (
+          <div className="analysis-results">
+            {/* Overall Bias Score */}
+            <div className="overall-bias-card">
+              <div className="bias-score-display">
+                <span className="bias-score-value">{enhancedAnalysis.bias.overall.toFixed(1)}</span>
+                <span className="bias-score-label">Overall Bias Score</span>
+              </div>
+              <div className="bias-assessment">
+                <p>{enhancedAnalysis.overallAssessment}</p>
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="quick-analysis-stats">
+              <div className="analysis-stat">
+                <span className="stat-number">{enhancedAnalysis.logicalFallacies.length}</span>
+                <span className="stat-label">Logical Fallacies</span>
+              </div>
+              <div className="analysis-stat">
+                <span className="stat-number">{enhancedAnalysis.rhetoricalDevices.length}</span>
+                <span className="stat-label">Rhetorical Devices</span>
+              </div>
+              <div className="analysis-stat">
+                <span className="stat-number">{enhancedAnalysis.biasPhrases.length}</span>
+                <span className="stat-label">Bias Phrases</span>
+              </div>
+            </div>
+
+            {/* Critical Issues */}
+            {(enhancedAnalysis.logicalFallacies.length > 0 || enhancedAnalysis.rhetoricalDevices.length > 0) && (
+              <div className="critical-issues">
+                <h4><FiAlertCircle /> Critical Issues Detected</h4>
+                <div className="issues-list">
+                  {enhancedAnalysis.logicalFallacies.slice(0, 2).map((fallacy: any, index: number) => (
+                    <div key={index} className="issue-item fallacy">
+                      <span className="issue-type">{fallacy.type}</span>
+                      <span className="issue-severity">{fallacy.severity}</span>
+                    </div>
+                  ))}
+                  {enhancedAnalysis.rhetoricalDevices.slice(0, 2).map((device: any, index: number) => (
+                    <div key={index} className="issue-item rhetorical">
+                      <span className="issue-type">{device.type}</span>
+                      <span className="issue-impact">{device.impact}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="no-analysis">
+            <p>Analysis not available. Please try refreshing the page.</p>
+          </div>
+        )}
       </div>
 
       <div className="analysis-sections">
@@ -371,6 +604,126 @@ const ArticleAnalysisPage: React.FC = () => {
               <p className="topics-description">
                 These topics were identified through natural language processing analysis of the article content.
               </p>
+            </div>
+          )}
+        </div>
+
+        {/* Enhanced Bias Analysis */}
+        <div className="analysis-section">
+          <div 
+            className="section-header"
+            onClick={() => toggleSection('bias')}
+          >
+            <div className="section-title">
+              <FiTarget />
+              <h3>Enhanced Bias Analysis</h3>
+              {isAnalyzing && <span className="analyzing-indicator">Analyzing...</span>}
+            </div>
+            <span className="section-toggle">
+              {expandedSections.includes('bias') ? '−' : '+'}
+            </span>
+          </div>
+          
+          {expandedSections.includes('bias') && (
+            <div className="section-content">
+              {isAnalyzing ? (
+                <div className="loading-analysis">
+                  <div className="spinner"></div>
+                  <p>Performing comprehensive bias analysis...</p>
+                </div>
+              ) : enhancedAnalysis ? (
+                <div className="enhanced-analysis-content">
+                  {/* Bias Scores */}
+                  <div className="bias-scores">
+                    <h4>Multi-Dimensional Bias Assessment</h4>
+                    <div className="bias-grid">
+                      <div className="bias-item">
+                        <span className="bias-label">Political Bias</span>
+                        <div className="bias-bar">
+                          <div 
+                            className="bias-fill" 
+                            style={{ width: `${(enhancedAnalysis.bias.political / 10) * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="bias-value">{enhancedAnalysis.bias.political.toFixed(1)}/10</span>
+                      </div>
+                      <div className="bias-item">
+                        <span className="bias-label">Emotional Bias</span>
+                        <div className="bias-bar">
+                          <div 
+                            className="bias-fill" 
+                            style={{ width: `${(enhancedAnalysis.bias.emotional / 10) * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="bias-value">{enhancedAnalysis.bias.emotional.toFixed(1)}/10</span>
+                      </div>
+                      <div className="bias-item">
+                        <span className="bias-label">Cognitive Bias</span>
+                        <div className="bias-bar">
+                          <div 
+                            className="bias-fill" 
+                            style={{ width: `${(enhancedAnalysis.bias.cognitive / 10) * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="bias-value">{enhancedAnalysis.bias.cognitive.toFixed(1)}/10</span>
+                      </div>
+                    </div>
+                    <div className="overall-bias">
+                      <strong>Overall Bias Score: {enhancedAnalysis.bias.overall.toFixed(1)}/10</strong>
+                    </div>
+                  </div>
+
+                  {/* Logical Fallacies */}
+                  {enhancedAnalysis.logicalFallacies.length > 0 && (
+                    <div className="fallacies-section">
+                      <h4>Logical Fallacies Detected</h4>
+                      <div className="fallacies-list">
+                        {enhancedAnalysis.logicalFallacies.map((fallacy: any, index: number) => (
+                          <div key={index} className="fallacy-item">
+                            <div className="fallacy-header">
+                              <span className="fallacy-type">{fallacy.type}</span>
+                              <span className={`severity-badge ${fallacy.severity}`}>{fallacy.severity}</span>
+                            </div>
+                            <p className="fallacy-description">{fallacy.description}</p>
+                            {fallacy.examples && fallacy.examples.length > 0 && (
+                              <div className="fallacy-examples">
+                                <strong>Examples:</strong>
+                                <ul>
+                                  {fallacy.examples.map((example: string, i: number) => (
+                                    <li key={i}>{example}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Rhetorical Devices */}
+                  {enhancedAnalysis.rhetoricalDevices.length > 0 && (
+                    <div className="rhetorical-section">
+                      <h4>Rhetorical Devices Identified</h4>
+                      <div className="rhetorical-list">
+                        {enhancedAnalysis.rhetoricalDevices.map((device: any, index: number) => (
+                          <div key={index} className="rhetorical-item">
+                            <div className="rhetorical-header">
+                              <span className="device-type">{device.type}</span>
+                              <span className={`impact-badge ${device.impact}`}>{device.impact}</span>
+                            </div>
+                            <p className="device-description">{device.description}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="no-analysis">
+                  <p>Enhanced analysis not available for this article.</p>
+                </div>
+              )}
             </div>
           )}
         </div>

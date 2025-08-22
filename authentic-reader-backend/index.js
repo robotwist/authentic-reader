@@ -5,6 +5,13 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { parseStringPromise } from 'xml2js';
 import jsonStorage from './services/jsonStorageService.js';
+import { 
+  authLimiter, 
+  apiLimiter, 
+  analysisLimiter, 
+  publicLimiter, 
+  adminLimiter 
+} from './middleware/rateLimit.js';
 // import comprehensiveAnalysis from './services/comprehensiveAnalysisService.js';
 
 // Import monitoring tools
@@ -1145,13 +1152,13 @@ app.get('/api/content', async (req, res) => {
 });
 
 // API routes - REGISTER AFTER CUSTOM ROUTES
-app.use('/api/users', userRoutes);
-app.use('/api/sources', sourceRoutes);
-app.use('/api/articles', articleRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/onnx', onnxRoutes);
-app.use('/api/analysis', analysisRoutes);
-app.use('/api/monitor', monitorRoutes);
+app.use('/api/users', authLimiter, userRoutes);
+app.use('/api/sources', publicLimiter, sourceRoutes);
+app.use('/api/articles', apiLimiter, articleRoutes);
+app.use('/api/admin', adminLimiter, adminRoutes);
+app.use('/api/onnx', analysisLimiter, onnxRoutes);
+app.use('/api/analysis', analysisLimiter, analysisRoutes);
+app.use('/api/monitor', adminLimiter, monitorRoutes);
 
 // Apply error monitoring middleware
 app.use(errorMonitor);

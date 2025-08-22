@@ -82,14 +82,14 @@ LOG_LEVEL=INFO
 ```bash
 cd llama-service
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-uvicorn src.main:app --reload --port 3500
+uvicorn src.main:app --reload --port 8105
 ```
 
-3. The service will be available at `http://localhost:3500`
+3. The service will be available at `http://localhost:8105`
 
 4. Test the installation:
 ```bash
-curl http://localhost:3500/health
+curl http://localhost:8105/health
 ```
 
 ## API Endpoints

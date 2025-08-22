@@ -1,29 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiClock, FiShield, FiTag, FiTrendingUp, FiFilter, FiRefreshCw } from 'react-icons/fi';
+import { FiClock, FiShield, FiTag, FiTrendingUp, FiFilter, FiRefreshCw, FiDatabase, FiWifi, FiWifiOff } from 'react-icons/fi';
+import { articleService, Article } from '../services/articleService';
 import '../styles/BalancedFeedPage.css';
 
-interface Article {
-  title: string;
-  link: string;
-  description: string;
-  pubDate: string;
-  author: string;
-  content: string;
-  analysis: {
-    wordCount: number;
-    readingTime: number;
-    summary: string;
-    credibility: { score: number; level: string; reason: string };
-    logicalFallacies?: Array<{ type: string; explanation: string; excerpt?: string; confidence: number }>;
-    biasAnalysis?: { direction: 'left' | 'right' | 'center'; confidence: number; explanation: string; indicators: { left: number; right: number } };
-    networkAnalysis?: { topEntities: Array<{ name: string; count: number }>; entityCount: number };
-    timestamp: string;
-  };
-  articleId: string;
-  source: string;
-  sourceCategory: string;
-}
+// Article interface is now imported from articleService
 
 
 
@@ -34,28 +15,38 @@ const BalancedFeedPage: React.FC = () => {
   const [activeFilters, setActiveFilters] = useState<string[]>(['far-left', 'left', 'center', 'right', 'far-right']);
   const [sortBy, setSortBy] = useState<'date' | 'credibility' | 'source'>('date');
   const [showFilters, setShowFilters] = useState(false);
-
-  // Note: Sources are now fetched from the API instead of hardcoded
+  const [dataSource, setDataSource] = useState<'backend' | 'cache' | 'fallback'>('backend');
 
   const fetchAllArticles = async () => {
     setLoading(true);
     setError(null);
     
     try {
-      // Use the new balanced feed endpoint
-      const response = await fetch(`http://localhost:3001/api/balanced-feed?categories=${activeFilters.join(',')}&limit=50`);
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Fetched articles:', data.articles.length);
-        console.log('First article analysis:', data.articles[0]?.analysis);
-        const sortedArticles = sortArticles(data.articles, sortBy);
-        setArticles(sortedArticles);
+      // Use the reliable article service with fallbacks
+      const fetchedArticles = await articleService.getArticles(activeFilters, 50);
+      
+      // Determine data source for UI feedback
+      const cacheStatus = articleService.getCacheStatus();
+      if (cacheStatus.hasCache && !cacheStatus.isValid) {
+        setDataSource('cache');
+      } else if (fetchedArticles.length > 0 && fetchedArticles[0].articleId.startsWith('fallback-')) {
+        setDataSource('fallback');
       } else {
-        throw new Error('Failed to fetch balanced feed');
+        setDataSource('backend');
       }
+      
+      console.log('Fetched articles:', fetchedArticles.length);
+      console.log('Data source:', dataSource);
+      
+      const sortedArticles = sortArticles(fetchedArticles, sortBy);
+      setArticles(sortedArticles);
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load articles');
+      // Even if there's an error, try to show fallback articles
+      const fallbackArticles = articleService.getFallbackArticles();
+      setArticles(sortArticles(fallbackArticles, sortBy));
+      setDataSource('fallback');
     } finally {
       setLoading(false);
     }
@@ -165,6 +156,23 @@ const BalancedFeedPage: React.FC = () => {
         <div className="header-content">
           <h1>Balanced News Feed</h1>
           <p className="subtitle">Multiple perspectives for informed understanding</p>
+          <div className="data-source-indicator">
+            {dataSource === 'backend' && (
+              <span className="source-badge backend">
+                <FiWifi /> Live Data
+              </span>
+            )}
+            {dataSource === 'cache' && (
+              <span className="source-badge cache">
+                <FiDatabase /> Cached Data
+              </span>
+            )}
+            {dataSource === 'fallback' && (
+              <span className="source-badge fallback">
+                <FiWifiOff /> Offline Mode
+              </span>
+            )}
+          </div>
           
           <div className="feed-controls">
             <button 

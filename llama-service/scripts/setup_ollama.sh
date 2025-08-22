@@ -149,7 +149,7 @@ fi
 
 echo -e "\n${GREEN}=== Setup Complete ===${NC}"
 echo -e "\nTo start the Llama service, run:"
-echo -e "  cd .. && source venv/bin/activate && uvicorn src.main:app --reload --port 3500"
-echo -e "\nThe service will be available at: http://localhost:3500"
+echo -e "  cd .. && source venv/bin/activate && uvicorn src.main:app --reload --port 8105"
+echo -e "\nThe service will be available at: http://localhost:8105"
 echo -e "\nTest the installation with:"
-echo -e "  curl http://localhost:3500/health" 
+echo -e "  curl http://localhost:8105/health" 

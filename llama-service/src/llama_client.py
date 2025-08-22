@@ -194,10 +194,25 @@ class LlamaClient:
                 logger.error(error_msg)
                 raise RuntimeError(error_msg)
             
-            # Parse response
-            response_data = response.json()
-            
-            return response_data.get("response", "")
+            # Parse streaming response
+            try:
+                # Handle streaming response (multiple JSON lines)
+                full_response = ""
+                for line in response.text.strip().split('\n'):
+                    if line.strip():
+                        try:
+                            chunk = json.loads(line)
+                            if "response" in chunk:
+                                full_response += chunk["response"]
+                        except json.JSONDecodeError:
+                            logger.warning(f"Failed to parse response chunk: {line}")
+                
+                return full_response
+            except Exception as e:
+                logger.error(f"Failed to parse streaming response: {e}")
+                logger.error(f"Response text: {response.text[:500]}")
+                # Return the raw text if parsing fails
+                return response.text
             
         except requests.RequestException as e:
             logger.error(f"Error during generation: {e}")

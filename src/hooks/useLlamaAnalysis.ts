@@ -21,6 +21,9 @@ export interface BiasAnalysisResult extends AnalysisResult {
   };
   detected_bias_phrases: string[];
   overall_bias_assessment: string;
+  analysis_method?: string;
+  fallback_reason?: string;
+  confidence?: number;
 }
 
 export interface EntityAnalysisResult extends AnalysisResult {
@@ -88,20 +91,10 @@ export function useLlamaAnalysis() {
     }
   }, []);
 
-  // Run service status check on mount
+  // Run service status check on mount only
   useEffect(() => {
     checkServiceStatus();
-    
-    // Optional: Set up a periodic check
-    const intervalId = setInterval(() => {
-      // Only check if not already checking and if there was an error before
-      if (!isCheckingStatus && serviceStatus?.status === 'error') {
-        checkServiceStatus();
-      }
-    }, 30000); // Check every 30 seconds if there was an error
-    
-    return () => clearInterval(intervalId);
-  }, [checkServiceStatus, isCheckingStatus, serviceStatus]);
+  }, []); // Empty dependency array - only run on mount
 
   // Generic function to analyze text using the Llama service
   const analyzeText = useCallback(async <T extends AnalysisResult>(
@@ -163,30 +156,64 @@ export function useLlamaAnalysis() {
       text,
       'bias',
       (response) => {
-        // Parse the response to extract bias information
-        // This is a simple implementation and might need to be adapted based on actual response format
         try {
-          // Here we'd typically parse structured data from the response.text
-          // For now, we'll create a mock interpretation
+          // Check if we have parsed analysis from the backend
+          if (response.parsed_analysis && response.parsed_analysis.bias_scores) {
+            const analysis = response.parsed_analysis;
+            return {
+              text: response.text,
+              processing_time: response.processing_time,
+              model_used: response.model_used,
+              timestamp: Date.now(),
+              bias_scores: {
+                political: analysis.bias_scores.political || 0,
+                ideological: analysis.bias_scores.ideological || 0,
+                partisan: analysis.bias_scores.partisan || 0
+              },
+              detected_bias_phrases: analysis.detected_bias_phrases || [],
+              overall_bias_assessment: analysis.overall_bias_assessment || "Analysis completed",
+              analysis_method: analysis.analysis_method || "unknown",
+              fallback_reason: analysis.fallback_reason,
+              confidence: analysis.confidence
+            };
+          }
+          
+          // Fallback: try to extract JSON from raw response
+          const jsonMatch = response.text?.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            const parsed = JSON.parse(jsonMatch[0]);
+            return {
+              text: response.text,
+              processing_time: response.processing_time,
+              model_used: response.model_used,
+              timestamp: Date.now(),
+              bias_scores: {
+                political: parsed.bias_scores?.political || 0,
+                ideological: parsed.bias_scores?.ideological || 0,
+                partisan: parsed.bias_scores?.partisan || 0
+              },
+              detected_bias_phrases: parsed.detected_bias_phrases || [],
+              overall_bias_assessment: parsed.overall_bias_assessment || "Analysis completed"
+            };
+          }
+          
+          // Final fallback: return basic structure
+          console.warn("Could not parse structured bias analysis, using fallback");
           return {
-            text: response.text,
-            processing_time: response.processing_time,
-            model_used: response.model_used,
+            text: response.text || "No response text available",
+            processing_time: response.processing_time || 0,
+            model_used: response.model_used || "unknown",
             timestamp: Date.now(),
-            bias_scores: {
-              political: Math.random() * 10,  // Mock values, would be parsed from response
-              ideological: Math.random() * 10,
-              partisan: Math.random() * 10
-            },
-            detected_bias_phrases: ["example phrase 1", "example phrase 2"],
-            overall_bias_assessment: "Mock assessment - would be extracted from the response"
+            bias_scores: { political: 0, ideological: 0, partisan: 0 },
+            detected_bias_phrases: [],
+            overall_bias_assessment: "Analysis completed but parsing failed"
           };
         } catch (e) {
           console.error("Error parsing bias analysis result:", e);
           return {
-            text: response.text,
-            processing_time: response.processing_time,
-            model_used: response.model_used,
+            text: response.text || "No response text available",
+            processing_time: response.processing_time || 0,
+            model_used: response.model_used || "unknown",
             timestamp: Date.now(),
             bias_scores: { political: 0, ideological: 0, partisan: 0 },
             detected_bias_phrases: [],

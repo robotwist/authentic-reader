@@ -1,67 +1,43 @@
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  // Load env file based on `mode` in the current directory.
-  // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
-  const env = loadEnv(mode, process.cwd(), '')
-  
-  // Expose REACT_APP_ variables as import.meta.env.REACT_APP_*
-  const envWithProcessPrefix = Object.entries(env).reduce(
-    (prev, [key, val]) => {
-      return {
-        ...prev,
-        ["import.meta.env." + key]: JSON.stringify(val),
-        ["process.env." + key]: JSON.stringify(val),
-      }
-    },
-    {}
-  )
+  // Define environment variables for the build
+  const envWithProcessPrefix = {
+    'process.env.NODE_ENV': `"${mode}"`,
+    'process.env.VITE_APP_TITLE': '"Authentic Reader"'
+  }
 
   return {
     plugins: [
       react(),
       VitePWA({
         registerType: 'autoUpdate',
-        injectRegister: 'auto',
-        devOptions: {
-          enabled: true,
-          type: 'module'
-        },
+        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
         manifest: {
           name: 'Authentic Reader',
-          short_name: 'AuthReader',
-          description: 'Bias and logical fallacy focused reader with analysis',
-          theme_color: '#0f172a',
-          background_color: '#0f172a',
+          short_name: 'AuthenticReader',
+          description: 'AI-powered news analysis and bias detection',
+          theme_color: '#1a1a2e',
+          background_color: '#16213e',
           display: 'standalone',
-          display_override: ['standalone', 'browser'],
-          start_url: '/',
+          orientation: 'portrait',
           scope: '/',
+          start_url: '/',
           icons: [
             {
-              src: '/icon-192x192.png',
-              sizes: '192x192',
-              type: 'image/png'
-            },
-            {
-              src: '/icon-512x512.png',
-              sizes: '512x512',
-              type: 'image/png'
-            },
-            {
-              src: '/icon-192x192-maskable.png',
+              src: 'icon-192x192.png',
               sizes: '192x192',
               type: 'image/png',
-              purpose: 'maskable'
+              purpose: 'any maskable'
             },
             {
-              src: '/icon-512x512-maskable.png',
+              src: 'icon-512x512.png',
               sizes: '512x512',
               type: 'image/png',
-              purpose: 'maskable'
+              purpose: 'any maskable'
             }
           ]
         },
@@ -100,6 +76,26 @@ export default defineConfig(({ mode }) => {
     // Enable more detailed error messages in development
     build: {
       sourcemap: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Split vendor libraries into separate chunks
+            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+            'ui-vendor': ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
+            'chart-vendor': ['chart.js', 'recharts'],
+            'utils-vendor': ['axios', 'dompurify', 'jsdom']
+          }
+        }
+      },
+      // Optimize bundle size
+      chunkSizeWarningLimit: 1000,
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: mode === 'production',
+          drop_debugger: mode === 'production'
+        }
+      }
     },
     server: {
       // Configure dev server if needed
@@ -107,5 +103,16 @@ export default defineConfig(({ mode }) => {
       open: true,
       cors: true,
     },
+    // Optimize dependencies
+    optimizeDeps: {
+      include: [
+        'react',
+        'react-dom',
+        'react-router-dom',
+        'axios',
+        'chart.js',
+        'recharts'
+      ]
+    }
   }
 })

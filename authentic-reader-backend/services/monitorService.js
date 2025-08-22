@@ -9,6 +9,7 @@ import os from 'os';
 import { performance } from 'perf_hooks';
 import winston from 'winston';
 import { EventEmitter } from 'events';
+import alertService from './alertService.js';
 
 // Configure logger
 const logger = winston.createLogger({
@@ -107,6 +108,9 @@ class MonitorService extends EventEmitter {
     
     // Emit updated metrics event
     this.emit('metrics-updated', this.getMetrics());
+    
+    // Check for alerts
+    alertService.checkMetrics(this.metrics);
     
     // Log metrics periodically
     if (this.metrics.uptime % 60 === 0) { // Log every minute
