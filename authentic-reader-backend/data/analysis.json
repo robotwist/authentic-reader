@@ -1,693 +1,19 @@
 {
-  "analysis_article_1755838013929_14": {
-    "wordCount": 380,
-    "readingTime": 2,
+  "analysis_article_1755838143030_19": {
+    "wordCount": 33,
+    "readingTime": 1,
     "hasExternalLinks": false,
-    "complexity": "medium",
+    "complexity": "easy",
     "keyTopics": [
-      "politics",
-      "technology",
-      "economy",
-      "international"
+      "technology"
     ],
     "credibility": {
-      "score": 0.45,
-      "level": "medium",
-      "reason": "Low credibility domain; Contains credible reporting language; Substantial content length"
+      "score": 0.4,
+      "level": "low",
+      "reason": "Very short content"
     },
-    "summary": "Taiwan Announces Massive Increase in Defense Spending Urged by Trump Chiang Ying-ying/AP John Hayward 21 Aug 2025 Taiwan’s President William Lai Ching-te rolled out a 2026 budget proposal on Thursday that included a massive 22. 9 percent increase in defense spending, bringing Taiwan’s total outlay t...",
+    "summary": "Donald Trump stated on August 4, 2025 in a post on Truth Social: “Promises kept: negative net migration (in the U. ) for the first time in 50 years. ” Immigration National Census Donald Trump.",
     "biasIndicators": {},
-    "logicalFallacies": [],
-    "bias": {
-      "direction": "right",
-      "confidence": 1,
-      "explanation": "Detected more right-leaning indicators in language.",
-      "indicators": {
-        "left": 0,
-        "right": 1,
-        "sensationalist": 0,
-        "neutral": 1
-      }
-    },
-    "network": {
-      "entities": [
-        {
-          "name": "Taiwan",
-          "count": 12,
-          "category": "other"
-        },
-        {
-          "name": "GDP",
-          "count": 3,
-          "category": "other"
-        },
-        {
-          "name": "NATO",
-          "count": 3,
-          "category": "other"
-        },
-        {
-          "name": "Trump",
-          "count": 3,
-          "category": "political_leader"
-        },
-        {
-          "name": "President William Lai Ching",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "Thursday",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "Indo",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "Pacific",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "President Lai",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "President Donald Trump",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "United States",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "President Joe Biden",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "China",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "Congress",
-          "count": 2,
-          "category": "government_body"
-        },
-        {
-          "name": "Taiwan Announces Massive Increase",
-          "count": 1,
-          "category": "business"
-        },
-        {
-          "name": "Defense Spending Urged",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Trump Chiang Ying",
-          "count": 1,
-          "category": "political_leader"
-        },
-        {
-          "name": "John Hayward",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Aug",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Gross Domestic Product",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "AP",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "According",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Premier Cho Jung",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Proposed",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Coast Guard",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "More",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "This",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Cho",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "North Atlantic Treaty Organization",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Arms",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Bloomberg News",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Taiwanese",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Bloomberg",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Lai",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Last",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Asia National Security China Defense Spending Donald Trump Lai Ching",
-          "count": 1,
-          "category": "political_leader"
-        }
-      ],
-      "topEntities": [
-        {
-          "name": "Taiwan",
-          "count": 12,
-          "category": "other"
-        },
-        {
-          "name": "GDP",
-          "count": 3,
-          "category": "other"
-        },
-        {
-          "name": "NATO",
-          "count": 3,
-          "category": "other"
-        },
-        {
-          "name": "Trump",
-          "count": 3,
-          "category": "political_leader"
-        },
-        {
-          "name": "President William Lai Ching",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "Thursday",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "Indo",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "Pacific",
-          "count": 2,
-          "category": "other"
-        }
-      ],
-      "entityCount": 36,
-      "relationships": [
-        {
-          "source": "Taiwan Announces Massive Increase",
-          "target": "Defense Spending Urged",
-          "context": "Taiwan Announces Massive Increase in Defense Spending Urged by Trump Chiang Ying-ying/AP John Haywar..."
-        },
-        {
-          "source": "Taiwan Announces Massive Increase",
-          "target": "Trump Chiang Ying",
-          "context": "Taiwan Announces Massive Increase in Defense Spending Urged by Trump Chiang Ying-ying/AP John Haywar..."
-        },
-        {
-          "source": "Taiwan Announces Massive Increase",
-          "target": "John Hayward",
-          "context": "Taiwan Announces Massive Increase in Defense Spending Urged by Trump Chiang Ying-ying/AP John Haywar..."
-        },
-        {
-          "source": "Taiwan Announces Massive Increase",
-          "target": "Aug",
-          "context": "Taiwan Announces Massive Increase in Defense Spending Urged by Trump Chiang Ying-ying/AP John Haywar..."
-        },
-        {
-          "source": "Taiwan Announces Massive Increase",
-          "target": "Taiwan",
-          "context": "Taiwan Announces Massive Increase in Defense Spending Urged by Trump Chiang Ying-ying/AP John Haywar..."
-        },
-        {
-          "source": "Taiwan Announces Massive Increase",
-          "target": "President William Lai Ching",
-          "context": "Taiwan Announces Massive Increase in Defense Spending Urged by Trump Chiang Ying-ying/AP John Haywar..."
-        },
-        {
-          "source": "Taiwan Announces Massive Increase",
-          "target": "Thursday",
-          "context": "Taiwan Announces Massive Increase in Defense Spending Urged by Trump Chiang Ying-ying/AP John Haywar..."
-        },
-        {
-          "source": "Taiwan Announces Massive Increase",
-          "target": "Gross Domestic Product",
-          "context": "Taiwan Announces Massive Increase in Defense Spending Urged by Trump Chiang Ying-ying/AP John Haywar..."
-        },
-        {
-          "source": "Taiwan Announces Massive Increase",
-          "target": "AP",
-          "context": "Taiwan Announces Massive Increase in Defense Spending Urged by Trump Chiang Ying-ying/AP John Haywar..."
-        },
-        {
-          "source": "Taiwan Announces Massive Increase",
-          "target": "GDP",
-          "context": "Taiwan Announces Massive Increase in Defense Spending Urged by Trump Chiang Ying-ying/AP John Haywar..."
-        }
-      ],
-      "networkDensity": 3.4722222222222223
-    },
-    "timestamp": "2025-08-22T04:46:53.930Z"
-  },
-  "analysis_article_1755838013933_15": {
-    "wordCount": 647,
-    "readingTime": 4,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "economy",
-      "science",
-      "international"
-    ],
-    "credibility": {
-      "score": 0.1,
-      "level": "low",
-      "reason": "Low credibility domain; 2 sensationalist words detected; Substantial content length"
-    },
-    "summary": "Report: China Meeting Its Massive Oil Demand with Illicit Shipments from Russia, Iran, Venezuela Costfoto/NurPhoto via Getty Images John Hayward 21 Aug 2025 The Financial Times ( FT ) on Wednesday published a report co-authored with a research group called C4ADS about a complex global network that i...",
-    "biasIndicators": {
-      "sensationalist": [
-        "revealed",
-        "secret"
-      ]
-    },
-    "logicalFallacies": [],
-    "bias": {
-      "direction": "right",
-      "confidence": 1,
-      "explanation": "Detected more right-leaning indicators in language.",
-      "indicators": {
-        "left": 0,
-        "right": 1,
-        "sensationalist": 0,
-        "neutral": 0
-      }
-    },
-    "network": {
-      "entities": [
-        {
-          "name": "The",
-          "count": 9,
-          "category": "other"
-        },
-        {
-          "name": "Russia",
-          "count": 8,
-          "category": "other"
-        },
-        {
-          "name": "Iran",
-          "count": 6,
-          "category": "other"
-        },
-        {
-          "name": "Chinese",
-          "count": 6,
-          "category": "other"
-        },
-        {
-          "name": "Venezuela",
-          "count": 5,
-          "category": "other"
-        },
-        {
-          "name": "China",
-          "count": 4,
-          "category": "other"
-        },
-        {
-          "name": "Russian",
-          "count": 4,
-          "category": "other"
-        },
-        {
-          "name": "Western",
-          "count": 3,
-          "category": "other"
-        },
-        {
-          "name": "FT",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "Iranian",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "In",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "President Donald Trump",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "Some",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "Report",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "China Meeting Its Massive Oil Demand",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Illicit Shipments",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Venezuela Costfoto",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Getty Images John Hayward",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Aug",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "The Financial Times",
-          "count": 1,
-          "category": "law_enforcement"
-        },
-        {
-          "name": "Wednesday",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Panamanian",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Ocean Glory Giant",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Iraq",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Malaysia",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Andrew Boling",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Ocean Glory",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Secretary",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "State Mike Pompeo",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Maritime",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Claire Jungman",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "She",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Since",
-          "count": 1,
-          "category": "business"
-        },
-        {
-          "name": "Russian Industry",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Trade Minister Anton Alikhanov",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Tuesday",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Bilateral",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Alikhanov",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Kazan",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "For",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "July",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Asia Economy National Security China Iran Oil Russia Sanctions",
-          "count": 1,
-          "category": "other"
-        }
-      ],
-      "topEntities": [
-        {
-          "name": "The",
-          "count": 9,
-          "category": "other"
-        },
-        {
-          "name": "Russia",
-          "count": 8,
-          "category": "other"
-        },
-        {
-          "name": "Iran",
-          "count": 6,
-          "category": "other"
-        },
-        {
-          "name": "Chinese",
-          "count": 6,
-          "category": "other"
-        },
-        {
-          "name": "Venezuela",
-          "count": 5,
-          "category": "other"
-        },
-        {
-          "name": "China",
-          "count": 4,
-          "category": "other"
-        },
-        {
-          "name": "Russian",
-          "count": 4,
-          "category": "other"
-        },
-        {
-          "name": "Western",
-          "count": 3,
-          "category": "other"
-        }
-      ],
-      "entityCount": 42,
-      "relationships": [
-        {
-          "source": "Report",
-          "target": "China Meeting Its Massive Oil Demand",
-          "context": "Report: China Meeting Its Massive Oil Demand with Illicit Shipments from Russia, Iran, Venezuela Cos..."
-        },
-        {
-          "source": "Report",
-          "target": "Illicit Shipments",
-          "context": "Report: China Meeting Its Massive Oil Demand with Illicit Shipments from Russia, Iran, Venezuela Cos..."
-        },
-        {
-          "source": "Report",
-          "target": "Russia",
-          "context": "Report: China Meeting Its Massive Oil Demand with Illicit Shipments from Russia, Iran, Venezuela Cos..."
-        },
-        {
-          "source": "Report",
-          "target": "Iran",
-          "context": "Report: China Meeting Its Massive Oil Demand with Illicit Shipments from Russia, Iran, Venezuela Cos..."
-        },
-        {
-          "source": "Report",
-          "target": "Venezuela Costfoto",
-          "context": "Report: China Meeting Its Massive Oil Demand with Illicit Shipments from Russia, Iran, Venezuela Cos..."
-        },
-        {
-          "source": "Report",
-          "target": "Getty Images John Hayward",
-          "context": "Report: China Meeting Its Massive Oil Demand with Illicit Shipments from Russia, Iran, Venezuela Cos..."
-        },
-        {
-          "source": "Report",
-          "target": "Aug",
-          "context": "Report: China Meeting Its Massive Oil Demand with Illicit Shipments from Russia, Iran, Venezuela Cos..."
-        },
-        {
-          "source": "Report",
-          "target": "The Financial Times",
-          "context": "Report: China Meeting Its Massive Oil Demand with Illicit Shipments from Russia, Iran, Venezuela Cos..."
-        },
-        {
-          "source": "Report",
-          "target": "Wednesday",
-          "context": "Report: China Meeting Its Massive Oil Demand with Illicit Shipments from Russia, Iran, Venezuela Cos..."
-        },
-        {
-          "source": "Report",
-          "target": "Venezuela",
-          "context": "Report: China Meeting Its Massive Oil Demand with Illicit Shipments from Russia, Iran, Venezuela Cos..."
-        }
-      ],
-      "networkDensity": 3.9047619047619047
-    },
-    "timestamp": "2025-08-22T04:46:53.935Z"
-  },
-  "analysis_article_1755838013954_16": {
-    "wordCount": 726,
-    "readingTime": 4,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "economy",
-      "science",
-      "education",
-      "entertainment"
-    ],
-    "credibility": {
-      "score": 0.3,
-      "level": "low",
-      "reason": "Low credibility domain; 1 sensationalist words detected; Contains credible reporting language; Substantial content length"
-    },
-    "summary": "Patriotism Is Making a Comeback—Thanks to a New Generation of Young Americans 82 iStock/Getty Images PragerU (Sponsored) 21 Aug 2025 The following content is sponsored by PragerU .  In recent years, patriotism among young Americans has been steadily declining—a troubling trend with profound implicat...",
-    "biasIndicators": {
-      "political": [
-        "conservative",
-        "democrat",
-        "republican"
-      ],
-      "sensationalist": [
-        "revealed"
-      ]
-    },
     "logicalFallacies": [],
     "bias": {
       "direction": "center",
@@ -697,208 +23,263 @@
         "left": 0,
         "right": 0,
         "sensationalist": 0,
-        "neutral": 2
+        "neutral": 0
       }
     },
     "network": {
       "entities": [
         {
-          "name": "America",
-          "count": 6,
+          "name": "Donald Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "August",
+          "count": 1,
           "category": "other"
         },
         {
-          "name": "The",
-          "count": 5,
+          "name": "Truth Social",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "Promises",
+          "count": 1,
           "category": "other"
         },
         {
-          "name": "American",
-          "count": 5,
+          "name": "Immigration National Census Donald Trump",
+          "count": 1,
+          "category": "political_leader"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Donald Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "August",
+          "count": 1,
           "category": "other"
         },
         {
-          "name": "Americans",
-          "count": 3,
+          "name": "Truth Social",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "Promises",
+          "count": 1,
           "category": "other"
         },
         {
-          "name": "Gen",
-          "count": 3,
-          "category": "other"
+          "name": "Immigration National Census Donald Trump",
+          "count": 1,
+          "category": "political_leader"
+        }
+      ],
+      "entityCount": 5,
+      "relationships": [
+        {
+          "source": "Donald Trump",
+          "target": "August",
+          "context": "Donald Trump stated on August 4, 2025 in a post on Truth Social: “Promises kept: negative net migrat..."
         },
         {
-          "name": "Gallup",
+          "source": "Donald Trump",
+          "target": "Truth Social",
+          "context": "Donald Trump stated on August 4, 2025 in a post on Truth Social: “Promises kept: negative net migrat..."
+        },
+        {
+          "source": "Donald Trump",
+          "target": "Promises",
+          "context": "Donald Trump stated on August 4, 2025 in a post on Truth Social: “Promises kept: negative net migrat..."
+        },
+        {
+          "source": "Donald Trump",
+          "target": "Immigration National Census Donald Trump",
+          "context": "Donald Trump stated on August 4, 2025 in a post on Truth Social: “Promises kept: negative net migrat..."
+        },
+        {
+          "source": "August",
+          "target": "Truth Social",
+          "context": "Donald Trump stated on August 4, 2025 in a post on Truth Social: “Promises kept: negative net migrat..."
+        },
+        {
+          "source": "August",
+          "target": "Promises",
+          "context": "Donald Trump stated on August 4, 2025 in a post on Truth Social: “Promises kept: negative net migrat..."
+        },
+        {
+          "source": "August",
+          "target": "Immigration National Census Donald Trump",
+          "context": "Donald Trump stated on August 4, 2025 in a post on Truth Social: “Promises kept: negative net migrat..."
+        },
+        {
+          "source": "Truth Social",
+          "target": "Promises",
+          "context": "Donald Trump stated on August 4, 2025 in a post on Truth Social: “Promises kept: negative net migrat..."
+        },
+        {
+          "source": "Truth Social",
+          "target": "Immigration National Census Donald Trump",
+          "context": "Donald Trump stated on August 4, 2025 in a post on Truth Social: “Promises kept: negative net migrat..."
+        },
+        {
+          "source": "Promises",
+          "target": "Immigration National Census Donald Trump",
+          "context": "Donald Trump stated on August 4, 2025 in a post on Truth Social: “Promises kept: negative net migrat..."
+        }
+      ],
+      "networkDensity": 2
+    },
+    "timestamp": "2025-08-22T04:49:03.031Z"
+  },
+  "analysis_article_1755838143089_10": {
+    "wordCount": 16,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "politics"
+    ],
+    "credibility": {
+      "score": 0.5,
+      "level": "medium",
+      "reason": "Contains credible reporting language; Very short content"
+    },
+    "summary": "President Donald Trump needs Congress to keep control of Washington, D. , police, experts say National Military.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "President Donald Trump",
           "count": 2,
-          "category": "other"
+          "category": "political_leader"
         },
         {
-          "name": "By",
+          "name": "Congress",
           "count": 2,
+          "category": "government_body"
+        },
+        {
+          "name": "Washington",
+          "count": 1,
           "category": "other"
         },
         {
-          "name": "From",
+          "name": "National Military",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "President Donald Trump",
           "count": 2,
-          "category": "other"
+          "category": "political_leader"
         },
         {
-          "name": "And",
+          "name": "Congress",
           "count": 2,
-          "category": "other"
+          "category": "government_body"
         },
         {
-          "name": "Patriotism Is Making",
+          "name": "Washington",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Comeback",
+          "name": "National Military",
           "count": 1,
           "category": "other"
+        }
+      ],
+      "entityCount": 4,
+      "relationships": [
+        {
+          "source": "President Donald Trump",
+          "target": "Congress",
+          "context": "President Donald Trump needs Congress to keep control of Washington, D.C., police, experts say Natio..."
         },
         {
-          "name": "Thanks",
-          "count": 1,
-          "category": "other"
+          "source": "President Donald Trump",
+          "target": "Washington",
+          "context": "President Donald Trump needs Congress to keep control of Washington, D.C., police, experts say Natio..."
         },
         {
-          "name": "New Generation",
-          "count": 1,
-          "category": "other"
+          "source": "President Donald Trump",
+          "target": "National Military",
+          "context": "President Donald Trump needs Congress to keep control of Washington, D.C., police, experts say Natio..."
         },
         {
-          "name": "Young Americans",
-          "count": 1,
-          "category": "other"
+          "source": "Congress",
+          "target": "Washington",
+          "context": "President Donald Trump needs Congress to keep control of Washington, D.C., police, experts say Natio..."
         },
         {
-          "name": "Getty Images",
-          "count": 1,
-          "category": "other"
+          "source": "Congress",
+          "target": "National Military",
+          "context": "President Donald Trump needs Congress to keep control of Washington, D.C., police, experts say Natio..."
         },
         {
-          "name": "Sponsored",
-          "count": 1,
-          "category": "other"
-        },
+          "source": "Washington",
+          "target": "National Military",
+          "context": "President Donald Trump needs Congress to keep control of Washington, D.C., police, experts say Natio..."
+        }
+      ],
+      "networkDensity": 1.5
+    },
+    "timestamp": "2025-08-22T04:49:03.089Z"
+  },
+  "analysis_article_1755838143094_13": {
+    "wordCount": 17,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.4,
+      "level": "low",
+      "reason": "Very short content"
+    },
+    "summary": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National Foreign Policy Ukraine Russia.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
         {
-          "name": "Aug",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "In",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Thankfully",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "More",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "What Drove",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Decline",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "According",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Wall Street Journal",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Hollywood",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Earth",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Why Patriotism Matters This",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "When Americans",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "They",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "National",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "National Assessment",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Educational Progress",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Without",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Shift Toward Hope Yet",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Data",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Tufts Center",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Information",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Research",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Civic Learning",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Engagement",
+          "name": "Fact",
           "count": 1,
           "category": "other"
         },
@@ -908,808 +289,141 @@
           "category": "political_leader"
         },
         {
-          "name": "CIRCLE",
+          "name": "Vladimir Putin",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Young",
+          "name": "Alaska",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Republicans",
+          "name": "Russia",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Democrats",
+          "name": "Ukraine",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "These",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "How",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Is Changing",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Conversation One",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Whether",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Patriotism",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Why We Need It",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Douglas Carswell",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Why",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Love America",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Dennis Prager",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Pete Hegseth",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Who Should Win",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Nobel Peace Prize",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Kids",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Unlike",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "PBS",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Critical Moment",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Call",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Action The",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "But",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Every",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Triple Match",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "August",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "That",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "With",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Donate",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Politics",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "HERE",
+          "name": "National Foreign Policy Ukraine Russia",
           "count": 1,
           "category": "other"
         }
       ],
       "topEntities": [
         {
-          "name": "America",
-          "count": 6,
+          "name": "Fact",
+          "count": 1,
           "category": "other"
         },
         {
-          "name": "The",
-          "count": 5,
+          "name": "Donald Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Vladimir Putin",
+          "count": 1,
           "category": "other"
         },
         {
-          "name": "American",
-          "count": 5,
+          "name": "Alaska",
+          "count": 1,
           "category": "other"
         },
         {
-          "name": "Americans",
-          "count": 3,
+          "name": "Russia",
+          "count": 1,
           "category": "other"
         },
         {
-          "name": "Gen",
-          "count": 3,
+          "name": "Ukraine",
+          "count": 1,
           "category": "other"
         },
         {
-          "name": "Gallup",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "By",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "From",
-          "count": 2,
+          "name": "National Foreign Policy Ukraine Russia",
+          "count": 1,
           "category": "other"
         }
       ],
-      "entityCount": 74,
+      "entityCount": 7,
       "relationships": [
         {
-          "source": "Patriotism Is Making",
-          "target": "Comeback",
-          "context": "Patriotism Is Making a Comeback—Thanks to a New Generation of Young Americans 82 iStock/Getty Images..."
+          "source": "Fact",
+          "target": "Donald Trump",
+          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
         },
         {
-          "source": "Patriotism Is Making",
-          "target": "Thanks",
-          "context": "Patriotism Is Making a Comeback—Thanks to a New Generation of Young Americans 82 iStock/Getty Images..."
+          "source": "Fact",
+          "target": "Vladimir Putin",
+          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
         },
         {
-          "source": "Patriotism Is Making",
-          "target": "New Generation",
-          "context": "Patriotism Is Making a Comeback—Thanks to a New Generation of Young Americans 82 iStock/Getty Images..."
+          "source": "Fact",
+          "target": "Alaska",
+          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
         },
         {
-          "source": "Patriotism Is Making",
-          "target": "Young Americans",
-          "context": "Patriotism Is Making a Comeback—Thanks to a New Generation of Young Americans 82 iStock/Getty Images..."
+          "source": "Fact",
+          "target": "Russia",
+          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
         },
         {
-          "source": "Patriotism Is Making",
-          "target": "Getty Images",
-          "context": "Patriotism Is Making a Comeback—Thanks to a New Generation of Young Americans 82 iStock/Getty Images..."
+          "source": "Fact",
+          "target": "Ukraine",
+          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
         },
         {
-          "source": "Patriotism Is Making",
-          "target": "Sponsored",
-          "context": "Patriotism Is Making a Comeback—Thanks to a New Generation of Young Americans 82 iStock/Getty Images..."
+          "source": "Fact",
+          "target": "National Foreign Policy Ukraine Russia",
+          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
         },
         {
-          "source": "Patriotism Is Making",
-          "target": "Aug",
-          "context": "Patriotism Is Making a Comeback—Thanks to a New Generation of Young Americans 82 iStock/Getty Images..."
+          "source": "Donald Trump",
+          "target": "Vladimir Putin",
+          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
         },
         {
-          "source": "Patriotism Is Making",
-          "target": "The",
-          "context": "Patriotism Is Making a Comeback—Thanks to a New Generation of Young Americans 82 iStock/Getty Images..."
+          "source": "Donald Trump",
+          "target": "Alaska",
+          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
         },
         {
-          "source": "Comeback",
-          "target": "Thanks",
-          "context": "Patriotism Is Making a Comeback—Thanks to a New Generation of Young Americans 82 iStock/Getty Images..."
+          "source": "Donald Trump",
+          "target": "Russia",
+          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
         },
         {
-          "source": "Comeback",
-          "target": "New Generation",
-          "context": "Patriotism Is Making a Comeback—Thanks to a New Generation of Young Americans 82 iStock/Getty Images..."
+          "source": "Donald Trump",
+          "target": "Ukraine",
+          "context": "Fact-checks from Donald Trump and Vladimir Putin's Alaska meeting on Russia-Ukraine war National For..."
         }
       ],
-      "networkDensity": 2.135135135135135
+      "networkDensity": 3
     },
-    "timestamp": "2025-08-22T04:46:53.955Z"
+    "timestamp": "2025-08-22T04:49:03.095Z"
   },
-  "analysis_article_1755838013975_17": {
-    "wordCount": 114,
+  "analysis_article_1755838143102_12": {
+    "wordCount": 21,
     "readingTime": 1,
     "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics"
-    ],
-    "credibility": {
-      "score": 0.3,
-      "level": "low",
-      "reason": "Low credibility domain; Adequate content length"
-    },
-    "summary": "Watch Live: Donald Trump Joins Police, National Guard for D.  Ride Along Breitbart News 21 Aug 2025 President Donald Trump joins law enforcement and military personnel for a ride along in Washington, DC, on Thursday, August 21.  The president will accompany police and National Guard units after he a...",
-    "biasIndicators": {
-      "political": [
-        "democrat"
-      ]
-    },
-    "logicalFallacies": [],
-    "bias": {
-      "direction": "right",
-      "confidence": 1,
-      "explanation": "Detected more right-leaning indicators in language.",
-      "indicators": {
-        "left": 0,
-        "right": 1,
-        "sensationalist": 0,
-        "neutral": 0
-      }
-    },
-    "network": {
-      "entities": [
-        {
-          "name": "National Guard",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "President Donald Trump",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "DC",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "The",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "Watch Live",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Donald Trump Joins Police",
-          "count": 1,
-          "category": "political_leader"
-        },
-        {
-          "name": "Ride Along Breitbart News",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Aug",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Washington",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Thursday",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "August",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Democrat Mayor Muriel Bowser",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Mayor Muriel Bowser",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Trump",
-          "count": 1,
-          "category": "political_leader"
-        },
-        {
-          "name": "Crime Law",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Order Politics Donald Trump Washington",
-          "count": 1,
-          "category": "political_leader"
-        }
-      ],
-      "topEntities": [
-        {
-          "name": "National Guard",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "President Donald Trump",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "DC",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "The",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "Watch Live",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Donald Trump Joins Police",
-          "count": 1,
-          "category": "political_leader"
-        },
-        {
-          "name": "Ride Along Breitbart News",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Aug",
-          "count": 1,
-          "category": "other"
-        }
-      ],
-      "entityCount": 16,
-      "relationships": [
-        {
-          "source": "Watch Live",
-          "target": "Donald Trump Joins Police",
-          "context": "Watch Live: Donald Trump Joins Police, National Guard for D.C..."
-        },
-        {
-          "source": "Watch Live",
-          "target": "National Guard",
-          "context": "Watch Live: Donald Trump Joins Police, National Guard for D.C..."
-        },
-        {
-          "source": "Donald Trump Joins Police",
-          "target": "National Guard",
-          "context": "Watch Live: Donald Trump Joins Police, National Guard for D.C..."
-        },
-        {
-          "source": "Ride Along Breitbart News",
-          "target": "Aug",
-          "context": "Ride Along Breitbart News 21 Aug 2025 President Donald Trump joins law enforcement and military pers..."
-        },
-        {
-          "source": "Ride Along Breitbart News",
-          "target": "President Donald Trump",
-          "context": "Ride Along Breitbart News 21 Aug 2025 President Donald Trump joins law enforcement and military pers..."
-        },
-        {
-          "source": "Ride Along Breitbart News",
-          "target": "Washington",
-          "context": "Ride Along Breitbart News 21 Aug 2025 President Donald Trump joins law enforcement and military pers..."
-        },
-        {
-          "source": "Ride Along Breitbart News",
-          "target": "Thursday",
-          "context": "Ride Along Breitbart News 21 Aug 2025 President Donald Trump joins law enforcement and military pers..."
-        },
-        {
-          "source": "Ride Along Breitbart News",
-          "target": "August",
-          "context": "Ride Along Breitbart News 21 Aug 2025 President Donald Trump joins law enforcement and military pers..."
-        },
-        {
-          "source": "Ride Along Breitbart News",
-          "target": "DC",
-          "context": "Ride Along Breitbart News 21 Aug 2025 President Donald Trump joins law enforcement and military pers..."
-        },
-        {
-          "source": "Aug",
-          "target": "President Donald Trump",
-          "context": "Ride Along Breitbart News 21 Aug 2025 President Donald Trump joins law enforcement and military pers..."
-        }
-      ],
-      "networkDensity": 2.125
-    },
-    "timestamp": "2025-08-22T04:46:53.976Z"
-  },
-  "analysis_article_1755838013988_18": {
-    "wordCount": 456,
-    "readingTime": 3,
-    "hasExternalLinks": false,
-    "complexity": "medium",
+    "complexity": "easy",
     "keyTopics": [
       "politics",
-      "technology",
       "economy",
       "international"
     ],
     "credibility": {
-      "score": 0.1,
+      "score": 0.4,
       "level": "low",
-      "reason": "Low credibility domain; 3 sensationalist words detected; Contains credible reporting language; Substantial content length"
+      "reason": "Very short content"
     },
-    "summary": "Trump Treats Police, National Guard to Dinner While Thanking Them for D.  Crime Cleanup MANDEL NGAN/AFP via Getty Images Nick Gilbertson 21 Aug 2025 President Donald Trump brought pizza and hamburgers for members of law enforcement and the National Guard on Thursday and thanked them for their effort...",
-    "biasIndicators": {
-      "emotional": [
-        "amazing"
-      ],
-      "sensationalist": [
-        "secret"
-      ]
-    },
-    "logicalFallacies": [],
-    "bias": {
-      "direction": "right",
-      "confidence": 1,
-      "explanation": "Detected more right-leaning indicators in language.",
-      "indicators": {
-        "left": 0,
-        "right": 1,
-        "sensationalist": 2,
-        "neutral": 1
-      }
-    },
-    "network": {
-      "entities": [
-        {
-          "name": "We",
-          "count": 9,
-          "category": "other"
-        },
-        {
-          "name": "Trump",
-          "count": 8,
-          "category": "political_leader"
-        },
-        {
-          "name": "White House",
-          "count": 6,
-          "category": "government_body"
-        },
-        {
-          "name": "Congress",
-          "count": 4,
-          "category": "government_body"
-        },
-        {
-          "name": "It",
-          "count": 3,
-          "category": "other"
-        },
-        {
-          "name": "National Guard",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "President Donald Trump",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "DC",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "Trump Treats Police",
-          "count": 1,
-          "category": "political_leader"
-        },
-        {
-          "name": "Dinner While Thanking Them",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Crime Cleanup",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Getty Images Nick Gilbertson",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Aug",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Thursday",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Washington",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "MANDEL",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "NGAN",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "AFP",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Attorney General Pam Bondi",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Interior Secretary Doug Burgum",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Marshals Service",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Metropolitan Police Department",
-          "count": 1,
-          "category": "law_enforcement"
-        },
-        {
-          "name": "United States Park Police Headquarters",
-          "count": 1,
-          "category": "law_enforcement"
-        },
-        {
-          "name": "Anacostia",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "And",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "As Vice President",
-          "count": 1,
-          "category": "political_leader"
-        },
-        {
-          "name": "Vance",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Wednesday",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "JD",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Burgum",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Bondi",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Crime Law",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Order Politics Donald Trump Doug Burgum",
-          "count": 1,
-          "category": "political_leader"
-        },
-        {
-          "name": "National Guard Pam Bondi Police Washington",
-          "count": 1,
-          "category": "law_enforcement"
-        }
-      ],
-      "topEntities": [
-        {
-          "name": "We",
-          "count": 9,
-          "category": "other"
-        },
-        {
-          "name": "Trump",
-          "count": 8,
-          "category": "political_leader"
-        },
-        {
-          "name": "White House",
-          "count": 6,
-          "category": "government_body"
-        },
-        {
-          "name": "Congress",
-          "count": 4,
-          "category": "government_body"
-        },
-        {
-          "name": "It",
-          "count": 3,
-          "category": "other"
-        },
-        {
-          "name": "National Guard",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "President Donald Trump",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "DC",
-          "count": 2,
-          "category": "other"
-        }
-      ],
-      "entityCount": 34,
-      "relationships": [
-        {
-          "source": "Trump Treats Police",
-          "target": "National Guard",
-          "context": "Trump Treats Police, National Guard to Dinner While Thanking Them for D.C..."
-        },
-        {
-          "source": "Trump Treats Police",
-          "target": "Dinner While Thanking Them",
-          "context": "Trump Treats Police, National Guard to Dinner While Thanking Them for D.C..."
-        },
-        {
-          "source": "National Guard",
-          "target": "Dinner While Thanking Them",
-          "context": "Trump Treats Police, National Guard to Dinner While Thanking Them for D.C..."
-        },
-        {
-          "source": "Crime Cleanup",
-          "target": "Getty Images Nick Gilbertson",
-          "context": "Crime Cleanup MANDEL NGAN/AFP via Getty Images Nick Gilbertson 21 Aug 2025 President Donald Trump br..."
-        },
-        {
-          "source": "Crime Cleanup",
-          "target": "Aug",
-          "context": "Crime Cleanup MANDEL NGAN/AFP via Getty Images Nick Gilbertson 21 Aug 2025 President Donald Trump br..."
-        },
-        {
-          "source": "Crime Cleanup",
-          "target": "President Donald Trump",
-          "context": "Crime Cleanup MANDEL NGAN/AFP via Getty Images Nick Gilbertson 21 Aug 2025 President Donald Trump br..."
-        },
-        {
-          "source": "Crime Cleanup",
-          "target": "National Guard",
-          "context": "Crime Cleanup MANDEL NGAN/AFP via Getty Images Nick Gilbertson 21 Aug 2025 President Donald Trump br..."
-        },
-        {
-          "source": "Crime Cleanup",
-          "target": "Thursday",
-          "context": "Crime Cleanup MANDEL NGAN/AFP via Getty Images Nick Gilbertson 21 Aug 2025 President Donald Trump br..."
-        },
-        {
-          "source": "Crime Cleanup",
-          "target": "Washington",
-          "context": "Crime Cleanup MANDEL NGAN/AFP via Getty Images Nick Gilbertson 21 Aug 2025 President Donald Trump br..."
-        },
-        {
-          "source": "Crime Cleanup",
-          "target": "MANDEL",
-          "context": "Crime Cleanup MANDEL NGAN/AFP via Getty Images Nick Gilbertson 21 Aug 2025 President Donald Trump br..."
-        }
-      ],
-      "networkDensity": 2.676470588235294
-    },
-    "timestamp": "2025-08-22T04:46:53.989Z"
-  },
-  "analysis_article_1755838014007_19": {
-    "wordCount": 361,
-    "readingTime": 2,
-    "hasExternalLinks": false,
-    "complexity": "medium",
-    "keyTopics": [
-      "politics",
-      "technology",
-      "economy"
-    ],
-    "credibility": {
-      "score": 0.2,
-      "level": "low",
-      "reason": "Low credibility domain; 1 sensationalist words detected; Substantial content length"
-    },
-    "summary": "Trump: &#8216;I Will Save California. &#8217; AP Photo/Evan Vucci, File Joel B.  Pollak 21 Aug 2025 President Donald Trump pledged Thursday to rescue California from its incompetent one-party government, led by podcaster and aspiring 2028 Democrat Party presidential primary candidate Gov.",
+    "summary": "Republicans say latest US consumer price report is a boon.  Democrats say it’s a bust.  National Economy Trade.",
     "biasIndicators": {
       "political": [
         "democrat",
@@ -1731,172 +445,12 @@
     "network": {
       "entities": [
         {
-          "name": "California",
-          "count": 6,
-          "category": "other"
-        },
-        {
-          "name": "Trump",
-          "count": 5,
-          "category": "political_leader"
-        },
-        {
-          "name": "Newsom",
-          "count": 5,
-          "category": "other"
-        },
-        {
-          "name": "He",
-          "count": 3,
-          "category": "other"
-        },
-        {
-          "name": "Pollak",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "President Donald Trump",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "February",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "June",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "President Trump",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "Republican",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "Will Save California",
+          "name": "Republicans",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Photo",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Evan Vucci",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "File Joel",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "AP",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Aug",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Thursday",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Democrat Party",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Gov",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Gavin Newsom",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Gavin Newscum",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Great State",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "President",
-          "count": 1,
-          "category": "political_leader"
-        },
-        {
-          "name": "DJT",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "It",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Public Policy Institute",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Los Angeles",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "PPIC",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "The Hill",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Another",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "Vice President Kamala Harris",
-          "count": 1,
-          "category": "political_leader"
-        },
-        {
-          "name": "Texas",
-          "count": 1,
-          "category": "other"
-        },
-        {
-          "name": "President Kamala Harris",
-          "count": 1,
-          "category": "political_leader"
-        },
-        {
-          "name": "But Californians",
+          "name": "US",
           "count": 1,
           "category": "other"
         },
@@ -1906,198 +460,1089 @@
           "category": "other"
         },
         {
-          "name": "Trump National Golf Club",
+          "name": "Which",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "National Economy Trade",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Republicans",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "US",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Democrats",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Which",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "National Economy Trade",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 5,
+      "relationships": [
+        {
+          "source": "Republicans",
+          "target": "US",
+          "context": "Republicans say latest US consumer price report is a boon..."
+        }
+      ],
+      "networkDensity": 0.2
+    },
+    "timestamp": "2025-08-22T04:49:03.102Z"
+  },
+  "analysis_article_1755838143115_14": {
+    "wordCount": 16,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "economy"
+    ],
+    "credibility": {
+      "score": 0.4,
+      "level": "low",
+      "reason": "Very short content"
+    },
+    "summary": "What are H-1B visas and how does the Trump administration propose changing them.  National Economy Immigration.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "What",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Trump",
           "count": 1,
           "category": "political_leader"
         },
         {
-          "name": "Rancho Palos Verdes",
+          "name": "National Economy Immigration",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "What",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Joel",
+          "name": "Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "National Economy Immigration",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 3,
+      "relationships": [
+        {
+          "source": "What",
+          "target": "Trump",
+          "context": "What are H-1B visas and how does the Trump administration propose changing them..."
+        }
+      ],
+      "networkDensity": 0.3333333333333333
+    },
+    "timestamp": "2025-08-22T04:49:03.115Z"
+  },
+  "analysis_article_1755838143145_15": {
+    "wordCount": 23,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.4,
+      "level": "low",
+      "reason": "Very short content"
+    },
+    "summary": "Trump and Putin’s history of misleading on Ukraine, US elections: 7 examples before Alaska summit National Corrections and Updates Foreign Policy Ukraine Russia.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Putin",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Senior Editor",
+          "name": "Ukraine",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Large",
+          "name": "Alaska",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Breitbart News",
+          "name": "National Corrections",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Breitbart News Sunday",
+          "name": "Updates Foreign Policy Ukraine Russia",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Sirius",
+          "name": "US",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Putin",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Patriot",
+          "name": "Ukraine",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Sunday",
+          "name": "Alaska",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "XM",
+          "name": "National Corrections",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "ET",
+          "name": "Updates Foreign Policy Ukraine Russia",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "PT",
+          "name": "US",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 7,
+      "relationships": [
+        {
+          "source": "Trump",
+          "target": "Putin",
+          "context": "Trump and Putin’s history of misleading on Ukraine, US elections: 7 examples before Alaska summit Na..."
+        },
+        {
+          "source": "Trump",
+          "target": "Ukraine",
+          "context": "Trump and Putin’s history of misleading on Ukraine, US elections: 7 examples before Alaska summit Na..."
+        },
+        {
+          "source": "Trump",
+          "target": "Alaska",
+          "context": "Trump and Putin’s history of misleading on Ukraine, US elections: 7 examples before Alaska summit Na..."
+        },
+        {
+          "source": "Trump",
+          "target": "National Corrections",
+          "context": "Trump and Putin’s history of misleading on Ukraine, US elections: 7 examples before Alaska summit Na..."
+        },
+        {
+          "source": "Trump",
+          "target": "Updates Foreign Policy Ukraine Russia",
+          "context": "Trump and Putin’s history of misleading on Ukraine, US elections: 7 examples before Alaska summit Na..."
+        },
+        {
+          "source": "Trump",
+          "target": "US",
+          "context": "Trump and Putin’s history of misleading on Ukraine, US elections: 7 examples before Alaska summit Na..."
+        },
+        {
+          "source": "Putin",
+          "target": "Ukraine",
+          "context": "Trump and Putin’s history of misleading on Ukraine, US elections: 7 examples before Alaska summit Na..."
+        },
+        {
+          "source": "Putin",
+          "target": "Alaska",
+          "context": "Trump and Putin’s history of misleading on Ukraine, US elections: 7 examples before Alaska summit Na..."
+        },
+        {
+          "source": "Putin",
+          "target": "National Corrections",
+          "context": "Trump and Putin’s history of misleading on Ukraine, US elections: 7 examples before Alaska summit Na..."
+        },
+        {
+          "source": "Putin",
+          "target": "Updates Foreign Policy Ukraine Russia",
+          "context": "Trump and Putin’s history of misleading on Ukraine, US elections: 7 examples before Alaska summit Na..."
+        }
+      ],
+      "networkDensity": 3
+    },
+    "timestamp": "2025-08-22T04:49:03.145Z"
+  },
+  "analysis_article_1755838143188_18": {
+    "wordCount": 18,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "easy",
+    "keyTopics": [
+      "health"
+    ],
+    "credibility": {
+      "score": 0.4,
+      "level": "low",
+      "reason": "Very short content"
+    },
+    "summary": "It’s almost flu season.  Should you still get a shot, and will insurance cover it.  Public Health Science.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "It",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "The Zionist Conspiracy Wants You",
+          "name": "Should",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Amazon",
+          "name": "Public Health Science",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "It",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Robert Novak Journalism Alumni Fellowship",
+          "name": "Should",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Follow",
+          "name": "Public Health Science",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 3,
+      "relationships": [],
+      "networkDensity": 0
+    },
+    "timestamp": "2025-08-22T04:49:03.188Z"
+  },
+  "analysis_article_1755838143197_3": {
+    "wordCount": 18,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "health",
+      "economy"
+    ],
+    "credibility": {
+      "score": 0.4,
+      "level": "low",
+      "reason": "Very short content"
+    },
+    "summary": "Do pediatricians recommend vaccines to make a profit.  There’s not much money there.  Health Care Public Health Science.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Do",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Twitter",
+          "name": "There",
           "count": 1,
           "category": "other"
         },
         {
-          "name": "Politics California Donald Trump Gavin Newsom",
+          "name": "Health Care Public Health Science",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Do",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "There",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Health Care Public Health Science",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 3,
+      "relationships": [],
+      "networkDensity": 0
+    },
+    "timestamp": "2025-08-22T04:49:03.198Z"
+  },
+  "analysis_article_1755838143199_16": {
+    "wordCount": 32,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "easy",
+    "keyTopics": [
+      "international"
+    ],
+    "credibility": {
+      "score": 0.4,
+      "level": "low",
+      "reason": "Very short content"
+    },
+    "summary": "Donald Trump stated on August 11, 2025 in a speech: Washington, D. , has 41 homicides per 100,000 people, “No.  1 that we can find anywhere in the world.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Donald Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "August",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Washington",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "No",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "National Crime Donald Trump",
           "count": 1,
           "category": "political_leader"
         }
       ],
       "topEntities": [
         {
-          "name": "California",
-          "count": 6,
+          "name": "Donald Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "August",
+          "count": 1,
           "category": "other"
         },
+        {
+          "name": "Washington",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "No",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "National Crime Donald Trump",
+          "count": 1,
+          "category": "political_leader"
+        }
+      ],
+      "entityCount": 5,
+      "relationships": [
+        {
+          "source": "Donald Trump",
+          "target": "August",
+          "context": "Donald Trump stated on August 11, 2025 in a speech: Washington, D.C., has 41 homicides per 100,000 p..."
+        },
+        {
+          "source": "Donald Trump",
+          "target": "Washington",
+          "context": "Donald Trump stated on August 11, 2025 in a speech: Washington, D.C., has 41 homicides per 100,000 p..."
+        },
+        {
+          "source": "Donald Trump",
+          "target": "No",
+          "context": "Donald Trump stated on August 11, 2025 in a speech: Washington, D.C., has 41 homicides per 100,000 p..."
+        },
+        {
+          "source": "August",
+          "target": "Washington",
+          "context": "Donald Trump stated on August 11, 2025 in a speech: Washington, D.C., has 41 homicides per 100,000 p..."
+        },
+        {
+          "source": "August",
+          "target": "No",
+          "context": "Donald Trump stated on August 11, 2025 in a speech: Washington, D.C., has 41 homicides per 100,000 p..."
+        },
+        {
+          "source": "Washington",
+          "target": "No",
+          "context": "Donald Trump stated on August 11, 2025 in a speech: Washington, D.C., has 41 homicides per 100,000 p..."
+        }
+      ],
+      "networkDensity": 1.2
+    },
+    "timestamp": "2025-08-22T04:49:03.199Z"
+  },
+  "analysis_article_1755838143236_17": {
+    "wordCount": 17,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "general"
+    ],
+    "credibility": {
+      "score": 0.4,
+      "level": "low",
+      "reason": "Very short content"
+    },
+    "summary": "Trump exaggerates Washington, DC, crime while ordering police takeover and National Guard deployment National Crime Legal Issues.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
         {
           "name": "Trump",
-          "count": 5,
+          "count": 1,
           "category": "political_leader"
         },
         {
-          "name": "Newsom",
-          "count": 5,
+          "name": "Washington",
+          "count": 1,
           "category": "other"
         },
         {
-          "name": "He",
-          "count": 3,
+          "name": "National Guard",
+          "count": 1,
           "category": "other"
         },
         {
-          "name": "Pollak",
-          "count": 2,
+          "name": "National Crime Legal Issues",
+          "count": 1,
           "category": "other"
         },
         {
-          "name": "President Donald Trump",
-          "count": 2,
-          "category": "political_leader"
-        },
-        {
-          "name": "February",
-          "count": 2,
-          "category": "other"
-        },
-        {
-          "name": "June",
-          "count": 2,
+          "name": "DC",
+          "count": 1,
           "category": "other"
         }
       ],
-      "entityCount": 54,
+      "topEntities": [
+        {
+          "name": "Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Washington",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "National Guard",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "National Crime Legal Issues",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "DC",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 5,
       "relationships": [
         {
           "source": "Trump",
-          "target": "Will Save California",
-          "context": "Trump: &#8216;I Will Save California!&#8217; AP Photo/Evan Vucci, File Joel B..."
+          "target": "Washington",
+          "context": "Trump exaggerates Washington, DC, crime while ordering police takeover and National Guard deployment..."
         },
         {
           "source": "Trump",
-          "target": "Photo",
-          "context": "Trump: &#8216;I Will Save California!&#8217; AP Photo/Evan Vucci, File Joel B..."
+          "target": "National Guard",
+          "context": "Trump exaggerates Washington, DC, crime while ordering police takeover and National Guard deployment..."
         },
         {
           "source": "Trump",
-          "target": "Evan Vucci",
-          "context": "Trump: &#8216;I Will Save California!&#8217; AP Photo/Evan Vucci, File Joel B..."
+          "target": "National Crime Legal Issues",
+          "context": "Trump exaggerates Washington, DC, crime while ordering police takeover and National Guard deployment..."
         },
         {
           "source": "Trump",
-          "target": "File Joel",
-          "context": "Trump: &#8216;I Will Save California!&#8217; AP Photo/Evan Vucci, File Joel B..."
+          "target": "DC",
+          "context": "Trump exaggerates Washington, DC, crime while ordering police takeover and National Guard deployment..."
         },
         {
-          "source": "Trump",
-          "target": "AP",
-          "context": "Trump: &#8216;I Will Save California!&#8217; AP Photo/Evan Vucci, File Joel B..."
+          "source": "Washington",
+          "target": "National Guard",
+          "context": "Trump exaggerates Washington, DC, crime while ordering police takeover and National Guard deployment..."
         },
         {
-          "source": "Will Save California",
-          "target": "Photo",
-          "context": "Trump: &#8216;I Will Save California!&#8217; AP Photo/Evan Vucci, File Joel B..."
+          "source": "Washington",
+          "target": "National Crime Legal Issues",
+          "context": "Trump exaggerates Washington, DC, crime while ordering police takeover and National Guard deployment..."
         },
         {
-          "source": "Will Save California",
-          "target": "Evan Vucci",
-          "context": "Trump: &#8216;I Will Save California!&#8217; AP Photo/Evan Vucci, File Joel B..."
+          "source": "Washington",
+          "target": "DC",
+          "context": "Trump exaggerates Washington, DC, crime while ordering police takeover and National Guard deployment..."
         },
         {
-          "source": "Will Save California",
-          "target": "File Joel",
-          "context": "Trump: &#8216;I Will Save California!&#8217; AP Photo/Evan Vucci, File Joel B..."
+          "source": "National Guard",
+          "target": "National Crime Legal Issues",
+          "context": "Trump exaggerates Washington, DC, crime while ordering police takeover and National Guard deployment..."
         },
         {
-          "source": "Will Save California",
-          "target": "AP",
-          "context": "Trump: &#8216;I Will Save California!&#8217; AP Photo/Evan Vucci, File Joel B..."
+          "source": "National Guard",
+          "target": "DC",
+          "context": "Trump exaggerates Washington, DC, crime while ordering police takeover and National Guard deployment..."
         },
         {
-          "source": "Photo",
-          "target": "Evan Vucci",
-          "context": "Trump: &#8216;I Will Save California!&#8217; AP Photo/Evan Vucci, File Joel B..."
+          "source": "National Crime Legal Issues",
+          "target": "DC",
+          "context": "Trump exaggerates Washington, DC, crime while ordering police takeover and National Guard deployment..."
         }
       ],
-      "networkDensity": 2.888888888888889
+      "networkDensity": 2
     },
-    "timestamp": "2025-08-22T04:46:54.008Z"
+    "timestamp": "2025-08-22T04:49:03.237Z"
+  },
+  "analysis_article_1755838143269_7": {
+    "wordCount": 12,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.4,
+      "level": "low",
+      "reason": "Very short content"
+    },
+    "summary": "Why does Russia want the Donbas region.  Foreign Policy Military Ukraine Russia.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Why",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Russia",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Donbas",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Foreign Policy Military Ukraine Russia",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Why",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Russia",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Donbas",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Foreign Policy Military Ukraine Russia",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 4,
+      "relationships": [
+        {
+          "source": "Why",
+          "target": "Russia",
+          "context": "Why does Russia want the Donbas region..."
+        },
+        {
+          "source": "Why",
+          "target": "Donbas",
+          "context": "Why does Russia want the Donbas region..."
+        },
+        {
+          "source": "Russia",
+          "target": "Donbas",
+          "context": "Why does Russia want the Donbas region..."
+        }
+      ],
+      "networkDensity": 0.75
+    },
+    "timestamp": "2025-08-22T04:49:03.269Z"
+  },
+  "analysis_article_1755838143289_6": {
+    "wordCount": 29,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "easy",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.4,
+      "level": "low",
+      "reason": "Very short content"
+    },
+    "summary": "Donald Trump stated on August 18, 2025 in a Truth Social post: “We are now the only country in the world that uses mail-in voting. ” National Elections Donald Trump.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Donald Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "August",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Truth Social",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "We",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "National Elections Donald Trump",
+          "count": 1,
+          "category": "political_leader"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Donald Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "August",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Truth Social",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "We",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "National Elections Donald Trump",
+          "count": 1,
+          "category": "political_leader"
+        }
+      ],
+      "entityCount": 5,
+      "relationships": [
+        {
+          "source": "Donald Trump",
+          "target": "August",
+          "context": "Donald Trump stated on August 18, 2025 in a Truth Social post: “We are now the only country in the w..."
+        },
+        {
+          "source": "Donald Trump",
+          "target": "Truth Social",
+          "context": "Donald Trump stated on August 18, 2025 in a Truth Social post: “We are now the only country in the w..."
+        },
+        {
+          "source": "Donald Trump",
+          "target": "We",
+          "context": "Donald Trump stated on August 18, 2025 in a Truth Social post: “We are now the only country in the w..."
+        },
+        {
+          "source": "Donald Trump",
+          "target": "National Elections Donald Trump",
+          "context": "Donald Trump stated on August 18, 2025 in a Truth Social post: “We are now the only country in the w..."
+        },
+        {
+          "source": "August",
+          "target": "Truth Social",
+          "context": "Donald Trump stated on August 18, 2025 in a Truth Social post: “We are now the only country in the w..."
+        },
+        {
+          "source": "August",
+          "target": "We",
+          "context": "Donald Trump stated on August 18, 2025 in a Truth Social post: “We are now the only country in the w..."
+        },
+        {
+          "source": "August",
+          "target": "National Elections Donald Trump",
+          "context": "Donald Trump stated on August 18, 2025 in a Truth Social post: “We are now the only country in the w..."
+        },
+        {
+          "source": "Truth Social",
+          "target": "We",
+          "context": "Donald Trump stated on August 18, 2025 in a Truth Social post: “We are now the only country in the w..."
+        },
+        {
+          "source": "Truth Social",
+          "target": "National Elections Donald Trump",
+          "context": "Donald Trump stated on August 18, 2025 in a Truth Social post: “We are now the only country in the w..."
+        },
+        {
+          "source": "We",
+          "target": "National Elections Donald Trump",
+          "context": "Donald Trump stated on August 18, 2025 in a Truth Social post: “We are now the only country in the w..."
+        }
+      ],
+      "networkDensity": 2
+    },
+    "timestamp": "2025-08-22T04:49:03.289Z"
+  },
+  "analysis_article_1755838143336_11": {
+    "wordCount": 29,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "education"
+    ],
+    "credibility": {
+      "score": 0.4,
+      "level": "low",
+      "reason": "Very short content"
+    },
+    "summary": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families into a 400‑year property tax increase. ” Education States Taxes Wisconsin Americans for Prosperity.",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Prosperity",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Americans",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "July",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Evers",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Era",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Wisconsin",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Education States Taxes Wisconsin Americans",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Prosperity",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Americans",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "July",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Evers",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Era",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Wisconsin",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Education States Taxes Wisconsin Americans",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 8,
+      "relationships": [
+        {
+          "source": "Americans",
+          "target": "Prosperity",
+          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
+        },
+        {
+          "source": "Americans",
+          "target": "July",
+          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
+        },
+        {
+          "source": "Americans",
+          "target": "The",
+          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
+        },
+        {
+          "source": "Americans",
+          "target": "Evers",
+          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
+        },
+        {
+          "source": "Americans",
+          "target": "Era",
+          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
+        },
+        {
+          "source": "Americans",
+          "target": "Wisconsin",
+          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
+        },
+        {
+          "source": "Americans",
+          "target": "Education States Taxes Wisconsin Americans",
+          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
+        },
+        {
+          "source": "Prosperity",
+          "target": "July",
+          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
+        },
+        {
+          "source": "Prosperity",
+          "target": "The",
+          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
+        },
+        {
+          "source": "Prosperity",
+          "target": "Evers",
+          "context": "Americans for Prosperity stated on July 28, 2025 in X: “The (Evers) Era locked Wisconsin families in..."
+        }
+      ],
+      "networkDensity": 3.5
+    },
+    "timestamp": "2025-08-22T04:49:03.336Z"
   }
 }
