@@ -16,6 +16,16 @@ const createSimpleDb = () => {
   const db = {};
   db.sequelize = null;
   db.Sequelize = Sequelize;
+  
+  // Create placeholder models that don't require database connection
+  db.User = { define: () => ({}) };
+  db.Source = { define: () => ({}) };
+  db.Article = { define: () => ({}) };
+  db.UserSource = { define: () => ({}) };
+  db.UserArticle = { define: () => ({}) };
+  db.Analysis = { define: () => ({}) };
+  db.UserPrefs = { define: () => ({}) };
+  
   return db;
 };
 
@@ -177,4 +187,14 @@ const initializeDatabase = async () => {
 
 // Initialize and export the database
 const db = await initializeDatabase();
+
+// Export individual models for controllers
+export const User = db.User;
+export const Source = db.Source;
+export const Article = db.Article;
+export const UserSource = db.UserSource;
+export const UserArticle = db.UserArticle;
+export const Analysis = db.Analysis;
+export const UserPrefs = db.UserPrefs;
+
 export default db; 
