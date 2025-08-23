@@ -35,6 +35,7 @@ import factCheckRoutes from './routes/factCheckRoutes.js';
 import sourceCredibilityRoutes from './routes/sourceCredibilityRoutes.js';
 import networkAnalysisRoutes from './routes/networkAnalysisRoutes.js';
 import stockpileRoutes from './routes/stockpile.js';
+import stockpileSimpleRoutes from './routes/stockpile-simple.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -1283,6 +1284,7 @@ app.use('/api/fact-check', publicLimiter, factCheckRoutes);
 app.use('/api/sources', publicLimiter, sourceCredibilityRoutes);
 app.use('/api/network', publicLimiter, networkAnalysisRoutes);
 app.use('/api/stockpile', publicLimiter, stockpileRoutes);
+app.use('/api/stockpile-simple', publicLimiter, stockpileSimpleRoutes);
 app.use('/api/monitor', adminLimiter, monitorRoutes);
 
 // Apply error monitoring middleware
