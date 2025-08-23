@@ -879,28 +879,92 @@ app.get('/api/balanced-feed', async (req, res) => {
     const allArticles = [];
     
     // Fetch from each source (with concurrency limit to avoid overwhelming servers)
-    const concurrencyLimit = 5;
+    const concurrencyLimit = 3; // Reduced concurrency for better reliability
     for (let i = 0; i < sourcesToFetch.length; i += concurrencyLimit) {
       const batch = sourcesToFetch.slice(i, i + concurrencyLimit);
       
       const batchPromises = batch.map(async (source) => {
         try {
-          const response = await axios.get(`/api/rss?url=${encodeURIComponent(source.url)}`, {
-            baseURL: `http://localhost:${PORT}`,
-            timeout: 15000
+          console.log(`Fetching from ${source.name}: ${source.url}`);
+          
+          // Fetch RSS feed directly
+          const response = await axios.get(source.url, {
+            timeout: 15000,
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+              'Accept': 'application/rss+xml, application/xml, text/xml, */*'
+            }
           });
           
-          if (response.data && response.data.items) {
-            return response.data.items.map(article => ({
-              ...article,
+          // Parse RSS feed
+          const feed = await parseStringPromise(response.data);
+          const items = feed.rss?.channel?.[0]?.item || feed.feed?.entry || [];
+          
+          console.log(`Found ${items.length} items from ${source.name}`);
+          
+          // Process articles from this source
+          const processedArticles = items.slice(0, 10).map((item, index) => {
+            const rawTitle = item.title?.[0] || item['media:title']?.[0] || '';
+            const title = decodeHtmlEntities(rawTitle);
+            const link = item.link?.[0] || item.link?.[0]?.$?.href || '';
+            const rawDesc = item.description?.[0] || item.summary?.[0] || item['media:description']?.[0] || '';
+            const description = decodeHtmlEntities(rawDesc).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+            const pubDate = item.pubDate?.[0] || item.published?.[0] || new Date().toISOString();
+            const author = item.author?.[0] || item['dc:creator']?.[0] || source.name;
+            
+            // Extract full content if available
+            let fullContent = item['content:encoded']?.[0] || description;
+            
+            // Create article ID
+            const articleId = `real_${source.id}_${Date.now()}_${index}`;
+            
+            // Basic analysis
+            const analysis = {
+              wordCount: fullContent ? fullContent.split(' ').length : 0,
+              readingTime: fullContent ? Math.ceil(fullContent.split(' ').length / 200) : 0,
+              hasExternalLinks: fullContent ? (fullContent.includes('http') || fullContent.includes('www')) : false,
+              complexity: analyzeContentComplexity(fullContent),
+              keyTopics: extractKeyTopics(title, fullContent),
+              credibility: assessBasicCredibility(link, title, fullContent),
+              summary: generateBasicSummary(fullContent),
+              biasIndicators: detectBiasIndicators(title, fullContent),
+              logicalFallacies: detectLogicalFallacies(fullContent),
+              bias: assessBiasDirection(title, fullContent),
+              network: buildNetworkSummary(fullContent),
+              timestamp: new Date().toISOString()
+            };
+            
+            return {
+              title,
+              link,
+              description,
+              pubDate,
+              author,
+              content: fullContent.substring(0, 500) + (fullContent.length > 500 ? '...' : ''),
               source: source.name,
               sourceCategory: source.category,
               biasRating: source.biasRating,
               reliability: source.reliability,
-              sourceDescription: source.description
-            }));
-          }
-          return [];
+              sourceDescription: source.description,
+              articleId,
+              analysis: {
+                wordCount: analysis.wordCount,
+                readingTime: analysis.readingTime,
+                hasExternalLinks: analysis.hasExternalLinks,
+                complexity: analysis.complexity,
+                keyTopics: analysis.keyTopics,
+                credibility: analysis.credibility,
+                summary: analysis.summary,
+                biasIndicators: analysis.biasIndicators,
+                logicalFallacies: analysis.logicalFallacies,
+                biasAnalysis: analysis.bias,
+                networkAnalysis: analysis.network,
+                timestamp: analysis.timestamp
+              }
+            };
+          });
+          
+          return processedArticles;
         } catch (error) {
           console.log(`Failed to fetch from ${source.name}:`, error.message);
           // Generate fallback content for failed sources
@@ -957,7 +1021,7 @@ app.get('/api/balanced-feed', async (req, res) => {
     }
     
     // Separate real articles from sample articles
-    const realArticles = allArticles.filter(article => !article.articleId.startsWith('fallback_'));
+    const realArticles = allArticles.filter(article => article.articleId.startsWith('real_'));
     const sampleArticles = allArticles.filter(article => article.articleId.startsWith('fallback_'));
     
     console.log(`Total articles: ${allArticles.length}, Real: ${realArticles.length}, Sample: ${sampleArticles.length}`);
@@ -987,6 +1051,8 @@ app.get('/api/balanced-feed', async (req, res) => {
       articles: sortedArticles,
       totalSources: sourcesToFetch.length,
       totalArticles: sortedArticles.length,
+      realArticles: sortedRealArticles.length,
+      sampleArticles: sortedSampleArticles.length,
       categories: categories,
       timestamp: new Date().toISOString()
     });
