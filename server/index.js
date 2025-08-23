@@ -652,16 +652,38 @@ function buildNetworkSummary(text) {
 
 // Middleware
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://authentic-reader.netlify.app', 'https://authentic-reader-3069d55d-ae95-404d-9983-3dd4f5b3795f.netlify.app', 'http://localhost:5173', 'http://localhost:5174']
-    : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'https://authentic-reader.netlify.app',
+      'https://authentic-reader-3069d55d-ae95-404d-9983-3dd4f5b3795f.netlify.app',
+      'http://localhost:5173',
+      'http://localhost:5174',
+      'http://localhost:5175',
+      'http://localhost:3000'
+    ];
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('CORS blocked origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  preflightContinue: false
 };
 
 app.use(cors(corsOptions));
+
+// Add explicit OPTIONS handling for preflight requests
+app.options('*', cors(corsOptions));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
