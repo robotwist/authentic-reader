@@ -21,6 +21,8 @@ import monitorRoutes from './routes/monitorRoutes.js';
 
 // Import services
 import onnxService from './services/onnxService.js';
+import articleStockpileService from './services/articleStockpileService.js';
+import analyticsService from './services/analyticsService.js';
 
 // Import routes
 import userRoutes from './routes/user.js';
@@ -32,12 +34,18 @@ import analysisRoutes from './routes/analysis.js';
 import factCheckRoutes from './routes/factCheckRoutes.js';
 import sourceCredibilityRoutes from './routes/sourceCredibilityRoutes.js';
 import networkAnalysisRoutes from './routes/networkAnalysisRoutes.js';
+import stockpileRoutes from './routes/stockpile.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Initialize monitoring service
 monitorService.init();
+
+// Initialize article stockpile service
+articleStockpileService.initialize().catch(error => {
+  console.error('Failed to initialize article stockpile service:', error);
+});
 
 // Enhanced balanced sources with comprehensive coverage
 const balancedSources = [
@@ -1274,6 +1282,7 @@ app.use('/api/analysis', analysisLimiter, analysisRoutes);
 app.use('/api/fact-check', publicLimiter, factCheckRoutes);
 app.use('/api/sources', publicLimiter, sourceCredibilityRoutes);
 app.use('/api/network', publicLimiter, networkAnalysisRoutes);
+app.use('/api/stockpile', publicLimiter, stockpileRoutes);
 app.use('/api/monitor', adminLimiter, monitorRoutes);
 
 // Apply error monitoring middleware
