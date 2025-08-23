@@ -22,6 +22,7 @@ import articleRoutes from './routes/article.js';
 import adminRoutes from './routes/admin.js';
 import onnxRoutes from './routes/onnx.js';
 import analysisRoutes from './routes/analysis.js';
+import stockpileSimpleRoutes from './routes/stockpile-simple.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -1268,6 +1269,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/onnx', onnxRoutes);
 app.use('/api/analysis', analysisRoutes);
 app.use('/api/monitor', monitorRoutes);
+app.use('/api/stockpile', stockpileSimpleRoutes);
 
 // Apply error monitoring middleware
 app.use(errorMonitor);
