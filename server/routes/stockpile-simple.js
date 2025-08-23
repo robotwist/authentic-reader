@@ -37,8 +37,8 @@ router.get('/articles', async (req, res) => {
   try {
     const {
       limit = 50,
-      categories = [],
-      sources = [],
+      categories = '',
+      sources = '',
       offset = 0
     } = req.query;
 
@@ -53,8 +53,8 @@ router.get('/articles', async (req, res) => {
 
     // Filter sources based on categories
     let sourcesToFetch = balancedSources;
-    if (categories && categories.length > 0) {
-      const categoryList = categories.split(',');
+    if (categories && categories.trim() !== '') {
+      const categoryList = categories.split(',').map(cat => cat.trim());
       sourcesToFetch = balancedSources.filter(source => 
         categoryList.includes(source.category)
       );
