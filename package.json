@@ -28,6 +28,7 @@
     "pm2:stop:all": "pm2 stop all",
     "pm2:restart:all": "pm2 restart all",
     "setup:git": "node setup-git-hooks.js",
+    "fix:production": "node scripts/fix-production-issues.js",
     "postinstall": "cd server && npm install"
   },
   "dependencies": {

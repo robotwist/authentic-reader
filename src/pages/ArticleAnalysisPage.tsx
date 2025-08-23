@@ -468,12 +468,24 @@ const ArticleAnalysisPage: React.FC = () => {
             <div className="section-content">
               <div className="credibility-score">
                 <div className="score-circle" style={{ 
-                  background: `conic-gradient(${getCredibilityColor(article.analysis.credibility.level)} ${article.analysis.credibility.score * 360}deg, var(--border-color) 0deg)` 
+                  background: `conic-gradient(${getCredibilityColor(typeof article.analysis.credibility.level === 'string' 
+                    ? article.analysis.credibility.level 
+                    : typeof article.analysis.credibility.level === 'object' 
+                      ? (article.analysis.credibility.level.level || 
+                         article.analysis.credibility.level.type || 
+                         'unknown') 
+                      : 'unknown')} ${article.analysis.credibility.score * 360}deg, var(--border-color) 0deg)` 
                 }}>
                   <span className="score-text">{Math.round(article.analysis.credibility.score * 100)}%</span>
                 </div>
                 <div className="score-details">
-                  <h4>Credibility Level: {article.analysis.credibility.level.toUpperCase()}</h4>
+                  <h4>Credibility Level: {(typeof article.analysis.credibility.level === 'string' 
+                    ? article.analysis.credibility.level 
+                    : typeof article.analysis.credibility.level === 'object' 
+                      ? (article.analysis.credibility.level.level || 
+                         article.analysis.credibility.level.type || 
+                         'unknown') 
+                      : 'unknown').toUpperCase()}</h4>
                   <p className="credibility-reason">{article.analysis.credibility.reason}</p>
                 </div>
               </div>
@@ -681,10 +693,23 @@ const ArticleAnalysisPage: React.FC = () => {
                         {enhancedAnalysis.logicalFallacies.map((fallacy: any, index: number) => (
                           <div key={index} className="fallacy-item">
                             <div className="fallacy-header">
-                              <span className="fallacy-type">{fallacy.type}</span>
+                              <span className="fallacy-type">{typeof fallacy.type === 'string' 
+                                ? fallacy.type 
+                                : typeof fallacy.type === 'object' 
+                                  ? (fallacy.type.type || 
+                                     fallacy.type.name || 
+                                     JSON.stringify(fallacy.type)) 
+                                  : 'Unknown'}</span>
                               <span className={`severity-badge ${fallacy.severity}`}>{fallacy.severity}</span>
                             </div>
-                            <p className="fallacy-description">{fallacy.description}</p>
+                            <p className="fallacy-description">{typeof fallacy.description === 'string' 
+                              ? fallacy.description 
+                              : typeof fallacy.description === 'object' 
+                                ? (fallacy.description.description || 
+                                   fallacy.description.text || 
+                                   fallacy.description.content || 
+                                   JSON.stringify(fallacy.description)) 
+                                : 'No description available'}</p>
                             {fallacy.examples && fallacy.examples.length > 0 && (
                               <div className="fallacy-examples">
                                 <strong>Examples:</strong>
@@ -709,10 +734,23 @@ const ArticleAnalysisPage: React.FC = () => {
                         {enhancedAnalysis.rhetoricalDevices.map((device: any, index: number) => (
                           <div key={index} className="rhetorical-item">
                             <div className="rhetorical-header">
-                              <span className="device-type">{device.type}</span>
+                              <span className="device-type">{typeof device.type === 'string' 
+                                ? device.type 
+                                : typeof device.type === 'object' 
+                                  ? (device.type.type || 
+                                     device.type.name || 
+                                     JSON.stringify(device.type)) 
+                                  : 'Unknown'}</span>
                               <span className={`impact-badge ${device.impact}`}>{device.impact}</span>
                             </div>
-                            <p className="device-description">{device.description}</p>
+                            <p className="device-description">{typeof device.description === 'string' 
+                              ? device.description 
+                              : typeof device.description === 'object' 
+                                ? (device.description.description || 
+                                   device.description.text || 
+                                   device.description.content || 
+                                   JSON.stringify(device.description)) 
+                                : 'No description available'}</p>
                           </div>
                         ))}
                       </div>

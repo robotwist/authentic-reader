@@ -33,7 +33,7 @@
    - Navigate to Site settings > Environment variables
    - Update the following variables:
      ```
-     VITE_API_URL = https://your-app-name.railway.app/api
+     VITE_API_URL = https://your-app-name.railway.app
      VITE_BACKEND_URL = https://your-app-name.railway.app
      ```
 
@@ -79,11 +79,11 @@ The app includes a health check endpoint at `/health` that Railway will use to v
 
 1. **Build Failures**: Check Railway logs for dependency issues
 2. **Runtime Errors**: Check application logs in Railway dashboard
-3. **Port Issues**: Ensure the app listens on `process.env.PORT`
-4. **Environment Variables**: Verify all required variables are set
+3. **API Connection Issues**: Verify environment variables are set correctly
+4. **CORS Issues**: Ensure Railway URL is added to CORS configuration
 
-## Monitoring
+## Important Notes
 
-- Railway provides built-in monitoring and logs
-- Check the "Deployments" tab for deployment status
-- Use "Logs" tab for real-time application logs
+- The `VITE_API_URL` should NOT include `/api` at the end, as the API service automatically adds this
+- Make sure to update both `VITE_API_URL` and `VITE_BACKEND_URL` in Netlify after Railway deployment
+- The backend will be available at `https://your-app-name.railway.app/api/*` endpoints

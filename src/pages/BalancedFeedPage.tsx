@@ -299,7 +299,13 @@ const BalancedFeedPage: React.FC = () => {
 
                   <AnalysisTooltip
                     title="Credibility Score"
-                    explanation={`This article has a ${article.analysis.credibility.level} credibility rating based on source reputation, fact-checking, citation quality, and historical accuracy. ${article.analysis.credibility.reason}`}
+                    explanation={`This article has a ${typeof article.analysis.credibility.level === 'string' 
+                      ? article.analysis.credibility.level 
+                      : typeof article.analysis.credibility.level === 'object' && article.analysis.credibility.level !== null
+                        ? ((article.analysis.credibility.level as any).level || 
+                           (article.analysis.credibility.level as any).type || 
+                           'complex') 
+                        : 'Unknown'} credibility rating based on source reputation, fact-checking, citation quality, and historical accuracy. ${article.analysis.credibility.reason}`}
                     icon={<FiShield />}
                     className="credibility-tooltip"
                   >
@@ -307,9 +313,21 @@ const BalancedFeedPage: React.FC = () => {
                       <FiShield className="analysis-icon" />
                       <span
                         className="analysis-value credibility-badge"
-                        style={{ backgroundColor: getCredibilityColor(article.analysis.credibility.level) }}
+                        style={{ backgroundColor: getCredibilityColor(typeof article.analysis.credibility.level === 'string' 
+                          ? article.analysis.credibility.level 
+                          : typeof article.analysis.credibility.level === 'object' && article.analysis.credibility.level !== null
+                            ? ((article.analysis.credibility.level as any).level || 
+                               (article.analysis.credibility.level as any).type || 
+                               'unknown') 
+                            : 'unknown') }}
                       >
-                        {article.analysis.credibility.level}
+                        {typeof article.analysis.credibility.level === 'string' 
+                          ? article.analysis.credibility.level 
+                          : typeof article.analysis.credibility.level === 'object' && article.analysis.credibility.level !== null
+                            ? ((article.analysis.credibility.level as any).level || 
+                               (article.analysis.credibility.level as any).type || 
+                               JSON.stringify(article.analysis.credibility.level)) 
+                            : 'Unknown'}
                       </span>
                     </div>
                   </AnalysisTooltip>
@@ -319,7 +337,12 @@ const BalancedFeedPage: React.FC = () => {
                       title="Bias Analysis"
                       explanation={`This article shows ${typeof article.analysis.biasAnalysis.direction === 'string' 
                         ? article.analysis.biasAnalysis.direction 
-                        : article.analysis.biasAnalysis.direction.type || 'Unknown'} bias with ${Math.round((article.analysis.biasAnalysis.confidence || 0) * 100)}% confidence. This indicates the political or ideological leaning detected in the content, language, and framing of the article.`}
+                        : typeof article.analysis.biasAnalysis.direction === 'object' && article.analysis.biasAnalysis.direction !== null
+                          ? ((article.analysis.biasAnalysis.direction as any).type || 
+                             (article.analysis.biasAnalysis.direction as any).tone || 
+                             (article.analysis.biasAnalysis.direction as any).leaning || 
+                             'complex')
+                          : 'Unknown'} bias with ${Math.round((article.analysis.biasAnalysis.confidence || 0) * 100)}% confidence. This indicates the political or ideological leaning detected in the content, language, and framing of the article.`}
                       icon={<FiTag />}
                       className="bias-tooltip"
                     >
@@ -328,7 +351,12 @@ const BalancedFeedPage: React.FC = () => {
                         <span className="analysis-value">
                           Bias: {typeof article.analysis.biasAnalysis.direction === 'string' 
                             ? article.analysis.biasAnalysis.direction 
-                            : article.analysis.biasAnalysis.direction.type || 'Unknown'} 
+                            : typeof article.analysis.biasAnalysis.direction === 'object' && article.analysis.biasAnalysis.direction !== null
+                              ? ((article.analysis.biasAnalysis.direction as any).type || 
+                                 (article.analysis.biasAnalysis.direction as any).tone || 
+                                 (article.analysis.biasAnalysis.direction as any).leaning || 
+                                 JSON.stringify(article.analysis.biasAnalysis.direction)) 
+                              : 'Unknown'} 
                           ({Math.round((article.analysis.biasAnalysis.confidence || 0) * 100)}%)
                         </span>
                       </div>
@@ -356,7 +384,13 @@ const BalancedFeedPage: React.FC = () => {
                   <div className="fallacy-snippets">
                     {article.analysis.logicalFallacies.slice(0, 2).map((f, idx) => (
                       <div key={idx} className="fallacy-chip" title={f.explanation}>
-                        {f.type.replace(/_/g, ' ')}
+                        {(typeof f.type === 'string' 
+                          ? f.type 
+                          : typeof f.type === 'object' && f.type !== null
+                            ? ((f.type as any).type || 
+                               (f.type as any).name || 
+                               JSON.stringify(f.type)) 
+                            : 'Unknown').replace(/_/g, ' ')}
                       </div>
                     ))}
                   </div>

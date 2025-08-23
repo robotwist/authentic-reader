@@ -198,10 +198,28 @@ const ArticleFeedPage: React.FC = () => {
                     <span className="analysis-label">Credibility:</span>
                     <span 
                       className="analysis-value credibility-badge"
-                      style={{ backgroundColor: getCredibilityColor(article.analysis.credibility.level) }}
-                      aria-label={`Credibility level: ${article.analysis.credibility.level}`}
+                      style={{ backgroundColor: getCredibilityColor(typeof article.analysis.credibility.level === 'string' 
+                        ? article.analysis.credibility.level 
+                        : typeof article.analysis.credibility.level === 'object' 
+                          ? (article.analysis.credibility.level.level || 
+                             article.analysis.credibility.level.type || 
+                             'unknown') 
+                          : 'unknown') }}
+                      aria-label={`Credibility level: ${typeof article.analysis.credibility.level === 'string' 
+                        ? article.analysis.credibility.level 
+                        : typeof article.analysis.credibility.level === 'object' 
+                          ? (article.analysis.credibility.level.level || 
+                             article.analysis.credibility.level.type || 
+                             'unknown') 
+                          : 'unknown'}`}
                     >
-                      {article.analysis.credibility.level}
+                      {typeof article.analysis.credibility.level === 'string' 
+                        ? article.analysis.credibility.level 
+                        : typeof article.analysis.credibility.level === 'object' 
+                          ? (article.analysis.credibility.level.level || 
+                             article.analysis.credibility.level.type || 
+                             JSON.stringify(article.analysis.credibility.level)) 
+                          : 'Unknown'}
                     </span>
                   </div>
                   

@@ -42,10 +42,11 @@ export default defineConfig(({ mode }) => {
           ]
         },
         workbox: {
-          navigateFallback: '/',
+          navigateFallback: '/index.html',
+          globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
           runtimeCaching: [
             {
-              urlPattern: /^https?:\/\/localhost:3000\/api\//,
+              urlPattern: /^https?:\/\/.*\/api\//,
               handler: 'NetworkFirst',
               options: {
                 cacheName: 'api-cache',
@@ -105,14 +106,7 @@ export default defineConfig(({ mode }) => {
     },
     // Optimize dependencies
     optimizeDeps: {
-      include: [
-        'react',
-        'react-dom',
-        'react-router-dom',
-        'axios',
-        'chart.js',
-        'recharts'
-      ]
+      include: ['react', 'react-dom', 'react-router-dom']
     }
   }
 })

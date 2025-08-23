@@ -367,7 +367,7 @@ router.post('/comprehensive', async (req, res) => {
     // Process results
     const successfulResults = results
       .filter(result => result.status === 'fulfilled')
-      .map(result => (result as PromiseFulfilledResult<any>).value.data);
+      .map(result => result.value.data);
 
     // Synthesize results
     const synthesis = synthesizeFactCheckResults(claim, successfulResults);

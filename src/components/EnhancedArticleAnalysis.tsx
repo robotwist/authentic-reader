@@ -467,7 +467,13 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                   {analysis.logicalFallacies.map((fallacy, index) => (
                     <div key={index} className="fallacy-item">
                       <div className="fallacy-header">
-                        <span className="fallacy-type">{fallacy.type}</span>
+                        <span className="fallacy-type">{typeof fallacy.type === 'string' 
+                          ? fallacy.type 
+                          : typeof fallacy.type === 'object' 
+                            ? (fallacy.type.type || 
+                               fallacy.type.name || 
+                               JSON.stringify(fallacy.type)) 
+                            : 'Unknown'}</span>
                         <span 
                           className="severity-badge"
                           style={{ backgroundColor: getSeverityColor(fallacy.severity) }}
@@ -475,7 +481,14 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                           {fallacy.severity}
                         </span>
                       </div>
-                      <p className="fallacy-description">{fallacy.description}</p>
+                      <p className="fallacy-description">{typeof fallacy.description === 'string' 
+                        ? fallacy.description 
+                        : typeof fallacy.description === 'object' 
+                          ? (fallacy.description.description || 
+                             fallacy.description.text || 
+                             fallacy.description.content || 
+                             JSON.stringify(fallacy.description)) 
+                          : 'No description available'}</p>
                       {fallacy.examples.length > 0 && (
                         <div className="fallacy-examples">
                           <strong>Examples:</strong>
@@ -503,12 +516,25 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                   {analysis.rhetoricalDevices.map((device, index) => (
                     <div key={index} className={`rhetorical-item ${device.impact}`}>
                       <div className="rhetorical-header">
-                        <span className="device-type">{device.type}</span>
+                        <span className="device-type">{typeof device.type === 'string' 
+                          ? device.type 
+                          : typeof device.type === 'object' 
+                            ? (device.type.type || 
+                               device.type.name || 
+                               JSON.stringify(device.type)) 
+                            : 'Unknown'}</span>
                         <span className={`impact-badge ${device.impact}`}>
                           {device.impact}
                         </span>
                       </div>
-                      <p className="device-description">{device.description}</p>
+                      <p className="device-description">{typeof device.description === 'string' 
+                        ? device.description 
+                        : typeof device.description === 'object' 
+                          ? (device.description.description || 
+                             device.description.text || 
+                             device.description.content || 
+                             JSON.stringify(device.description)) 
+                          : 'No description available'}</p>
                       {device.examples.length > 0 && (
                         <div className="device-examples">
                           <strong>Examples:</strong>
