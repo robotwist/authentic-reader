@@ -156,7 +156,7 @@ router.get('/articles', async (req, res) => {
       total: allArticles.length,
       limit: parseInt(limit),
       offset: parseInt(offset),
-      categories: categories ? categories.split(',') : [],
+      categories: categories && categories.trim() !== '' ? categories.split(',').map(cat => cat.trim()) : [],
       sources: sources ? sources.map(s => parseInt(s)) : [],
       timestamp: new Date().toISOString(),
       message: 'Articles fetched from stockpile (simplified version)'
