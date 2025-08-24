@@ -241,12 +241,12 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                       <h3>Key Recommendations</h3>
                     </div>
                     <div className="recommendations-content">
-                      {analysis.recommendations.forReaders.length > 0 && (
+                      {analysis.recommendations.forReaders && analysis.recommendations.forReaders.length > 0 && (
                         <div className="recommendation-category">
                           <h4>For Readers:</h4>
                           <ul>
                             {analysis.recommendations.forReaders.slice(0, 3).map((rec, index) => (
-                              <li key={index}>{rec}</li>
+                              <li key={index}>{typeof rec === 'string' ? rec : 'Recommendation item'}</li>
                             ))}
                           </ul>
                         </div>
@@ -282,23 +282,23 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                                 </span>
                               </div>
                             </div>
-                            <p className="fallacy-description">{fallacy.description}</p>
+                            <p className="fallacy-description">{fallacy.description || 'No description available'}</p>
                             <div className="fallacy-explanation">
-                              <strong>Why this matters:</strong> {fallacy.explanation}
+                              <strong>Why this matters:</strong> {fallacy.explanation || 'No explanation available'}
                             </div>
-                            {fallacy.examples.length > 0 && (
+                            {fallacy.examples && fallacy.examples.length > 0 && (
                               <div className="fallacy-examples">
                                 <strong>Examples found:</strong>
                                 <ul>
                                   {fallacy.examples.map((example, i) => (
-                                    <li key={i}>{example}</li>
+                                    <li key={i}>{typeof example === 'string' ? example : JSON.stringify(example)}</li>
                                   ))}
                                 </ul>
                               </div>
                             )}
                             {fallacy.counterargument && (
                               <div className="counterargument">
-                                <strong>Counter-approach:</strong> {fallacy.counterargument}
+                                <strong>Counter-approach:</strong> {typeof fallacy.counterargument === 'string' ? fallacy.counterargument : 'No counter-approach available'}
                               </div>
                             )}
                           </div>
@@ -347,8 +347,9 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                     <div className="bias-dimension">
                       <h4>Emotional Bias</h4>
                       <div className="emotional-bias-grid">
-                        {Object.entries(analysis.biasAnalysis.scores.emotional).map(([emotion, score]) => {
+                        {Object.entries(analysis.biasAnalysis.scores.emotional || {}).map(([emotion, score]) => {
                           if (emotion === 'overall') return null;
+                          const numericScore = typeof score === 'number' ? score : 0;
                           return (
                             <div key={emotion} className="emotion-item">
                               <span className="emotion-label">{emotion.charAt(0).toUpperCase() + emotion.slice(1)}</span>
@@ -356,12 +357,12 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                                 <div 
                                   className="emotion-fill"
                                   style={{ 
-                                    width: `${score}%`,
+                                    width: `${numericScore}%`,
                                     backgroundColor: getEmotionColor(emotion)
                                   }}
                                 ></div>
                               </div>
-                              <span className="emotion-score">{Math.round(score)}</span>
+                              <span className="emotion-score">{Math.round(numericScore)}</span>
                             </div>
                           );
                         })}
@@ -387,48 +388,51 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                     <div className="credibility-factors">
                       <h4>Assessment Factors</h4>
                       <div className="factors-grid">
-                        {Object.entries(analysis.credibility.factors).map(([factor, score]) => (
-                          <div key={factor} className="factor-item">
-                            <span className="factor-label">
-                              {factor.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                            </span>
-                            <div className="factor-bar">
-                              <div 
-                                className="factor-fill"
-                                style={{ 
-                                  width: `${score}%`,
-                                  backgroundColor: score > 70 ? '#28a745' : score > 50 ? '#ffc107' : '#dc3545'
-                                }}
-                              ></div>
+                        {Object.entries(analysis.credibility.factors || {}).map(([factor, score]) => {
+                          const numericScore = typeof score === 'number' ? score : 0;
+                          return (
+                            <div key={factor} className="factor-item">
+                              <span className="factor-label">
+                                {factor.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                              </span>
+                              <div className="factor-bar">
+                                <div 
+                                  className="factor-fill"
+                                  style={{ 
+                                    width: `${numericScore}%`,
+                                    backgroundColor: numericScore > 70 ? '#28a745' : numericScore > 50 ? '#ffc107' : '#dc3545'
+                                  }}
+                                ></div>
+                              </div>
+                              <span className="factor-score">{Math.round(numericScore)}</span>
                             </div>
-                            <span className="factor-score">{Math.round(score)}</span>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
 
-                    {analysis.credibility.strengths.length > 0 && (
+                    {analysis.credibility.strengths && analysis.credibility.strengths.length > 0 && (
                       <div className="credibility-strengths">
                         <h4>Strengths</h4>
                         <ul>
                           {analysis.credibility.strengths.map((strength, index) => (
                             <li key={index} className="strength-item">
                               <FiCheckCircle className="strength-icon" />
-                              {strength}
+                              {typeof strength === 'string' ? strength : 'Assessment item'}
                             </li>
                           ))}
                         </ul>
                       </div>
                     )}
 
-                    {analysis.credibility.warnings.length > 0 && (
+                    {analysis.credibility.warnings && analysis.credibility.warnings.length > 0 && (
                       <div className="credibility-warnings">
                         <h4>Concerns</h4>
                         <ul>
                           {analysis.credibility.warnings.map((warning, index) => (
                             <li key={index} className="warning-item">
                               <FiAlertTriangle className="warning-icon" />
-                              {warning}
+                              {typeof warning === 'string' ? warning : 'Assessment item'}
                             </li>
                           ))}
                         </ul>
