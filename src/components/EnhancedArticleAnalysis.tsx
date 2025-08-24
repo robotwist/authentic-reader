@@ -56,6 +56,13 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
       
       setAnalysis(comprehensiveResult);
       console.log('✅ Analysis complete:', comprehensiveResult);
+      
+      // Debug: Check for potential object rendering issues
+      console.log('🔍 Analysis structure check:');
+      console.log('- logicalFallacies:', typeof comprehensiveResult.logicalFallacies);
+      console.log('- biasAnalysis:', typeof comprehensiveResult.biasAnalysis);
+      console.log('- credibility:', typeof comprehensiveResult.credibility);
+      console.log('- readability:', typeof comprehensiveResult.readability);
     } catch (err) {
       console.error('❌ Analysis error:', err);
       setError(err instanceof Error ? err.message : 'Analysis failed');
@@ -133,7 +140,7 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
           </div>
         )}
 
-        {analysis && (
+        {analysis && analysis.logicalFallacies && analysis.biasAnalysis && analysis.credibility && analysis.readability && (
           <div className="analysis-content">
             <div className="analysis-tabs">
               <button 
@@ -148,7 +155,7 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                 onClick={() => setActiveTab('fallacies')}
               >
                 <FiAlertTriangle className="tab-icon" />
-                Fallacies ({analysis.logicalFallacies.fallacies.length})
+                Fallacies ({analysis.logicalFallacies?.fallacies?.length || 0})
               </button>
               <button 
                 className={`tab-button ${activeTab === 'bias' ? 'active' : ''}`}
@@ -162,7 +169,7 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                 onClick={() => setActiveTab('credibility')}
               >
                 <FiShield className="tab-icon" />
-                Credibility ({Math.round(analysis.credibility.score)})
+                Credibility ({Math.round(analysis.credibility?.score || 0)})
               </button>
               <button 
                 className={`tab-button ${activeTab === 'readability' ? 'active' : ''}`}
@@ -182,12 +189,12 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                       <h3>Overall Quality Assessment</h3>
                     </div>
                     <div className="quality-score-display">
-                      <div className={`grade-badge grade-${analysis.overallQuality.grade.toLowerCase()}`}>
-                        {analysis.overallQuality.grade}
+                      <div className={`grade-badge grade-${(analysis.overallQuality?.grade || 'c').toLowerCase()}`}>
+                        {analysis.overallQuality?.grade || 'C'}
                       </div>
                       <div className="quality-details">
-                        <div className="quality-score">{analysis.overallQuality.score}/100</div>
-                        <div className="quality-summary">{analysis.overallQuality.summary}</div>
+                        <div className="quality-score">{analysis.overallQuality?.score || 0}/100</div>
+                        <div className="quality-summary">{typeof analysis.overallQuality?.summary === 'string' ? analysis.overallQuality.summary : 'No summary available'}</div>
                       </div>
                     </div>
                   </div>
@@ -202,35 +209,35 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                         <span className="label">Bias Level:</span>
                         <span 
                           className="value" 
-                          style={{ color: getBiasLevelColor(analysis.biasAnalysis.scores.overall) }}
+                          style={{ color: getBiasLevelColor(analysis.biasAnalysis?.scores?.overall || 0) }}
                         >
-                          {getBiasLevelText(analysis.biasAnalysis.scores.overall)}
+                          {getBiasLevelText(analysis.biasAnalysis?.scores?.overall || 0)}
                         </span>
                       </div>
                       <div className="summary-item">
                         <span className="label">Credibility:</span>
                         <span 
                           className="value" 
-                          style={{ color: analysis.credibility.score > 70 ? '#28a745' : analysis.credibility.score > 50 ? '#ffc107' : '#dc3545' }}
+                          style={{ color: (analysis.credibility?.score || 0) > 70 ? '#28a745' : (analysis.credibility?.score || 0) > 50 ? '#ffc107' : '#dc3545' }}
                         >
-                          {Math.round(analysis.credibility.score)}/100
+                          {Math.round(analysis.credibility?.score || 0)}/100
                         </span>
                       </div>
                       <div className="summary-item">
                         <span className="label">Logical Issues:</span>
-                        <span className="value">{analysis.logicalFallacies.fallacies.length}</span>
+                        <span className="value">{analysis.logicalFallacies?.fallacies?.length || 0}</span>
                       </div>
                       <div className="summary-item">
                         <span className="label">Reading Level:</span>
-                        <span className="value">Grade {analysis.readability.gradeLevel}</span>
+                        <span className="value">Grade {analysis.readability?.gradeLevel || 'N/A'}</span>
                       </div>
                       <div className="summary-item">
                         <span className="label">Reading Time:</span>
-                        <span className="value">{analysis.readability.readingTime} min</span>
+                        <span className="value">{analysis.readability?.readingTime || 0} min</span>
                       </div>
                       <div className="summary-item">
                         <span className="label">Claims Detected:</span>
-                        <span className="value">{analysis.factChecking.claimsDetected}</span>
+                        <span className="value">{analysis.factChecking?.claimsDetected || 0}</span>
                       </div>
                     </div>
                   </div>
@@ -241,7 +248,7 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                       <h3>Key Recommendations</h3>
                     </div>
                     <div className="recommendations-content">
-                      {analysis.recommendations.forReaders && analysis.recommendations.forReaders.length > 0 && (
+                      {analysis.recommendations?.forReaders && analysis.recommendations.forReaders.length > 0 && (
                         <div className="recommendation-category">
                           <h4>For Readers:</h4>
                           <ul>
@@ -263,13 +270,13 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                       <FiAlertTriangle className="section-icon" />
                       <h3>Logical Fallacies Analysis</h3>
                       <div className="fallacy-score">
-                        Score: {analysis.logicalFallacies.overallScore}/100
+                        Score: {analysis.logicalFallacies?.overallScore || 0}/100
                       </div>
                     </div>
                     
-                    {analysis.logicalFallacies.fallacies.length > 0 ? (
+                    {(analysis.logicalFallacies?.fallacies?.length || 0) > 0 ? (
                       <div className="fallacies-list">
-                        {analysis.logicalFallacies.fallacies.map((fallacy, index) => (
+                        {(analysis.logicalFallacies?.fallacies || []).map((fallacy, index) => (
                           <div key={index} className={`fallacy-item severity-${fallacy.severity}`}>
                             <div className="fallacy-header">
                               <span className="fallacy-name">{fallacy.name}</span>
@@ -321,7 +328,7 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                       <FiTarget className="section-icon" />
                       <h3>Multi-Dimensional Bias Analysis</h3>
                       <div className="neutrality-score">
-                        Neutrality: {analysis.biasAnalysis.summary.neutralityScore}/100
+                        Neutrality: {analysis.biasAnalysis?.summary?.neutralityScore || 0}/100
                       </div>
                     </div>
 
@@ -333,13 +340,13 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                           <div className="spectrum-bar">
                             <div 
                               className="spectrum-indicator"
-                              style={{ left: `${analysis.biasAnalysis.scores.political.leftRight}%` }}
+                              style={{ left: `${analysis.biasAnalysis?.scores?.political?.leftRight || 50}%` }}
                             ></div>
                           </div>
                           <span className="spectrum-label right">Right</span>
                         </div>
                         <div className="bias-confidence">
-                          Confidence: {Math.round(analysis.biasAnalysis.scores.political.confidence * 100)}%
+                          Confidence: {Math.round((analysis.biasAnalysis?.scores?.political?.confidence || 0) * 100)}%
                         </div>
                       </div>
                     </div>
@@ -379,8 +386,8 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                       <FiShield className="section-icon" />
                       <h3>Credibility Assessment</h3>
                       <div className="credibility-score-display">
-                        <div className={`credibility-score ${analysis.credibility.score > 70 ? 'high' : analysis.credibility.score > 50 ? 'medium' : 'low'}`}>
-                          {Math.round(analysis.credibility.score)}/100
+                        <div className={`credibility-score ${(analysis.credibility?.score || 0) > 70 ? 'high' : (analysis.credibility?.score || 0) > 50 ? 'medium' : 'low'}`}>
+                          {Math.round(analysis.credibility?.score || 0)}/100
                         </div>
                       </div>
                     </div>
@@ -450,24 +457,24 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                       <h3>Readability Analysis</h3>
                       <div className="reading-time">
                         <FiClock className="time-icon" />
-                        {analysis.readability.readingTime} min read
+                        {analysis.readability?.readingTime || 0} min read
                       </div>
                     </div>
 
                     <div className="readability-metrics">
                       <div className="metric-item">
                         <span className="metric-label">Grade Level</span>
-                        <span className="metric-value">{analysis.readability.gradeLevel}</span>
+                        <span className="metric-value">{analysis.readability?.gradeLevel || 'N/A'}</span>
                       </div>
                       <div className="metric-item">
                         <span className="metric-label">Complexity</span>
-                        <span className={`metric-value complexity-${analysis.readability.complexity}`}>
-                          {analysis.readability.complexity.replace(/_/g, ' ')}
+                        <span className={`metric-value complexity-${analysis.readability?.complexity || 'moderate'}`}>
+                          {(analysis.readability?.complexity || 'moderate').replace(/_/g, ' ')}
                         </span>
                       </div>
                       <div className="metric-item">
                         <span className="metric-label">Word Count</span>
-                        <span className="metric-value">{analysis.readability.wordCount.toLocaleString()}</span>
+                        <span className="metric-value">{(analysis.readability?.wordCount || 0).toLocaleString()}</span>
                       </div>
                     </div>
 
@@ -476,16 +483,16 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                       <div className="fact-check-metrics">
                         <div className="fact-metric">
                           <span className="metric-label">Claims Detected</span>
-                          <span className="metric-value">{analysis.factChecking.claimsDetected}</span>
+                          <span className="metric-value">{analysis.factChecking?.claimsDetected || 0}</span>
                         </div>
                         <div className="fact-metric">
                           <span className="metric-label">External Links</span>
-                          <span className="metric-value">{analysis.factChecking.externalLinksCount}</span>
+                          <span className="metric-value">{analysis.factChecking?.externalLinksCount || 0}</span>
                         </div>
                         <div className="fact-metric">
                           <span className="metric-label">Sources Provided</span>
-                          <span className={`metric-value ${analysis.factChecking.sourcesProvided ? 'positive' : 'negative'}`}>
-                            {analysis.factChecking.sourcesProvided ? 'Yes' : 'No'}
+                          <span className={`metric-value ${analysis.factChecking?.sourcesProvided ? 'positive' : 'negative'}`}>
+                            {analysis.factChecking?.sourcesProvided ? 'Yes' : 'No'}
                           </span>
                         </div>
                       </div>
