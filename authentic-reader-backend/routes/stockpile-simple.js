@@ -80,8 +80,8 @@ router.get('/articles', async (req, res) => {
         
         console.log(`Found ${items.length} items from ${source.name}`);
         
-        // Process articles from this source
-        const processedArticles = items.slice(0, 10).map((item, index) => {
+        // Process articles from this source (using Promise.all for async operations)
+        const processedArticles = await Promise.all(items.slice(0, 10).map(async (item, index) => {
           const rawTitle = item.title?.[0] || item['media:title']?.[0] || '';
           const title = decodeHtmlEntities(rawTitle);
           const link = item.link?.[0] || item.link?.[0]?.$?.href || '';
@@ -90,10 +90,23 @@ router.get('/articles', async (req, res) => {
           const pubDate = item.pubDate?.[0] || item.published?.[0] || new Date().toISOString();
           const author = item.author?.[0] || item['dc:creator']?.[0] || source.name;
           
-          // Extract full content if available
-          let fullContent = item['content:encoded']?.[0] || description;
+          // Extract and enhance content for full article analysis
+          let fullContent = await extractFullContent(item, link, description);
           
-          // Basic analysis
+          // Ensure we have substantial content for analysis
+          if (fullContent.length < 200) {
+            // Try to get more content from the RSS item itself
+            const alternativeContent = item['content:encoded']?.[0] || 
+                                      item.content?.[0] || 
+                                      item['media:description']?.[0] || 
+                                      item.description?.[0] || 
+                                      description;
+            if (alternativeContent && alternativeContent.length > fullContent.length) {
+              fullContent = cleanHtmlContent(alternativeContent);
+            }
+          }
+          
+          // Basic analysis with full content
           const analysis = {
             wordCount: fullContent ? fullContent.split(' ').length : 0,
             readingTime: fullContent ? Math.ceil(fullContent.split(' ').length / 200) : 0,
@@ -115,7 +128,7 @@ router.get('/articles', async (req, res) => {
             link,
             author,
             publishDate: pubDate,
-            content: fullContent.substring(0, 500) + (fullContent.length > 500 ? '...' : ''),
+            content: fullContent, // Full content for analysis
             summary: description,
             source: source.name,
             sourceCategory: source.category,
@@ -137,7 +150,7 @@ router.get('/articles', async (req, res) => {
               timestamp: analysis.timestamp
             }
           };
-        });
+        }));
         
         allArticles.push(...processedArticles);
         
@@ -336,6 +349,137 @@ function buildNetworkSummary(content) {
     relationships: relationships.slice(0, 5),
     networkDensity: 0.1
   };
+}
+
+/**
+ * Enhanced content extraction function
+ */
+async function extractFullContent(item, link, fallbackDescription) {
+  try {
+    // First, try to get content from RSS feed itself
+    let content = item['content:encoded']?.[0] || 
+                  item.content?.[0] || 
+                  item['media:description']?.[0] || 
+                  fallbackDescription;
+    
+    if (content) {
+      content = cleanHtmlContent(content);
+      
+      // If we have substantial content from RSS, use it
+      if (content.length > 500) {
+        console.log(`Using RSS content (${content.length} chars) for: ${item.title?.[0]?.substring(0, 50) || 'Unknown'}`);
+        return content;
+      }
+    }
+    
+    // If RSS content is too short, try to fetch from the actual article URL
+    if (link && link.length > 0) {
+      try {
+        console.log(`Attempting to fetch full content from: ${link}`);
+        
+        const response = await axios.get(link, {
+          timeout: 8000, // Shorter timeout for individual articles
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+          }
+        });
+        
+        const htmlContent = response.data;
+        const extractedContent = extractContentFromHtml(htmlContent);
+        
+        if (extractedContent && extractedContent.length > content.length) {
+          console.log(`Successfully extracted ${extractedContent.length} chars from article URL`);
+          return extractedContent;
+        }
+        
+      } catch (fetchError) {
+        console.log(`Failed to fetch article content from ${link}: ${fetchError.message}`);
+      }
+    }
+    
+    // Fallback to RSS content or description
+    return content || fallbackDescription || '';
+    
+  } catch (error) {
+    console.log(`Error in extractFullContent: ${error.message}`);
+    return fallbackDescription || '';
+  }
+}
+
+/**
+ * Clean HTML content and extract text
+ */
+function cleanHtmlContent(html) {
+  if (!html) return '';
+  
+  // Remove script and style elements
+  let cleaned = html.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
+  cleaned = cleaned.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
+  
+  // Remove HTML tags but preserve some structure
+  cleaned = cleaned.replace(/<\/p>/gi, '\n\n');
+  cleaned = cleaned.replace(/<br\s*\/?>/gi, '\n');
+  cleaned = cleaned.replace(/<\/div>/gi, '\n');
+  cleaned = cleaned.replace(/<\/h[1-6]>/gi, '\n\n');
+  
+  // Remove all remaining HTML tags
+  cleaned = cleaned.replace(/<[^>]*>/g, '');
+  
+  // Decode HTML entities
+  cleaned = decodeHtmlEntities(cleaned);
+  
+  // Clean up whitespace
+  cleaned = cleaned.replace(/\n\s*\n/g, '\n\n'); // Multiple newlines to double newlines
+  cleaned = cleaned.replace(/[ \t]+/g, ' '); // Multiple spaces to single space
+  cleaned = cleaned.trim();
+  
+  return cleaned;
+}
+
+/**
+ * Extract main content from HTML using simple heuristics
+ */
+function extractContentFromHtml(html) {
+  if (!html) return '';
+  
+  // Look for common content containers
+  const contentSelectors = [
+    /<article[^>]*>([\s\S]*?)<\/article>/i,
+    /<div[^>]*class="[^"]*content[^"]*"[^>]*>([\s\S]*?)<\/div>/i,
+    /<div[^>]*class="[^"]*article[^"]*"[^>]*>([\s\S]*?)<\/div>/i,
+    /<div[^>]*id="[^"]*content[^"]*"[^>]*>([\s\S]*?)<\/div>/i,
+    /<main[^>]*>([\s\S]*?)<\/main>/i,
+    /<div[^>]*class="[^"]*story[^"]*"[^>]*>([\s\S]*?)<\/div>/i
+  ];
+  
+  for (const selector of contentSelectors) {
+    const match = html.match(selector);
+    if (match && match[1]) {
+      const content = cleanHtmlContent(match[1]);
+      if (content.length > 200) {
+        return content;
+      }
+    }
+  }
+  
+  // If no specific content container found, extract from body
+  const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+  if (bodyMatch && bodyMatch[1]) {
+    let bodyContent = bodyMatch[1];
+    
+    // Remove navigation, header, footer, sidebar elements
+    bodyContent = bodyContent.replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, '');
+    bodyContent = bodyContent.replace(/<header[^>]*>[\s\S]*?<\/header>/gi, '');
+    bodyContent = bodyContent.replace(/<footer[^>]*>[\s\S]*?<\/footer>/gi, '');
+    bodyContent = bodyContent.replace(/<aside[^>]*>[\s\S]*?<\/aside>/gi, '');
+    bodyContent = bodyContent.replace(/<div[^>]*class="[^"]*nav[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '');
+    
+    return cleanHtmlContent(bodyContent);
+  }
+  
+  // Last resort: clean the entire HTML
+  return cleanHtmlContent(html);
 }
 
 export default router;
