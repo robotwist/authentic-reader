@@ -289,12 +289,54 @@ export const updateSourceOrder = async (req, res) => {
 // Get public sources
 export const getPublicSources = async (req, res) => {
   try {
-    const sources = await Source.findAll({
-      where: { isPublic: true },
-      order: [['name', 'ASC']]
-    });
+    console.log('getPublicSources called');
     
-    res.json(sources);
+    // Simple hardcoded response for now - no database dependency
+    const sourcesArray = [
+      {
+        id: 'npr',
+        name: 'NPR',
+        url: 'https://feeds.npr.org/1001/rss.xml',
+        description: 'National Public Radio',
+        category: 'center',
+        isPublic: true
+      },
+      {
+        id: 'bbc',
+        name: 'BBC News',
+        url: 'http://feeds.bbci.co.uk/news/rss.xml',
+        description: 'BBC News',
+        category: 'center',
+        isPublic: true
+      },
+      {
+        id: 'reuters',
+        name: 'Reuters',
+        url: 'https://feeds.reuters.com/reuters/topNews',
+        description: 'International news agency',
+        category: 'center',
+        isPublic: true
+      },
+      {
+        id: 'ap',
+        name: 'Associated Press',
+        url: 'https://feeds.ap.org/ap/topnews',
+        description: 'Non-profit news cooperative',
+        category: 'center',
+        isPublic: true
+      },
+      {
+        id: 'wsj',
+        name: 'Wall Street Journal',
+        url: 'https://feeds.wsj.com/public/rss/2_0.xml',
+        description: 'Conservative business newspaper',
+        category: 'right',
+        isPublic: true
+      }
+    ];
+    
+    console.log('Returning sources:', sourcesArray.length, 'sources');
+    res.json(sourcesArray);
   } catch (error) {
     console.error('Error fetching public sources:', error);
     res.status(500).json({ message: 'Server error fetching public sources' });

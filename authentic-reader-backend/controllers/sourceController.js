@@ -291,7 +291,7 @@ export const getPublicSources = async (req, res) => {
   try {
     console.log('getPublicSources called');
     
-    // Simple hardcoded response for now
+    // Simple hardcoded response for now - no database dependency
     const sourcesArray = [
       {
         id: 'npr',
@@ -308,10 +308,34 @@ export const getPublicSources = async (req, res) => {
         description: 'BBC News',
         category: 'center',
         isPublic: true
+      },
+      {
+        id: 'reuters',
+        name: 'Reuters',
+        url: 'https://feeds.reuters.com/reuters/topNews',
+        description: 'International news agency',
+        category: 'center',
+        isPublic: true
+      },
+      {
+        id: 'ap',
+        name: 'Associated Press',
+        url: 'https://feeds.ap.org/ap/topnews',
+        description: 'Non-profit news cooperative',
+        category: 'center',
+        isPublic: true
+      },
+      {
+        id: 'wsj',
+        name: 'Wall Street Journal',
+        url: 'https://feeds.wsj.com/public/rss/2_0.xml',
+        description: 'Conservative business newspaper',
+        category: 'right',
+        isPublic: true
       }
     ];
     
-    console.log('Returning sources:', sourcesArray);
+    console.log('Returning sources:', sourcesArray.length, 'sources');
     res.json(sourcesArray);
   } catch (error) {
     console.error('Error fetching public sources:', error);
