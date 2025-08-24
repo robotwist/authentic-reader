@@ -335,28 +335,34 @@ const BalancedFeedPage: React.FC = () => {
                   {article.analysis.biasAnalysis && article.analysis.biasAnalysis.direction && (
                     <AnalysisTooltip
                       title="Bias Analysis"
-                      explanation={`This article shows ${typeof article.analysis.biasAnalysis.direction === 'string' 
-                        ? article.analysis.biasAnalysis.direction 
-                        : typeof article.analysis.biasAnalysis.direction === 'object' && article.analysis.biasAnalysis.direction !== null
-                          ? ((article.analysis.biasAnalysis.direction as any).type || 
-                             (article.analysis.biasAnalysis.direction as any).tone || 
-                             (article.analysis.biasAnalysis.direction as any).leaning || 
-                             'complex')
-                          : 'Unknown'} bias with ${Math.round((article.analysis.biasAnalysis.confidence || 0) * 100)}% confidence. This indicates the political or ideological leaning detected in the content, language, and framing of the article.`}
+                      explanation={`This article shows ${(() => {
+                        const direction = article.analysis.biasAnalysis.direction;
+                        if (typeof direction === 'string') {
+                          return direction;
+                        } else if (typeof direction === 'object' && direction !== null) {
+                          const dirObj = direction as any;
+                          const result = dirObj.type || dirObj.tone || dirObj.leaning;
+                          return typeof result === 'string' ? result : 'complex';
+                        }
+                        return 'unknown';
+                      })()} bias with ${Math.round((article.analysis.biasAnalysis.confidence || 0) * 100)}% confidence. This indicates the political or ideological leaning detected in the content, language, and framing of the article.`}
                       icon={<FiTag />}
                       className="bias-tooltip"
                     >
                       <div className="analysis-item">
                         <FiTag className="analysis-icon" />
                         <span className="analysis-value">
-                          Bias: {typeof article.analysis.biasAnalysis.direction === 'string' 
-                            ? article.analysis.biasAnalysis.direction 
-                            : typeof article.analysis.biasAnalysis.direction === 'object' && article.analysis.biasAnalysis.direction !== null
-                              ? ((article.analysis.biasAnalysis.direction as any).type || 
-                                 (article.analysis.biasAnalysis.direction as any).tone || 
-                                 (article.analysis.biasAnalysis.direction as any).leaning || 
-                                 JSON.stringify(article.analysis.biasAnalysis.direction)) 
-                              : 'Unknown'} 
+                          Bias: {(() => {
+                            const direction = article.analysis.biasAnalysis.direction;
+                            if (typeof direction === 'string') {
+                              return direction;
+                            } else if (typeof direction === 'object' && direction !== null) {
+                              const dirObj = direction as any;
+                              const result = dirObj.type || dirObj.tone || dirObj.leaning;
+                              return typeof result === 'string' ? result : 'Complex';
+                            }
+                            return 'Unknown';
+                          })()} 
                           ({Math.round((article.analysis.biasAnalysis.confidence || 0) * 100)}%)
                         </span>
                       </div>
