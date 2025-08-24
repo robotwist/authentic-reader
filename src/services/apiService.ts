@@ -478,6 +478,27 @@ export const articlesApi = {
   }
 };
 
+// Stockpile Analytics API functions
+export const getStockpileAnalytics = async () => {
+  try {
+    const response = await apiRequest('/api/stockpile/analytics');
+    return response;
+  } catch (error) {
+    console.error('[API Service] Error fetching stockpile analytics:', error);
+    throw error;
+  }
+};
+
+export const getStockpileStatus = async () => {
+  try {
+    const response = await apiRequest('/api/stockpile/status');
+    return response;
+  } catch (error) {
+    console.error('[API Service] Error fetching stockpile status:', error);
+    throw error;
+  }
+};
+
 export default {
   authApi,
   sourcesApi,

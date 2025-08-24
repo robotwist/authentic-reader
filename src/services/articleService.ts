@@ -170,7 +170,7 @@ class ArticleService {
    * Fetch articles from backend
    */
   private async fetchFromBackend(categories: string[], limit: number): Promise<Article[]> {
-    const url = `${API_BASE_URL}/api/balanced-feed?categories=${categories.join(',')}&limit=${limit}`;
+    const url = `${API_BASE_URL}/api/stockpile/articles?categories=${categories.join(',')}&limit=${limit}`;
     
     const response = await fetch(url, {
       method: 'GET',
