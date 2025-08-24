@@ -167,21 +167,54 @@ class ArticleService {
   }
 
   /**
-   * Fetch articles from backend
+   * Fetch articles from backend with retry logic
    */
   private async fetchFromBackend(categories: string[], limit: number): Promise<Article[]> {
     const url = `${API_BASE_URL}/api/stockpile/articles?categories=${categories.join(',')}&limit=${limit}`;
     
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      signal: AbortSignal.timeout(10000), // 10 second timeout
-    });
+    // Retry logic for handling intermittent 500 errors
+    const maxRetries = 3;
+    let lastError: Error | null = null;
+    let response: Response | null = null;
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`[Article Service] Attempt ${attempt}/${maxRetries}: Fetching articles`);
+        
+        response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          signal: AbortSignal.timeout(10000), // 10 second timeout
+        });
 
-    if (!response.ok) {
-      throw new Error(`Backend responded with status: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`Backend responded with status: ${response.status}`);
+        }
+        
+        // Success - break out of retry loop
+        console.log(`[Article Service] Successfully fetched articles on attempt ${attempt}`);
+        break;
+        
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        console.warn(`[Article Service] Attempt ${attempt}/${maxRetries} failed:`, lastError.message);
+        
+        // If this is the last attempt, throw the error
+        if (attempt === maxRetries) {
+          throw lastError;
+        }
+        
+        // Wait before retrying (exponential backoff)
+        const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
+        console.log(`[Article Service] Waiting ${delay}ms before retry...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+
+    if (!response) {
+      throw lastError || new Error('Failed to fetch articles after retries');
     }
 
     const data = await response.json();
