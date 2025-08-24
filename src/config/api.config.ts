@@ -11,7 +11,7 @@ console.log('[API Config] Environment variables:', {
   allEnv: import.meta.env
 });
 
-// Determine the API base URL from environment variables or default to localhost
+// Determine the API base URL from environment variables or default to production
 export const API_BASE_URL = (() => {
   // Check for environment variables in Vite format first
   const viteUrl = import.meta.env?.VITE_API_URL;
@@ -32,6 +32,12 @@ export const API_BASE_URL = (() => {
   if (railwayUrl) {
     console.log('[API Config] Using Railway API URL:', railwayUrl);
     return railwayUrl;
+  }
+  
+  // Production fallback - use Heroku backend
+  if (import.meta.env?.MODE === 'production' || window.location.hostname !== 'localhost') {
+    console.log('[API Config] Using production Heroku API URL');
+    return 'https://authentic-reader-api-8b0a83fb7d96.herokuapp.com';
   }
   
   // Default to localhost development server
