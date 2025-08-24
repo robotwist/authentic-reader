@@ -185,7 +185,42 @@ class ArticleService {
     }
 
     const data = await response.json();
-    return data.articles || [];
+    
+    // Transform stockpile API response to match frontend Article interface
+    const articles = (data.articles || []).map((article: any) => ({
+      title: article.title || '',
+      link: article.link || '',
+      description: article.summary || article.content || '',
+      pubDate: article.publishDate || new Date().toISOString(),
+      author: article.author || article.source || 'Unknown',
+      content: article.content || article.summary || '',
+      articleId: article.id || `stockpile-${Date.now()}`, // Map 'id' to 'articleId'
+      source: article.source || 'Unknown Source',
+      sourceCategory: article.sourceCategory || 'center',
+      analysis: article.analysis ? {
+        wordCount: article.analysis.wordCount || 0,
+        readingTime: article.analysis.readingTime || 1,
+        summary: article.analysis.summary || '',
+        credibility: article.analysis.credibility || { score: 0.5, level: 'medium', reason: 'No analysis available' },
+        logicalFallacies: article.analysis.logicalFallacies || [],
+        biasAnalysis: article.analysis.biasAnalysis ? {
+          direction: article.analysis.biasAnalysis.direction || 'center',
+          confidence: article.analysis.biasAnalysis.confidence || 0,
+          explanation: article.analysis.biasAnalysis.explanation || '',
+          indicators: { left: 0, right: 0 }
+        } : undefined,
+        networkAnalysis: article.analysis.networkAnalysis ? {
+          topEntities: article.analysis.networkAnalysis.entities?.slice(0, 5).map((entity: any) => ({
+            name: entity.name || 'Unknown',
+            count: 1
+          })) || [],
+          entityCount: article.analysis.networkAnalysis.entities?.length || 0
+        } : undefined,
+        timestamp: article.analysis.timestamp || new Date().toISOString()
+      } : undefined
+    }));
+    
+    return articles;
   }
 
   /**

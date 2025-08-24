@@ -31,7 +31,7 @@ const BalancedFeedPage: React.FC = () => {
       const cacheStatus = articleService.getCacheStatus();
       if (cacheStatus.hasCache && !cacheStatus.isValid) {
         setDataSource('cache');
-      } else if (fetchedArticles.length > 0 && fetchedArticles[0].articleId.startsWith('fallback-')) {
+      } else if (fetchedArticles.length > 0 && fetchedArticles[0]?.articleId?.startsWith('fallback-')) {
         setDataSource('fallback');
       } else {
         setDataSource('backend');
