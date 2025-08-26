@@ -150,15 +150,11 @@ const ArticleAnalysisPage: React.FC = () => {
   const getServiceStatusDisplay = () => {
     if (!serviceStatus) return null;
 
-    const statusClass = serviceStatus.hasLlama ? 'status-available' : 
-                       serviceStatus.hasHF ? 'status-available' : 
-                       'status-unavailable';
+    const statusClass = serviceStatus.hasLlama ? 'status-available' : 'status-unavailable';
 
-    const statusText = serviceStatus.hasLlama ? 'Llama 3.2 AI Service' :
-                      serviceStatus.hasHF ? 'Hugging Face AI Service' :
-                      'Local Fallback Analysis';
+    const statusText = serviceStatus.hasLlama ? 'Llama 3.2 AI Service' : 'Local Fallback Analysis';
 
-    const statusIcon = serviceStatus.hasLlama || serviceStatus.hasHF ? 
+    const statusIcon = serviceStatus.hasLlama ? 
                       <FiCheckCircle className="status-icon" /> : 
                       <FiAlertTriangle className="status-icon" />;
 

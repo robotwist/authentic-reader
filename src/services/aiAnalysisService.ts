@@ -1,18 +1,15 @@
 /**
- * Smart AI Analysis Service
+ * Llama AI Analysis Service
  * 
- * This service automatically chooses between:
- * - Llama 3.2 (local development) - Fast, free, no API limits
- * - Hugging Face (deployed) - Cloud-based, reliable
+ * This service uses Llama 3.2 for all AI analysis tasks.
+ * Works for both local development and deployed environments.
  */
 
-import { huggingFaceService } from './huggingFaceService';
 import { LlamaService } from './LlamaService';
 import { logger } from '../utils/logger';
 
 // Configuration
 const LLAMA_SERVICE_URL = import.meta.env.VITE_LLAMA_SERVICE_URL || 'http://localhost:8105';
-const HF_API_TOKEN = import.meta.env.VITE_HF_API_TOKEN || '';
 
 // Determine environment
 const isLocalDevelopment = () => {
@@ -30,26 +27,18 @@ const isDeployed = () => {
 
 // Service selection logic
 const getPreferredService = async () => {
-  // If we're in local development and have Llama service available, use it
-  if (isLocalDevelopment()) {
-    try {
-      const response = await fetch(`${LLAMA_SERVICE_URL}/health`);
-      if (response.ok) {
-        const health = await response.json();
-        if (health.ready) {
-          logger.info('Using Llama 3.2 service for local development');
-          return 'llama';
-        }
+  // Always try Llama first
+  try {
+    const response = await fetch(`${LLAMA_SERVICE_URL}/health`);
+    if (response.ok) {
+      const health = await response.json();
+      if (health.ready) {
+        logger.info('Using Llama 3.2 service');
+        return 'llama';
       }
-    } catch (error) {
-      logger.warn('Llama service not available, falling back to Hugging Face');
     }
-  }
-  
-  // If we have HF token, use Hugging Face
-  if (HF_API_TOKEN) {
-    logger.info('Using Hugging Face service for deployed environment');
-    return 'huggingface';
+  } catch (error) {
+    logger.warn('Llama service not available, using fallback');
   }
   
   // Fallback to local heuristics
@@ -62,7 +51,7 @@ const llamaService = new LlamaService();
 
 // Main analysis service
 export class AIAnalysisService {
-  private serviceType: 'llama' | 'huggingface' | 'fallback' | null = null;
+  private serviceType: 'llama' | 'fallback' | null = null;
   
   async initialize() {
     this.serviceType = await getPreferredService();
@@ -75,8 +64,6 @@ export class AIAnalysisService {
     switch (this.serviceType) {
       case 'llama':
         return await this.analyzeBiasWithLlama(text);
-      case 'huggingface':
-        return await this.analyzeBiasWithHF(text);
       case 'fallback':
         return await this.analyzeBiasFallback(text);
       default:
@@ -90,8 +77,6 @@ export class AIAnalysisService {
     switch (this.serviceType) {
       case 'llama':
         return await this.analyzeSentimentWithLlama(text);
-      case 'huggingface':
-        return await this.analyzeSentimentWithHF(text);
       case 'fallback':
         return await this.analyzeSentimentFallback(text);
       default:
@@ -105,8 +90,6 @@ export class AIAnalysisService {
     switch (this.serviceType) {
       case 'llama':
         return await this.extractEntitiesWithLlama(text);
-      case 'huggingface':
-        return await this.extractEntitiesWithHF(text);
       case 'fallback':
         return await this.extractEntitiesFallback(text);
       default:
@@ -120,8 +103,6 @@ export class AIAnalysisService {
     switch (this.serviceType) {
       case 'llama':
         return await this.analyzeCredibilityWithLlama(text);
-      case 'huggingface':
-        return await this.analyzeCredibilityWithHF(text);
       case 'fallback':
         return await this.analyzeCredibilityFallback(text);
       default:
@@ -238,23 +219,6 @@ Text: "${text}"`;
       logger.error('Llama credibility analysis failed:', error);
       throw error;
     }
-  }
-  
-  // Hugging Face methods
-  private async analyzeBiasWithHF(text: string) {
-    return await huggingFaceService.analyzeBias(text);
-  }
-  
-  private async analyzeSentimentWithHF(text: string) {
-    return await huggingFaceService.analyzeSentiment(text);
-  }
-  
-  private async extractEntitiesWithHF(text: string) {
-    return await huggingFaceService.extractEntities(text);
-  }
-  
-  private async analyzeCredibilityWithHF(text: string) {
-    return await huggingFaceService.analyzeCredibility(text);
   }
   
   // Fallback methods (heuristic-based)
@@ -396,7 +360,6 @@ Text: "${text}"`;
       isLocal: isLocalDevelopment(),
       isDeployed: isDeployed(),
       hasLlama: this.serviceType === 'llama',
-      hasHF: this.serviceType === 'huggingface',
       isFallback: this.serviceType === 'fallback'
     };
   }
