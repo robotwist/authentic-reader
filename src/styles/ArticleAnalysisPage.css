@@ -1,3 +1,25 @@
+/* Global overrides to prevent conflicts */
+.analysis-section .credibility-score,
+.analysis-section .score-circle,
+.analysis-section .score-text {
+  box-sizing: border-box !important;
+  position: relative !important;
+  transform: none !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+}
+
+/* Ensure proper container behavior */
+.analysis-section {
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+  position: relative;
+}
+
+/* Article Analysis Page Styles */
 .analysis-page {
   max-width: 1200px;
   margin: 0 auto;
@@ -436,6 +458,9 @@
   align-items: center;
   gap: 30px;
   margin-bottom: 30px;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
 }
 
 .score-circle {
@@ -447,6 +472,12 @@
   justify-content: center;
   position: relative;
   flex-shrink: 0;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin: 0;
+  padding: 0;
+  min-width: 120px;
+  min-height: 120px;
 }
 
 .score-circle::before {
@@ -458,14 +489,23 @@
   bottom: 8px;
   background: var(--card-background);
   border-radius: 50%;
+  z-index: 0;
 }
 
 .score-text {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   font-size: 24px;
   font-weight: 700;
   color: var(--text-color);
+  text-align: center;
+  line-height: 1;
+}
+
+.score-details {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .score-details h4 {
@@ -913,5 +953,514 @@
   
   .section-content {
     padding: 16px;
+  }
+}
+
+/* Service Status Indicator */
+.service-status-indicator {
+  margin-bottom: 24px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--card-background);
+}
+
+.status-checking {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.status-available {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  font-weight: 500;
+}
+
+.status-unavailable {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  font-weight: 500;
+}
+
+.status-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* Bias Analysis */
+.bias-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background: var(--card-background);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 20px;
+}
+
+.bias-dimension {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 12px;
+  background: var(--bg-color-light);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.dimension-label {
+  font-size: 14px;
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.bias-bar {
+  width: 100%;
+  height: 12px;
+  background: var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bias-fill {
+  height: 100%;
+  background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+  border-radius: 6px;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.bias-score {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary-color);
+  min-width: 50px;
+  text-align: right;
+  background: var(--bg-color-light);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.bias-phrases {
+  margin-top: 20px;
+  padding: 16px;
+  background: var(--bg-color-light);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.bias-phrases h4 {
+  margin: 0 0 12px 0;
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.phrases-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bias-phrase {
+  background: var(--primary-color);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--primary-color);
+  transition: all 0.2s ease;
+}
+
+.bias-phrase:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+/* Enhanced Credibility */
+.enhanced-credibility {
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--card-background);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.enhanced-credibility h4 {
+  margin: 0 0 16px 0;
+  color: var(--text-color);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.enhanced-factors {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.factor-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg-color-light);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-color);
+  transition: all 0.2s ease;
+}
+
+.factor-item:hover {
+  background: var(--bg-color-lighter);
+  transform: translateX(4px);
+}
+
+.factor-icon {
+  color: var(--primary-color);
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.factor-item span {
+  color: var(--text-color);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Logical Fallacies */
+.fallacies-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.fallacy-item {
+  background: #1e293b;
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid #334155;
+}
+
+.fallacy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.fallacy-type {
+  background: #ef4444;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.fallacy-severity {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.fallacy-severity.high {
+  background: #ef4444;
+  color: white;
+}
+
+.fallacy-severity.medium {
+  background: #f59e0b;
+  color: white;
+}
+
+.fallacy-severity.low {
+  background: #10b981;
+  color: white;
+}
+
+.fallacy-description {
+  color: #cbd5e1;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.fallacy-examples {
+  background: #0f172a;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border-left: 3px solid #ef4444;
+}
+
+.fallacy-examples strong {
+  color: #ffffff;
+  font-size: 0.875rem;
+}
+
+.fallacy-examples ul {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.5rem;
+}
+
+.fallacy-examples li {
+  color: #cbd5e1;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.no-fallacies {
+  color: #94a3b8;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Rhetorical Devices */
+.rhetorical-devices-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rhetorical-device-item {
+  background: #1e293b;
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid #334155;
+}
+
+.device-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.device-type {
+  background: #3b82f6;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.device-impact {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.device-impact.negative {
+  background: #ef4444;
+  color: white;
+}
+
+.device-impact.neutral {
+  background: #6b7280;
+  color: white;
+}
+
+.device-impact.positive {
+  background: #10b981;
+  color: white;
+}
+
+.device-impact.persuasive {
+  background: #8b5cf6;
+  color: white;
+}
+
+.device-impact.emphasizing {
+  background: #f59e0b;
+  color: white;
+}
+
+.device-description {
+  color: #cbd5e1;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.device-examples {
+  background: #0f172a;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border-left: 3px solid #3b82f6;
+}
+
+.device-examples strong {
+  color: #ffffff;
+  font-size: 0.875rem;
+}
+
+.device-examples ul {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.5rem;
+}
+
+.device-examples li {
+  color: #cbd5e1;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.no-devices {
+  color: #94a3b8;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Analysis Actions */
+.analysis-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.reanalyze-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(45deg, #10b981, #059669);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.reanalyze-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.reanalyze-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Count Badges */
+.fallacy-count,
+.device-count {
+  background: #ef4444;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.device-count {
+  background: var(--primary-color);
+}
+
+/* Section Icons */
+.section-icon {
+  color: var(--primary-color);
+  font-size: 18px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .bias-dimension {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .bias-score {
+    text-align: left;
+    justify-self: start;
+  }
+  
+  .analysis-actions {
+    flex-direction: column;
+  }
+  
+  .fallacy-header,
+  .device-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .phrases-list {
+    flex-direction: column;
+  }
+  
+  .bias-phrase {
+    text-align: center;
+  }
+  
+  .service-status-indicator {
+    padding: 12px;
+  }
+  
+  .enhanced-credibility,
+  .fallacy-item,
+  .rhetorical-device-item {
+    padding: 16px;
+  }
+  
+  .fallacy-examples,
+  .device-examples {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bias-breakdown {
+    padding: 16px;
+  }
+  
+  .bias-dimension {
+    padding: 8px;
+  }
+  
+  .bias-phrases {
+    padding: 12px;
+  }
+  
+  .enhanced-credibility,
+  .fallacy-item,
+  .rhetorical-device-item {
+    padding: 12px;
+  }
+  
+  .fallacy-examples,
+  .device-examples {
+    padding: 8px;
   }
 }

@@ -10,16 +10,6 @@ import AnalysisTest from './components/AnalysisTest';
 import EnvTest from './components/EnvTest';
 import ServerMonitor from './components/ServerMonitor';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { 
-  initializeDB, 
-  getAllSources, 
-  savePreference, 
-  getPreference, 
-  saveSources,
-  getUserPreferences,
-  saveUserPreferences
-} from './services/storageService';
-import { articlesApi, sourcesApi } from './services/apiService';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import LibraryPage from './pages/LibraryPage';
@@ -59,42 +49,6 @@ import Register from './components/Register';
 import { ThemeProvider } from './contexts/ThemeContext';
 import FeedbackDashboard from './components/FeedbackDashboard';
 import PWAInstallBanner from './components/PWAInstallBanner';
-
-// Default RSS feeds to load on first run
-const DEFAULT_SOURCES = [
-  { 
-    id: 'npr',
-    name: 'NPR News',
-    url: 'https://feeds.npr.org/1001/rss.xml',
-    category: 'news', 
-    biasRating: 'center-left',
-    reliability: 'high'
-  },
-  {
-    id: 'reuters',
-    name: 'Reuters',
-    url: 'https://feeds.reuters.com/reuters/topNews',
-    category: 'news',
-    biasRating: 'center',
-    reliability: 'high'
-  },
-  {
-    id: 'bbc',
-    name: 'BBC News',
-    url: 'http://feeds.bbci.co.uk/news/world/rss.xml',
-    category: 'news',
-    biasRating: 'center',
-    reliability: 'high'
-  },
-  {
-    id: 'techcrunch',
-    name: 'TechCrunch',
-    url: 'https://techcrunch.com/feed/',
-    category: 'technology',
-    biasRating: 'center',
-    reliability: 'medium'
-  }
-];
 
 // Protected route wrapper
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
@@ -185,111 +139,29 @@ function App() {
     notificationsEnabled: true
   });
 
-  // Initialize the application
+  // Simplified initialization
   useEffect(() => {
     const setupApp = async () => {
       try {
-        // Initialize the database with a timeout to prevent hanging
-        const dbInitPromise = initializeDB();
+        // Always apply dark mode
+        document.documentElement.classList.add('dark-mode');
         
-        // Add a timeout to prevent the initialization from hanging
-        const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('Database initialization timed out')), 10000);
-        });
-        
-        try {
-          // Race between normal initialization and timeout
-          await Promise.race([dbInitPromise, timeoutPromise]);
-          console.log('Database initialized successfully');
-        } catch (dbError) {
-          console.warn('Database initialization failed:', dbError);
-          // Continue anyway
-        }
-        
-        // Load sources with error handling
-        let sourcesLoaded = false;
-        try {
-          // Wrap in a timeout to prevent getting stuck
-          const sourcesPromise = sourcesApi.getAllSources();
-          const sourcesTimeoutPromise = new Promise((_, reject) => {
-            setTimeout(() => reject(new Error('Sources fetch timed out')), 10000);
-          });
-          
-          // Race between normal fetch and timeout
-          const sources = await Promise.race([sourcesPromise, sourcesTimeoutPromise]);
-          
-          if (sources && sources.length > 0) {
-            console.log('Backend is available, using server sources');
-            sourcesLoaded = true;
-          } else {
-            console.warn('No sources returned from backend');
-          }
-        } catch (error) {
-          console.warn('Backend not available or error fetching sources:', error);
-        }
-        
-        // If server sources didn't load, try local storage
-        if (!sourcesLoaded) {
-          try {
-            // Check if we have any sources stored
-            const storedSources = await getAllSources();
-            
-            // If no sources are stored, add the default ones
-            if (!storedSources || storedSources.length === 0) {
-              console.log('No sources in storage, adding defaults');
-              await saveSources(DEFAULT_SOURCES);
-            } else {
-              console.log('Using sources from local storage');
-            }
-          } catch (storageError) {
-            console.error('Error accessing local storage:', storageError);
-            // Continue anyway
-          }
-        }
-        
-        // Get user preferences
-        try {
-          const prefs = await getUserPreferences();
-          if (prefs) {
-            // Always use dark mode
-            setUserPreferences({ ...prefs, darkMode: true });
-            console.log('User preferences loaded');
-          } else {
-            // Create default preferences if none exist
-            await saveUserPreferences(userPreferences);
-            console.log('Default preferences saved');
-          }
-          
-        } catch (prefsError) {
-          console.warn('Error loading preferences:', prefsError);
-          // Continue with default preferences
-        }
+        // Set initialized immediately for fast loading
+        setIsInitialized(true);
         
       } catch (error) {
         console.error('Failed to initialize app:', error);
-        // Log detail for debugging
-        if (error instanceof Error) {
-          console.error('Error details:', error.message, error.stack);
-        }
-      } finally {
         // Always set initialized to true to ensure UI renders
         setIsInitialized(true);
       }
     };
     
     setupApp();
-    
-    // Always apply dark mode
-    document.documentElement.classList.add('dark-mode');
   }, []);
   
   // Save user preferences when they change
   useEffect(() => {
     if (isInitialized) {
-      saveUserPreferences(userPreferences)
-        .then(() => logger.debug('User preferences saved'))
-        .catch(err => logger.error('Error saving user preferences:', err));
-      
       // Always ensure dark mode is applied
       document.documentElement.classList.add('dark-mode');
     }

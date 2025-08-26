@@ -1,74 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiClock, FiShield, FiTag, FiTrendingUp, FiFilter, FiRefreshCw, FiDatabase, FiWifi, FiWifiOff, FiInfo } from 'react-icons/fi';
+import { FiClock, FiShield, FiTag, FiTrendingUp, FiRefreshCw, FiAlertTriangle, FiCheckCircle, FiInfo } from 'react-icons/fi';
 import { articleService, Article } from '../services/articleService';
 import AnalysisTooltip from '../components/AnalysisTooltip';
 import { processArticleDescription } from '../utils/htmlUtils';
 import '../styles/BalancedFeedPage.css';
 
-// Article interface is now imported from articleService
-
-
-
 const BalancedFeedPage: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeFilters, setActiveFilters] = useState<string[]>(['far-left', 'left', 'center', 'right', 'far-right']);
-  const [sortBy, setSortBy] = useState<'date' | 'credibility' | 'source'>('date');
-  const [showFilters, setShowFilters] = useState(false);
-  const [dataSource, setDataSource] = useState<'backend' | 'cache' | 'fallback'>('backend');
 
-  const fetchAllArticles = async () => {
+  const fetchArticles = async () => {
     setLoading(true);
     setError(null);
     
     try {
-      // Use the reliable article service with fallbacks
-      const fetchedArticles = await articleService.getArticles(activeFilters, 50);
-      
-      // Determine data source for UI feedback
-      const cacheStatus = articleService.getCacheStatus();
-      if (cacheStatus.hasCache && !cacheStatus.isValid) {
-        setDataSource('cache');
-      } else if (fetchedArticles.length > 0 && fetchedArticles[0]?.articleId?.startsWith('fallback-')) {
-        setDataSource('fallback');
-      } else {
-        setDataSource('backend');
-      }
-      
-      console.log('Fetched articles:', fetchedArticles.length);
-      console.log('Data source:', dataSource);
-      
-      const sortedArticles = sortArticles(fetchedArticles, sortBy);
-      setArticles(sortedArticles);
-      
+      const fetchedArticles = await articleService.getArticles();
+      setArticles(fetchedArticles);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load articles');
-      // Even if there's an error, try to show fallback articles
-      const fallbackArticles = articleService.getFallbackArticles();
-      setArticles(sortArticles(fallbackArticles, sortBy));
-      setDataSource('fallback');
     } finally {
       setLoading(false);
     }
   };
 
-  const sortArticles = (articles: Article[], sortType: string) => {
-    switch (sortType) {
-      case 'credibility':
-        return [...articles].sort((a, b) => b.analysis.credibility.score - a.analysis.credibility.score);
-      case 'source':
-        return [...articles].sort((a, b) => a.source.localeCompare(b.source));
-      case 'date':
-      default:
-        return [...articles].sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
-    }
-  };
-
   useEffect(() => {
-    fetchAllArticles();
-  }, [activeFilters, sortBy]);
+    fetchArticles();
+  }, []);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -89,39 +48,22 @@ const BalancedFeedPage: React.FC = () => {
     }
   };
 
-  const getBiasColor = (category: string) => {
-    switch (category) {
-      case 'far-left': return '#dc2626';
-      case 'left': return '#ef4444';
-      case 'center': return '#3b82f6';
-      case 'right': return '#8b5cf6';
-      case 'far-right': return '#7c3aed';
+  const getImpactColor = (impact: string) => {
+    switch (impact) {
+      case 'high': return '#ef4444';
+      case 'medium': return '#f59e0b';
+      case 'low': return '#10b981';
       default: return '#6b7280';
     }
   };
 
-  const toggleFilter = (category: string) => {
-    setActiveFilters(prev => 
-      prev.includes(category) 
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
-    );
-  };
-
-  const getCategoryStats = () => {
-    const stats = {
-      'far-left': 0,
-      'left': 0,
-      'center': 0,
-      'right': 0,
-      'far-right': 0
-    };
-    
-    articles.forEach(article => {
-      stats[article.sourceCategory as keyof typeof stats]++;
-    });
-    
-    return stats;
+  const getSentimentColor = (sentiment: string) => {
+    switch (sentiment) {
+      case 'positive': return '#10b981';
+      case 'negative': return '#ef4444';
+      case 'neutral': return '#6b7280';
+      default: return '#6b7280';
+    }
   };
 
   if (loading) {
@@ -129,8 +71,8 @@ const BalancedFeedPage: React.FC = () => {
       <div className="balanced-feed-page">
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <p>Loading balanced news feed...</p>
-          <p className="loading-subtitle">Gathering perspectives from across the political spectrum</p>
+          <p>Loading curated articles...</p>
+          <p className="loading-subtitle">Preparing your personalized reading experience</p>
         </div>
       </div>
     );
@@ -140,9 +82,9 @@ const BalancedFeedPage: React.FC = () => {
     return (
       <div className="balanced-feed-page">
         <div className="error-container">
-          <h2>Error Loading Balanced Feed</h2>
+          <h2>Error Loading Articles</h2>
           <p>{error}</p>
-          <button onClick={fetchAllArticles} className="retry-button">
+          <button onClick={fetchArticles} className="retry-button">
             <FiRefreshCw /> Try Again
           </button>
         </div>
@@ -150,96 +92,18 @@ const BalancedFeedPage: React.FC = () => {
     );
   }
 
-  const categoryStats = getCategoryStats();
-
   return (
     <div className="balanced-feed-page">
       <div className="feed-header">
         <div className="header-content">
-          <h1>Balanced News Feed</h1>
-          <p className="subtitle">Multiple perspectives for informed understanding</p>
-          <div className="data-source-indicator">
-            {dataSource === 'backend' && (
-              <span className="source-badge backend">
-                <FiWifi /> Live Data
-              </span>
-            )}
-            {dataSource === 'cache' && (
-              <span className="source-badge cache">
-                <FiDatabase /> Cached Data
-              </span>
-            )}
-            {dataSource === 'fallback' && (
-              <span className="source-badge fallback">
-                <FiWifiOff /> Offline Mode
-              </span>
-            )}
-          </div>
+          <h1>Curated News Feed</h1>
+          <p className="subtitle">High-quality articles with comprehensive AI analysis</p>
           
           <div className="feed-controls">
-            <button 
-              onClick={() => setShowFilters(!showFilters)}
-              className="filter-toggle"
-            >
-              <FiFilter /> Filters
-            </button>
-            
-            <select 
-              value={sortBy} 
-              onChange={(e) => setSortBy(e.target.value as 'date' | 'credibility' | 'source')}
-              className="sort-select"
-            >
-              <option value="date">Sort by Date</option>
-              <option value="credibility">Sort by Credibility</option>
-              <option value="source">Sort by Source</option>
-            </select>
-            
-            <button onClick={fetchAllArticles} className="refresh-button">
+            <button onClick={fetchArticles} className="refresh-button">
               <FiRefreshCw /> Refresh
             </button>
           </div>
-        </div>
-        
-        {showFilters && (
-          <div className="filter-panel">
-            <h3>Source Categories</h3>
-            <div className="filter-options">
-              {Object.entries(categoryStats).map(([category, count]) => (
-                <label key={category} className="filter-option">
-                  <input
-                    type="checkbox"
-                    checked={activeFilters.includes(category)}
-                    onChange={() => toggleFilter(category)}
-                  />
-                  <span className="filter-label">
-                    <span 
-                      className="bias-indicator" 
-                      style={{ backgroundColor: getBiasColor(category) }}
-                    ></span>
-                    {category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                    <span className="article-count">({count})</span>
-                  </span>
-                </label>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="source-stats">
-        <div className="stats-grid">
-          {Object.entries(categoryStats).map(([category, count]) => (
-            <div key={category} className="stat-card">
-              <div 
-                className="stat-color" 
-                style={{ backgroundColor: getBiasColor(category) }}
-              ></div>
-              <div className="stat-content">
-                <span className="stat-count">{count}</span>
-                <span className="stat-label">{category.replace('-', ' ')}</span>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
 
@@ -248,13 +112,10 @@ const BalancedFeedPage: React.FC = () => {
           <article key={article.articleId || index} className="article-card">
             <div className="article-header">
               <div className="source-info">
-                <span 
-                  className="source-badge"
-                  style={{ backgroundColor: getBiasColor(article.sourceCategory) }}
-                >
+                <span className="source-badge">
                   {article.source}
                 </span>
-                <span className="bias-category">{article.sourceCategory.replace('-', ' ')}</span>
+                <span className="bias-category">Balanced</span>
               </div>
               
               <h2 className="article-title">
@@ -287,7 +148,7 @@ const BalancedFeedPage: React.FC = () => {
                 <div className="analysis-grid">
                   <AnalysisTooltip
                     title="Reading Time"
-                    explanation="Estimated time to read this article based on word count and complexity. Longer articles may contain more detailed analysis but require more time investment."
+                    explanation="Estimated time to read this article based on word count and complexity."
                     icon={<FiClock />}
                     className="metric-tooltip"
                   >
@@ -299,13 +160,7 @@ const BalancedFeedPage: React.FC = () => {
 
                   <AnalysisTooltip
                     title="Credibility Score"
-                    explanation={`This article has a ${typeof article.analysis.credibility.level === 'string' 
-                      ? article.analysis.credibility.level 
-                      : typeof article.analysis.credibility.level === 'object' && article.analysis.credibility.level !== null
-                        ? ((article.analysis.credibility.level as any).level || 
-                           (article.analysis.credibility.level as any).type || 
-                           'complex') 
-                        : 'Unknown'} credibility rating based on source reputation, fact-checking, citation quality, and historical accuracy. ${article.analysis.credibility.reason}`}
+                    explanation={`This article has a ${article.analysis.credibility.level} credibility rating (${Math.round(article.analysis.credibility.score * 100)}%) based on source reputation, fact-checking, citation quality, author expertise, and transparency. ${article.analysis.credibility.reason}`}
                     icon={<FiShield />}
                     className="credibility-tooltip"
                   >
@@ -313,101 +168,249 @@ const BalancedFeedPage: React.FC = () => {
                       <FiShield className="analysis-icon" />
                       <span
                         className="analysis-value credibility-badge"
-                        style={{ backgroundColor: getCredibilityColor(typeof article.analysis.credibility.level === 'string' 
-                          ? article.analysis.credibility.level 
-                          : typeof article.analysis.credibility.level === 'object' && article.analysis.credibility.level !== null
-                            ? ((article.analysis.credibility.level as any).level || 
-                               (article.analysis.credibility.level as any).type || 
-                               'unknown') 
-                            : 'unknown') }}
+                        style={{ backgroundColor: getCredibilityColor(article.analysis.credibility.level) }}
                       >
-                        {typeof article.analysis.credibility.level === 'string' 
-                          ? article.analysis.credibility.level 
-                          : typeof article.analysis.credibility.level === 'object' && article.analysis.credibility.level !== null
-                            ? ((article.analysis.credibility.level as any).level || 
-                               (article.analysis.credibility.level as any).type || 
-                               JSON.stringify(article.analysis.credibility.level)) 
-                            : 'Unknown'}
+                        {article.analysis.credibility.level} ({Math.round(article.analysis.credibility.score * 100)}%)
                       </span>
                     </div>
                   </AnalysisTooltip>
 
                   {article.analysis.biasAnalysis && article.analysis.biasAnalysis.direction && (
                     <AnalysisTooltip
-                      title="Bias Analysis"
-                      explanation={`This article shows ${(() => {
-                        const direction = article.analysis.biasAnalysis.direction;
-                        if (typeof direction === 'string') {
-                          return direction;
-                        } else if (typeof direction === 'object' && direction !== null) {
-                          const dirObj = direction as any;
-                          const result = dirObj.type || dirObj.tone || dirObj.leaning;
-                          return typeof result === 'string' ? result : 'complex';
-                        }
-                        return 'unknown';
-                      })()} bias with ${Math.round((article.analysis.biasAnalysis.confidence || 0) * 100)}% confidence. This indicates the political or ideological leaning detected in the content, language, and framing of the article.`}
+                      title="Enhanced Bias Analysis"
+                      explanation={`This article shows ${article.analysis.biasAnalysis.direction} bias with ${Math.round(article.analysis.biasAnalysis.confidence * 100)}% confidence. Overall bias score: ${Math.round(article.analysis.biasAnalysis.enhancedAnalysis.overallBias * 100)}%. ${article.analysis.biasAnalysis.enhancedAnalysis.biasExplanation}`}
                       icon={<FiTag />}
                       className="bias-tooltip"
                     >
                       <div className="analysis-item">
                         <FiTag className="analysis-icon" />
                         <span className="analysis-value">
-                          Bias: {(() => {
-                            const direction = article.analysis.biasAnalysis.direction;
-                            if (typeof direction === 'string') {
-                              return direction;
-                            } else if (typeof direction === 'object' && direction !== null) {
-                              const dirObj = direction as any;
-                              const result = dirObj.type || dirObj.tone || dirObj.leaning;
-                              return typeof result === 'string' ? result : 'Complex';
-                            }
-                            return 'Unknown';
-                          })()} 
-                          ({Math.round((article.analysis.biasAnalysis.confidence || 0) * 100)}%)
+                          Bias: {article.analysis.biasAnalysis.direction} ({Math.round(article.analysis.biasAnalysis.confidence * 100)}%)
                         </span>
                       </div>
                     </AnalysisTooltip>
                   )}
 
-                  {article.analysis.logicalFallacies && article.analysis.logicalFallacies.length > 0 && (
+                  {article.analysis.networkAnalysis && article.analysis.networkAnalysis.sentimentAnalysis && (
                     <AnalysisTooltip
-                      title="Logical Fallacies Detected"
-                      explanation={`${article.analysis.logicalFallacies.length} logical fallacy${article.analysis.logicalFallacies.length === 1 ? 'y' : 'ies'} found in this article. Logical fallacies are errors in reasoning that can weaken arguments and mislead readers. Common types include ad hominem attacks, straw man arguments, and false dilemmas.`}
+                      title="Sentiment Analysis"
+                      explanation={`Overall sentiment: ${article.analysis.networkAnalysis.sentimentAnalysis.overall} (${Math.round(article.analysis.networkAnalysis.sentimentAnalysis.score * 100)}%). Positive: ${Math.round(article.analysis.networkAnalysis.sentimentAnalysis.breakdown.positive * 100)}%, Negative: ${Math.round(article.analysis.networkAnalysis.sentimentAnalysis.breakdown.negative * 100)}%, Neutral: ${Math.round(article.analysis.networkAnalysis.sentimentAnalysis.breakdown.neutral * 100)}%`}
                       icon={<FiTrendingUp />}
-                      className="fallacy-tooltip"
+                      className="sentiment-tooltip"
                     >
                       <div className="analysis-item">
                         <FiTrendingUp className="analysis-icon" />
-                        <span className="analysis-value">
-                          {article.analysis.logicalFallacies.length} fallac{article.analysis.logicalFallacies.length === 1 ? 'y' : 'ies'} detected
+                        <span 
+                          className="analysis-value sentiment-badge"
+                          style={{ backgroundColor: getSentimentColor(article.analysis.networkAnalysis.sentimentAnalysis.overall) }}
+                        >
+                          {article.analysis.networkAnalysis.sentimentAnalysis.overall}
                         </span>
                       </div>
                     </AnalysisTooltip>
                   )}
                 </div>
 
-                {article.analysis.logicalFallacies && article.analysis.logicalFallacies.length > 0 && (
-                  <div className="fallacy-snippets">
-                    {article.analysis.logicalFallacies.slice(0, 2).map((f, idx) => (
-                      <div key={idx} className="fallacy-chip" title={f.explanation}>
-                        {(typeof f.type === 'string' 
-                          ? f.type 
-                          : typeof f.type === 'object' && f.type !== null
-                            ? ((f.type as any).type || 
-                               (f.type as any).name || 
-                               JSON.stringify(f.type)) 
-                            : 'Unknown').replace(/_/g, ' ')}
+                {/* Enhanced Credibility Factors */}
+                {article.analysis.credibility.factors && (
+                  <div className="credibility-factors">
+                    <h4 className="factors-title">
+                      <FiShield className="icon" />
+                      Credibility Factors
+                    </h4>
+                    <div className="factors-grid">
+                      <div className="factor-item">
+                        <span className="factor-label">Source Reputation</span>
+                        <div className="factor-bar">
+                          <div 
+                            className="factor-fill" 
+                            style={{ 
+                              width: `${article.analysis.credibility.factors.sourceReputation * 100}%`,
+                              backgroundColor: getCredibilityColor(article.analysis.credibility.level)
+                            }}
+                          ></div>
+                        </div>
+                        <span className="factor-score">{Math.round(article.analysis.credibility.factors.sourceReputation * 100)}%</span>
                       </div>
-                    ))}
+                      <div className="factor-item">
+                        <span className="factor-label">Fact Checking</span>
+                        <div className="factor-bar">
+                          <div 
+                            className="factor-fill" 
+                            style={{ 
+                              width: `${article.analysis.credibility.factors.factChecking * 100}%`,
+                              backgroundColor: getCredibilityColor(article.analysis.credibility.level)
+                            }}
+                          ></div>
+                        </div>
+                        <span className="factor-score">{Math.round(article.analysis.credibility.factors.factChecking * 100)}%</span>
+                      </div>
+                      <div className="factor-item">
+                        <span className="factor-label">Citation Quality</span>
+                        <div className="factor-bar">
+                          <div 
+                            className="factor-fill" 
+                            style={{ 
+                              width: `${article.analysis.credibility.factors.citationQuality * 100}%`,
+                              backgroundColor: getCredibilityColor(article.analysis.credibility.level)
+                            }}
+                          ></div>
+                        </div>
+                        <span className="factor-score">{Math.round(article.analysis.credibility.factors.citationQuality * 100)}%</span>
+                      </div>
+                      <div className="factor-item">
+                        <span className="factor-label">Author Expertise</span>
+                        <div className="factor-bar">
+                          <div 
+                            className="factor-fill" 
+                            style={{ 
+                              width: `${article.analysis.credibility.factors.authorExpertise * 100}%`,
+                              backgroundColor: getCredibilityColor(article.analysis.credibility.level)
+                            }}
+                          ></div>
+                        </div>
+                        <span className="factor-score">{Math.round(article.analysis.credibility.factors.authorExpertise * 100)}%</span>
+                      </div>
+                      <div className="factor-item">
+                        <span className="factor-label">Transparency</span>
+                        <div className="factor-bar">
+                          <div 
+                            className="factor-fill" 
+                            style={{ 
+                              width: `${article.analysis.credibility.factors.transparency * 100}%`,
+                              backgroundColor: getCredibilityColor(article.analysis.credibility.level)
+                            }}
+                          ></div>
+                        </div>
+                        <span className="factor-score">{Math.round(article.analysis.credibility.factors.transparency * 100)}%</span>
+                      </div>
+                    </div>
                   </div>
                 )}
 
+                {/* Logical Fallacies */}
+                {article.analysis.logicalFallacies && article.analysis.logicalFallacies.length > 0 && (
+                  <div className="fallacies-section">
+                    <h4 className="fallacies-title">
+                      <FiAlertTriangle className="icon" />
+                      Logical Fallacies Detected ({article.analysis.logicalFallacies.length})
+                    </h4>
+                    <div className="fallacies-grid">
+                      {article.analysis.logicalFallacies.map((fallacy, idx) => (
+                        <div key={idx} className="fallacy-card">
+                          <div className="fallacy-header">
+                            <span 
+                              className="fallacy-type"
+                              style={{ backgroundColor: getImpactColor(fallacy.impact) }}
+                            >
+                              {fallacy.type}
+                            </span>
+                            <span 
+                              className="fallacy-impact"
+                              style={{ backgroundColor: getImpactColor(fallacy.impact) }}
+                            >
+                              {fallacy.impact} impact
+                            </span>
+                          </div>
+                          <p className="fallacy-explanation">{fallacy.explanation}</p>
+                          {fallacy.excerpt && (
+                            <div className="fallacy-excerpt">
+                              <span className="excerpt-label">Example:</span>
+                              <span className="excerpt-text">"{fallacy.excerpt}"</span>
+                            </div>
+                          )}
+                          <div className="fallacy-confidence">
+                            <span className="confidence-label">Confidence:</span>
+                            <span className="confidence-score">{Math.round(fallacy.confidence * 100)}%</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Enhanced Bias Analysis */}
+                {article.analysis.biasAnalysis && article.analysis.biasAnalysis.enhancedAnalysis && (
+                  <div className="bias-breakdown">
+                    <h4 className="bias-title">
+                      <FiTag className="icon" />
+                      Bias Analysis Breakdown
+                    </h4>
+                    <div className="bias-grid">
+                      <div className="bias-item">
+                        <span className="bias-label">Language Bias</span>
+                        <div className="bias-bar">
+                          <div 
+                            className="bias-fill" 
+                            style={{ width: `${article.analysis.biasAnalysis.enhancedAnalysis.languageBias * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="bias-score">{Math.round(article.analysis.biasAnalysis.enhancedAnalysis.languageBias * 100)}%</span>
+                      </div>
+                      <div className="bias-item">
+                        <span className="bias-label">Framing Bias</span>
+                        <div className="bias-bar">
+                          <div 
+                            className="bias-fill" 
+                            style={{ width: `${article.analysis.biasAnalysis.enhancedAnalysis.framingBias * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="bias-score">{Math.round(article.analysis.biasAnalysis.enhancedAnalysis.framingBias * 100)}%</span>
+                      </div>
+                      <div className="bias-item">
+                        <span className="bias-label">Source Bias</span>
+                        <div className="bias-bar">
+                          <div 
+                            className="bias-fill" 
+                            style={{ width: `${article.analysis.biasAnalysis.enhancedAnalysis.sourceBias * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="bias-score">{Math.round(article.analysis.biasAnalysis.enhancedAnalysis.sourceBias * 100)}%</span>
+                      </div>
+                      <div className="bias-item">
+                        <span className="bias-label">Selection Bias</span>
+                        <div className="bias-bar">
+                          <div 
+                            className="bias-fill" 
+                            style={{ width: `${article.analysis.biasAnalysis.enhancedAnalysis.selectionBias * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="bias-score">{Math.round(article.analysis.biasAnalysis.enhancedAnalysis.selectionBias * 100)}%</span>
+                      </div>
+                    </div>
+                    <div className="bias-explanation">
+                      <FiInfo className="icon" />
+                      <span>{article.analysis.biasAnalysis.enhancedAnalysis.biasExplanation}</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Network Analysis */}
                 {article.analysis.networkAnalysis && article.analysis.networkAnalysis.topEntities && Array.isArray(article.analysis.networkAnalysis.topEntities) && article.analysis.networkAnalysis.topEntities.length > 0 && (
                   <div className="network-snippets">
-                    <span className="network-label">Top entities:</span>
-                    {article.analysis.networkAnalysis.topEntities.slice(0, 3).map((e, idx) => (
-                      <span key={idx} className="entity-chip">{typeof e.name === 'string' ? e.name : 'Unknown'}</span>
-                    ))}
+                    <h4 className="network-title">
+                      <FiTrendingUp className="icon" />
+                      Key Topics & Entities
+                    </h4>
+                    <div className="entities-grid">
+                      {article.analysis.networkAnalysis.topEntities.slice(0, 4).map((e, idx) => (
+                        <span key={idx} className="entity-chip">
+                          <span className="entity-name">{typeof e.name === 'string' ? e.name : 'Unknown'}</span>
+                          <span className="entity-type">{e.type}</span>
+                          <span className="entity-count">({e.count})</span>
+                        </span>
+                      ))}
+                    </div>
+                    {article.analysis.networkAnalysis.keyTopics && (
+                      <div className="topics-section">
+                        <span className="topics-label">Key Topics:</span>
+                        <div className="topics-grid">
+                          {article.analysis.networkAnalysis.keyTopics.slice(0, 3).map((topic, idx) => (
+                            <span key={idx} className="topic-chip">{topic}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -438,7 +441,7 @@ const BalancedFeedPage: React.FC = () => {
       {articles.length === 0 && !loading && (
         <div className="no-articles">
           <h2>No articles found</h2>
-          <p>Try adjusting your filters or refreshing the feed.</p>
+          <p>Try refreshing the feed.</p>
         </div>
       )}
     </div>

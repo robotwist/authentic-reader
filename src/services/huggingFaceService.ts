@@ -835,4 +835,243 @@ export async function generateAdvancedSummary(text: string, maxLength: number = 
     // Fall back to the basic summarizer
     return summarizeText(text);
   }
-} 
+}
+
+/**
+ * Check if the Hugging Face API is available and working
+ * @returns Promise<boolean> True if API is available
+ */
+export async function checkApiStatus(): Promise<boolean> {
+  try {
+    if (!HF_CONFIG.isConfigured()) {
+      return false;
+    }
+    
+    // Try a simple request to test the API
+    const response = await fetch(`${HF_CONFIG.INFERENCE_API_URL}/${MODELS.SENTIMENT}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${HF_CONFIG.API_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ inputs: 'test' }),
+    });
+    
+    return response.ok;
+  } catch (error) {
+    logger.error('HF API status check failed:', error);
+    return false;
+  }
+}
+
+/**
+ * Analyze bias in text using multiple approaches
+ * @param text The text to analyze
+ * @returns Bias analysis results
+ */
+export async function analyzeBias(text: string): Promise<{
+  political_bias: number;
+  emotional_bias: number;
+  cognitive_bias: number;
+  overall_bias: number;
+  bias_phrases: string[];
+  assessment: string;
+}> {
+  try {
+    const biasAnalysis = await analyzeMultidimensionalBias(text);
+    
+    return {
+      political_bias: biasAnalysis.political_bias || 0.5,
+      emotional_bias: biasAnalysis.emotional_bias || 0.5,
+      cognitive_bias: biasAnalysis.cognitive_bias || 0.5,
+      overall_bias: biasAnalysis.overall_bias || 0.5,
+      bias_phrases: biasAnalysis.bias_phrases || [],
+      assessment: biasAnalysis.assessment || "Analysis completed"
+    };
+  } catch (error) {
+    logger.error('Bias analysis failed:', error);
+    return {
+      political_bias: 0.5,
+      emotional_bias: 0.5,
+      cognitive_bias: 0.5,
+      overall_bias: 0.5,
+      bias_phrases: [],
+      assessment: "Analysis failed - using neutral values"
+    };
+  }
+}
+
+/**
+ * Analyze credibility of text content
+ * @param text The text to analyze
+ * @returns Credibility analysis results
+ */
+export async function analyzeCredibility(text: string): Promise<{
+  score: number;
+  factors: string[];
+}> {
+  try {
+    // Use sentiment analysis as a proxy for credibility
+    const sentiment = await analyzeSentiment(text);
+    const entities = await extractEntities(text);
+    
+    let score = 0.7; // Base score
+    const factors = [];
+    
+    // Adjust score based on sentiment
+    if (sentiment.label === 'POSITIVE' && sentiment.score > 0.8) {
+      score += 0.1;
+      factors.push('Positive sentiment indicates balanced reporting');
+    }
+    
+    // Adjust score based on entity diversity
+    if (entities.length > 5) {
+      score += 0.1;
+      factors.push('Multiple entities suggest comprehensive coverage');
+    }
+    
+    // Check for specific credibility indicators
+    const lowerText = text.toLowerCase();
+    if (lowerText.includes('according to') || lowerText.includes('study') || lowerText.includes('research')) {
+      score += 0.1;
+      factors.push('Contains citations and references');
+    }
+    
+    if (lowerText.includes('experts') || lowerText.includes('professor') || lowerText.includes('dr.')) {
+      score += 0.1;
+      factors.push('References expert sources');
+    }
+    
+    return {
+      score: Math.min(1, Math.max(0, score)),
+      factors: factors.length > 0 ? factors : ['Standard credibility assessment']
+    };
+  } catch (error) {
+    logger.error('Credibility analysis failed:', error);
+    return {
+      score: 0.7,
+      factors: ['Fallback credibility assessment']
+    };
+  }
+}
+
+/**
+ * Hugging Face Service Class
+ * Provides a unified interface for all HF API operations
+ */
+export class HuggingFaceService {
+  /**
+   * Check if the API is available
+   */
+  async checkApiStatus(): Promise<boolean> {
+    return checkApiStatus();
+  }
+
+  /**
+   * Analyze bias in text
+   */
+  async analyzeBias(text: string) {
+    return analyzeBias(text);
+  }
+
+  /**
+   * Analyze sentiment in text
+   */
+  async analyzeSentiment(text: string) {
+    return analyzeSentiment(text);
+  }
+
+  /**
+   * Extract entities from text
+   */
+  async extractEntities(text: string) {
+    return extractEntities(text);
+  }
+
+  /**
+   * Analyze credibility of text
+   */
+  async analyzeCredibility(text: string) {
+    return analyzeCredibility(text);
+  }
+
+  /**
+   * Analyze emotions in text
+   */
+  async analyzeEmotions(text: string) {
+    return analyzeEmotions(text);
+  }
+
+  /**
+   * Classify text
+   */
+  async classifyText(text: string, labels: string[]) {
+    return classifyText(text, labels);
+  }
+
+  /**
+   * Get text embeddings
+   */
+  async getTextEmbeddings(text: string) {
+    return getTextEmbeddings(text);
+  }
+
+  /**
+   * Analyze multidimensional bias
+   */
+  async analyzeMultidimensionalBias(text: string) {
+    return analyzeMultidimensionalBias(text);
+  }
+
+  /**
+   * Analyze rhetoric in text
+   */
+  async analyzeRhetoric(text: string) {
+    return analyzeRhetoric(text);
+  }
+
+  /**
+   * Answer questions based on context
+   */
+  async answerQuestion(context: string, question: string) {
+    return answerQuestion(context, question);
+  }
+
+  /**
+   * Summarize text
+   */
+  async summarizeText(text: string, maxLength = 150) {
+    return summarizeText(text, maxLength);
+  }
+
+  /**
+   * Generate analysis explanation
+   */
+  async generateAnalysisExplanation(analysis: any, text: string) {
+    return generateAnalysisExplanation(analysis, text);
+  }
+
+  /**
+   * Analyze political bias
+   */
+  async analyzePoliticalBias(text: string) {
+    return analyzePoliticalBias(text);
+  }
+
+  /**
+   * Enhanced entity extraction
+   */
+  async enhancedEntityExtraction(text: string) {
+    return enhancedEntityExtraction(text);
+  }
+
+  /**
+   * Generate advanced summary
+   */
+  async generateAdvancedSummary(text: string, maxLength: number = 150) {
+    return generateAdvancedSummary(text, maxLength);
+  }
+}
+
+// Export singleton instance
+export const huggingFaceService = new HuggingFaceService(); 
