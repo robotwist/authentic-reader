@@ -55,8 +55,9 @@ app.add_middleware(
 )
 
 # Initialize Llama 3 client
-# Get model name from environment variable, default to 8B version
+# Get model name and host from environment variables
 MODEL_NAME = os.environ.get("LLAMA_MODEL", "llama3:8b")
+OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 llama_client = None
 
 # Initialize result cache (optional)
@@ -100,8 +101,8 @@ async def startup_event():
     """Initialize services on startup"""
     global llama_client
     try:
-        logger.info(f"Initializing Llama 3 client with model: {MODEL_NAME}")
-        llama_client = LlamaClient(model_name=MODEL_NAME)
+        logger.info(f"Initializing Llama 3 client with model: {MODEL_NAME} and host: {OLLAMA_HOST}")
+        llama_client = LlamaClient(model_name=MODEL_NAME, host=OLLAMA_HOST)
         # Test connection to Ollama
         llama_client.test_connection()
         logger.info("Llama 3 client initialized successfully")
