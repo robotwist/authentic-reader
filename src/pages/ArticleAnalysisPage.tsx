@@ -110,40 +110,141 @@ const ArticleAnalysisPage: React.FC = () => {
   };
 
   const generateLogicalFallacies = (text: string): any[] => {
-    const fallacies = [
-      {
+    // Enhanced logical fallacy detection with more comprehensive analysis
+    const fallacies = [];
+    const lowerText = text.toLowerCase();
+    
+    // Check for common logical fallacies with more sophisticated detection
+    if (lowerText.includes('experts say') || lowerText.includes('authorities agree') || lowerText.includes('scientists confirm')) {
+      fallacies.push({
         type: 'Appeal to Authority',
-        explanation: 'Relying on authority figures rather than evidence',
-        excerpt: text.substring(0, 100) + '...',
+        explanation: 'The text relies on authority figures rather than presenting concrete evidence or logical arguments. This can be problematic when the authority is not relevant to the specific claim being made.',
+        excerpt: text.substring(Math.max(0, lowerText.indexOf('experts say') - 50), Math.min(text.length, lowerText.indexOf('experts say') + 100)) + '...',
+        confidence: 85,
+        impact: 'medium'
+      });
+    }
+    
+    if (lowerText.includes('either') && lowerText.includes('or') && (lowerText.includes('choice') || lowerText.includes('option'))) {
+      fallacies.push({
+        type: 'False Dichotomy',
+        explanation: 'The text presents a situation as having only two possible outcomes or choices, when in reality there are more nuanced options available. This oversimplifies complex issues.',
+        excerpt: text.substring(Math.max(0, lowerText.indexOf('either') - 50), Math.min(text.length, lowerText.indexOf('either') + 150)) + '...',
+        confidence: 80,
+        impact: 'high'
+      });
+    }
+    
+    if (lowerText.includes('everyone knows') || lowerText.includes('obviously') || lowerText.includes('clearly')) {
+      fallacies.push({
+        type: 'Appeal to Common Belief',
+        explanation: 'The text assumes something is true because many people believe it, without providing evidence. This is a form of argumentum ad populum.',
+        excerpt: text.substring(Math.max(0, lowerText.indexOf('everyone knows') - 50), Math.min(text.length, lowerText.indexOf('everyone knows') + 100)) + '...',
         confidence: 75,
         impact: 'medium'
-      },
-      {
-        type: 'False Dichotomy',
-        explanation: 'Presenting only two options when more exist',
-        excerpt: text.substring(50, 150) + '...',
-        confidence: 60,
+      });
+    }
+    
+    if (lowerText.includes('slippery slope') || (lowerText.includes('if we') && lowerText.includes('then') && lowerText.includes('next'))) {
+      fallacies.push({
+        type: 'Slippery Slope',
+        explanation: 'The text suggests that a relatively small first step will inevitably lead to a chain of related events culminating in some significant impact, without demonstrating the causal connections.',
+        excerpt: text.substring(Math.max(0, lowerText.indexOf('if we') - 50), Math.min(text.length, lowerText.indexOf('if we') + 200)) + '...',
+        confidence: 70,
         impact: 'high'
-      }
-    ];
+      });
+    }
+    
+    if (lowerText.includes('correlation') && lowerText.includes('causation')) {
+      fallacies.push({
+        type: 'Correlation vs Causation',
+        explanation: 'The text may be confusing correlation with causation, suggesting that because two things happen together, one causes the other.',
+        excerpt: text.substring(Math.max(0, lowerText.indexOf('correlation') - 50), Math.min(text.length, lowerText.indexOf('correlation') + 100)) + '...',
+        confidence: 65,
+        impact: 'medium'
+      });
+    }
+    
     return fallacies;
   };
 
   const generateRhetoricalAnalysis = (text: string): any[] => {
-    const devices = [
-      {
-        type: 'Metaphor',
-        explanation: 'Comparing two things without using like or as',
-        examples: ['The economy is a roller coaster'],
-        frequency: 3
-      },
-      {
+    // Enhanced rhetorical device detection with more comprehensive analysis
+    const devices = [];
+    const lowerText = text.toLowerCase();
+    
+    // Check for metaphors and analogies
+    if (lowerText.includes('like') || lowerText.includes('as') || lowerText.includes('similar to')) {
+      devices.push({
+        type: 'Simile',
+        explanation: 'The text uses explicit comparisons using "like," "as," or "similar to" to make abstract concepts more concrete and relatable.',
+        examples: [text.substring(Math.max(0, lowerText.indexOf('like') - 30), Math.min(text.length, lowerText.indexOf('like') + 50))],
+        frequency: (lowerText.match(/like|as|similar to/g) || []).length
+      });
+    }
+    
+    // Check for hyperbole and exaggeration
+    if (lowerText.includes('never') || lowerText.includes('always') || lowerText.includes('everyone') || lowerText.includes('nobody') || lowerText.includes('worst') || lowerText.includes('best')) {
+      devices.push({
         type: 'Hyperbole',
-        explanation: 'Deliberate exaggeration for effect',
-        examples: ['This is the worst thing ever'],
-        frequency: 2
+        explanation: 'The text uses deliberate exaggeration for emphasis or dramatic effect, often using absolute terms that may not be literally true.',
+        examples: [text.substring(Math.max(0, lowerText.indexOf('never') - 30), Math.min(text.length, lowerText.indexOf('never') + 50))],
+        frequency: (lowerText.match(/never|always|everyone|nobody|worst|best/g) || []).length
+      });
+    }
+    
+    // Check for loaded language and emotional appeals
+    if (lowerText.includes('shocking') || lowerText.includes('outrageous') || lowerText.includes('amazing') || lowerText.includes('incredible') || lowerText.includes('terrible')) {
+      devices.push({
+        type: 'Loaded Language',
+        explanation: 'The text uses emotionally charged words designed to evoke strong emotional responses from readers, potentially influencing their perception of the topic.',
+        examples: [text.substring(Math.max(0, lowerText.indexOf('shocking') - 30), Math.min(text.length, lowerText.indexOf('shocking') + 50))],
+        frequency: (lowerText.match(/shocking|outrageous|amazing|incredible|terrible/g) || []).length
+      });
+    }
+    
+    // Check for inclusive language
+    if (lowerText.includes('we') || lowerText.includes('us') || lowerText.includes('our') || lowerText.includes('together')) {
+      devices.push({
+        type: 'Inclusive Language',
+        explanation: 'The text uses "we," "us," and "our" to create a sense of shared identity and community, potentially building rapport with readers.',
+        examples: [text.substring(Math.max(0, lowerText.indexOf('we ') - 30), Math.min(text.length, lowerText.indexOf('we ') + 50))],
+        frequency: (lowerText.match(/we |us |our |together/g) || []).length
+      });
+    }
+    
+    // Check for rhetorical questions
+    if (lowerText.includes('?') && (lowerText.includes('how') || lowerText.includes('why') || lowerText.includes('what'))) {
+      devices.push({
+        type: 'Rhetorical Questions',
+        explanation: 'The text poses questions that are not meant to be answered literally, but rather to make a point or encourage readers to think about an issue.',
+        examples: [text.substring(Math.max(0, lowerText.indexOf('?') - 50), Math.min(text.length, lowerText.indexOf('?') + 10))],
+        frequency: (lowerText.match(/\?/g) || []).length
+      });
+    }
+    
+    // Check for repetition and emphasis
+    const repeatedWords = lowerText.match(/\b(\w+)\b/g)?.reduce((acc: any, word: string) => {
+      acc[word] = (acc[word] || 0) + 1;
+      return acc;
+    }, {});
+    
+    if (repeatedWords) {
+      const mostRepeated = Object.entries(repeatedWords)
+        .filter(([word, count]: [string, any]) => count > 3 && word.length > 3)
+        .sort(([,a]: any, [,b]: any) => b - a)
+        .slice(0, 3);
+      
+      if (mostRepeated.length > 0) {
+        devices.push({
+          type: 'Repetition',
+          explanation: 'The text uses deliberate repetition of key words or phrases to emphasize important points and make them more memorable.',
+          examples: mostRepeated.map(([word]) => `"${word}" (repeated ${repeatedWords[word]} times)`),
+          frequency: mostRepeated.reduce((sum, [, count]) => sum + count, 0)
+        });
       }
-    ];
+    }
+    
     return devices;
   };
 
