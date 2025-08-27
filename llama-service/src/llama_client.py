@@ -16,18 +16,25 @@ logger = logging.getLogger(__name__)
 class LlamaClient:
     """Client for interacting with Ollama-hosted Llama 3 models"""
     
-    def __init__(self, model_name: str = "llama3:8b", host: str = "http://localhost:11434"):
+    def __init__(self, model_name: str = "llama3:8b", host: str = "http://localhost:11434", api_key: str = None):
         """Initialize the Llama 3 client
         
         Args:
             model_name: Name of the Llama 3 model to use (default: "llama3:8b")
             host: Ollama host URL (default: "http://localhost:11434")
+            api_key: API key for Ollama Cloud (optional)
         """
         self.model_name = model_name
         self.host = host.rstrip("/")  # Remove trailing slash if present
         self.api_base = f"{self.host}/api"
+        self.api_key = api_key
         self._ready = False
         self._model_info = None
+        
+        # Set up headers for API requests
+        self.headers = {}
+        if self.api_key:
+            self.headers["Authorization"] = f"Bearer {self.api_key}"
     
     def is_ready(self) -> bool:
         """Check if the client is ready to process requests"""
@@ -45,12 +52,12 @@ class LlamaClient:
         """
         try:
             # Check if Ollama is running
-            response = requests.get(f"{self.host}/", timeout=5)
+            response = requests.get(f"{self.host}/", headers=self.headers, timeout=5)
             if response.status_code != 200:
                 raise ConnectionError(f"Ollama server returned status code {response.status_code}")
             
             # Check if model is available
-            models_response = requests.get(f"{self.api_base}/tags", timeout=5)
+            models_response = requests.get(f"{self.api_base}/tags", headers=self.headers, timeout=5)
             if models_response.status_code != 200:
                 raise ConnectionError("Failed to retrieve model list from Ollama")
             
@@ -88,6 +95,7 @@ class LlamaClient:
             response = requests.post(
                 pull_url, 
                 json={"name": self.model_name},
+                headers=self.headers,
                 timeout=600  # Allow up to 10 minutes for model pull
             )
             
@@ -186,6 +194,7 @@ class LlamaClient:
             response = requests.post(
                 f"{self.api_base}/generate",
                 json=payload,
+                headers=self.headers,
                 timeout=300  # Allow up to 5 minutes for generation
             )
             

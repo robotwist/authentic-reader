@@ -55,9 +55,10 @@ app.add_middleware(
 )
 
 # Initialize Llama 3 client
-# Get model name and host from environment variables
+# Get model name, host, and API key from environment variables
 MODEL_NAME = os.environ.get("LLAMA_MODEL", "llama3:8b")
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
+OLLAMA_API_KEY = os.environ.get("OLLAMA_API_KEY")
 llama_client = None
 
 # Initialize result cache (optional)
@@ -102,7 +103,7 @@ async def startup_event():
     global llama_client
     try:
         logger.info(f"Initializing Llama 3 client with model: {MODEL_NAME} and host: {OLLAMA_HOST}")
-        llama_client = LlamaClient(model_name=MODEL_NAME, host=OLLAMA_HOST)
+        llama_client = LlamaClient(model_name=MODEL_NAME, host=OLLAMA_HOST, api_key=OLLAMA_API_KEY)
         # Test connection to Ollama
         llama_client.test_connection()
         logger.info("Llama 3 client initialized successfully")
