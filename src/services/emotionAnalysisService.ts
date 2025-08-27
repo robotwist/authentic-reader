@@ -103,12 +103,13 @@ class EmotionAnalysisService {
     
     try {
       // Skip empty or very short text
-      if (!text || text.length < 10) {
+      if (!text || text.length < 300) {
         return {
           emotions: [],
           dominantEmotion: null,
           emotionalAppeal: 0,
-          success: true
+          success: true,
+          error: 'Text too short for meaningful emotion analysis (minimum 50 words recommended)'
         };
       }
       

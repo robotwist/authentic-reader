@@ -512,9 +512,19 @@ const ArticleAnalysisPage: React.FC = () => {
 
       {!enhancedAnalysis && !loading && (
         <div className="analysis-actions">
-          <button onClick={performEnhancedAnalysis} className="analyze-button">
-            <FiRefreshCw /> Start AI Analysis
-          </button>
+          {article && article.content.length < 300 ? (
+            <div className="short-content-warning">
+              <FiAlertTriangle className="warning-icon" />
+              <p>This article is quite short ({article.content.length} characters). For the best analysis results, we recommend articles with at least 50 words (300 characters).</p>
+              <button onClick={performEnhancedAnalysis} className="analyze-button">
+                <FiRefreshCw /> Analyze Anyway
+              </button>
+            </div>
+          ) : (
+            <button onClick={performEnhancedAnalysis} className="analyze-button">
+              <FiRefreshCw /> Start AI Analysis
+            </button>
+          )}
         </div>
       )}
     </div>

@@ -1116,8 +1116,8 @@ export async function analyzeContent(content: string): Promise<ContentAnalysisRe
     
     // If text is too short, add a note about limited analysis
     let limitedAnalysis = false;
-    if (plainText.length < 100) {
-      console.warn('Content is very short for analysis:', plainText.length, 'characters');
+    if (plainText.length < 300) {
+      console.warn('Content is very short for analysis:', plainText.length, 'characters (minimum 50 words recommended)');
       limitedAnalysis = true;
     }
     
@@ -1989,7 +1989,7 @@ async function cachedSummaryGeneration(text: string): Promise<string> {
     // Try advanced summarization first, fallback to basic summarization
     let summary = '';
     try {
-      if (text.length < 100) {
+      if (text.length < 300) {
         // For very short text, just return it as is or truncate if needed
         summary = text.length > 150 ? text.substring(0, 150) + '...' : text;
         logger.debug('Text too short for summarization, using as-is');
