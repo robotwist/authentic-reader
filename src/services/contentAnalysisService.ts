@@ -2,16 +2,7 @@ import axios from 'axios';
 import { logger } from '../utils/logger';
 import { analyzeManipulativeContent, ManipulationAnalysis } from './doomscrollAnalysisService';
 import { analyzeEmotions, EmotionAnalysisResult } from './emotionAnalysisService';
-import {
-  classifyText,
-  extractEntities,
-  getTextEmbeddings,
-  summarizeText,
-  analyzeSentiment as hfAnalyzeSentiment,
-  analyzePoliticalBias,
-  enhancedEntityExtraction,
-  generateAdvancedSummary
-} from './huggingFaceService';
+import { aiAnalysisService } from './aiAnalysisService';
 import { analyzeManipulation } from './darkPatternService';
 
 /**
@@ -506,7 +497,7 @@ export async function analyzeBias(text: string): Promise<BiasAnalysis> {
     console.log('📊 [analyzeBias] Starting ML-based bias analysis for text length:', text.length);
     
     // Use advanced ML model to analyze bias
-    const biasResult = await analyzePoliticalBias(text);
+    const biasResult = await aiAnalysisService.analyzeBias(text);
     console.log('📊 [analyzeBias] ML model results:', biasResult);
     
     // Map the model's score to our bias types
@@ -986,7 +977,7 @@ async function performEntityRecognition(text: string): Promise<NERResponse | nul
 export async function analyzeSentiment(text: string): Promise<{score: number, label: string}> {
   try {
     // First try to use HuggingFace for sentiment analysis
-    const response = await hfAnalyzeSentiment(text);
+    const response = await aiAnalysisService.analyzeSentiment(text);
     
     if (response.success && response.data && response.data.length > 0) {
       const sentimentResult = response.data[0];
@@ -1929,7 +1920,7 @@ async function cachedEntityExtraction(text: string): Promise<string[]> {
     // Use enhanced entity extraction if available, fallback to basic extraction
     let entities: string[] = [];
     try {
-      const enhancedResult = await enhancedEntityExtraction(text);
+      const enhancedResult = await aiAnalysisService.extractEntities(text);
       
       // Get the pre-categorized entities from the result
       const people = enhancedResult.keyPeople || [];
@@ -2004,14 +1995,14 @@ async function cachedSummaryGeneration(text: string): Promise<string> {
         logger.debug('Text too short for summarization, using as-is');
       } else {
         // For longer text, try the API
-        summary = await generateAdvancedSummary(text, 150);
+        summary = await aiAnalysisService.analyzeCredibility(text);
       }
     } catch (advancedError) {
       logger.error('Advanced summarization failed, using fallback:', advancedError);
       
       // Fallback to basic summarization or extract first sentences
       try {
-        summary = await summarizeText(text, 150);
+        summary = await aiAnalysisService.analyzeCredibility(text);
       } catch (basicError) {
         logger.error('Basic summarization also failed:', basicError);
         // Last resort: extract first few sentences

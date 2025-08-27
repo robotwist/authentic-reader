@@ -1,12 +1,14 @@
-import { analyzeEmotions as hfAnalyzeEmotions } from './huggingFaceService';
+import { aiAnalysisService } from './aiAnalysisService';
 import { logger } from '../utils/logger';
 
 /**
- * Interface for the emotion response from Hugging Face
+ * Interface for the emotion response from AI service
  */
-interface HFEmotionResponse {
-  label: string;
-  score: number;
+interface EmotionResponse {
+  sentiment: string;
+  confidence: number;
+  emotions: string[];
+  explanation: string;
 }
 
 /**
@@ -45,7 +47,7 @@ export interface EmotionAnalysisResult {
  * Maps raw emotion labels from the model to standardized emotion types
  */
 const emotionMapping: Record<string, EmotionType> = {
-  // From j-hartmann/emotion-english-distilroberta-base
+  // From AI service
   'joy': 'joy',
   'sadness': 'sadness',
   'anger': 'anger',
@@ -110,11 +112,11 @@ class EmotionAnalysisService {
         };
       }
       
-      // Use Hugging Face service to get emotion predictions
-      const response = await hfAnalyzeEmotions(text);
+      // Use AI service to get sentiment and emotion analysis
+      const response = await aiAnalysisService.analyzeSentiment(text);
       
-      if (!response || response.length === 0) {
-        logger.error('Failed to get emotion analysis from Hugging Face');
+      if (!response) {
+        logger.error('Failed to get emotion analysis from AI service');
         return {
           emotions: [],
           dominantEmotion: null,
@@ -124,17 +126,41 @@ class EmotionAnalysisService {
         };
       }
       
-      // Map and normalize the emotions
-      const mappedEmotions: EmotionData[] = response
-        .map((result: HFEmotionResponse) => {
-          const type = emotionMapping[result.label] || 'neutral';
-          return {
+      // Map emotions from the response
+      const mappedEmotions: EmotionData[] = [];
+      
+      // Add emotions from the response
+      if (response.emotions && Array.isArray(response.emotions)) {
+        response.emotions.forEach((emotion: string) => {
+          const type = emotionMapping[emotion.toLowerCase()] || 'neutral';
+          const score = response.confidence ? response.confidence / 100 : 0.5;
+          mappedEmotions.push({
             type,
-            score: result.score,
-            label: getEmotionScoreLabel(result.score)
-          };
-        })
-        .sort((a, b) => b.score - a.score); // Sort by score descending
+            score,
+            label: getEmotionScoreLabel(score)
+          });
+        });
+      }
+      
+      // If no emotions found, create a neutral emotion based on sentiment
+      if (mappedEmotions.length === 0) {
+        const sentiment = response.sentiment || 'neutral';
+        const confidence = response.confidence || 50;
+        const score = confidence / 100;
+        
+        let emotionType: EmotionType = 'neutral';
+        if (sentiment === 'positive') emotionType = 'joy';
+        else if (sentiment === 'negative') emotionType = 'sadness';
+        
+        mappedEmotions.push({
+          type: emotionType,
+          score,
+          label: getEmotionScoreLabel(score)
+        });
+      }
+      
+      // Sort by score descending
+      mappedEmotions.sort((a, b) => b.score - a.score);
       
       // Find the dominant emotion (highest scoring non-neutral)
       const dominantEmotion = mappedEmotions.find(e => e.type !== 'neutral') || null;

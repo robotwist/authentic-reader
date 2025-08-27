@@ -5,8 +5,7 @@
  * and proper fallbacks between different services
  */
 
-import { HF_CONFIG } from '../config/huggingFaceConfig';
-import { huggingFaceService } from './huggingFaceService';
+import { aiAnalysisService } from './aiAnalysisService';
 
 // Import other services as needed
 // import { openaiService } from './openaiService';
@@ -15,9 +14,8 @@ import { huggingFaceService } from './huggingFaceService';
 // import { chromaService } from './chromaService';
 
 export enum AIServiceProvider {
-  HUGGING_FACE = 'huggingFace',
-  LOCAL_ONNX = 'localOnnx',
   LLAMA = 'llama',
+  LOCAL_ONNX = 'localOnnx',
   OPENAI = 'openai',
   ANTHROPIC = 'anthropic'
 }
@@ -38,18 +36,18 @@ class AIServiceManager {
     // Initialize service configurations
     this.serviceConfigs = new Map();
     
-    // Configure Hugging Face
-    this.serviceConfigs.set(AIServiceProvider.HUGGING_FACE, {
-      name: 'Hugging Face',
-      isConfigured: HF_CONFIG.isConfigured(),
-      priority: this.useLocalFallbacks ? 2 : 1
+    // Configure Llama (primary service)
+    this.serviceConfigs.set(AIServiceProvider.LLAMA, {
+      name: 'Llama 3.2',
+      isConfigured: true,
+      priority: 1
     });
     
     // Configure Local ONNX (always available since it's local)
     this.serviceConfigs.set(AIServiceProvider.LOCAL_ONNX, {
       name: 'Local ONNX',
       isConfigured: true,
-      priority: this.useLocalFallbacks ? 1 : 2
+      priority: 2
     });
     
     // Add other services as needed
@@ -96,55 +94,89 @@ class AIServiceManager {
    * Analyze text for logical fallacies
    */
   async analyzeLogicalFallacies(text: string): Promise<any> {
-    // First try Hugging Face if configured and not using local fallbacks
-    if (HF_CONFIG.isConfigured() && !this.useLocalFallbacks) {
-      try {
-        console.log('Using Hugging Face for logical fallacy detection');
-        return await huggingFaceService.analyzeLogicalFallacies(text);
-      } catch (error) {
-        console.warn('Hugging Face logical fallacy analysis failed, falling back to local', error);
-      }
+    // Use the centralized AI analysis service
+    try {
+      const biasResult = await aiAnalysisService.analyzeBias(text);
+      return {
+        fallacies: [],
+        biasAnalysis: biasResult,
+        success: true
+      };
+    } catch (error) {
+      console.error('Error analyzing logical fallacies:', error);
+      return {
+        fallacies: [],
+        biasAnalysis: null,
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
     }
-    
-    // Fallback to local ONNX model
-    console.log('Using local ONNX model for logical fallacy detection');
-    // In a real implementation, you would call your local ONNX service here
-    return { fallacies: [], success: true };
   }
   
   /**
-   * Analyze text for sentiment
+   * Analyze sentiment using the best available service
    */
   async analyzeSentiment(text: string): Promise<any> {
-    // First try Hugging Face if configured and not using local fallbacks
-    if (HF_CONFIG.isConfigured() && !this.useLocalFallbacks) {
-      try {
-        console.log('Using Hugging Face for sentiment analysis');
-        return await huggingFaceService.analyzeSentiment(text);
-      } catch (error) {
-        console.warn('Hugging Face sentiment analysis failed, falling back to local', error);
-      }
+    try {
+      return await aiAnalysisService.analyzeSentiment(text);
+    } catch (error) {
+      console.error('Error analyzing sentiment:', error);
+      return {
+        sentiment: 'neutral',
+        confidence: 50,
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
     }
-    
-    // Fallback to local ONNX model
-    console.log('Using local ONNX model for sentiment analysis');
-    // In a real implementation, you would call your local ONNX service here
-    return { sentiment: 'neutral', score: 0, success: true };
   }
   
   /**
-   * Toggle between local and API-based analysis
+   * Extract entities using the best available service
    */
-  toggleLocalAnalysis(useLocal: boolean): void {
+  async extractEntities(text: string): Promise<any> {
+    try {
+      return await aiAnalysisService.extractEntities(text);
+    } catch (error) {
+      console.error('Error extracting entities:', error);
+      return {
+        entities: [],
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
+    }
+  }
+  
+  /**
+   * Analyze credibility using the best available service
+   */
+  async analyzeCredibility(text: string): Promise<any> {
+    try {
+      return await aiAnalysisService.analyzeCredibility(text);
+    } catch (error) {
+      console.error('Error analyzing credibility:', error);
+      return {
+        credibilityScore: 50,
+        credibilityLevel: 'medium',
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
+    }
+  }
+  
+  /**
+   * Get service status information
+   */
+  getServiceStatus() {
+    return aiAnalysisService.getServiceStatus();
+  }
+  
+  /**
+   * Toggle local fallbacks
+   */
+  toggleLocalFallbacks(useLocal: boolean) {
     this.useLocalFallbacks = useLocal;
     localStorage.setItem('use_local_fallbacks', useLocal.toString());
-    
-    // Update priorities based on the new setting
-    this.serviceConfigs.get(AIServiceProvider.HUGGING_FACE)!.priority = useLocal ? 2 : 1;
-    this.serviceConfigs.get(AIServiceProvider.LOCAL_ONNX)!.priority = useLocal ? 1 : 2;
-    
-    // Re-log the updated services
-    this.logAvailableServices();
+    console.info(`Local fallbacks ${useLocal ? 'enabled' : 'disabled'}`);
   }
 }
 
