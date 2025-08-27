@@ -44,11 +44,11 @@ If you want to use local Ollama for development:
 Once you have your API key, run these commands (replace `your_actual_api_key_here` with your actual key):
 
 ```bash
-# For Ollama Cloud (production)
-railway variables --set "OLLAMA_HOST=https://api.ollama.com"
+# For Ollama Cloud (production) - CORRECT URL
+railway variables --set "OLLAMA_HOST=https://api.ollama.ai"
 railway variables --set "OLLAMA_API_KEY=your_actual_api_key_here"
 
-# OR for local development
+# OR for local development (only works locally, not on Railway)
 railway variables --set "OLLAMA_HOST=http://localhost:11434"
 railway variables --set "OLLAMA_API_KEY="
 ```
