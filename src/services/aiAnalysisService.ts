@@ -9,7 +9,8 @@ import { LlamaService } from './LlamaService';
 import { logger } from '../utils/logger';
 
 // Configuration
-const LLAMA_SERVICE_URL = import.meta.env.VITE_LLAMA_SERVICE_URL || 'http://localhost:8105';
+const LLAMA_SERVICE_URL = import.meta.env.VITE_LLAMA_SERVICE_URL || 
+  (isLocalDevelopment() ? 'http://localhost:8105' : 'https://your-llama-service.railway.app');
 
 // Determine environment
 const isLocalDevelopment = () => {
