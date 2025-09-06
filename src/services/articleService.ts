@@ -486,6 +486,14 @@ class ArticleService {
   }
 
   /**
+   * Get a specific article by ID
+   */
+  async getArticleById(articleId: string): Promise<Article | null> {
+    const article = DEMO_ARTICLES.find(a => a.articleId === articleId);
+    return article || null;
+  }
+
+  /**
    * Get cache status - always returns valid cache for demo
    */
   getCacheStatus(): { hasCache: boolean; isValid: boolean; lastFetch: number } {
@@ -513,6 +521,9 @@ class ArticleService {
 
 // Export singleton instance
 export const articleService = new ArticleService();
+
+// Export individual functions for compatibility
+export const getArticleById = (articleId: string) => articleService.getArticleById(articleId);
 
 // Export types
 export type { Article };
