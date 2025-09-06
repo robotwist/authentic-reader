@@ -1,5 +1,5 @@
 import React from 'react';
-import { IntellectualSelfDefense } from '../components/IntellectualSelfDefense';
+import IntellectualSelfDefense from '../components/IntellectualSelfDefense';
 import { DailyArticle } from '../services/intellectualSelfDefenseService';
 import { logger } from '../utils/logger';
 import './IntellectualSelfDefensePage.css';
