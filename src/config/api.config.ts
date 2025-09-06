@@ -37,12 +37,12 @@ export const API_BASE_URL = (() => {
   // Production fallback - use Heroku backend
   if (import.meta.env?.MODE === 'production' || window.location.hostname !== 'localhost') {
     console.log('[API Config] Using production Heroku API URL');
-    return 'https://authentic-reader-api-8b0a83fb7d96.herokuapp.com';
+    return 'https://authentic-reader-backend-c7754cf50ab2.herokuapp.com';
   }
   
   // Default to Heroku backend for development (no local backend running)
   console.log('[API Config] Using Heroku backend for development');
-  return 'https://authentic-reader-api-8b0a83fb7d96.herokuapp.com';
+  return 'https://authentic-reader-backend-c7754cf50ab2.herokuapp.com';
 })();
 
 // Log the final API base URL
