@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiBrain, FiTarget, FiTrendingUp, FiUsers, FiGlobe, FiBookOpen, FiZap } from 'react-icons/fi';
+import { FiTarget, FiTrendingUp, FiUsers, FiGlobe, FiBookOpen, FiZap, FiShield } from 'react-icons/fi';
 import { intellectualSelfDefenseService, DailyArticle, ChomskyAnalysis } from '../services/intellectualSelfDefenseService';
 import { logger } from '../utils/logger';
 import './IntellectualSelfDefense.css';
@@ -86,7 +86,7 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
       <div className="deep-dive-header">
         <div className="header-content">
           <div className="header-icon">
-            <FiBrain />
+            <FiShield />
           </div>
           <div className="header-text">
             <h1>Intellectual Self Defense Course</h1>
