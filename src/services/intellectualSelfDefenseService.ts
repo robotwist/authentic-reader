@@ -118,6 +118,19 @@ class IntellectualSelfDefenseService {
   }
 
   /**
+   * Get a specific article by ID
+   */
+  async getArticleById(articleId: string): Promise<DailyArticle | null> {
+    try {
+      const articles = await this.getTodaysArticles();
+      return articles.find(article => article.id === articleId) || null;
+    } catch (error) {
+      logger.error('Failed to get article by ID:', error);
+      return null;
+    }
+  }
+
+  /**
    * Curate 10 high-quality articles for today
    */
   private async curateTodaysArticles(): Promise<void> {

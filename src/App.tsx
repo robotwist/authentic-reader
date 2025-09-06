@@ -18,6 +18,7 @@ import ArticlePage from './pages/ArticlePage';
 import AnalysisPage from './pages/AnalysisPage';
 import ArticleFeedPage from './pages/ArticleFeedPage';
 import ArticleAnalysisPage from './pages/ArticleAnalysisPage';
+import ArticleReaderPage from './pages/ArticleReaderPage';
 import BalancedFeedPage from './pages/BalancedFeedPage';
 import MediaLiteracyGuide from './pages/MediaLiteracyGuide';
 import PoliticalAnalysisPage from './pages/PoliticalAnalysisPage';
@@ -322,6 +323,7 @@ function App() {
                 <Route path="/analysis/enhanced-bias" element={<EnhancedBiasDetection />} />
                 <Route path="/journalists" element={<JournalistRating />} />
                 <Route path="/intellectual-self-defense" element={<IntellectualSelfDefensePage />} />
+                <Route path="/article/:articleId" element={<ArticleReaderPage />} />
                 
                 {/* Legacy Analysis Routes */}
                 <Route path="/benchmark" element={<NLPBenchmark />} />

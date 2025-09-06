@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiTarget, FiTrendingUp, FiUsers, FiGlobe, FiBookOpen, FiZap, FiShield } from 'react-icons/fi';
 import { intellectualSelfDefenseService, DailyArticle, ChomskyAnalysis } from '../services/intellectualSelfDefenseService';
 import { logger } from '../utils/logger';
@@ -9,6 +10,7 @@ interface IntellectualSelfDefenseProps {
 }
 
 const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArticleSelect }) => {
+  const navigate = useNavigate();
   const [articles, setArticles] = useState<DailyArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedArticle, setSelectedArticle] = useState<DailyArticle | null>(null);
@@ -39,6 +41,8 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
     if (onArticleSelect) {
       onArticleSelect(article);
     }
+    // Navigate to the article reader page
+    navigate(`/article/${article.id}`);
   };
 
   const getImportanceColor = (importance: string) => {
