@@ -114,43 +114,37 @@ export class AIAnalysisService {
   // Llama-specific methods
   private async analyzeBiasWithLlama(text: string) {
     try {
-      const prompt = `You are an expert media analyst specializing in bias detection and critical thinking. Analyze the following text for various types of bias and provide a comprehensive, articulate analysis.
-
-Please examine the text for:
-1. Political bias (liberal/conservative leanings, partisan language)
-2. Gender bias (stereotyping, unequal representation)
-3. Racial/ethnic bias (stereotyping, discriminatory language)
-4. Economic bias (class-based assumptions, wealth bias)
-5. Confirmation bias (selective evidence, cherry-picking)
-6. Framing bias (how issues are presented)
-7. Source bias (reliability of sources cited)
-
-Return a detailed JSON response with this structure:
-{
-  "overallBias": "low|medium|high",
-  "biasScore": 0-100,
-  "biasTypes": ["political", "gender", "racial", "economic", "confirmation", "framing"],
-  "explanation": "Provide a comprehensive 3-4 sentence analysis explaining the types of bias detected, specific examples from the text, and how they might influence reader perception. Be articulate and detailed.",
-  "biasedPhrases": ["specific biased phrases or sentences from the text"],
-  "recommendations": ["3-4 specific recommendations for more balanced reporting or critical reading"],
-  "detailedAnalysis": {
-    "politicalBias": "Detailed analysis of political leanings and partisan language",
-    "genderBias": "Analysis of gender representation and stereotyping",
-    "racialBias": "Analysis of racial/ethnic bias and stereotyping",
-    "economicBias": "Analysis of class-based assumptions and wealth bias",
-    "sourceReliability": "Assessment of source credibility and potential conflicts of interest"
-  }
-}
-
-Text to analyze: "${text}"`;
-
-      const response = await llamaService.generate({
-        prompt,
-        max_tokens: 800,
-        temperature: 0.3
+      // Use enhanced Chomsky-inspired prompt
+      const { enhancedPromptService } = await import('./enhancedPromptService');
+      
+      const article = { content: text, title: 'Article Analysis', source: 'Unknown' };
+      const prompt = enhancedPromptService.generateStructuralAnalysisPrompt(article, {
+        userLevel: 'intermediate',
+        analysisDepth: 'deep',
+        focusAreas: ['bias', 'power', 'institutional'],
+        learningObjectives: ['bias detection', 'critical thinking', 'media literacy']
       });
       
-      return this.parseLlamaResponse(response.result);
+      const enhancedPrompt = `${prompt.systemPrompt}
+
+${prompt.userPrompt}
+
+FOCUS SPECIFICALLY ON BIAS ANALYSIS:
+- Political bias and partisan framing
+- Economic bias and class assumptions  
+- Institutional bias and power structures
+- Linguistic bias and loaded language
+- Source bias and credibility issues
+
+Provide specific examples from the text and explain how each type of bias might influence reader perception.`;
+
+      const response = await llamaService.generate({
+        prompt: enhancedPrompt,
+        max_tokens: 1000,
+        temperature: 0.2
+      });
+      
+      return await this.parseLlamaResponse(response.result, { content: text, title: 'Bias Analysis' });
     } catch (error) {
       logger.error('Llama bias analysis failed:', error);
       throw error;
@@ -159,38 +153,37 @@ Text to analyze: "${text}"`;
   
   private async analyzeSentimentWithLlama(text: string) {
     try {
-      const prompt = `You are an expert in emotional intelligence and sentiment analysis. Provide a comprehensive analysis of the emotional content and sentiment of the following text.
+      // Use enhanced linguistic analysis prompt
+      const { enhancedPromptService } = await import('./enhancedPromptService');
+      
+      const article = { content: text, title: 'Article Analysis', source: 'Unknown' };
+      const prompt = enhancedPromptService.generateLinguisticAnalysisPrompt(article, {
+        userLevel: 'intermediate',
+        analysisDepth: 'deep',
+        focusAreas: ['sentiment', 'emotion', 'linguistic'],
+        learningObjectives: ['emotional intelligence', 'linguistic analysis', 'manipulation detection']
+      });
+      
+      const enhancedPrompt = `${prompt.systemPrompt}
 
-Analyze for:
-1. Overall sentiment (positive, negative, neutral, or mixed)
-2. Emotional intensity and complexity
-3. Specific emotions present (joy, sadness, anger, fear, surprise, disgust, trust, anticipation)
-4. Emotional manipulation techniques
-5. Tone and mood shifts
-6. Emotional appeals to the reader
+${prompt.userPrompt}
 
-Return a detailed JSON response with this structure:
-{
-  "sentiment": "positive|negative|neutral|mixed",
-  "confidence": 0-100,
-  "emotions": ["joy", "sadness", "anger", "fear", "surprise", "disgust", "trust", "anticipation"],
-  "explanation": "Provide a comprehensive 3-4 sentence analysis explaining the emotional content, tone, and how emotions are used to influence the reader. Be articulate and insightful.",
-  "emotionalIntensity": "low|medium|high",
-  "toneAnalysis": "Detailed analysis of the overall tone and mood",
-  "emotionalAppeals": ["specific emotional appeals or manipulation techniques used"],
-  "moodShifts": "Analysis of any changes in emotional tone throughout the text",
-  "readerImpact": "How the emotional content might affect different types of readers"
-}
+FOCUS SPECIFICALLY ON EMOTIONAL AND SENTIMENT ANALYSIS:
+- Overall sentiment and emotional tone
+- Emotional manipulation techniques
+- Linguistic devices used to influence emotions
+- How language choices shape emotional responses
+- Reader impact and emotional appeals
 
-Text: "${text}"`;
+Provide specific examples from the text and explain how linguistic choices create emotional effects.`;
 
       const response = await llamaService.generate({
-        prompt,
-        max_tokens: 600,
+        prompt: enhancedPrompt,
+        max_tokens: 800,
         temperature: 0.2
       });
       
-      return this.parseLlamaResponse(response.result);
+      return await this.parseLlamaResponse(response.result, { content: text, title: 'Sentiment Analysis' });
     } catch (error) {
       logger.error('Llama sentiment analysis failed:', error);
       throw error;
@@ -234,7 +227,7 @@ Text: "${text}"`;
         temperature: 0.1
       });
       
-      return this.parseLlamaResponse(response.result);
+      return await this.parseLlamaResponse(response.result, { content: text, title: 'Entity Extraction' });
     } catch (error) {
       logger.error('Llama entity extraction failed:', error);
       throw error;
@@ -289,33 +282,36 @@ Text: "${text}"`;
         temperature: 0.2
       });
       
-      return this.parseLlamaResponse(response.result);
+      return await this.parseLlamaResponse(response.result, { content: text, title: 'Credibility Analysis' });
     } catch (error) {
       logger.error('Llama credibility analysis failed:', error);
       throw error;
     }
   }
   
-  // Fallback methods (heuristic-based)
+  // Enhanced fallback methods with educational value
   private async analyzeBiasFallback(text: string) {
-    // Simple heuristic-based bias detection
+    // Enhanced heuristic-based bias detection with educational insights
     const biasIndicators = {
-      political: ['liberal', 'conservative', 'democrat', 'republican', 'left-wing', 'right-wing'],
-      gender: ['man', 'woman', 'male', 'female', 'he', 'she'],
-      racial: ['race', 'ethnic', 'black', 'white', 'hispanic', 'asian'],
-      economic: ['rich', 'poor', 'wealthy', 'poverty', 'class']
+      political: ['liberal', 'conservative', 'democrat', 'republican', 'left-wing', 'right-wing', 'progressive', 'traditional'],
+      gender: ['man', 'woman', 'male', 'female', 'he', 'she', 'masculine', 'feminine'],
+      racial: ['race', 'ethnic', 'black', 'white', 'hispanic', 'asian', 'minority', 'majority'],
+      economic: ['rich', 'poor', 'wealthy', 'poverty', 'class', 'corporate', 'business', 'market'],
+      institutional: ['expert', 'official', 'authority', 'establishment', 'mainstream', 'institution']
     };
     
     const foundBias = [];
     let biasScore = 0;
+    const biasDetails = {};
     
     Object.entries(biasIndicators).forEach(([type, indicators]) => {
-      const count = indicators.filter(indicator => 
+      const foundIndicators = indicators.filter(indicator => 
         text.toLowerCase().includes(indicator.toLowerCase())
-      ).length;
-      if (count > 0) {
+      );
+      if (foundIndicators.length > 0) {
         foundBias.push(type);
-        biasScore += count * 10;
+        biasDetails[type] = foundIndicators;
+        biasScore += foundIndicators.length * 10;
       }
     });
     
@@ -323,10 +319,46 @@ Text: "${text}"`;
       overallBias: biasScore > 50 ? 'high' : biasScore > 20 ? 'medium' : 'low',
       biasScore: Math.min(biasScore, 100),
       biasTypes: foundBias,
-      explanation: `Detected ${foundBias.length} types of potential bias`,
-      biasedPhrases: [],
-      recommendations: ['Consider multiple perspectives', 'Verify claims with sources']
+      explanation: `Enhanced heuristic analysis detected ${foundBias.length} types of potential bias: ${foundBias.join(', ')}. This analysis helps identify bias patterns but should be supplemented with deeper critical analysis.`,
+      biasedPhrases: this.extractBiasedPhrases(text, Object.values(biasIndicators).flat()),
+      recommendations: [
+        'Look for alternative perspectives on this topic',
+        'Examine the source and potential conflicts of interest',
+        'Consider what information might be omitted',
+        'Question the framing and language choices used',
+        'Seek out grassroots or non-institutional sources'
+      ],
+      educationalInsights: {
+        biasPatterns: 'This analysis demonstrates how language choices can reveal underlying biases',
+        criticalQuestions: [
+          'What perspective is privileged in this content?',
+          'What alternative viewpoints are missing?',
+          'How might institutional interests influence this framing?'
+        ],
+        learningObjectives: [
+          'Develop awareness of bias indicators in media',
+          'Learn to identify multiple types of bias',
+          'Practice critical questioning of content sources'
+        ]
+      },
+      detailedAnalysis: biasDetails
     };
+  }
+  
+  private extractBiasedPhrases(text: string, biasWords: string[]): string[] {
+    const phrases: string[] = [];
+    const sentences = text.split(/[.!?]+/);
+    
+    for (const sentence of sentences) {
+      for (const word of biasWords) {
+        if (sentence.toLowerCase().includes(word.toLowerCase())) {
+          phrases.push(sentence.trim());
+          break; // Only add each sentence once
+        }
+      }
+    }
+    
+    return phrases.slice(0, 5); // Limit to 5 examples
   }
   
   private async analyzeSentimentFallback(text: string) {
@@ -414,16 +446,41 @@ Text: "${text}"`;
     }
   }
   
-  private parseLlamaResponse(response: string) {
+  private async parseLlamaResponse(response: string, article?: any) {
     try {
       // Try to extract JSON from the response
       const jsonMatch = response.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        return JSON.parse(jsonMatch[0]);
+      if (!jsonMatch) {
+        throw new Error('No JSON found in response');
       }
-      throw new Error('No JSON found in response');
+      
+      const parsed = JSON.parse(jsonMatch[0]);
+      
+      // Validate response quality if we have article context
+      if (article) {
+        const { responseValidationService } = await import('./responseValidationService');
+        const validation = responseValidationService.validateChomskyAnalysis(response, article);
+        
+        if (!validation.isValid) {
+          logger.warn('Response validation failed:', validation.errors);
+          // Return enhanced fallback if validation fails
+          return responseValidationService.generateFallbackResponse(article, validation.errors.join(', '));
+        }
+        
+        // Return enhanced response if validation passes
+        return validation.enhancedResponse || parsed;
+      }
+      
+      return parsed;
     } catch (error) {
       logger.error('Failed to parse Llama response:', error);
+      
+      // Generate fallback response if parsing fails
+      if (article) {
+        const { responseValidationService } = await import('./responseValidationService');
+        return responseValidationService.generateFallbackResponse(article, 'JSON parsing failed');
+      }
+      
       throw new Error('Invalid response format from AI service');
     }
   }

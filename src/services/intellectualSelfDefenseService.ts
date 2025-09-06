@@ -332,9 +332,214 @@ class IntellectualSelfDefenseService {
    * Generate Chomsky-level analysis for an article
    */
   private async generateChomskyAnalysis(article: any): Promise<ChomskyAnalysis> {
-    // In a real implementation, this would use advanced AI models
-    // For now, we'll generate sophisticated analysis based on content
+    try {
+      // Use enhanced prompts for real AI analysis
+      const { enhancedPromptService } = await import('./enhancedPromptService');
+      const { responseValidationService } = await import('./responseValidationService');
+      
+      // Generate comprehensive analysis prompt
+      const prompt = enhancedPromptService.generateComprehensiveAnalysisPrompt(article, {
+        userLevel: 'intermediate',
+        analysisDepth: 'profound',
+        focusAreas: ['structural', 'linguistic', 'historical', 'critical'],
+        learningObjectives: ['critical thinking', 'media literacy', 'intellectual self defense']
+      });
+      
+      // Integrate with enhanced AI analysis service
+      const { aiAnalysisService } = await import('./aiAnalysisService');
+      const aiService = new aiAnalysisService.AIAnalysisService();
+      await aiService.initialize();
+      
+      try {
+        // Get comprehensive AI analysis
+        const [biasAnalysis, sentimentAnalysis, credibilityAnalysis] = await Promise.allSettled([
+          aiService.analyzeBias(article.content),
+          aiService.analyzeSentiment(article.content),
+          aiService.analyzeCredibility(article.content)
+        ]);
+        
+        // Transform AI analysis into Chomsky framework
+        return this.transformAIToChomskyAnalysis(article, {
+          bias: biasAnalysis.status === 'fulfilled' ? biasAnalysis.value : null,
+          sentiment: sentimentAnalysis.status === 'fulfilled' ? sentimentAnalysis.value : null,
+          credibility: credibilityAnalysis.status === 'fulfilled' ? credibilityAnalysis.value : null
+        });
+        
+      } catch (aiError) {
+        console.warn('AI analysis failed, using enhanced fallback:', aiError);
+        return this.generateEnhancedFallbackAnalysis(article);
+      }
+      
+    } catch (error) {
+      console.error('Error generating Chomsky analysis:', error);
+      return this.generateEnhancedFallbackAnalysis(article);
+    }
+  }
+  
+  /**
+   * Transform AI analysis results into Chomsky framework
+   */
+  private transformAIToChomskyAnalysis(article: any, aiResults: {
+    bias: any;
+    sentiment: any;
+    credibility: any;
+  }): ChomskyAnalysis {
+    return {
+      structuralAnalysis: {
+        powerStructures: this.extractPowerStructuresFromAI(aiResults.bias, aiResults.credibility),
+        institutionalBias: this.extractInstitutionalBiasFromAI(aiResults.bias, aiResults.credibility),
+        manufacturingConsent: this.extractManufacturingConsentFromAI(aiResults.bias, aiResults.sentiment),
+        propagandaModel: this.extractPropagandaModelFromAI(aiResults.bias, aiResults.credibility)
+      },
+      
+      linguisticAnalysis: {
+        framing: this.extractFramingFromAI(aiResults.bias, aiResults.sentiment),
+        loadedLanguage: this.extractLoadedLanguageFromAI(aiResults.bias, aiResults.sentiment),
+        presuppositions: this.extractPresuppositionsFromAI(aiResults.bias),
+        ideologicalAssumptions: this.extractIdeologicalAssumptionsFromAI(aiResults.bias)
+      },
+      
+      historicalContext: {
+        historicalPrecedents: this.identifyHistoricalPrecedents(article),
+        longTermTrends: this.identifyLongTermTrends(article),
+        systemicPatterns: this.identifySystemicPatterns(article),
+        contextualFactors: this.identifyContextualFactors(article)
+      },
+      
+      criticalAnalysis: {
+        whatIsNotSaid: this.identifyWhatIsNotSaid(article),
+        alternativePerspectives: this.identifyAlternativePerspectives(article),
+        powerInterests: this.identifyPowerInterests(article),
+        ideologicalFunction: this.analyzeIdeologicalFunction(article)
+      },
+      
+      intellectualDepth: {
+        complexityLevel: this.assessComplexityLevel(article),
+        analyticalDepth: this.assessAnalyticalDepth(article),
+        criticalThinking: this.assessCriticalThinking(article),
+        intellectualRigor: this.assessIntellectualRigor(article)
+      },
+      
+      synthesis: {
+        keyInsights: this.generateKeyInsights(article),
+        broaderImplications: this.generateBroaderImplications(article),
+        systemicConnections: this.identifySystemicConnections(article),
+        intellectualSignificance: this.assessIntellectualSignificance(article)
+      }
+    };
+  }
+  
+  // AI transformation helper methods
+  private extractPowerStructuresFromAI(biasAnalysis: any, credibilityAnalysis: any): string[] {
+    const structures = [];
     
+    if (biasAnalysis?.detailedAnalysis?.sourceReliability) {
+      structures.push(`Source analysis reveals: ${biasAnalysis.detailedAnalysis.sourceReliability}`);
+    }
+    
+    if (credibilityAnalysis?.detailedAssessment?.sourceAnalysis) {
+      structures.push(`Credibility assessment indicates: ${credibilityAnalysis.detailedAssessment.sourceAnalysis}`);
+    }
+    
+    if (biasAnalysis?.biasTypes?.includes('institutional')) {
+      structures.push('Content demonstrates institutional bias patterns that privilege established power structures');
+    }
+    
+    return structures.length > 0 ? structures : this.analyzePowerStructures({ content: '', source: 'Unknown' });
+  }
+  
+  private extractInstitutionalBiasFromAI(biasAnalysis: any, credibilityAnalysis: any): string[] {
+    const bias = [];
+    
+    if (biasAnalysis?.biasTypes?.includes('institutional')) {
+      bias.push('AI analysis detected institutional bias patterns in the content');
+    }
+    
+    if (credibilityAnalysis?.factors?.sourceReputation < 50) {
+      bias.push('Source credibility analysis suggests potential institutional bias');
+    }
+    
+    return bias.length > 0 ? bias : this.analyzeInstitutionalBias({ content: '' });
+  }
+  
+  private extractManufacturingConsentFromAI(biasAnalysis: any, sentimentAnalysis: any): string[] {
+    const consent = [];
+    
+    if (sentimentAnalysis?.emotionalAppeals?.length > 0) {
+      consent.push(`Emotional appeals detected: ${sentimentAnalysis.emotionalAppeals.join(', ')}`);
+    }
+    
+    if (biasAnalysis?.biasedPhrases?.length > 0) {
+      consent.push('Biased language patterns suggest consent manufacturing techniques');
+    }
+    
+    return consent.length > 0 ? consent : this.analyzeManufacturingConsent({ content: '' });
+  }
+  
+  private extractPropagandaModelFromAI(biasAnalysis: any, credibilityAnalysis: any): string[] {
+    const propaganda = [];
+    
+    if (biasAnalysis?.biasTypes?.includes('corporate')) {
+      propaganda.push('Corporate bias detected - advertising filter may be active');
+    }
+    
+    if (credibilityAnalysis?.factors?.transparency < 50) {
+      propaganda.push('Low transparency suggests potential sourcing filter effects');
+    }
+    
+    return propaganda.length > 0 ? propaganda : this.analyzePropagandaModel({ content: '' });
+  }
+  
+  private extractFramingFromAI(biasAnalysis: any, sentimentAnalysis: any): string[] {
+    const framing = [];
+    
+    if (biasAnalysis?.explanation) {
+      framing.push(`Bias analysis reveals framing patterns: ${biasAnalysis.explanation}`);
+    }
+    
+    if (sentimentAnalysis?.toneAnalysis) {
+      framing.push(`Tone analysis indicates framing: ${sentimentAnalysis.toneAnalysis}`);
+    }
+    
+    return framing.length > 0 ? framing : this.analyzeFraming({ content: '' });
+  }
+  
+  private extractLoadedLanguageFromAI(biasAnalysis: any, sentimentAnalysis: any): string[] {
+    const language = [];
+    
+    if (biasAnalysis?.biasedPhrases?.length > 0) {
+      language.push(`Loaded language detected: ${biasAnalysis.biasedPhrases.slice(0, 3).join(', ')}`);
+    }
+    
+    if (sentimentAnalysis?.emotionalIntensity === 'high') {
+      language.push('High emotional intensity suggests loaded language usage');
+    }
+    
+    return language.length > 0 ? language : this.analyzeLoadedLanguage({ content: '' });
+  }
+  
+  private extractPresuppositionsFromAI(biasAnalysis: any): string[] {
+    if (biasAnalysis?.educationalInsights?.criticalQuestions) {
+      return biasAnalysis.educationalInsights.criticalQuestions.map((q: string) => 
+        `Presupposition analysis: ${q}`
+      );
+    }
+    return this.analyzePresuppositions({ content: '' });
+  }
+  
+  private extractIdeologicalAssumptionsFromAI(biasAnalysis: any): string[] {
+    if (biasAnalysis?.biasTypes?.length > 0) {
+      return biasAnalysis.biasTypes.map((type: string) => 
+        `Ideological assumption detected: ${type} bias patterns`
+      );
+    }
+    return this.analyzeIdeologicalAssumptions({ content: '' });
+  }
+
+  /**
+   * Generate enhanced fallback analysis with better structure
+   */
+  private generateEnhancedFallbackAnalysis(article: any): ChomskyAnalysis {
     return {
       structuralAnalysis: {
         powerStructures: this.analyzePowerStructures(article),
@@ -380,13 +585,43 @@ class IntellectualSelfDefenseService {
     };
   }
 
-  // Analysis methods (simplified for demo - in real implementation, these would be sophisticated AI models)
+  // Enhanced analysis methods with more sophisticated content analysis
   private analyzePowerStructures(article: any): string[] {
-    return [
-      'Corporate media ownership creates structural bias in information dissemination',
-      'Economic elites maintain disproportionate influence over public discourse',
-      'Institutional power operates through seemingly neutral mechanisms'
-    ];
+    const analysis: string[] = [];
+    
+    // Analyze source ownership and potential conflicts
+    if (article.source) {
+      analysis.push(`Media outlet "${article.source}" operates within corporate ownership structures that may influence editorial decisions and content selection.`);
+    }
+    
+    // Look for corporate or institutional language
+    const corporateTerms = ['market', 'economy', 'business', 'corporate', 'investment', 'profit'];
+    const hasCorporateFocus = corporateTerms.some(term => 
+      article.content.toLowerCase().includes(term)
+    );
+    
+    if (hasCorporateFocus) {
+      analysis.push('Content demonstrates corporate-centric framing that privileges business interests and market-based solutions over alternative approaches.');
+    }
+    
+    // Analyze power relationships in the content
+    const powerTerms = ['authority', 'expert', 'official', 'government', 'institution'];
+    const powerMentions = powerTerms.filter(term => 
+      article.content.toLowerCase().includes(term)
+    );
+    
+    if (powerMentions.length > 2) {
+      analysis.push(`Content relies heavily on institutional authority (${powerMentions.join(', ')}) rather than grassroots or alternative perspectives.`);
+    }
+    
+    // Default analysis if no specific patterns found
+    if (analysis.length === 0) {
+      analysis.push('Corporate media ownership creates structural bias in information dissemination');
+      analysis.push('Economic elites maintain disproportionate influence over public discourse');
+      analysis.push('Institutional power operates through seemingly neutral mechanisms');
+    }
+    
+    return analysis;
   }
 
   private analyzeInstitutionalBias(article: any): string[] {
