@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { FiChevronDown, FiUser, FiBook, FiSearch, FiSettings, FiTarget, FiCpu } from 'react-icons/fi';
+import { FiChevronDown, FiUser, FiBook, FiSettings } from 'react-icons/fi';
 import FeatureSearch from './FeatureSearch';
 import '../styles/Header.css';
 import AuthModal from './AuthModal';
@@ -135,17 +135,28 @@ const Header = ({}: HeaderProps) => {
         <nav className={`nav-menu ${isMenuOpen ? 'open' : ''}`} role="navigation" aria-label="Main navigation">
           <ul role="menubar">
             {/* Primary Navigation */}
-            <li role="none">
-              <Link 
-                to="/" 
-                className={isActive('/') ? 'active' : ''} 
-                aria-current={isActive('/') ? 'page' : undefined}
-                role="menuitem"
-                tabIndex={0}
-              >
-                Intellectual Self Defense
-              </Link>
-            </li>
+           <li role="none">
+             <Link 
+               to="/" 
+               className={isActive('/') ? 'active' : ''} 
+               aria-current={isActive('/') ? 'page' : undefined}
+               role="menuitem"
+               tabIndex={0}
+             >
+               Intellectual Self Defense
+             </Link>
+           </li>
+           <li role="none">
+             <Link 
+               to="/forces-for-good" 
+               className={isActive('/forces-for-good') ? 'active' : ''} 
+               aria-current={isActive('/forces-for-good') ? 'page' : undefined}
+               role="menuitem"
+               tabIndex={0}
+             >
+               Forces for Good
+             </Link>
+           </li>
             
             <li role="none">
               <Link 

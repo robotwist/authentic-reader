@@ -19,6 +19,7 @@ import AnalysisPage from './pages/AnalysisPage';
 import ArticleFeedPage from './pages/ArticleFeedPage';
 import ArticleAnalysisPage from './pages/ArticleAnalysisPage';
 import ArticleReaderPage from './pages/ArticleReaderPage';
+import ForcesForGoodPage from './pages/ForcesForGoodPage';
 import BalancedFeedPage from './pages/BalancedFeedPage';
 import MediaLiteracyGuide from './pages/MediaLiteracyGuide';
 import PoliticalAnalysisPage from './pages/PoliticalAnalysisPage';
@@ -324,6 +325,7 @@ function App() {
                 <Route path="/journalists" element={<JournalistRating />} />
                 <Route path="/intellectual-self-defense" element={<IntellectualSelfDefensePage />} />
                 <Route path="/article/:articleId" element={<ArticleReaderPage />} />
+                <Route path="/forces-for-good" element={<ForcesForGoodPage />} />
                 
                 {/* Legacy Analysis Routes */}
                 <Route path="/benchmark" element={<NLPBenchmark />} />
