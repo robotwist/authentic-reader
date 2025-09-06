@@ -1,5 +1,4 @@
 import React from 'react';
-import { HF_CONFIG } from '../config/huggingFaceConfig';
 import { logger } from '../utils/logger';
 
 /**
@@ -10,9 +9,8 @@ const EnvTest: React.FC = () => {
   
   // Check different environment variable sources
   const envSources = {
-    'import.meta.env.VITE_HF_API_TOKEN': import.meta.env?.VITE_HF_API_TOKEN || 'Not available',
-    'window.env?.REACT_APP_HF_API_TOKEN': window.env?.REACT_APP_HF_API_TOKEN || 'Not available',
-    'HF_CONFIG.API_TOKEN (from config)': HF_CONFIG.API_TOKEN,
+    'import.meta.env.VITE_API_URL': import.meta.env?.VITE_API_URL || 'Not available',
+    'window.env?.REACT_APP_API_URL': window.env?.REACT_APP_API_URL || 'Not available',
     'window.env object exists': typeof window.env !== 'undefined' ? 'Yes' : 'No',
     'import.meta.env object exists': typeof import.meta.env !== 'undefined' ? 'Yes' : 'No'
   };
@@ -29,7 +27,7 @@ const EnvTest: React.FC = () => {
       <h2 style={{ color: 'var(--heading-color, #333)' }}>Environment Variables Test</h2>
       <div style={{ marginBottom: '20px' }}>
         <p>This component helps verify if environment variables are loaded correctly.</p>
-        <p><strong>Note:</strong> API tokens are masked for security, showing only first and last 4 characters.</p>
+        <p><strong>Note:</strong> This component helps verify environment configuration.</p>
       </div>
       
       <div>
@@ -66,9 +64,7 @@ const EnvTest: React.FC = () => {
                   padding: '8px',
                   backgroundColor: 'var(--table-cell-bg, transparent)'
                 }}>
-                  {typeof value === 'string' && value.includes('hf_') 
-                    ? `${value.substring(0, 6)}...${value.substring(value.length - 4)}`
-                    : value}
+                  {value}
                 </td>
               </tr>
             ))}
