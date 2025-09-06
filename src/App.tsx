@@ -48,6 +48,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import { ThemeProvider } from './contexts/ThemeContext';
 import FeedbackDashboard from './components/FeedbackDashboard';
+import DailyDeepDivePage from './pages/DailyDeepDivePage';
 import PWAInstallBanner from './components/PWAInstallBanner';
 
 // Protected route wrapper
@@ -320,6 +321,7 @@ function App() {
                 <Route path="/analytics" element={<AnalyticsDashboard />} />
                 <Route path="/analysis/enhanced-bias" element={<EnhancedBiasDetection />} />
                 <Route path="/journalists" element={<JournalistRating />} />
+                <Route path="/daily-deep-dive" element={<DailyDeepDivePage />} />
                 
                 {/* Legacy Analysis Routes */}
                 <Route path="/benchmark" element={<NLPBenchmark />} />

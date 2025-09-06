@@ -247,6 +247,11 @@ const Header = ({}: HeaderProps) => {
                     </Link>
                   </li>
                   <li role="none">
+                    <Link to="/daily-deep-dive" role="menuitem" tabIndex={0}>
+                      Daily Deep Dive
+                    </Link>
+                  </li>
+                  <li role="none">
                     <Link to="/agentic-dashboard" role="menuitem" tabIndex={0}>
                       <FiCpu />
                       Agentic AI Dashboard
