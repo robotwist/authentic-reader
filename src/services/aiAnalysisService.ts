@@ -8,16 +8,16 @@
 import { LlamaService } from './LlamaService';
 import { logger } from '../utils/logger';
 
-// Configuration
-const LLAMA_SERVICE_URL = import.meta.env.VITE_LLAMA_SERVICE_URL || 
-  (isLocalDevelopment() ? 'http://localhost:8105' : 'https://web-production-2e12d.up.railway.app');
-
 // Determine environment
 const isLocalDevelopment = () => {
   return window.location.hostname === 'localhost' || 
          window.location.hostname === '127.0.0.1' ||
          window.location.hostname.includes('localhost');
 };
+
+// Configuration
+const LLAMA_SERVICE_URL = import.meta.env.VITE_LLAMA_SERVICE_URL || 
+  (isLocalDevelopment() ? 'http://localhost:8105' : 'https://web-production-2e12d.up.railway.app');
 
 const isDeployed = () => {
   return window.location.hostname.includes('netlify.app') ||

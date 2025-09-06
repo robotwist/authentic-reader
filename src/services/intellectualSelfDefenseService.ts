@@ -346,8 +346,8 @@ class IntellectualSelfDefenseService {
       });
       
       // Integrate with enhanced AI analysis service
-      const { aiAnalysisService } = await import('./aiAnalysisService');
-      const aiService = new aiAnalysisService.AIAnalysisService();
+      const { AIAnalysisService } = await import('./aiAnalysisService');
+      const aiService = new AIAnalysisService();
       await aiService.initialize();
       
       try {
