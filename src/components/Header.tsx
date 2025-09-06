@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { FiChevronDown, FiUser, FiBook, FiSearch, FiSettings, FiTarget, FiCpu } from 'react-icons/fi';
+import FeatureSearch from './FeatureSearch';
 import '../styles/Header.css';
 import AuthModal from './AuthModal';
 // Use public asset path directly to avoid Vite warning about importing from public
@@ -116,7 +117,7 @@ const Header = ({}: HeaderProps) => {
         <div className="header-left">
           <div className="logo-container">
             <img src={AUTHENTIC_LOGO_URL} alt="Authentic Internet Logo" className="logo-image" />
-            <h1 className="app-title">Authentic Reader</h1>
+            <h1 className="app-title">Intellectual Self Defense</h1>
           </div>
         </div>
         
@@ -142,7 +143,7 @@ const Header = ({}: HeaderProps) => {
                 role="menuitem"
                 tabIndex={0}
               >
-                Balanced Feed
+                Intellectual Self Defense
               </Link>
             </li>
             
@@ -159,30 +160,9 @@ const Header = ({}: HeaderProps) => {
               </Link>
             </li>
             
-            <li role="none">
-              <Link 
-                to="/media-literacy-guide" 
-                className={isActive('/media-literacy-guide') ? 'active' : ''} 
-                aria-current={isActive('/media-literacy-guide') ? 'page' : undefined}
-                role="menuitem"
-                tabIndex={0}
-              >
-                <FiBook />
-                Media Literacy
-              </Link>
-            </li>
-            
-            <li role="none">
-              <Link 
-                to="/political-analysis" 
-                className={isActive('/political-analysis') ? 'active' : ''} 
-                aria-current={isActive('/political-analysis') ? 'page' : undefined}
-                role="menuitem"
-                tabIndex={0}
-              >
-                <FiTarget />
-                Political Analysis
-              </Link>
+            {/* Feature Search */}
+            <li role="none" className="feature-search-nav">
+              <FeatureSearch />
             </li>
             
             <li role="none">
@@ -195,70 +175,6 @@ const Header = ({}: HeaderProps) => {
               >
                 About
               </Link>
-            </li>
-            
-            {/* Analysis Dropdown */}
-            <li role="none" ref={analysisDropdownRef}>
-              <button
-                className={`dropdown-toggle ${isActivePrefix('/analysis') ? 'active' : ''}`}
-                onClick={() => setIsAnalysisDropdownOpen(!isAnalysisDropdownOpen)}
-                aria-expanded={isAnalysisDropdownOpen}
-                role="menuitem"
-                tabIndex={0}
-              >
-                Analysis
-                <FiChevronDown />
-              </button>
-              {isAnalysisDropdownOpen && (
-                <ul className="dropdown-menu" role="menu">
-                  <li role="none">
-                    <Link to="/analysis" role="menuitem" tabIndex={0}>
-                      Content Analysis
-                    </Link>
-                  </li>
-                  <li role="none">
-                    <Link to="/analysis/bias" role="menuitem" tabIndex={0}>
-                      Bias Detection
-                    </Link>
-                  </li>
-                  <li role="none">
-                    <Link to="/analysis/rhetorical" role="menuitem" tabIndex={0}>
-                      Rhetorical Analysis
-                    </Link>
-                  </li>
-                  <li role="none">
-                    <Link to="/analysis/comparative" role="menuitem" tabIndex={0}>
-                      Comparative Analysis
-                    </Link>
-                  </li>
-                  <li role="none">
-                    <Link to="/analytics" role="menuitem" tabIndex={0}>
-                      Analytics Dashboard
-                    </Link>
-                  </li>
-                  <li role="none">
-                    <Link to="/analysis/enhanced-bias" role="menuitem" tabIndex={0}>
-                      Enhanced Bias Detection
-                    </Link>
-                  </li>
-                  <li role="none">
-                    <Link to="/journalists" role="menuitem" tabIndex={0}>
-                      Journalist Ratings
-                    </Link>
-                  </li>
-                  <li role="none">
-                    <Link to="/daily-deep-dive" role="menuitem" tabIndex={0}>
-                      Daily Deep Dive
-                    </Link>
-                  </li>
-                  <li role="none">
-                    <Link to="/agentic-dashboard" role="menuitem" tabIndex={0}>
-                      <FiCpu />
-                      Agentic AI Dashboard
-                    </Link>
-                  </li>
-                </ul>
-              )}
             </li>
             
             {/* Install App (PWA) */}

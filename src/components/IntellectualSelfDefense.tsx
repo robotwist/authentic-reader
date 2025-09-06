@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { FiBrain, FiTarget, FiTrendingUp, FiUsers, FiGlobe, FiBookOpen, FiZap } from 'react-icons/fi';
-import { dailyDeepDiveService, DailyArticle, ChomskyAnalysis } from '../services/dailyDeepDiveService';
+import { intellectualSelfDefenseService, DailyArticle, ChomskyAnalysis } from '../services/intellectualSelfDefenseService';
 import { logger } from '../utils/logger';
-import './DailyDeepDive.css';
+import './IntellectualSelfDefense.css';
 
-interface DailyDeepDiveProps {
+interface IntellectualSelfDefenseProps {
   onArticleSelect?: (article: DailyArticle) => void;
 }
 
-const DailyDeepDive: React.FC<DailyDeepDiveProps> = ({ onArticleSelect }) => {
+const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArticleSelect }) => {
   const [articles, setArticles] = useState<DailyArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedArticle, setSelectedArticle] = useState<DailyArticle | null>(null);
@@ -21,14 +21,14 @@ const DailyDeepDive: React.FC<DailyDeepDiveProps> = ({ onArticleSelect }) => {
   const loadTodaysArticles = async () => {
     try {
       setLoading(true);
-      logger.info('Loading today\'s deep dive articles...');
+      logger.info('Loading today\'s intellectual self defense course...');
       
-      const todaysArticles = await dailyDeepDiveService.getTodaysArticles();
+      const todaysArticles = await intellectualSelfDefenseService.getTodaysArticles();
       setArticles(todaysArticles);
       
       logger.info(`Loaded ${todaysArticles.length} articles for deep analysis`);
     } catch (error) {
-      logger.error('Failed to load daily deep dive articles:', error);
+      logger.error('Failed to load intellectual self defense course:', error);
     } finally {
       setLoading(false);
     }
@@ -74,8 +74,8 @@ const DailyDeepDive: React.FC<DailyDeepDiveProps> = ({ onArticleSelect }) => {
       <div className="daily-deep-dive">
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <h3>Curating Today's Deep Dive Articles...</h3>
-          <p>Selecting 10 high-quality articles for Noam Chomsky-level analysis</p>
+          <h3>Preparing Your Intellectual Self Defense Course...</h3>
+          <p>Curating 10 high-quality articles for critical thinking training</p>
         </div>
       </div>
     );
@@ -89,17 +89,17 @@ const DailyDeepDive: React.FC<DailyDeepDiveProps> = ({ onArticleSelect }) => {
             <FiBrain />
           </div>
           <div className="header-text">
-            <h1>Daily Deep Dive</h1>
-            <p>10 articles selected for Noam Chomsky-level analysis</p>
+            <h1>Intellectual Self Defense Course</h1>
+            <p>Your daily training in critical thinking and media literacy</p>
             <div className="header-stats">
               <span className="stat">
                 <FiTarget /> {articles.length} Articles
               </span>
               <span className="stat">
-                <FiUsers /> Premium Sources
+                <FiUsers /> Expert Analysis
               </span>
               <span className="stat">
-                <FiGlobe /> Global Perspective
+                <FiGlobe /> Critical Thinking
               </span>
             </div>
           </div>
@@ -484,4 +484,4 @@ const DailyDeepDive: React.FC<DailyDeepDiveProps> = ({ onArticleSelect }) => {
   );
 };
 
-export default DailyDeepDive;
+export default IntellectualSelfDefense;

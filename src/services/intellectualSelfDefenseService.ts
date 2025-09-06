@@ -1,8 +1,9 @@
 /**
- * Daily Deep Dive Service
+ * Intellectual Self Defense Course Service
  * 
- * Curates 10 high-quality articles per day and provides Noam Chomsky-level analysis
- * Focus: Quality over quantity, deep intellectual analysis
+ * Your daily training in critical thinking and media literacy
+ * Curates 10 high-quality articles per day with Noam Chomsky-level analysis
+ * Focus: Quality over quantity, deep intellectual analysis for informed citizenship
  */
 
 export interface DailyArticle {
@@ -77,7 +78,7 @@ export interface ArticleSelectionCriteria {
   timeliness: number; // 0-1
 }
 
-class DailyDeepDiveService {
+class IntellectualSelfDefenseService {
   private selectedArticles: DailyArticle[] = [];
   private lastUpdate: string = '';
   private readonly MAX_ARTICLES_PER_DAY = 10;
@@ -568,5 +569,5 @@ class DailyDeepDiveService {
 }
 
 // Export singleton instance
-export const dailyDeepDiveService = new DailyDeepDiveService();
-export default dailyDeepDiveService;
+export const intellectualSelfDefenseService = new IntellectualSelfDefenseService();
+export default intellectualSelfDefenseService;

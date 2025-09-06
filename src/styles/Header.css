@@ -4,6 +4,17 @@
   display: none; /* Hide any remaining theme toggle buttons */
 }
 
+/* Feature Search in Header */
+.feature-search-nav {
+  flex: 1;
+  max-width: 400px;
+  margin: 0 20px;
+}
+
+.feature-search-nav .feature-search {
+  max-width: 100%;
+}
+
 /* Dark mode specific styles - these will be the default now */
 .app-header {
   background-color: var(--primary-color);

@@ -1,10 +1,10 @@
 import React from 'react';
-import { DailyDeepDive } from '../components/DailyDeepDive';
-import { DailyArticle } from '../services/dailyDeepDiveService';
+import { IntellectualSelfDefense } from '../components/IntellectualSelfDefense';
+import { DailyArticle } from '../services/intellectualSelfDefenseService';
 import { logger } from '../utils/logger';
-import './DailyDeepDivePage.css';
+import './IntellectualSelfDefensePage.css';
 
-const DailyDeepDivePage: React.FC = () => {
+const IntellectualSelfDefensePage: React.FC = () => {
   const handleArticleSelect = (article: DailyArticle) => {
     logger.info('Article selected for deep analysis:', {
       title: article.title,
@@ -17,43 +17,43 @@ const DailyDeepDivePage: React.FC = () => {
     <div className="daily-deep-dive-page">
       <div className="page-header">
         <div className="header-content">
-          <h1>Daily Deep Dive</h1>
+          <h1>Intellectual Self Defense Course</h1>
           <p className="page-subtitle">
-            Quality over quantity. 10 carefully curated articles with Noam Chomsky-level analysis.
+            Your daily training in critical thinking and media literacy. 10 carefully curated articles with expert analysis.
           </p>
           <div className="page-features">
             <div className="feature">
               <span className="feature-icon">🎯</span>
-              <span>Premium Sources</span>
+              <span>Expert Curation</span>
             </div>
             <div className="feature">
               <span className="feature-icon">🧠</span>
-              <span>Deep Analysis</span>
+              <span>Critical Thinking</span>
             </div>
             <div className="feature">
               <span className="feature-icon">📊</span>
-              <span>Intellectual Rigor</span>
+              <span>Media Literacy</span>
             </div>
             <div className="feature">
               <span className="feature-icon">🌍</span>
-              <span>Global Perspective</span>
+              <span>Informed Citizenship</span>
             </div>
           </div>
         </div>
       </div>
 
       <div className="page-content">
-        <DailyDeepDive onArticleSelect={handleArticleSelect} />
+        <IntellectualSelfDefense onArticleSelect={handleArticleSelect} />
       </div>
 
       <div className="page-footer">
         <div className="footer-content">
-          <h3>About Daily Deep Dive</h3>
+          <h3>About Intellectual Self Defense Course</h3>
           <p>
-            Inspired by Noam Chomsky's approach to media analysis, our Daily Deep Dive selects 
-            10 high-quality articles each day and subjects them to rigorous intellectual analysis. 
-            We examine power structures, linguistic framing, historical context, and critical 
-            perspectives to provide insights that go far beyond surface-level reporting.
+            Inspired by Noam Chomsky's concept of "intellectual self-defense," this course provides 
+            daily training in critical thinking and media literacy. We curate 10 high-quality articles 
+            each day and subject them to rigorous analysis, examining power structures, linguistic 
+            framing, historical context, and critical perspectives to build your analytical skills.
           </p>
           <div className="analysis-framework">
             <h4>Analysis Framework</h4>
@@ -82,4 +82,4 @@ const DailyDeepDivePage: React.FC = () => {
   );
 };
 
-export default DailyDeepDivePage;
+export default IntellectualSelfDefensePage;
