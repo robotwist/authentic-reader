@@ -81,9 +81,12 @@ export interface ArticleSelectionCriteria {
 }
 
 class IntellectualSelfDefenseService {
+  private static instance: IntellectualSelfDefenseService;
   private selectedArticles: DailyArticle[] = [];
   private lastUpdate: string = '';
   private readonly MAX_ARTICLES_PER_DAY = 10;
+  private articlesCache: Map<string, DailyArticle> = new Map();
+  private isGenerating: boolean = false;
   
   // High-quality sources for curation
   private readonly PREMIUM_SOURCES = [
@@ -105,6 +108,16 @@ class IntellectualSelfDefenseService {
   ];
 
   /**
+   * Get singleton instance
+   */
+  static getInstance(): IntellectualSelfDefenseService {
+    if (!IntellectualSelfDefenseService.instance) {
+      IntellectualSelfDefenseService.instance = new IntellectualSelfDefenseService();
+    }
+    return IntellectualSelfDefenseService.instance;
+  }
+
+  /**
    * Get today's curated articles with deep analysis
    */
   async getTodaysArticles(): Promise<DailyArticle[]> {
@@ -112,6 +125,16 @@ class IntellectualSelfDefenseService {
     
     // Check if we need to refresh today's selection
     if (this.lastUpdate !== today || this.selectedArticles.length === 0) {
+      // Prevent multiple simultaneous generation
+      if (this.isGenerating) {
+        console.log('Articles are already being generated, waiting...');
+        // Wait for generation to complete
+        while (this.isGenerating) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        return this.selectedArticles;
+      }
+      
       await this.curateTodaysArticles();
       this.lastUpdate = today;
     }
@@ -125,6 +148,13 @@ class IntellectualSelfDefenseService {
   async getArticleById(articleId: string): Promise<DailyArticle | null> {
     try {
       console.log('getArticleById called with:', articleId);
+      
+      // Check cache first
+      if (this.articlesCache.has(articleId)) {
+        console.log('Found article in cache:', articleId);
+        return this.articlesCache.get(articleId)!;
+      }
+      
       const articles = await this.getTodaysArticles();
       console.log('getTodaysArticles returned:', articles.length, 'articles');
       console.log('Article IDs:', articles.map(a => a.id));
@@ -132,18 +162,27 @@ class IntellectualSelfDefenseService {
       const foundArticle = articles.find(article => article.id === articleId);
       console.log('Found article:', foundArticle);
       
-      if (!foundArticle) {
-        logger.warn(`Article with ID ${articleId} not found in today's articles`);
-        console.warn(`Article with ID ${articleId} not found in today's articles`);
-        // Try to find in all available articles (fallback)
-        const allArticles = await this.getAllAvailableArticles();
-        console.log('Fallback search in all articles:', allArticles.length);
-        const fallbackArticle = allArticles.find(article => article.id === articleId);
-        console.log('Fallback found:', fallbackArticle);
-        return fallbackArticle || null;
+      if (foundArticle) {
+        // Cache the article for future lookups
+        this.articlesCache.set(articleId, foundArticle);
+        return foundArticle;
       }
       
-      return foundArticle;
+      logger.warn(`Article with ID ${articleId} not found in today's articles`);
+      console.warn(`Article with ID ${articleId} not found in today's articles`);
+      
+      // Try to find in all available articles (fallback)
+      const allArticles = await this.getAllAvailableArticles();
+      console.log('Fallback search in all articles:', allArticles.length);
+      const fallbackArticle = allArticles.find(article => article.id === articleId);
+      console.log('Fallback found:', fallbackArticle);
+      
+      if (fallbackArticle) {
+        this.articlesCache.set(articleId, fallbackArticle);
+        return fallbackArticle;
+      }
+      
+      return null;
     } catch (error) {
       console.error('Failed to get article by ID:', error);
       logger.error('Failed to get article by ID:', error);
@@ -167,6 +206,12 @@ class IntellectualSelfDefenseService {
    * Curate 10 high-quality articles for today
    */
   private async curateTodaysArticles(): Promise<void> {
+    if (this.isGenerating) {
+      console.log('Articles are already being generated, skipping...');
+      return;
+    }
+    
+    this.isGenerating = true;
     logger.info('🎯 Curating today\'s deep dive articles...');
     
     try {
@@ -188,10 +233,22 @@ class IntellectualSelfDefenseService {
         this.selectedArticles = await this.createFallbackArticles();
       }
       
+      // Cache all articles
+      this.selectedArticles.forEach(article => {
+        this.articlesCache.set(article.id, article);
+      });
+      
     } catch (error) {
       logger.error('Error in curateTodaysArticles:', error);
       // Create fallback articles if everything fails
       this.selectedArticles = await this.createFallbackArticles();
+      
+      // Cache fallback articles too
+      this.selectedArticles.forEach(article => {
+        this.articlesCache.set(article.id, article);
+      });
+    } finally {
+      this.isGenerating = false;
     }
   }
 
@@ -959,5 +1016,5 @@ class IntellectualSelfDefenseService {
 }
 
 // Export singleton instance
-export const intellectualSelfDefenseService = new IntellectualSelfDefenseService();
+export const intellectualSelfDefenseService = IntellectualSelfDefenseService.getInstance();
 export default intellectualSelfDefenseService;
