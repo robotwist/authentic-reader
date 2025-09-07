@@ -26,16 +26,21 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
       
       const todaysArticles = await intellectualSelfDefenseService.getTodaysArticles();
       
+      logger.info('Articles received from service:', {
+        count: todaysArticles?.length || 0,
+        articles: todaysArticles?.map(a => ({ id: a.id, title: a.title })) || []
+      });
+      
       if (todaysArticles && todaysArticles.length > 0) {
         setArticles(todaysArticles);
-        logger.info(`Loaded ${todaysArticles.length} articles for deep analysis`);
+        logger.info(`✅ Successfully loaded ${todaysArticles.length} articles for deep analysis`);
       } else {
-        logger.warn('No articles loaded - this may indicate a service issue');
+        logger.warn('❌ No articles loaded - this may indicate a service issue');
         // Set empty array to prevent errors
         setArticles([]);
       }
     } catch (error) {
-      logger.error('Failed to load intellectual self defense course:', error);
+      logger.error('❌ Failed to load intellectual self defense course:', error);
       // Set empty array to prevent errors
       setArticles([]);
     } finally {

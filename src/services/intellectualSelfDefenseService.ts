@@ -159,16 +159,65 @@ class IntellectualSelfDefenseService {
   private async curateTodaysArticles(): Promise<void> {
     logger.info('🎯 Curating today\'s deep dive articles...');
     
-    // Simulate fetching from premium sources
-    const candidateArticles = await this.fetchCandidateArticles();
+    try {
+      // Simulate fetching from premium sources
+      const candidateArticles = await this.fetchCandidateArticles();
+      logger.info(`Fetched ${candidateArticles.length} candidate articles`);
+      
+      // Apply Chomsky-level selection criteria
+      const selectedCandidates = this.applySelectionCriteria(candidateArticles);
+      logger.info(`Selected ${selectedCandidates.length} candidates for analysis`);
+      
+      // Perform deep analysis on selected articles
+      this.selectedArticles = await this.performDeepAnalysis(selectedCandidates);
+      logger.info(`✅ Curated ${this.selectedArticles.length} articles for deep analysis`);
+      
+      // Safety check: ensure we have at least some articles
+      if (this.selectedArticles.length === 0) {
+        logger.warn('No articles generated, creating fallback articles');
+        this.selectedArticles = await this.createFallbackArticles();
+      }
+      
+    } catch (error) {
+      logger.error('Error in curateTodaysArticles:', error);
+      // Create fallback articles if everything fails
+      this.selectedArticles = await this.createFallbackArticles();
+    }
+  }
+
+  /**
+   * Create fallback articles when all else fails
+   */
+  private async createFallbackArticles(): Promise<DailyArticle[]> {
+    logger.info('Creating fallback articles...');
     
-    // Apply Chomsky-level selection criteria
-    const selectedCandidates = this.applySelectionCriteria(candidateArticles);
+    const fallbackArticles: DailyArticle[] = [];
+    const candidates = await this.fetchCandidateArticles();
     
-    // Perform deep analysis on selected articles
-    this.selectedArticles = await this.performDeepAnalysis(selectedCandidates);
+    for (const candidate of candidates.slice(0, 5)) { // Limit to 5 fallback articles
+      try {
+        const fallbackAnalysis = this.generateEnhancedFallbackAnalysis(candidate);
+        
+        fallbackArticles.push({
+          id: candidate.id,
+          title: candidate.title,
+          content: candidate.content,
+          source: candidate.source,
+          url: candidate.url,
+          publishedAt: candidate.publishedAt,
+          category: candidate.category,
+          importance: this.determineImportance(candidate),
+          selectionReason: 'Fallback article due to analysis service issues',
+          chomskyAnalysis: fallbackAnalysis,
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        logger.error(`Failed to create fallback article ${candidate.title}:`, error);
+      }
+    }
     
-    logger.info(`✅ Curated ${this.selectedArticles.length} articles for deep analysis`);
+    logger.info(`Created ${fallbackArticles.length} fallback articles`);
+    return fallbackArticles;
   }
 
   /**
@@ -345,9 +394,19 @@ class IntellectualSelfDefenseService {
     
     for (const article of articles) {
       try {
-        const chomskyAnalysis = await this.generateChomskyAnalysis(article);
+        logger.info(`Processing article: ${article.title}`);
         
-        analyzedArticles.push({
+        // Generate analysis with timeout to prevent hanging
+        const analysisPromise = Promise.race([
+          this.generateChomskyAnalysis(article),
+          new Promise<ChomskyAnalysis>((_, reject) => 
+            setTimeout(() => reject(new Error('Analysis timeout')), 10000)
+          )
+        ]);
+        
+        const chomskyAnalysis = await analysisPromise;
+        
+        const analyzedArticle: DailyArticle = {
           id: article.id,
           title: article.title,
           content: article.content,
@@ -359,15 +418,41 @@ class IntellectualSelfDefenseService {
           selectionReason: this.generateSelectionReason(article),
           chomskyAnalysis,
           timestamp: new Date().toISOString()
-        });
+        };
         
-        logger.info(`✅ Analyzed article: ${article.title}`);
+        analyzedArticles.push(analyzedArticle);
+        logger.info(`✅ Successfully analyzed article: ${article.title}`);
+        
       } catch (error) {
         logger.error(`Failed to analyze article ${article.title}:`, error);
-        // Continue with other articles even if one fails
+        
+        // Create a fallback article even if analysis fails
+        try {
+          const fallbackAnalysis = this.generateEnhancedFallbackAnalysis(article);
+          const fallbackArticle: DailyArticle = {
+            id: article.id,
+            title: article.title,
+            content: article.content,
+            source: article.source,
+            url: article.url,
+            publishedAt: article.publishedAt,
+            category: article.category,
+            importance: this.determineImportance(article),
+            selectionReason: this.generateSelectionReason(article),
+            chomskyAnalysis: fallbackAnalysis,
+            timestamp: new Date().toISOString()
+          };
+          
+          analyzedArticles.push(fallbackArticle);
+          logger.info(`✅ Created fallback article: ${article.title}`);
+        } catch (fallbackError) {
+          logger.error(`Even fallback failed for ${article.title}:`, fallbackError);
+          // Skip this article completely
+        }
       }
     }
     
+    logger.info(`✅ Completed analysis of ${analyzedArticles.length} articles`);
     return analyzedArticles;
   }
 
@@ -376,46 +461,63 @@ class IntellectualSelfDefenseService {
    */
   private async generateChomskyAnalysis(article: any): Promise<ChomskyAnalysis> {
     try {
-      // Use enhanced prompts for real AI analysis
-      const { enhancedPromptService } = await import('./enhancedPromptService');
-      const { responseValidationService } = await import('./responseValidationService');
+      logger.info(`Generating Chomsky analysis for: ${article.title}`);
       
-      // Generate comprehensive analysis prompt
-      const prompt = enhancedPromptService.generateComprehensiveAnalysisPrompt(article, {
-        userLevel: 'intermediate',
-        analysisDepth: 'profound',
-        focusAreas: ['structural', 'linguistic', 'historical', 'critical'],
-        learningObjectives: ['critical thinking', 'media literacy', 'intellectual self defense']
-      });
-      
-      // Integrate with enhanced AI analysis service
-      const { AIAnalysisService } = await import('./aiAnalysisService');
-      const aiService = new AIAnalysisService();
-      await aiService.initialize();
-      
+      // Try AI analysis first, but don't let it block article generation
       try {
-        // Get comprehensive AI analysis
-        const [biasAnalysis, sentimentAnalysis, credibilityAnalysis] = await Promise.allSettled([
-          aiService.analyzeBias(article.content),
-          aiService.analyzeSentiment(article.content),
-          aiService.analyzeCredibility(article.content)
+        const { AIAnalysisService } = await import('./aiAnalysisService');
+        const aiService = new AIAnalysisService();
+        
+        // Set a timeout for AI analysis to prevent hanging
+        const analysisPromise = Promise.race([
+          this.performAIAnalysis(aiService, article),
+          new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('AI analysis timeout')), 5000)
+          )
         ]);
         
-        // Transform AI analysis into Chomsky framework
-        return this.transformAIToChomskyAnalysis(article, {
-          bias: biasAnalysis.status === 'fulfilled' ? biasAnalysis.value : null,
-          sentiment: sentimentAnalysis.status === 'fulfilled' ? sentimentAnalysis.value : null,
-          credibility: credibilityAnalysis.status === 'fulfilled' ? credibilityAnalysis.value : null
-        });
-        
+        const aiResults = await analysisPromise;
+        if (aiResults) {
+          logger.info(`AI analysis successful for: ${article.title}`);
+          return this.transformAIToChomskyAnalysis(article, aiResults);
+        }
       } catch (aiError) {
-        console.warn('AI analysis failed, using enhanced fallback:', aiError);
-        return this.generateEnhancedFallbackAnalysis(article);
+        logger.warn(`AI analysis failed for ${article.title}, using fallback:`, aiError);
       }
       
-    } catch (error) {
-      console.error('Error generating Chomsky analysis:', error);
+      // Always fall back to enhanced analysis
+      logger.info(`Using enhanced fallback analysis for: ${article.title}`);
       return this.generateEnhancedFallbackAnalysis(article);
+      
+    } catch (error) {
+      logger.error(`Error generating Chomsky analysis for ${article.title}:`, error);
+      // Always return fallback analysis to ensure articles are generated
+      return this.generateEnhancedFallbackAnalysis(article);
+    }
+  }
+
+  /**
+   * Perform AI analysis with error handling
+   */
+  private async performAIAnalysis(aiService: any, article: any): Promise<any> {
+    try {
+      await aiService.initialize();
+      
+      // Get comprehensive AI analysis with timeout
+      const [biasAnalysis, sentimentAnalysis, credibilityAnalysis] = await Promise.allSettled([
+        aiService.analyzeBias(article.content),
+        aiService.analyzeSentiment(article.content),
+        aiService.analyzeCredibility(article.content)
+      ]);
+      
+      return {
+        bias: biasAnalysis.status === 'fulfilled' ? biasAnalysis.value : null,
+        sentiment: sentimentAnalysis.status === 'fulfilled' ? sentimentAnalysis.value : null,
+        credibility: credibilityAnalysis.status === 'fulfilled' ? credibilityAnalysis.value : null
+      };
+    } catch (error) {
+      logger.warn('AI analysis service failed:', error);
+      return null;
     }
   }
   
