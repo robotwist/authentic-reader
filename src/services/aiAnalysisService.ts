@@ -17,7 +17,7 @@ const isLocalDevelopment = () => {
 
 // Configuration
 const LLAMA_SERVICE_URL = import.meta.env.VITE_LLAMA_SERVICE_URL || 
-  (isLocalDevelopment() ? 'http://localhost:8105' : 'https://web-production-2e12d.up.railway.app');
+  (isLocalDevelopment() ? 'http://localhost:8105' : 'https://authentic-reader-backend-c7754cf50ab2.herokuapp.com');
 
 const isDeployed = () => {
   return window.location.hostname.includes('netlify.app') ||
