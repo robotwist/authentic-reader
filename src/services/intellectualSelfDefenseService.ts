@@ -6,6 +6,8 @@
  * Focus: Quality over quantity, deep intellectual analysis for informed citizenship
  */
 
+import { logger } from '../utils/logger';
+
 export interface DailyArticle {
   id: string;
   title: string;
@@ -123,7 +125,16 @@ class IntellectualSelfDefenseService {
   async getArticleById(articleId: string): Promise<DailyArticle | null> {
     try {
       const articles = await this.getTodaysArticles();
-      return articles.find(article => article.id === articleId) || null;
+      const foundArticle = articles.find(article => article.id === articleId);
+      
+      if (!foundArticle) {
+        logger.warn(`Article with ID ${articleId} not found in today's articles`);
+        // Try to find in all available articles (fallback)
+        const allArticles = await this.getAllAvailableArticles();
+        return allArticles.find(article => article.id === articleId) || null;
+      }
+      
+      return foundArticle;
     } catch (error) {
       logger.error('Failed to get article by ID:', error);
       return null;
@@ -131,10 +142,22 @@ class IntellectualSelfDefenseService {
   }
 
   /**
+   * Get all available articles (including cached ones)
+   */
+  private async getAllAvailableArticles(): Promise<DailyArticle[]> {
+    // Return current articles or generate new ones if none exist
+    if (this.selectedArticles.length > 0) {
+      return this.selectedArticles;
+    }
+    
+    return await this.getTodaysArticles();
+  }
+
+  /**
    * Curate 10 high-quality articles for today
    */
   private async curateTodaysArticles(): Promise<void> {
-    console.log('🎯 Curating today\'s deep dive articles...');
+    logger.info('🎯 Curating today\'s deep dive articles...');
     
     // Simulate fetching from premium sources
     const candidateArticles = await this.fetchCandidateArticles();
@@ -145,7 +168,7 @@ class IntellectualSelfDefenseService {
     // Perform deep analysis on selected articles
     this.selectedArticles = await this.performDeepAnalysis(selectedCandidates);
     
-    console.log(`✅ Curated ${this.selectedArticles.length} articles for deep analysis`);
+    logger.info(`✅ Curated ${this.selectedArticles.length} articles for deep analysis`);
   }
 
   /**
@@ -316,26 +339,33 @@ class IntellectualSelfDefenseService {
    * Perform Chomsky-level deep analysis on selected articles
    */
   private async performDeepAnalysis(articles: any[]): Promise<DailyArticle[]> {
-    console.log('🧠 Performing Chomsky-level analysis...');
+    logger.info('🧠 Performing Chomsky-level analysis...');
     
     const analyzedArticles: DailyArticle[] = [];
     
     for (const article of articles) {
-      const chomskyAnalysis = await this.generateChomskyAnalysis(article);
-      
-      analyzedArticles.push({
-        id: article.id,
-        title: article.title,
-        content: article.content,
-        source: article.source,
-        url: article.url,
-        publishedAt: article.publishedAt,
-        category: article.category,
-        importance: this.determineImportance(article),
-        selectionReason: this.generateSelectionReason(article),
-        chomskyAnalysis,
-        timestamp: new Date().toISOString()
-      });
+      try {
+        const chomskyAnalysis = await this.generateChomskyAnalysis(article);
+        
+        analyzedArticles.push({
+          id: article.id,
+          title: article.title,
+          content: article.content,
+          source: article.source,
+          url: article.url,
+          publishedAt: article.publishedAt,
+          category: article.category,
+          importance: this.determineImportance(article),
+          selectionReason: this.generateSelectionReason(article),
+          chomskyAnalysis,
+          timestamp: new Date().toISOString()
+        });
+        
+        logger.info(`✅ Analyzed article: ${article.title}`);
+      } catch (error) {
+        logger.error(`Failed to analyze article ${article.title}:`, error);
+        // Continue with other articles even if one fails
+      }
     }
     
     return analyzedArticles;

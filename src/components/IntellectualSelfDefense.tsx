@@ -14,7 +14,6 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
   const [articles, setArticles] = useState<DailyArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedArticle, setSelectedArticle] = useState<DailyArticle | null>(null);
-  const [activeTab, setActiveTab] = useState<'overview' | 'structural' | 'linguistic' | 'historical' | 'critical' | 'synthesis'>('overview');
 
   useEffect(() => {
     loadTodaysArticles();
@@ -26,11 +25,19 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
       logger.info('Loading today\'s intellectual self defense course...');
       
       const todaysArticles = await intellectualSelfDefenseService.getTodaysArticles();
-      setArticles(todaysArticles);
       
-      logger.info(`Loaded ${todaysArticles.length} articles for deep analysis`);
+      if (todaysArticles && todaysArticles.length > 0) {
+        setArticles(todaysArticles);
+        logger.info(`Loaded ${todaysArticles.length} articles for deep analysis`);
+      } else {
+        logger.warn('No articles loaded - this may indicate a service issue');
+        // Set empty array to prevent errors
+        setArticles([]);
+      }
     } catch (error) {
       logger.error('Failed to load intellectual self defense course:', error);
+      // Set empty array to prevent errors
+      setArticles([]);
     } finally {
       setLoading(false);
     }
@@ -80,6 +87,35 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
           <div className="loading-spinner"></div>
           <h3>Preparing Your Intellectual Self Defense Course...</h3>
           <p>Curating 10 high-quality articles for critical thinking training</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (articles.length === 0) {
+    return (
+      <div className="daily-deep-dive">
+        <div className="error-container">
+          <div className="error-icon">
+            <FiShield />
+          </div>
+          <h2>Course Temporarily Unavailable</h2>
+          <p>We're having trouble loading today's articles. This could be due to:</p>
+          <ul>
+            <li>Network connectivity issues</li>
+            <li>Backend service maintenance</li>
+            <li>Analysis service temporarily unavailable</li>
+          </ul>
+          <button 
+            className="retry-button" 
+            onClick={loadTodaysArticles}
+          >
+            Try Again
+          </button>
+          <p className="fallback-info">
+            In the meantime, you can explore our <a href="/forces-for-good">Forces for Good</a> section 
+            or use the search feature to find other content.
+          </p>
         </div>
       </div>
     );
@@ -202,284 +238,78 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
           <div className="analysis-detail">
             <div className="analysis-header">
               <h2>{selectedArticle.title}</h2>
-              <div className="analysis-tabs">
-                <button 
-                  className={activeTab === 'overview' ? 'active' : ''}
-                  onClick={() => setActiveTab('overview')}
-                >
-                  Overview
-                </button>
-                <button 
-                  className={activeTab === 'structural' ? 'active' : ''}
-                  onClick={() => setActiveTab('structural')}
-                >
-                  Structural
-                </button>
-                <button 
-                  className={activeTab === 'linguistic' ? 'active' : ''}
-                  onClick={() => setActiveTab('linguistic')}
-                >
-                  Linguistic
-                </button>
-                <button 
-                  className={activeTab === 'historical' ? 'active' : ''}
-                  onClick={() => setActiveTab('historical')}
-                >
-                  Historical
-                </button>
-                <button 
-                  className={activeTab === 'critical' ? 'active' : ''}
-                  onClick={() => setActiveTab('critical')}
-                >
-                  Critical
-                </button>
-                <button 
-                  className={activeTab === 'synthesis' ? 'active' : ''}
-                  onClick={() => setActiveTab('synthesis')}
-                >
-                  Synthesis
-                </button>
+              <div className="analysis-summary">
+                <div className="intellectual-metrics">
+                  <div className="metric">
+                    <span className="metric-label">Complexity</span>
+                    <span 
+                      className="metric-value"
+                      style={{ color: getComplexityColor(selectedArticle.chomskyAnalysis.intellectualDepth.complexityLevel) }}
+                    >
+                      {selectedArticle.chomskyAnalysis.intellectualDepth.complexityLevel}
+                    </span>
+                  </div>
+                  <div className="metric">
+                    <span className="metric-label">Analytical Depth</span>
+                    <span className="metric-value">{selectedArticle.chomskyAnalysis.intellectualDepth.analyticalDepth}/10</span>
+                  </div>
+                  <div className="metric">
+                    <span className="metric-label">Critical Thinking</span>
+                    <span className="metric-value">{selectedArticle.chomskyAnalysis.intellectualDepth.criticalThinking}/10</span>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div className="analysis-content">
-              {activeTab === 'overview' && (
-                <div className="analysis-section">
-                  <h3>Intellectual Assessment</h3>
-                  <div className="intellectual-metrics">
-                    <div className="metric">
-                      <span className="metric-label">Complexity Level</span>
-                      <span 
-                        className="metric-value"
-                        style={{ color: getComplexityColor(selectedArticle.chomskyAnalysis.intellectualDepth.complexityLevel) }}
-                      >
-                        {selectedArticle.chomskyAnalysis.intellectualDepth.complexityLevel}
-                      </span>
-                    </div>
-                    <div className="metric">
-                      <span className="metric-label">Analytical Depth</span>
-                      <span className="metric-value">{selectedArticle.chomskyAnalysis.intellectualDepth.analyticalDepth}/10</span>
-                    </div>
-                    <div className="metric">
-                      <span className="metric-label">Critical Thinking</span>
-                      <span className="metric-value">{selectedArticle.chomskyAnalysis.intellectualDepth.criticalThinking}/10</span>
-                    </div>
-                    <div className="metric">
-                      <span className="metric-label">Intellectual Rigor</span>
-                      <span className="metric-value">{selectedArticle.chomskyAnalysis.intellectualDepth.intellectualRigor}/10</span>
-                    </div>
-                  </div>
-                  
-                  <h3>Intellectual Significance</h3>
-                  <p className="significance-text">{selectedArticle.chomskyAnalysis.synthesis.intellectualSignificance}</p>
-                </div>
-              )}
+              <div className="analysis-section">
+                <h3>Key Insights</h3>
+                <ul className="insights-list">
+                  {selectedArticle.chomskyAnalysis.synthesis.keyInsights.map((insight, index) => (
+                    <li key={index}>{insight}</li>
+                  ))}
+                </ul>
+              </div>
 
-              {activeTab === 'structural' && (
-                <div className="analysis-section">
-                  <h3>Structural Analysis</h3>
-                  
-                  <div className="analysis-subsection">
+              <div className="analysis-section">
+                <h3>Critical Analysis</h3>
+                <div className="critical-points">
+                  <div className="critical-subsection">
+                    <h4>What's Not Being Said</h4>
+                    <ul>
+                      {selectedArticle.chomskyAnalysis.criticalAnalysis.whatIsNotSaid.slice(0, 2).map((item, index) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="critical-subsection">
                     <h4>Power Structures</h4>
                     <ul>
-                      {selectedArticle.chomskyAnalysis.structuralAnalysis.powerStructures.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="analysis-subsection">
-                    <h4>Institutional Bias</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.structuralAnalysis.institutionalBias.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="analysis-subsection">
-                    <h4>Manufacturing Consent</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.structuralAnalysis.manufacturingConsent.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="analysis-subsection">
-                    <h4>Propaganda Model</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.structuralAnalysis.propagandaModel.map((item, index) => (
+                      {selectedArticle.chomskyAnalysis.structuralAnalysis.powerStructures.slice(0, 2).map((item, index) => (
                         <li key={index}>{item}</li>
                       ))}
                     </ul>
                   </div>
                 </div>
-              )}
+              </div>
 
-              {activeTab === 'linguistic' && (
-                <div className="analysis-section">
-                  <h3>Linguistic Analysis</h3>
-                  
-                  <div className="analysis-subsection">
-                    <h4>Framing</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.linguisticAnalysis.framing.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
+              <div className="analysis-section">
+                <h3>Intellectual Significance</h3>
+                <p className="significance-text">{selectedArticle.chomskyAnalysis.synthesis.intellectualSignificance}</p>
+              </div>
 
-                  <div className="analysis-subsection">
-                    <h4>Loaded Language</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.linguisticAnalysis.loadedLanguage.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="analysis-subsection">
-                    <h4>Presuppositions</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.linguisticAnalysis.presuppositions.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="analysis-subsection">
-                    <h4>Ideological Assumptions</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.linguisticAnalysis.ideologicalAssumptions.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'historical' && (
-                <div className="analysis-section">
-                  <h3>Historical Context</h3>
-                  
-                  <div className="analysis-subsection">
-                    <h4>Historical Precedents</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.historicalContext.historicalPrecedents.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="analysis-subsection">
-                    <h4>Long-term Trends</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.historicalContext.longTermTrends.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="analysis-subsection">
-                    <h4>Systemic Patterns</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.historicalContext.systemicPatterns.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="analysis-subsection">
-                    <h4>Contextual Factors</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.historicalContext.contextualFactors.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'critical' && (
-                <div className="analysis-section">
-                  <h3>Critical Analysis</h3>
-                  
-                  <div className="analysis-subsection">
-                    <h4>What Is Not Said</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.criticalAnalysis.whatIsNotSaid.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="analysis-subsection">
-                    <h4>Alternative Perspectives</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.criticalAnalysis.alternativePerspectives.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="analysis-subsection">
-                    <h4>Power Interests</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.criticalAnalysis.powerInterests.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="analysis-subsection">
-                    <h4>Ideological Function</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.criticalAnalysis.ideologicalFunction.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'synthesis' && (
-                <div className="analysis-section">
-                  <h3>Synthesis</h3>
-                  
-                  <div className="analysis-subsection">
-                    <h4>Key Insights</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.synthesis.keyInsights.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="analysis-subsection">
-                    <h4>Broader Implications</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.synthesis.broaderImplications.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="analysis-subsection">
-                    <h4>Systemic Connections</h4>
-                    <ul>
-                      {selectedArticle.chomskyAnalysis.synthesis.systemicConnections.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="analysis-subsection">
-                    <h4>Intellectual Significance</h4>
-                    <p>{selectedArticle.chomskyAnalysis.synthesis.intellectualSignificance}</p>
-                  </div>
-                </div>
-              )}
+              <div className="read-full-article">
+                <button 
+                  className="read-article-button"
+                  onClick={() => handleArticleSelect(selectedArticle)}
+                >
+                  Read Full Article with Interactive Analysis →
+                </button>
+                <p className="read-description">
+                  Click to read the complete article with interactive Chomsky-level analysis, 
+                  highlighting, and community discussion features.
+                </p>
+              </div>
             </div>
           </div>
         )}
