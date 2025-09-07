@@ -15,12 +15,12 @@
   max-width: 100%;
 }
 
-/* Dark mode specific styles - these will be the default now */
+/* Header styles - matching About page design system */
 .app-header {
-  background-color: var(--primary-color);
-  color: white;
+  background-color: #121212;
+  color: #e0e0e0;
   padding: 0.75rem 0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid #333;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -43,15 +43,14 @@
 
 .logo a {
   text-decoration: none;
-  color: white;
+  color: #fff;
 }
 
 .logo h1 {
   margin: 0;
   font-size: 1.6rem;
   font-weight: 700;
-  color: white;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  color: #fff;
 }
 
 .tagline {

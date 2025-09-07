@@ -90,8 +90,8 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
       <div className="daily-deep-dive">
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <h3>Preparing Your Intellectual Self Defense Course...</h3>
-          <p>Curating 10 high-quality articles for critical thinking training</p>
+          <h3>Preparing Your Intellectual Self Defense Course</h3>
+          <p>Curating high-quality articles for critical thinking training</p>
         </div>
       </div>
     );
@@ -105,7 +105,7 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
             <FiShield />
           </div>
           <h2>Course Temporarily Unavailable</h2>
-          <p>We're having trouble loading today's articles. This could be due to:</p>
+          <p>We are having trouble loading today's articles. This could be due to:</p>
           <ul>
             <li>Network connectivity issues</li>
             <li>Backend service maintenance</li>

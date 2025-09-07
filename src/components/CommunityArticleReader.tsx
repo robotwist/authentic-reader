@@ -441,16 +441,16 @@ const CommunityArticleReader: React.FC<CommunityArticleReaderProps> = ({ article
       {/* Analysis Summary */}
       {analysis && (
         <div className="analysis-summary">
-          <h3>🛡️ Intellectual Self-Defense Analysis</h3>
+          <h3>Intellectual Self-Defense Analysis</h3>
           
           <div className="summary-section">
-            <h4>🎯 Regime Narrative Detected</h4>
+            <h4>Regime Narrative Detected</h4>
             <p className="regime-narrative">{regimeNarrative}</p>
           </div>
 
           {democracyThreats.length > 0 && (
             <div className="summary-section">
-              <h4>⚠️ Democracy Threats Identified</h4>
+              <h4>Democracy Threats Identified</h4>
               <ul className="democracy-threats">
                 {democracyThreats.map((threat, index) => (
                   <li key={index}>{threat}</li>
@@ -460,7 +460,7 @@ const CommunityArticleReader: React.FC<CommunityArticleReaderProps> = ({ article
           )}
 
           <div className="summary-section">
-            <h4>📊 Analysis Highlights</h4>
+            <h4>Analysis Highlights</h4>
             <div className="highlight-stats">
               <div className="stat">
                 <span className="stat-number">{highlights.filter(h => h.type === 'bias').length}</span>
