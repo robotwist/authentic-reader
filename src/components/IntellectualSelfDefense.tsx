@@ -33,14 +33,14 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
       
       if (todaysArticles && todaysArticles.length > 0) {
         setArticles(todaysArticles);
-        logger.info(`✅ Successfully loaded ${todaysArticles.length} articles for deep analysis`);
+        logger.info(`Successfully loaded ${todaysArticles.length} articles for deep analysis`);
       } else {
-        logger.warn('❌ No articles loaded - this may indicate a service issue');
+        logger.warn('No articles loaded - this may indicate a service issue');
         // Set empty array to prevent errors
         setArticles([]);
       }
     } catch (error) {
-      logger.error('❌ Failed to load intellectual self defense course:', error);
+      logger.error('Failed to load intellectual self defense course:', error);
       // Set empty array to prevent errors
       setArticles([]);
     } finally {
@@ -133,25 +133,18 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
   return (
     <div className="daily-deep-dive">
       <div className="deep-dive-header">
-        <div className="header-content">
-          <div className="header-icon">
-            <FiShield />
-          </div>
-          <div className="header-text">
-            <h1>Intellectual Self Defense Course</h1>
-            <p>Your daily training in critical thinking and media literacy</p>
-            <div className="header-stats">
-              <span className="stat">
-                <FiTarget /> {articles.length} Articles
-              </span>
-              <span className="stat">
-                <FiUsers /> Expert Analysis
-              </span>
-              <span className="stat">
-                <FiGlobe /> Critical Thinking
-              </span>
-            </div>
-          </div>
+        <h1>Intellectual Self Defense Course</h1>
+        <p className="subtitle">Your daily training in critical thinking and media literacy</p>
+        <div className="header-stats">
+          <span className="stat">
+            <FiTarget /> {articles.length} Articles
+          </span>
+          <span className="stat">
+            <FiUsers /> Expert Analysis
+          </span>
+          <span className="stat">
+            <FiGlobe /> Critical Thinking
+          </span>
         </div>
       </div>
 

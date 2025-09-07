@@ -103,45 +103,32 @@
   text-decoration: underline;
 }
 
-/* Header */
+/* Header - Matching About Page Style */
 .deep-dive-header {
-  background-color: #1e1e1e;
-  color: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  margin-bottom: 2rem;
-  border-left: 3px solid #4a90e2;
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
   border-bottom: 1px solid #333;
 }
 
-.header-content {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
-
-.header-icon {
-  font-size: 4rem;
-  color: #4a90e2;
-}
-
-.header-text h1 {
+.deep-dive-header h1 {
   font-size: 2.5rem;
-  font-weight: 700;
-  margin: 0 0 1rem 0;
+  margin-bottom: 1rem;
   color: #fff;
 }
 
-.header-text p {
+.deep-dive-header .subtitle {
   font-size: 1.2rem;
   color: #aaa;
-  margin: 0 0 1.5rem 0;
+  margin-bottom: 2rem;
 }
 
 .header-stats {
   display: flex;
+  justify-content: center;
   gap: 30px;
   flex-wrap: wrap;
+  margin-top: 1.5rem;
 }
 
 .stat {
