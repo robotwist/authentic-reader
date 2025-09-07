@@ -124,18 +124,28 @@ class IntellectualSelfDefenseService {
    */
   async getArticleById(articleId: string): Promise<DailyArticle | null> {
     try {
+      console.log('getArticleById called with:', articleId);
       const articles = await this.getTodaysArticles();
+      console.log('getTodaysArticles returned:', articles.length, 'articles');
+      console.log('Article IDs:', articles.map(a => a.id));
+      
       const foundArticle = articles.find(article => article.id === articleId);
+      console.log('Found article:', foundArticle);
       
       if (!foundArticle) {
         logger.warn(`Article with ID ${articleId} not found in today's articles`);
+        console.warn(`Article with ID ${articleId} not found in today's articles`);
         // Try to find in all available articles (fallback)
         const allArticles = await this.getAllAvailableArticles();
-        return allArticles.find(article => article.id === articleId) || null;
+        console.log('Fallback search in all articles:', allArticles.length);
+        const fallbackArticle = allArticles.find(article => article.id === articleId);
+        console.log('Fallback found:', fallbackArticle);
+        return fallbackArticle || null;
       }
       
       return foundArticle;
     } catch (error) {
+      console.error('Failed to get article by ID:', error);
       logger.error('Failed to get article by ID:', error);
       return null;
     }

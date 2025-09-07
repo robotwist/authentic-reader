@@ -17,7 +17,10 @@ const ArticleReaderPage: React.FC = () => {
   }, [articleId]);
 
   const loadArticle = async () => {
+    console.log('ArticleReaderPage: Loading article with ID:', articleId);
+    
     if (!articleId) {
+      console.error('No article ID provided');
       setError('No article ID provided');
       setLoading(false);
       return;
@@ -27,10 +30,13 @@ const ArticleReaderPage: React.FC = () => {
       setLoading(true);
       setError(null);
 
+      console.log('Calling intellectualSelfDefenseService.getArticleById with:', articleId);
       // Get the specific article by ID
       const foundArticle = await intellectualSelfDefenseService.getArticleById(articleId);
+      console.log('Service returned article:', foundArticle);
 
       if (!foundArticle) {
+        console.error('Article not found for ID:', articleId);
         setError('Article not found');
         setLoading(false);
         return;
@@ -39,6 +45,7 @@ const ArticleReaderPage: React.FC = () => {
       setArticle(foundArticle);
       logger.info('Article loaded for reading', { articleId, title: foundArticle.title });
     } catch (error) {
+      console.error('Failed to load article:', error);
       logger.error('Failed to load article:', error);
       setError('Failed to load article');
     } finally {

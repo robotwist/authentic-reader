@@ -49,6 +49,10 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
   };
 
   const handleArticleSelect = (article: DailyArticle) => {
+    console.log('Article selected:', article);
+    console.log('Article ID:', article.id);
+    console.log('Navigating to:', `/article/${article.id}`);
+    
     setSelectedArticle(article);
     if (onArticleSelect) {
       onArticleSelect(article);
