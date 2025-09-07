@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiTarget, FiTrendingUp, FiUsers, FiGlobe, FiBookOpen, FiZap, FiShield } from 'react-icons/fi';
-import { intellectualSelfDefenseService, DailyArticle, ChomskyAnalysis } from '../services/intellectualSelfDefenseService';
+import { intellectualSelfDefenseService, DailyArticle } from '../services/intellectualSelfDefenseService';
 import { logger } from '../utils/logger';
 import './IntellectualSelfDefense.css';
 

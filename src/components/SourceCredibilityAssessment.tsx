@@ -148,10 +148,10 @@ const SourceCredibilityAssessment: React.FC<SourceCredibilityAssessmentProps> = 
     
     // Determine source type and basic info
     let sourceType: SourceInfo['type'] = 'unknown';
-    let country = 'Unknown';
-    let founded = undefined;
-    let ownership = undefined;
-    let description = '';
+    const country = 'Unknown';
+    const founded = undefined;
+    const ownership = undefined;
+    const description = '';
 
     // Source type detection
     if (domainLower.includes('news') || domainLower.includes('times') || domainLower.includes('post')) {

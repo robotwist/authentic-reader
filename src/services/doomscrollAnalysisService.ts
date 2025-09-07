@@ -74,7 +74,7 @@ const OUTRAGE_BAIT_INDICATORS = [
 export function analyzeDoomscroll(text: string): DoomscrollAnalysis {
   const lowerText = text.toLowerCase();
   let doomscrollScore = 0;
-  let doomscrollTopics: string[] = [];
+  const doomscrollTopics: string[] = [];
   
   // Count doomscroll indicators
   DOOMSCROLL_INDICATORS.forEach(term => {
@@ -116,7 +116,7 @@ export function analyzeDoomscroll(text: string): DoomscrollAnalysis {
 export function analyzeOutrageBait(text: string): OutrageBaitAnalysis {
   const lowerText = text.toLowerCase();
   let outrageBaitScore = 0;
-  let outrageBaitTriggers: string[] = [];
+  const outrageBaitTriggers: string[] = [];
   
   // Count outrage bait indicators
   OUTRAGE_BAIT_INDICATORS.forEach(term => {

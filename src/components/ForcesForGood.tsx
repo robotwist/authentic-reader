@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiShield, FiUsers, FiBookOpen, FiTarget, FiTrendingUp, FiGlobe, FiSearch, FiStar, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
+import { FiShield, FiBookOpen, FiTarget, FiSearch, FiStar, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
 import { democracyForcesService, DemocracyForce, ExemplaryArticle, TrustBuildingFeature } from '../services/democracyForcesService';
 import { logger } from '../utils/logger';
 import './ForcesForGood.css';

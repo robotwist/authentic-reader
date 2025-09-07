@@ -56,14 +56,14 @@ export const getNodePath = (node: Node): string => {
   let currentNode: Node | null = node;
   
   while (currentNode && currentNode !== document.body) {
-    let currentNodeName = currentNode.nodeName.toLowerCase();
-    let parentNode = currentNode.parentNode;
+    const currentNodeName = currentNode.nodeName.toLowerCase();
+    const parentNode = currentNode.parentNode;
     
     if (!parentNode) break;
     
     // Get index of the node among its siblings
-    let siblings = Array.from(parentNode.childNodes);
-    let index = siblings.findIndex(sibling => sibling === currentNode);
+    const siblings = Array.from(parentNode.childNodes);
+    const index = siblings.findIndex(sibling => sibling === currentNode);
     
     path = `/${currentNodeName}[${index}]${path}`;
     currentNode = parentNode;
@@ -89,7 +89,7 @@ export const getXPath = (node: Node): string => {
   let current: Node | null = node;
   
   while (current && current.nodeType === Node.ELEMENT_NODE) {
-    let currentElement = current as Element;
+    const currentElement = current as Element;
     
     // Get position among siblings
     let siblingsCount = 0;
@@ -211,8 +211,8 @@ export const findNodeByPath = (containerElement: HTMLElement, path: string): Nod
     const index = parseInt(indexStr, 10);
     
     // Find the child node at the specified index
-    let childNodes = Array.from(currentNode.childNodes);
-    let matchingNodes = childNodes.filter(node => 
+    const childNodes = Array.from(currentNode.childNodes);
+    const matchingNodes = childNodes.filter(node => 
       node.nodeName.toLowerCase() === nodeName.toLowerCase()
     );
     

@@ -326,8 +326,8 @@ export function detectLogicalFallacies(text: string): LogicalFallacy[] {
   const sentences = splitIntoSentences(text);
   
   sentences.forEach((sentence, sentenceIndex) => {
-    let startIndex = text.indexOf(sentence);
-    let endIndex = startIndex + sentence.length;
+    const startIndex = text.indexOf(sentence);
+    const endIndex = startIndex + sentence.length;
     
     Object.entries(fallacyPatterns).forEach(([fallacyType, patterns]) => {
       patterns.forEach(pattern => {
@@ -616,8 +616,8 @@ function fallbackBiasAnalysis(text: string): BiasAnalysis {
   const lowerText = text.toLowerCase();
   let leftScore = 0;
   let rightScore = 0;
-  let leftKeywordsFound: string[] = [];
-  let rightKeywordsFound: string[] = [];
+  const leftKeywordsFound: string[] = [];
+  const rightKeywordsFound: string[] = [];
   
   console.log('📊 [fallbackBiasAnalysis] Using keyword-based fallback analysis');
   

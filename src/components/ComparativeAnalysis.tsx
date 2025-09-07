@@ -417,7 +417,7 @@ const ComparativeAnalysis: React.FC<ComparativeAnalysisProps> = ({
       // Find the best matching topic
       let bestTopic = 'general';
       let bestScore = 0;
-      let matchedKeywords: string[] = [];
+      const matchedKeywords: string[] = [];
 
       Object.entries(topicKeywords).forEach(([topic, keywords]) => {
         const score = keywords.reduce((total, keyword) => {
