@@ -1,1 +1,1 @@
-web: cd server && npm start 
+web: cd authentic-reader-backend && npm start 
