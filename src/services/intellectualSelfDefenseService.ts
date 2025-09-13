@@ -123,6 +123,8 @@ class IntellectualSelfDefenseService {
   async getTodaysArticles(): Promise<DailyArticle[]> {
     const today = new Date().toISOString().split('T')[0];
     
+    console.log(`getTodaysArticles called. Last update: ${this.lastUpdate}, Today: ${today}, Current articles: ${this.selectedArticles.length}`);
+    
     // Check if we need to refresh today's selection
     if (this.lastUpdate !== today || this.selectedArticles.length === 0) {
       // Prevent multiple simultaneous generation
@@ -132,13 +134,27 @@ class IntellectualSelfDefenseService {
         while (this.isGenerating) {
           await new Promise(resolve => setTimeout(resolve, 100));
         }
+        console.log(`Generation complete, returning ${this.selectedArticles.length} articles`);
         return this.selectedArticles;
       }
       
-      await this.curateTodaysArticles();
-      this.lastUpdate = today;
+      console.log('Starting article curation...');
+      try {
+        await this.curateTodaysArticles();
+        this.lastUpdate = today;
+        console.log(`Curation complete, returning ${this.selectedArticles.length} articles`);
+      } catch (error) {
+        console.error('Error in getTodaysArticles:', error);
+        logger.error('Error in getTodaysArticles:', error);
+        // Ensure we have some articles even if curation failed
+        if (this.selectedArticles.length === 0) {
+          console.log('No articles after curation failure, creating emergency fallback');
+          this.selectedArticles = await this.createFallbackArticles();
+        }
+      }
     }
     
+    console.log(`Returning ${this.selectedArticles.length} articles`);
     return this.selectedArticles;
   }
 
@@ -240,13 +256,22 @@ class IntellectualSelfDefenseService {
       
     } catch (error) {
       logger.error('Error in curateTodaysArticles:', error);
+      console.error('Error in curateTodaysArticles:', error);
       // Create fallback articles if everything fails
-      this.selectedArticles = await this.createFallbackArticles();
-      
-      // Cache fallback articles too
-      this.selectedArticles.forEach(article => {
-        this.articlesCache.set(article.id, article);
-      });
+      try {
+        this.selectedArticles = await this.createFallbackArticles();
+        logger.info(`✅ Created ${this.selectedArticles.length} fallback articles after error`);
+        
+        // Cache fallback articles too
+        this.selectedArticles.forEach(article => {
+          this.articlesCache.set(article.id, article);
+        });
+      } catch (fallbackError) {
+        logger.error('Even fallback article creation failed:', fallbackError);
+        console.error('Even fallback article creation failed:', fallbackError);
+        // Set empty array as last resort
+        this.selectedArticles = [];
+      }
     } finally {
       this.isGenerating = false;
     }
@@ -257,33 +282,71 @@ class IntellectualSelfDefenseService {
    */
   private async createFallbackArticles(): Promise<DailyArticle[]> {
     logger.info('Creating fallback articles...');
+    console.log('Creating fallback articles...');
     
     const fallbackArticles: DailyArticle[] = [];
-    const candidates = await this.fetchCandidateArticles();
     
-    for (const candidate of candidates.slice(0, 5)) { // Limit to 5 fallback articles
-      try {
-        const fallbackAnalysis = this.generateEnhancedFallbackAnalysis(candidate);
-        
-        fallbackArticles.push({
-          id: candidate.id,
-          title: candidate.title,
-          content: candidate.content,
-          source: candidate.source,
-          url: candidate.url,
-          publishedAt: candidate.publishedAt,
-          category: candidate.category,
-          importance: this.determineImportance(candidate),
-          selectionReason: 'Fallback article due to analysis service issues',
-          chomskyAnalysis: fallbackAnalysis,
-          timestamp: new Date().toISOString()
-        });
-      } catch (error) {
-        logger.error(`Failed to create fallback article ${candidate.title}:`, error);
+    try {
+      const candidates = await this.fetchCandidateArticles();
+      console.log(`Fetched ${candidates.length} candidates for fallback articles`);
+      
+      for (const candidate of candidates.slice(0, 5)) { // Limit to 5 fallback articles
+        try {
+          const fallbackAnalysis = this.generateEnhancedFallbackAnalysis(candidate);
+          
+          fallbackArticles.push({
+            id: candidate.id,
+            title: candidate.title,
+            content: candidate.content,
+            source: candidate.source,
+            url: candidate.url,
+            publishedAt: candidate.publishedAt,
+            category: candidate.category,
+            importance: this.determineImportance(candidate),
+            selectionReason: 'Fallback article due to analysis service issues',
+            chomskyAnalysis: fallbackAnalysis,
+            timestamp: new Date().toISOString()
+          });
+          
+          console.log(`Created fallback article: ${candidate.title}`);
+        } catch (error) {
+          logger.error(`Failed to create fallback article ${candidate.title}:`, error);
+          console.error(`Failed to create fallback article ${candidate.title}:`, error);
+        }
       }
+    } catch (error) {
+      logger.error('Failed to fetch candidates for fallback articles:', error);
+      console.error('Failed to fetch candidates for fallback articles:', error);
+    }
+    
+    // Ensure we always have at least one article
+    if (fallbackArticles.length === 0) {
+      logger.warn('No fallback articles created, creating emergency fallback');
+      console.warn('No fallback articles created, creating emergency fallback');
+      
+      const emergencyArticle: DailyArticle = {
+        id: 'emergency-fallback-1',
+        title: 'Critical Thinking in the Digital Age',
+        content: 'In an era of information overload, developing critical thinking skills has never been more important. This article explores the fundamental principles of media literacy and intellectual self-defense.',
+        source: 'Authentic Reader',
+        url: 'https://example.com/critical-thinking',
+        publishedAt: new Date().toISOString(),
+        category: 'society',
+        importance: 'critical',
+        selectionReason: 'Emergency fallback article to ensure content availability',
+        chomskyAnalysis: this.generateEnhancedFallbackAnalysis({
+          title: 'Critical Thinking in the Digital Age',
+          content: 'In an era of information overload, developing critical thinking skills has never been more important.',
+          source: 'Authentic Reader'
+        }),
+        timestamp: new Date().toISOString()
+      };
+      
+      fallbackArticles.push(emergencyArticle);
     }
     
     logger.info(`Created ${fallbackArticles.length} fallback articles`);
+    console.log(`Created ${fallbackArticles.length} fallback articles`);
     return fallbackArticles;
   }
 

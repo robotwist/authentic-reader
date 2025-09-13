@@ -23,8 +23,14 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
     try {
       setLoading(true);
       logger.info('Loading today\'s intellectual self defense course...');
+      console.log('Loading today\'s intellectual self defense course...');
       
       const todaysArticles = await intellectualSelfDefenseService.getTodaysArticles();
+      
+      console.log('Articles received from service:', {
+        count: todaysArticles?.length || 0,
+        articles: todaysArticles?.map(a => ({ id: a.id, title: a.title })) || []
+      });
       
       logger.info('Articles received from service:', {
         count: todaysArticles?.length || 0,
@@ -33,13 +39,16 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
       
       if (todaysArticles && todaysArticles.length > 0) {
         setArticles(todaysArticles);
+        console.log(`Successfully loaded ${todaysArticles.length} articles for deep analysis`);
         logger.info(`Successfully loaded ${todaysArticles.length} articles for deep analysis`);
       } else {
+        console.warn('No articles loaded - this may indicate a service issue');
         logger.warn('No articles loaded - this may indicate a service issue');
         // Set empty array to prevent errors
         setArticles([]);
       }
     } catch (error) {
+      console.error('Failed to load intellectual self defense course:', error);
       logger.error('Failed to load intellectual self defense course:', error);
       // Set empty array to prevent errors
       setArticles([]);

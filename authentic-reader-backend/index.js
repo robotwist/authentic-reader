@@ -36,12 +36,19 @@ import sourceCredibilityRoutes from './routes/sourceCredibilityRoutes.js';
 import networkAnalysisRoutes from './routes/networkAnalysisRoutes.js';
 // import stockpileRoutes from './routes/stockpile.js';
 import stockpileSimpleRoutes from './routes/stockpile-simple.js';
+import improvedFeedRoutes from './routes/improvedFeed.js';
+import jsonArticleService from './services/jsonArticleService.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Initialize monitoring service
 monitorService.init();
+
+// Initialize JSON article service
+jsonArticleService.initialize().catch(error => {
+  console.error('Failed to initialize JSON article service:', error);
+});
 
 // Initialize article stockpile service
 // articleStockpileService.initialize().catch(error => {
@@ -1285,6 +1292,7 @@ app.use('/api/sources', publicLimiter, sourceCredibilityRoutes);
 app.use('/api/network', publicLimiter, networkAnalysisRoutes);
 // app.use('/api/stockpile', publicLimiter, stockpileRoutes);
 app.use('/api/stockpile-simple', publicLimiter, stockpileSimpleRoutes);
+app.use('/api/feed', publicLimiter, improvedFeedRoutes);
 app.use('/api/monitor', adminLimiter, monitorRoutes);
 
 // Apply error monitoring middleware
