@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiTarget, FiTrendingUp, FiUsers, FiGlobe, FiBookOpen, FiZap, FiShield } from 'react-icons/fi';
+// Removed React Icons import - using text-based indicators instead
 import { intellectualSelfDefenseService, DailyArticle } from '../services/intellectualSelfDefenseService';
 import { logger } from '../utils/logger';
 import './IntellectualSelfDefense.css';
@@ -60,14 +60,15 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
   const handleArticleSelect = (article: DailyArticle) => {
     console.log('Article selected:', article);
     console.log('Article ID:', article.id);
-    console.log('Navigating to:', `/article/${article.id}`);
+    const encodedId = encodeURIComponent(article.id);
+    console.log('Navigating to:', `/article/${encodedId}`);
     
     setSelectedArticle(article);
     if (onArticleSelect) {
       onArticleSelect(article);
     }
     // Navigate to the article reader page
-    navigate(`/article/${article.id}`);
+    navigate(`/article/${encodedId}`);
   };
 
   const getImportanceColor = (importance: string) => {
@@ -79,12 +80,12 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
     }
   };
 
-  const getImportanceIcon = (importance: string) => {
+  const getImportanceText = (importance: string) => {
     switch (importance) {
-      case 'critical': return <FiZap className="importance-icon" />;
-      case 'significant': return <FiTrendingUp className="importance-icon" />;
-      case 'notable': return <FiBookOpen className="importance-icon" />;
-      default: return <FiBookOpen className="importance-icon" />;
+      case 'critical': return 'CRITICAL';
+      case 'significant': return 'SIGNIFICANT';
+      case 'notable': return 'NOTABLE';
+      default: return 'STANDARD';
     }
   };
 
@@ -114,8 +115,8 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
     return (
       <div className="daily-deep-dive">
         <div className="error-container">
-          <div className="error-icon">
-            <FiShield />
+          <div className="error-text">
+            WARNING
           </div>
           <h2>Course Temporarily Unavailable</h2>
           <p>We are having trouble loading today's articles. This could be due to:</p>
@@ -146,13 +147,13 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
         <p className="subtitle">Your daily training in critical thinking and media literacy</p>
         <div className="header-stats">
           <span className="stat">
-            <FiTarget /> {articles.length} Articles
+            {articles.length} Articles
           </span>
           <span className="stat">
-            <FiUsers /> Expert Analysis
+            Expert Analysis
           </span>
           <span className="stat">
-            <FiGlobe /> Critical Thinking
+            Critical Thinking
           </span>
         </div>
       </div>
@@ -171,12 +172,11 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
                   <span className="category">{article.category}</span>
                 </div>
                 <div className="article-importance">
-                  {getImportanceIcon(article.importance)}
                   <span 
                     className="importance-badge"
                     style={{ backgroundColor: getImportanceColor(article.importance) }}
                   >
-                    {article.importance}
+                    {getImportanceText(article.importance)}
                   </span>
                 </div>
               </div>
@@ -233,7 +233,7 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
                 <h4>Key Insights</h4>
                 <ul>
                   {article.chomskyAnalysis.synthesis.keyInsights.slice(0, 2).map((insight, index) => (
-                    <li key={index}>{insight}</li>
+                    <li key={`${article.id}-insight-${index}`}>{insight}</li>
                   ))}
                 </ul>
               </div>
@@ -277,7 +277,7 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
                 <h3>Key Insights</h3>
                 <ul className="insights-list">
                   {selectedArticle.chomskyAnalysis.synthesis.keyInsights.map((insight, index) => (
-                    <li key={index}>{insight}</li>
+                    <li key={`${selectedArticle.id}-insight-${index}`}>{insight}</li>
                   ))}
                 </ul>
               </div>
@@ -289,7 +289,7 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
                     <h4>What's Not Being Said</h4>
                     <ul>
                       {selectedArticle.chomskyAnalysis.criticalAnalysis.whatIsNotSaid.slice(0, 2).map((item, index) => (
-                        <li key={index}>{item}</li>
+                        <li key={`${selectedArticle.id}-not-said-${index}`}>{item}</li>
                       ))}
                     </ul>
                   </div>
@@ -297,7 +297,7 @@ const IntellectualSelfDefense: React.FC<IntellectualSelfDefenseProps> = ({ onArt
                     <h4>Power Structures</h4>
                     <ul>
                       {selectedArticle.chomskyAnalysis.structuralAnalysis.powerStructures.slice(0, 2).map((item, index) => (
-                        <li key={index}>{item}</li>
+                        <li key={`${selectedArticle.id}-power-${index}`}>{item}</li>
                       ))}
                     </ul>
                   </div>

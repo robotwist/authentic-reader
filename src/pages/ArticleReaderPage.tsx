@@ -30,9 +30,10 @@ const ArticleReaderPage: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      console.log('Calling intellectualSelfDefenseService.getArticleById with:', articleId);
+      const decodedId = decodeURIComponent(articleId);
+      console.log('Calling intellectualSelfDefenseService.getArticleById with:', decodedId);
       // Get the specific article by ID
-      const foundArticle = await intellectualSelfDefenseService.getArticleById(articleId);
+      const foundArticle = await intellectualSelfDefenseService.getArticleById(decodedId);
       console.log('Service returned article:', foundArticle);
 
       if (!foundArticle) {

@@ -198,6 +198,36 @@ class IntellectualSelfDefenseService {
         return fallbackArticle;
       }
       
+      // If still not found, try to fetch from the main article service
+      try {
+        const { improvedArticleService } = await import('./improvedArticleService');
+        const mainArticle = await improvedArticleService.getArticleById(articleId);
+        
+        if (mainArticle) {
+          console.log('Found article in main service, creating DailyArticle wrapper');
+          // Convert main article to DailyArticle format
+          const dailyArticle: DailyArticle = {
+            id: mainArticle.id,
+            title: mainArticle.title,
+            content: mainArticle.content || mainArticle.description || '',
+            source: mainArticle.source,
+            url: mainArticle.url,
+            publishedAt: mainArticle.publishedAt || new Date().toISOString(),
+            category: this.mapCategory(mainArticle.category || 'society'),
+            importance: 'notable',
+            selectionReason: 'Retrieved from main article service',
+            chomskyAnalysis: this.generateEnhancedFallbackAnalysis(mainArticle),
+            timestamp: new Date().toISOString()
+          };
+          
+          // Cache it
+          this.articlesCache.set(articleId, dailyArticle);
+          return dailyArticle;
+        }
+      } catch (mainServiceError) {
+        console.warn('Failed to fetch from main article service:', mainServiceError);
+      }
+      
       return null;
     } catch (error) {
       console.error('Failed to get article by ID:', error);
@@ -354,63 +384,165 @@ class IntellectualSelfDefenseService {
    * Fetch candidate articles from premium sources
    */
   private async fetchCandidateArticles(): Promise<any[]> {
-    // In a real implementation, this would fetch from RSS feeds
-    // For now, we'll simulate with high-quality articles
+    try {
+      // Fetch real articles from the improved article service
+      const { improvedArticleService } = await import('./improvedArticleService');
+      const articles = await improvedArticleService.getArticles({
+        limit: 20, // Get more articles to have better selection
+        offset: 0,
+        search: '',
+        categories: [],
+        biasRatings: [],
+        sources: []
+      });
+
+      console.log(`Fetched ${articles.articles.length} real articles for intellectual self defense curation`);
+
+      // Transform the articles to match our expected format
+      return articles.articles.map(article => {
+        // Handle raw RSS format where title might be an array
+        const title = Array.isArray(article.title) ? article.title[0] : article.title;
+        const link = Array.isArray(article.link) ? article.link[0] : article.link;
+        const url = (article as any).url || link;
+        const description = Array.isArray(article.description) ? article.description[0] : article.description;
+        const pubDate = Array.isArray(article.pubDate) ? article.pubDate[0] : article.pubDate;
+        const author = Array.isArray(article.author) ? article.author[0] : article.author;
+        
+        // Extract content from description if no content field
+        const content = article.content || description || '';
+        
+        // Generate a proper ID if none exists
+        const id = article.id || article.guid?.[0] || `article_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        
+        // Extract source name from various possible fields
+        const sourceName = article.source?.name || 
+                          (Array.isArray(article['dc:creator']) ? article['dc:creator'][0] : article['dc:creator']) ||
+                          'Unknown Source';
+        
+        // Extract categories
+        const categories = Array.isArray(article.category) ? 
+                          article.category.map(cat => typeof cat === 'object' ? cat._ : cat) : 
+                          (article.category ? [article.category] : []);
+        
+        return {
+          id,
+          title: this.decodeHtmlEntities(title || 'Untitled'),
+          content: this.decodeHtmlEntities(content).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim(),
+          source: sourceName,
+          url: url || '',
+          publishedAt: pubDate ? new Date(pubDate).toISOString() : new Date().toISOString(),
+          category: this.mapCategory(categories[0] || 'society'),
+          wordCount: this.estimateWordCount(content),
+          complexity: this.assessComplexity({ content, title })
+        };
+      });
+    } catch (error) {
+      console.error('Failed to fetch real articles, using fallback:', error);
+      logger.error('Failed to fetch real articles, using fallback:', error);
+      
+      // Fallback to demo articles if real articles fail
+      return this.getFallbackArticles();
+    }
+  }
+
+  /**
+   * Map article categories to our expected format
+   */
+  private mapCategory(category: string): 'politics' | 'economics' | 'international' | 'technology' | 'society' | 'science' | 'culture' {
+    const categoryMap: { [key: string]: 'politics' | 'economics' | 'international' | 'technology' | 'society' | 'science' | 'culture' } = {
+      'politics': 'politics',
+      'economics': 'economics',
+      'business': 'economics',
+      'international': 'international',
+      'world': 'international',
+      'technology': 'technology',
+      'tech': 'technology',
+      'society': 'society',
+      'social': 'society',
+      'science': 'science',
+      'health': 'science',
+      'culture': 'culture',
+      'entertainment': 'culture'
+    };
+    
+    return categoryMap[category.toLowerCase()] || 'society';
+  }
+
+  /**
+   * Estimate word count from content
+   */
+  private estimateWordCount(content: string): number {
+    if (!content) return 0;
+    return content.split(/\s+/).length;
+  }
+
+  /**
+   * Assess article complexity
+   */
+  private assessComplexity(article: any): 'high' | 'medium' | 'low' {
+    const wordCount = this.estimateWordCount(article.content || article.description || '');
+    const title = article.title.toLowerCase();
+    
+    // High complexity indicators
+    const complexTerms = ['analysis', 'framework', 'systemic', 'structural', 'theoretical', 'methodology'];
+    const hasComplexTerms = complexTerms.some(term => title.includes(term));
+    
+    if (wordCount > 2000 || hasComplexTerms) return 'high';
+    if (wordCount > 1000) return 'medium';
+    return 'low';
+  }
+
+  /**
+   * Decode HTML entities in text
+   */
+  private decodeHtmlEntities(text: string): string {
+    if (!text) return '';
+    
+    const entities: { [key: string]: string } = {
+      '&amp;': '&',
+      '&lt;': '<',
+      '&gt;': '>',
+      '&quot;': '"',
+      '&#39;': "'",
+      '&#8217;': "'",
+      '&#8220;': '"',
+      '&#8221;': '"',
+      '&#8211;': '–',
+      '&#8212;': '—',
+      '&nbsp;': ' '
+    };
+    
+    return text.replace(/&[a-zA-Z0-9#]+;/g, (entity) => {
+      return entities[entity] || entity;
+    });
+  }
+
+  /**
+   * Get fallback articles when real articles fail
+   */
+  private getFallbackArticles(): any[] {
     return [
       {
-        id: 'chomsky-analysis-1',
-        title: 'The Manufacturing of Consent in Digital Media: How Tech Giants Shape Public Discourse',
-        content: 'In the digital age, the mechanisms of consent manufacturing have evolved beyond traditional media...',
-        source: 'Foreign Affairs',
-        url: 'https://example.com/manufacturing-consent-digital',
+        id: 'fallback-1',
+        title: 'Critical Thinking in the Digital Age',
+        content: 'In an era of information overload, developing critical thinking skills has never been more important. This article explores the fundamental principles of media literacy and intellectual self-defense.',
+        source: 'Authentic Reader',
+        url: 'https://example.com/critical-thinking',
         publishedAt: new Date().toISOString(),
-        category: 'technology',
-        wordCount: 2500,
+        category: 'society',
+        wordCount: 1500,
         complexity: 'high'
       },
       {
-        id: 'chomsky-analysis-2', 
-        title: 'Neoliberal Economic Policies and the Erosion of Democratic Institutions',
-        content: 'The intersection of economic policy and democratic governance reveals systemic patterns...',
-        source: 'The Atlantic',
-        url: 'https://example.com/neoliberal-democracy',
-        publishedAt: new Date().toISOString(),
-        category: 'economics',
-        wordCount: 3000,
-        complexity: 'high'
-      },
-      {
-        id: 'chomsky-analysis-3',
-        title: 'Imperial Ambitions and Humanitarian Intervention: A Critical Analysis',
-        content: 'The discourse surrounding humanitarian intervention often obscures underlying power dynamics...',
-        source: 'Foreign Policy',
-        url: 'https://example.com/imperial-humanitarian',
-        publishedAt: new Date().toISOString(),
-        category: 'international',
-        wordCount: 2800,
-        complexity: 'high'
-      },
-      {
-        id: 'chomsky-analysis-4',
-        title: 'Corporate Media and the Construction of Political Reality',
-        content: 'The relationship between corporate ownership and media content reveals fundamental conflicts...',
-        source: 'The New Yorker',
-        url: 'https://example.com/corporate-media-reality',
+        id: 'fallback-2',
+        title: 'Understanding Media Bias and Information Filtering',
+        content: 'Media bias operates through various mechanisms that shape how information is presented and interpreted. Understanding these processes is crucial for informed citizenship.',
+        source: 'Authentic Reader',
+        url: 'https://example.com/media-bias',
         publishedAt: new Date().toISOString(),
         category: 'politics',
-        wordCount: 3200,
-        complexity: 'high'
-      },
-      {
-        id: 'chomsky-analysis-5',
-        title: 'Climate Change and the Political Economy of Environmental Destruction',
-        content: 'Environmental degradation cannot be understood in isolation from economic structures...',
-        source: 'The Guardian',
-        url: 'https://example.com/climate-political-economy',
-        publishedAt: new Date().toISOString(),
-        category: 'science',
-        wordCount: 2700,
-        complexity: 'high'
+        wordCount: 1200,
+        complexity: 'medium'
       }
     ];
   }

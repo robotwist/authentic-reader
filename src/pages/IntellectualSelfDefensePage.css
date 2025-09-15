@@ -1,59 +1,10 @@
 /* Daily Deep Dive Page Styles */
 .daily-deep-dive-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background-color: var(--background-color, #0f172a);
 }
 
-/* Page Header */
-.page-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 60px 20px;
-  text-align: center;
-}
-
-.header-content h1 {
-  font-size: 3rem;
-  font-weight: 700;
-  margin: 0 0 20px 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.page-subtitle {
-  font-size: 1.3rem;
-  opacity: 0.9;
-  margin: 0 0 40px 0;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.5;
-}
-
-.page-features {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.feature {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.feature-icon {
-  font-size: 2rem;
-}
-
-.feature span:last-child {
-  font-size: 1rem;
-  font-weight: 500;
-  opacity: 0.9;
-}
+/* Page Header styles removed - no longer needed */
 
 /* Page Content */
 .page-content {
@@ -137,25 +88,6 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .page-header {
-    padding: 40px 20px;
-  }
-  
-  .header-content h1 {
-    font-size: 2.5rem;
-  }
-  
-  .page-subtitle {
-    font-size: 1.1rem;
-  }
-  
-  .page-features {
-    gap: 30px;
-  }
-  
-  .feature-icon {
-    font-size: 1.5rem;
-  }
   
   .page-content {
     padding: 20px 0;
@@ -184,18 +116,6 @@
 }
 
 @media (max-width: 480px) {
-  .header-content h1 {
-    font-size: 2rem;
-  }
-  
-  .page-subtitle {
-    font-size: 1rem;
-  }
-  
-  .page-features {
-    flex-direction: column;
-    gap: 20px;
-  }
   
   .framework-item {
     padding: 20px;

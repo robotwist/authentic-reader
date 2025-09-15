@@ -118,7 +118,11 @@ class JsonArticleService {
     }
 
     // Sort by publish date (newest first)
-    allArticles.sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
+    allArticles.sort((a, b) => {
+      const dateB = new Date(b.publishedAt || b.publishDate || 0).getTime();
+      const dateA = new Date(a.publishedAt || a.publishDate || 0).getTime();
+      return dateB - dateA;
+    });
 
     // Add analysis if requested
     if (includeAnalysis) {
@@ -181,8 +185,28 @@ class JsonArticleService {
   extractItems(feed) {
     let items = [];
     
+    logger.info('Extracting items from feed:', {
+      feedKeys: Object.keys(feed),
+      hasRss: !!feed.rss,
+      hasChannel: !!(feed.rss && feed.rss.channel),
+      channelType: feed.rss && feed.rss.channel ? typeof feed.rss.channel : 'undefined',
+      channelIsArray: feed.rss && feed.rss.channel ? Array.isArray(feed.rss.channel) : 'undefined'
+    });
+    
     if (feed.rss && feed.rss.channel) {
-      items = feed.rss.channel.item || [];
+      // Handle both single channel and array of channels
+      const channels = Array.isArray(feed.rss.channel) ? feed.rss.channel : [feed.rss.channel];
+      for (const channel of channels) {
+        if (channel.item) {
+          const channelItems = Array.isArray(channel.item) ? channel.item : [channel.item];
+          logger.info('Found channel items:', {
+            itemCount: channelItems.length,
+            firstItemKeys: channelItems[0] ? Object.keys(channelItems[0]) : 'none',
+            firstItemTitle: channelItems[0] ? channelItems[0].title : 'none'
+          });
+          items = items.concat(channelItems);
+        }
+      }
     } else if (feed.feed) {
       items = feed.feed.entry || [];
     } else if (feed.rdf && feed.rdf.item) {
@@ -194,6 +218,12 @@ class JsonArticleService {
       items = [items];
     }
 
+    logger.info('Final extracted items:', {
+      itemCount: items.length,
+      firstItemKeys: items[0] ? Object.keys(items[0]) : 'none',
+      firstItemTitle: items[0] ? items[0].title : 'none'
+    });
+
     return items;
   }
 
@@ -201,14 +231,100 @@ class JsonArticleService {
    * Process a single RSS item into an article
    */
   async processArticleItem(item, source) {
-    const rawTitle = item.title?.[0] || item['media:title']?.[0] || '';
+    // Safely extract title
+    let rawTitle = '';
+    if (typeof item.title === 'string' && item.title) {
+      rawTitle = item.title;
+    } else if (Array.isArray(item.title) && item.title[0]) {
+      rawTitle = item.title[0];
+    } else if (typeof item['media:title'] === 'string' && item['media:title']) {
+      rawTitle = item['media:title'];
+    } else if (Array.isArray(item['media:title']) && item['media:title'][0]) {
+      rawTitle = item['media:title'][0];
+    }
+    
+    // Debug logging
+    logger.info(`Processing article from ${source.name}:`, {
+      rawTitle,
+      titleType: typeof rawTitle,
+      titleLength: rawTitle ? rawTitle.length : 0,
+      itemKeys: Object.keys(item),
+      itemTitle: item.title,
+      itemTitleType: typeof item.title,
+      itemTitleIsArray: Array.isArray(item.title)
+    });
+    
     const title = this.decodeHtmlEntities(rawTitle);
-    const link = item.link?.[0] || item.link?.[0]?.$?.href || '';
-    const rawDesc = item.description?.[0] || item.summary?.[0] || item['media:description']?.[0] || '';
+    
+    // Safely extract link
+    let link = '';
+    if (item.link && Array.isArray(item.link) && item.link[0]) {
+      link = item.link[0];
+    } else if (item.link && typeof item.link === 'string') {
+      link = item.link;
+    }
+    
+    // Safely extract description
+    let rawDesc = '';
+    if (typeof item.description === 'string' && item.description) {
+      rawDesc = item.description;
+    } else if (Array.isArray(item.description) && item.description[0]) {
+      rawDesc = item.description[0];
+    } else if (typeof item.summary === 'string' && item.summary) {
+      rawDesc = item.summary;
+    } else if (Array.isArray(item.summary) && item.summary[0]) {
+      rawDesc = item.summary[0];
+    } else if (typeof item['media:description'] === 'string' && item['media:description']) {
+      rawDesc = item['media:description'];
+    } else if (Array.isArray(item['media:description']) && item['media:description'][0]) {
+      rawDesc = item['media:description'][0];
+    }
     const description = this.decodeHtmlEntities(rawDesc).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-    const pubDate = item.pubDate?.[0] || item.published?.[0] || new Date().toISOString();
-    const author = item.author?.[0] || item['dc:creator']?.[0] || source.name;
-    const guid = item.guid?.[0] || item.id?.[0] || link;
+    
+    // Safely extract publication date
+    let pubDate = new Date().toISOString();
+    if (typeof item.pubDate === 'string' && item.pubDate) {
+      pubDate = item.pubDate;
+    } else if (Array.isArray(item.pubDate) && item.pubDate[0]) {
+      pubDate = item.pubDate[0];
+    } else if (typeof item.published === 'string' && item.published) {
+      pubDate = item.published;
+    } else if (Array.isArray(item.published) && item.published[0]) {
+      pubDate = item.published[0];
+    }
+    
+    // Safely extract author
+    let author = source.name;
+    if (typeof item.author === 'string' && item.author) {
+      author = item.author;
+    } else if (Array.isArray(item.author) && item.author[0]) {
+      author = item.author[0];
+    } else if (typeof item['dc:creator'] === 'string' && item['dc:creator']) {
+      author = item['dc:creator'];
+    } else if (Array.isArray(item['dc:creator']) && item['dc:creator'][0]) {
+      author = item['dc:creator'][0];
+    }
+    
+    // Handle different GUID formats
+    let guid = link;
+    if (item.guid) {
+      if (Array.isArray(item.guid) && item.guid[0]) {
+        const guidItem = item.guid[0];
+        if (typeof guidItem === 'object' && guidItem._) {
+          guid = guidItem._;
+        } else if (typeof guidItem === 'string') {
+          guid = guidItem;
+        }
+      } else if (typeof item.guid === 'string') {
+        guid = item.guid;
+      }
+    } else if (item.id) {
+      if (Array.isArray(item.id) && item.id[0]) {
+        guid = item.id[0];
+      } else if (typeof item.id === 'string') {
+        guid = item.id;
+      }
+    }
 
     // Check if article already exists
     const existingArticles = await this.loadArticles();
@@ -217,7 +333,14 @@ class JsonArticleService {
     }
 
     // Extract full content if available
-    let fullContent = item['content:encoded']?.[0] || description;
+    let fullContent = '';
+    if (typeof item['content:encoded'] === 'string' && item['content:encoded']) {
+      fullContent = item['content:encoded'];
+    } else if (Array.isArray(item['content:encoded']) && item['content:encoded'][0]) {
+      fullContent = item['content:encoded'][0];
+    } else {
+      fullContent = description;
+    }
 
     // Try to fetch full article content if we have a link and content is short
     if (link && fullContent.length < 1000) {
@@ -246,13 +369,13 @@ class JsonArticleService {
       }
     }
 
-    // Create article object
+    // Create article object with proper structure
     const article = {
       id: guid,
       title,
-      link,
+      url: link,
       author,
-      publishDate: new Date(pubDate).toISOString(),
+      publishedAt: new Date(pubDate).toISOString(),
       content: fullContent,
       summary: description,
       source: {
@@ -261,14 +384,95 @@ class JsonArticleService {
         biasRating: source.biasRating,
         reliability: source.reliability
       },
-      categories: source.category ? [source.category] : [],
-      createdAt: new Date().toISOString()
+      category: source.category || 'general',
+      categories: source.category ? [source.category] : ['general'],
+      wordCount: this.estimateWordCount(fullContent),
+      complexity: this.assessComplexity({ content: fullContent, title }),
+      tags: this.extractTags(item),
+      credibility: this.assessCredibility(source.name),
+      bias: this.assessBias(source.name),
+      createdAt: new Date().toISOString(),
+      lastUpdated: new Date().toISOString()
     };
 
     // Save article
     await this.saveArticle(article);
 
     return article;
+  }
+
+  /**
+   * Estimate word count from content
+   */
+  estimateWordCount(content) {
+    if (!content) return 0;
+    return content.split(/\s+/).filter(word => word.length > 0).length;
+  }
+
+  /**
+   * Assess article complexity
+   */
+  assessComplexity(item) {
+    const content = item.content || '';
+    const title = item.title || '';
+    const wordCount = this.estimateWordCount(content);
+    
+    if (wordCount > 2000) return 'high';
+    if (wordCount > 1000) return 'medium';
+    return 'low';
+  }
+
+  /**
+   * Extract tags from article
+   */
+  extractTags(item) {
+    const tags = [];
+    if (item.category) {
+      if (Array.isArray(item.category)) {
+        tags.push(...item.category);
+      } else {
+        tags.push(item.category);
+      }
+    }
+    return tags;
+  }
+
+  /**
+   * Assess source credibility
+   */
+  assessCredibility(sourceName) {
+    const credibilityMap = {
+      'BBC News': 'high',
+      'Reuters': 'high',
+      'Associated Press': 'high',
+      'NPR': 'high',
+      'The Guardian': 'high',
+      'New York Times': 'high',
+      'Wall Street Journal': 'high',
+      'The Economist': 'high',
+      'CNN': 'medium',
+      'Fox News': 'medium'
+    };
+    return credibilityMap[sourceName] || 'medium';
+  }
+
+  /**
+   * Assess source bias
+   */
+  assessBias(sourceName) {
+    const biasMap = {
+      'BBC News': 'center',
+      'Reuters': 'center',
+      'Associated Press': 'center',
+      'NPR': 'center-left',
+      'The Guardian': 'center-left',
+      'New York Times': 'center-left',
+      'Wall Street Journal': 'center-right',
+      'The Economist': 'center',
+      'CNN': 'center-left',
+      'Fox News': 'right'
+    };
+    return biasMap[sourceName] || 'center';
   }
 
   /**
@@ -428,7 +632,11 @@ class JsonArticleService {
     }
 
     // Sort by publish date (newest first)
-    articles.sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
+    articles.sort((a, b) => {
+      const dateB = new Date(b.publishedAt || b.publishDate || 0).getTime();
+      const dateA = new Date(a.publishedAt || a.publishDate || 0).getTime();
+      return dateB - dateA;
+    });
 
     // Apply pagination
     const paginatedArticles = articles.slice(offset, offset + limit);

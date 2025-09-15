@@ -15,32 +15,6 @@ const IntellectualSelfDefensePage: React.FC = () => {
 
   return (
     <div className="daily-deep-dive-page">
-      <div className="page-header">
-        <div className="header-content">
-          <h1>Intellectual Self Defense Course</h1>
-          <p className="page-subtitle">
-            Your daily training in critical thinking and media literacy. 10 carefully curated articles with expert analysis.
-          </p>
-          <div className="page-features">
-            <div className="feature">
-              <span className="feature-icon">🎯</span>
-              <span>Expert Curation</span>
-            </div>
-            <div className="feature">
-              <span className="feature-icon">🧠</span>
-              <span>Critical Thinking</span>
-            </div>
-            <div className="feature">
-              <span className="feature-icon">📊</span>
-              <span>Media Literacy</span>
-            </div>
-            <div className="feature">
-              <span className="feature-icon">🌍</span>
-              <span>Informed Citizenship</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div className="page-content">
         <IntellectualSelfDefense onArticleSelect={handleArticleSelect} />

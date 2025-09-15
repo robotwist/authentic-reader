@@ -289,10 +289,7 @@ function App() {
                     </ProtectedRoute>
                   } 
                 />
-                <Route 
-                  path="/article/:id" 
-                  element={<ArticlePage />} 
-                />
+                {/** Removed legacy ArticlePage route to avoid conflict with ArticleReaderPage */}
                 <Route 
                   path="/analysis/:id" 
                   element={<ArticleAnalysisPage />} 

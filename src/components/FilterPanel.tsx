@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import '../styles/FilterPanel.css';
-import { HF_CONFIG } from '../config/huggingFaceConfig';
 
 interface FilterPanelProps {
   activeFilters: string[];
@@ -15,26 +14,8 @@ interface FilterPanelProps {
     muteOutrage: boolean;
     blockDoomscroll: boolean;
   }) => void;
-  availableSources: string[];
-  availableCategories: string[];
-  initialFilters?: {
-    sources: string[];
-    categories: string[];
-  };
 }
 
-// Common tags for filtering
-const COMMON_TAGS = [
-  'technology', 
-  'science', 
-  'health', 
-  'environment', 
-  'politics', 
-  'business', 
-  'ethics', 
-  'culture',
-  'education'
-];
 
 const FilterPanel = ({ 
   activeFilters, 
@@ -42,10 +23,7 @@ const FilterPanel = ({
   contentTypes,
   categories = [],
   qualityFilters = { muteOutrage: false, blockDoomscroll: false },
-  onQualityFilterChange,
-  availableSources,
-  availableCategories,
-  initialFilters = { sources: [], categories: [] }
+  onQualityFilterChange
 }: FilterPanelProps) => {
   const [outrageMuted, setOutrageMuted] = useState(qualityFilters.muteOutrage);
   const [doomscrollBlocked, setDoomscrollBlocked] = useState(qualityFilters.blockDoomscroll);
