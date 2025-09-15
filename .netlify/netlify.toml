@@ -10,11 +10,12 @@ headers = []
 publish = "/home/robwistrand/code/ga/projects/authentic-reader/dist"
 publishOrigin = "config"
 commandOrigin = "config"
-command = "npm run build:no-types"
+command = "npm ci --include=dev && npm run build:no-types"
 
 [build.environment]
-NODE_VERSION = "18"
-VITE_API_URL = "https://authentic-reader-api-8b0a83fb7d96.herokuapp.com/api"
+NODE_VERSION = "20"
+HUSKY = "0"
+VITE_API_URL = "https://authentic-reader-api-8b0a83fb7d96.herokuapp.com"
 VITE_BACKEND_URL = "https://authentic-reader-api-8b0a83fb7d96.herokuapp.com"
 VITE_ENABLE_CHROMA = "false"
 VITE_ENABLE_FEEDBACK_LOOP = "false"
