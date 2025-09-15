@@ -11,9 +11,9 @@
   
 # Set environment variables for production
 [context.production.environment]
-  # Local backend URL (running on your machine)
-  VITE_API_URL = "http://localhost:3000"
-  VITE_BACKEND_URL = "http://localhost:3000"
+  # Heroku backend URL (working stockpile system)
+  VITE_API_URL = "https://authentic-reader-api-8b0a83fb7d96.herokuapp.com"
+  VITE_BACKEND_URL = "https://authentic-reader-api-8b0a83fb7d96.herokuapp.com"
   # Disable ChromaDB in production as it's not available
   VITE_ENABLE_CHROMA = "false"
   VITE_ENABLE_FEEDBACK_LOOP = "false"
