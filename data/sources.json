@@ -2,81 +2,11 @@
   "npr": {
     "name": "NPR",
     "url": "https://feeds.npr.org/1001/rss.xml",
-    "description": "National Public Radio",
-    "category": "news",
-    "biasRating": "center",
-    "reliability": "high"
+    "description": "National Public Radio"
   },
   "bbc": {
     "name": "BBC News",
     "url": "http://feeds.bbci.co.uk/news/rss.xml",
-    "description": "BBC News",
-    "category": "news",
-    "biasRating": "center",
-    "reliability": "high"
-  },
-  "reuters": {
-    "name": "Reuters",
-    "url": "https://feeds.reuters.com/reuters/topNews",
-    "description": "Reuters World News",
-    "category": "news",
-    "biasRating": "center",
-    "reliability": "high"
-  },
-  "ap": {
-    "name": "Associated Press",
-    "url": "https://feeds.apnews.com/apnews/topnews",
-    "description": "Associated Press News",
-    "category": "news",
-    "biasRating": "center",
-    "reliability": "high"
-  },
-  "cnn": {
-    "name": "CNN",
-    "url": "http://rss.cnn.com/rss/edition.rss",
-    "description": "CNN International",
-    "category": "news",
-    "biasRating": "center-left",
-    "reliability": "medium"
-  },
-  "fox": {
-    "name": "Fox News",
-    "url": "http://feeds.foxnews.com/foxnews/latest",
-    "description": "Fox News",
-    "category": "news",
-    "biasRating": "center-right",
-    "reliability": "medium"
-  },
-  "wsj": {
-    "name": "Wall Street Journal",
-    "url": "https://feeds.a.dj.com/rss/RSSWorldNews.xml",
-    "description": "Wall Street Journal",
-    "category": "business",
-    "biasRating": "center-right",
-    "reliability": "high"
-  },
-  "nytimes": {
-    "name": "New York Times",
-    "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
-    "description": "New York Times World",
-    "category": "news",
-    "biasRating": "center-left",
-    "reliability": "high"
-  },
-  "guardian": {
-    "name": "The Guardian",
-    "url": "https://www.theguardian.com/world/rss",
-    "description": "The Guardian World News",
-    "category": "news",
-    "biasRating": "center-left",
-    "reliability": "high"
-  },
-  "economist": {
-    "name": "The Economist",
-    "url": "https://www.economist.com/world/rss.xml",
-    "description": "The Economist",
-    "category": "news",
-    "biasRating": "center",
-    "reliability": "high"
+    "description": "BBC News"
   }
 }

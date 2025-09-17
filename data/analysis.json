@@ -1,55 +1,6700 @@
 {
-  "analysis_article_1755713307662_18": {
-    "wordCount": 360,
+  "analysis_article_1755902225581_17": {
+    "wordCount": 308,
     "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "economy",
+      "entertainment"
+    ],
+    "credibility": {
+      "score": 0.2,
+      "level": "low",
+      "reason": "Low credibility domain; 1 sensationalist words detected; Substantial content length"
+    },
+    "summary": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearly half of the UK’s TV industry workforce are jobless, a survey released Friday shows, with many workers looking beyond the sector for survival in an unprecedented crisis.  A UK Bectu (Broadcasting Ent...",
+    "biasIndicators": {},
+    "logicalFallacies": [
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.8,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "Bectu boss Philippa Childs said the findings are a “wake up call”: These findings lay bare the devastating impact of recent industry challenges compounded by years of insecure employment practices and poor conditions across much of the sector",
+        "startIndex": 874,
+        "endIndex": 1116
+      }
+    ],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 1,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "TV",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Bectu",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Nearly",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "UK",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Deadline",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "March",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Survey Says Nearly Half",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "British",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Workforce Are",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Work Netflix Simon Kent",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Friday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Broadcasting Entertainment Communications",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Theatre Union",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Philippa Childs",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "These",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "And",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Half",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "February",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow Simon Kent",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Twitter",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Entertainment London",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Europe Politics Hollywood Television",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "TV",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Bectu",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Nearly",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "UK",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Deadline",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "March",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Survey Says Nearly Half",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 25,
+      "relationships": [
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "British",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "Workforce Are",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "Work Netflix Simon Kent",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "Aug",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "Nearly",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "Friday",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "TV",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "UK",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "British",
+          "target": "Workforce Are",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "British",
+          "target": "Work Netflix Simon Kent",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        }
+      ],
+      "networkDensity": 3.04
+    },
+    "timestamp": "2025-08-22T22:37:05.582Z"
+  },
+  "analysis_article_1755902225668_19": {
+    "wordCount": 512,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "education",
+      "entertainment",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.2,
+      "level": "low",
+      "reason": "Low credibility domain; 1 sensationalist words detected; Substantial content length"
+    },
+    "summary": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty Images for Chopard Paul Bois 22 Aug 2025 British pop star Robbie Williams, whose acclaimed 2024 biopic Better Man may go down as one of the best movies of the decade, banned his four children from ha...",
+    "biasIndicators": {
+      "sensationalist": [
+        "revealed"
+      ]
+    },
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "They",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Momoa",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "How",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "We",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "TV",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "He",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "You",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "LAUSD",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Pop Star Robbie Williams",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Giving Phones",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Children Is",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Abuse",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Pascal Le Segretain",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Chopard Paul Bois",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "British",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Robbie Williams",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Better Man",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Williams",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "News London",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Camden",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "ITV",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Tough",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "That",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "It",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Breitbart News",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "April",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Jason Momoa",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Minecraft Movie",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "My",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Everyone",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "As Breitbart News",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Los Angeles Unified School District",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Our",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Nick Melvoin",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Paul Roland Bois",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Christian",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Rotten Tomatoes",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Tubi",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Fawesome",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "EXEMPLUM",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "FREE",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Better",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Killers",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Flower Moon",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Mark Judge",
+          "count": 1,
+          "category": "judicial"
+        },
+        {
+          "name": "Christian Toto",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Google Play",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Vimeo",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Demand",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Movies",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Instagram",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Entertainment London",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Europe Tech Britain Internet",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "They",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Momoa",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "How",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "We",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "TV",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "He",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "You",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "LAUSD",
+          "count": 2,
+          "category": "other"
+        }
+      ],
+      "entityCount": 56,
+      "relationships": [
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Giving Phones",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Children Is",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Abuse",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Pascal Le Segretain",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Getty Images",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Chopard Paul Bois",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Aug",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "British",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Robbie Williams",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Better Man",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        }
+      ],
+      "networkDensity": 2.2857142857142856
+    },
+    "timestamp": "2025-08-22T22:37:05.669Z"
+  },
+  "analysis_article_1755902225803_4": {
+    "wordCount": 630,
+    "readingTime": 4,
     "hasExternalLinks": false,
     "complexity": "medium",
     "keyTopics": [
       "politics",
       "technology",
-      "education"
+      "health",
+      "science",
+      "international"
     ],
     "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
+      "score": 0.35,
+      "level": "low",
+      "reason": "Low credibility domain; Substantial content length"
     },
-    "summary": "Trump Predicts &#8216;Loser&#8217; MSNBC Host Nicolle Wallace Will Be Fired Following On-Air Rant 438 Dia Dipasupil/Getty Images Alana Mastrangelo 19 Aug 2025 President Donald Trump is predicting that &#8220;loser&#8221; MSNBC host Nicolle Wallace will be fired from her job following her on-air rant...",
+    "summary": "Europe Embraces Death, Trump Keeps America Fighting Daniel Torok/White House via Flickr Americans for Limited Government (Sponsored) 22 Aug 2025 The following content is sponsored by Americans for Limited Government.  The elites love to praise Europe—its universal health care, its 36-hour work weeks...",
     "biasIndicators": {
       "political": [
         "democrat"
       ]
     },
     "logicalFallacies": [],
-    "timestamp": "2025-08-20T18:08:27.662Z"
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Europe",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "America",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "President Trump",
+          "count": 5,
+          "category": "political_leader"
+        },
+        {
+          "name": "The",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Right",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "China",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "White House",
+          "count": 2,
+          "category": "government_body"
+        },
+        {
+          "name": "Limited Government",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Americans",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Western Europe",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Belgium",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "And",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "FDA",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Try",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "European",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "MFN",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Europe Embraces Death",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Trump Keeps America Fighting Daniel Torok",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Flickr Americans",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Sponsored",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "But",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Countries",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The United Kingdom",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Austria",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Luxembourg",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Spain",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Switzerland",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Netherlands",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "In Belgium",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Netherlands",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "These",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Netherlanders",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Meanwhile",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "United States",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "In May",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Try Act",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Phase",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Food",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Drug Administration",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Although",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Democrats",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Colorado",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Make American Biotech Accelerate",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "MABA",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "It",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Price",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Joe Biden",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Bernie Sanders",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Kamala Harris",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Most Favored Nation",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "International Reference Drug Pricing",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "If",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "American",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "NATO",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "GDP",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Wonder Drugs",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "We",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Making American Biotech Accelerate",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Under President Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Politics",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Europe",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "America",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "President Trump",
+          "count": 5,
+          "category": "political_leader"
+        },
+        {
+          "name": "The",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Right",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "China",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "White House",
+          "count": 2,
+          "category": "government_body"
+        },
+        {
+          "name": "Limited Government",
+          "count": 2,
+          "category": "other"
+        }
+      ],
+      "entityCount": 62,
+      "relationships": [
+        {
+          "source": "Europe Embraces Death",
+          "target": "Trump Keeps America Fighting Daniel Torok",
+          "context": "Europe Embraces Death, Trump Keeps America Fighting Daniel Torok/White House via Flickr Americans fo..."
+        },
+        {
+          "source": "Europe Embraces Death",
+          "target": "White House",
+          "context": "Europe Embraces Death, Trump Keeps America Fighting Daniel Torok/White House via Flickr Americans fo..."
+        },
+        {
+          "source": "Europe Embraces Death",
+          "target": "Flickr Americans",
+          "context": "Europe Embraces Death, Trump Keeps America Fighting Daniel Torok/White House via Flickr Americans fo..."
+        },
+        {
+          "source": "Europe Embraces Death",
+          "target": "Limited Government",
+          "context": "Europe Embraces Death, Trump Keeps America Fighting Daniel Torok/White House via Flickr Americans fo..."
+        },
+        {
+          "source": "Europe Embraces Death",
+          "target": "Sponsored",
+          "context": "Europe Embraces Death, Trump Keeps America Fighting Daniel Torok/White House via Flickr Americans fo..."
+        },
+        {
+          "source": "Europe Embraces Death",
+          "target": "Aug",
+          "context": "Europe Embraces Death, Trump Keeps America Fighting Daniel Torok/White House via Flickr Americans fo..."
+        },
+        {
+          "source": "Europe Embraces Death",
+          "target": "The",
+          "context": "Europe Embraces Death, Trump Keeps America Fighting Daniel Torok/White House via Flickr Americans fo..."
+        },
+        {
+          "source": "Europe Embraces Death",
+          "target": "Americans",
+          "context": "Europe Embraces Death, Trump Keeps America Fighting Daniel Torok/White House via Flickr Americans fo..."
+        },
+        {
+          "source": "Trump Keeps America Fighting Daniel Torok",
+          "target": "White House",
+          "context": "Europe Embraces Death, Trump Keeps America Fighting Daniel Torok/White House via Flickr Americans fo..."
+        },
+        {
+          "source": "Trump Keeps America Fighting Daniel Torok",
+          "target": "Flickr Americans",
+          "context": "Europe Embraces Death, Trump Keeps America Fighting Daniel Torok/White House via Flickr Americans fo..."
+        }
+      ],
+      "networkDensity": 2.0483870967741935
+    },
+    "timestamp": "2025-08-22T22:37:05.804Z"
   },
-  "analysis_article_1755713307729_19": {
-    "wordCount": 340,
+  "analysis_article_1755902225903_5": {
+    "wordCount": 358,
     "readingTime": 2,
     "hasExternalLinks": false,
-    "complexity": "easy",
+    "complexity": "medium",
     "keyTopics": [
+      "politics",
       "technology",
-      "entertainment",
+      "entertainment"
+    ],
+    "credibility": {
+      "score": 0.35,
+      "level": "low",
+      "reason": "Low credibility domain; Substantial content length"
+    },
+    "summary": "&#8216;107 Accents in 107 Days&#8217;: Kamala Harris Mocked After Posting Tour Schedule for Memoir AP Photo/Godofredo A.  Vásquez Amy Furr 22 Aug 2025 Former Vice President Kamala Harris (D), whom President Donald Trump trounced in the 2024 presidential election, will be touring the country to promo...",
+    "biasIndicators": {
+      "political": [
+        "democrat"
+      ]
+    },
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Harris",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "Days",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Accents",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "President Donald Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "President Joe Biden",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "California",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Breitbart News",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Kamala Harris Mocked After Posting Tour Schedule",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Memoir",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Photo",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Godofredo",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "AP",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Amy Furr",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Former Vice President Kamala Harris",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "President Kamala Harris",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Thursday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Over",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Her",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Friday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Social",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "Go",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Only",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "America",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "How To Pander",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Others",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "July",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "One",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "In March",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Uncertainty",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Minnesota Gov",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Tim Walz",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Entertainment Politics Pre",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Viral",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Democrat Donald Trump Joe Biden Kamala Harris",
+          "count": 1,
+          "category": "political_leader"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Harris",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "Days",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Accents",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "President Donald Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "President Joe Biden",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "California",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Breitbart News",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Kamala Harris Mocked After Posting Tour Schedule",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 36,
+      "relationships": [
+        {
+          "source": "Accents",
+          "target": "Days",
+          "context": "&#8216;107 Accents in 107 Days&#8217;: Kamala Harris Mocked After Posting Tour Schedule for Memoir A..."
+        },
+        {
+          "source": "Accents",
+          "target": "Kamala Harris Mocked After Posting Tour Schedule",
+          "context": "&#8216;107 Accents in 107 Days&#8217;: Kamala Harris Mocked After Posting Tour Schedule for Memoir A..."
+        },
+        {
+          "source": "Accents",
+          "target": "Memoir",
+          "context": "&#8216;107 Accents in 107 Days&#8217;: Kamala Harris Mocked After Posting Tour Schedule for Memoir A..."
+        },
+        {
+          "source": "Accents",
+          "target": "Photo",
+          "context": "&#8216;107 Accents in 107 Days&#8217;: Kamala Harris Mocked After Posting Tour Schedule for Memoir A..."
+        },
+        {
+          "source": "Accents",
+          "target": "Godofredo",
+          "context": "&#8216;107 Accents in 107 Days&#8217;: Kamala Harris Mocked After Posting Tour Schedule for Memoir A..."
+        },
+        {
+          "source": "Accents",
+          "target": "AP",
+          "context": "&#8216;107 Accents in 107 Days&#8217;: Kamala Harris Mocked After Posting Tour Schedule for Memoir A..."
+        },
+        {
+          "source": "Days",
+          "target": "Kamala Harris Mocked After Posting Tour Schedule",
+          "context": "&#8216;107 Accents in 107 Days&#8217;: Kamala Harris Mocked After Posting Tour Schedule for Memoir A..."
+        },
+        {
+          "source": "Days",
+          "target": "Memoir",
+          "context": "&#8216;107 Accents in 107 Days&#8217;: Kamala Harris Mocked After Posting Tour Schedule for Memoir A..."
+        },
+        {
+          "source": "Days",
+          "target": "Photo",
+          "context": "&#8216;107 Accents in 107 Days&#8217;: Kamala Harris Mocked After Posting Tour Schedule for Memoir A..."
+        },
+        {
+          "source": "Days",
+          "target": "Godofredo",
+          "context": "&#8216;107 Accents in 107 Days&#8217;: Kamala Harris Mocked After Posting Tour Schedule for Memoir A..."
+        }
+      ],
+      "networkDensity": 2.111111111111111
+    },
+    "timestamp": "2025-08-22T22:37:05.903Z"
+  },
+  "analysis_article_1755902225953_6": {
+    "wordCount": 469,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "health",
+      "economy",
+      "entertainment"
+    ],
+    "credibility": {
+      "score": 0.35,
+      "level": "low",
+      "reason": "Low credibility domain; Substantial content length"
+    },
+    "summary": "Steak &#8216;n Shake Skewers Woke Cracker Barrel Rebrand: They Want to &#8216;Delete the Personality Altogether&#8217; Andy Cross/The Denver Post via Getty Images Hannah Knudsen 22 Aug 2025 Steak &#8216;n Shake is calling out woke Cracker Barrel after the iconic comfort food chain unveiled its bland...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Cracker Barrel",
+          "count": 8,
+          "category": "other"
+        },
+        {
+          "name": "Shake",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Steak",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "American",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "CEO",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "President Donald Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "Shake Skewers Woke Cracker Barrel Rebrand",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "They Want",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Delete",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Personality Altogether",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Andy Cross",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Denver Post",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images Hannah Knudsen",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Americana",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Old Country Store",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Anchored",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Backlash",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Now",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Make America Healthy Again",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Sometimes",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "At",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "CB",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Hence",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Heritage",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "At Steak",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "All",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "We",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Thank",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Others",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "In",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Tallahassee",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Christ",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Their",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Rep",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Byron Donalds",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "FL",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "No",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "It",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Make Cracker Barrel Great Again",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "As Breitbart News",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Economy Politics Cracker Barrel Steak",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Cracker Barrel",
+          "count": 8,
+          "category": "other"
+        },
+        {
+          "name": "Shake",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Steak",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "American",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "CEO",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "President Donald Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "Shake Skewers Woke Cracker Barrel Rebrand",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 43,
+      "relationships": [
+        {
+          "source": "Steak",
+          "target": "Shake Skewers Woke Cracker Barrel Rebrand",
+          "context": "Steak &#8216;n Shake Skewers Woke Cracker Barrel Rebrand: They Want to &#8216;Delete the Personality..."
+        },
+        {
+          "source": "Steak",
+          "target": "They Want",
+          "context": "Steak &#8216;n Shake Skewers Woke Cracker Barrel Rebrand: They Want to &#8216;Delete the Personality..."
+        },
+        {
+          "source": "Steak",
+          "target": "Delete",
+          "context": "Steak &#8216;n Shake Skewers Woke Cracker Barrel Rebrand: They Want to &#8216;Delete the Personality..."
+        },
+        {
+          "source": "Steak",
+          "target": "Personality Altogether",
+          "context": "Steak &#8216;n Shake Skewers Woke Cracker Barrel Rebrand: They Want to &#8216;Delete the Personality..."
+        },
+        {
+          "source": "Steak",
+          "target": "Andy Cross",
+          "context": "Steak &#8216;n Shake Skewers Woke Cracker Barrel Rebrand: They Want to &#8216;Delete the Personality..."
+        },
+        {
+          "source": "Steak",
+          "target": "The Denver Post",
+          "context": "Steak &#8216;n Shake Skewers Woke Cracker Barrel Rebrand: They Want to &#8216;Delete the Personality..."
+        },
+        {
+          "source": "Steak",
+          "target": "Getty Images Hannah Knudsen",
+          "context": "Steak &#8216;n Shake Skewers Woke Cracker Barrel Rebrand: They Want to &#8216;Delete the Personality..."
+        },
+        {
+          "source": "Steak",
+          "target": "Aug",
+          "context": "Steak &#8216;n Shake Skewers Woke Cracker Barrel Rebrand: They Want to &#8216;Delete the Personality..."
+        },
+        {
+          "source": "Steak",
+          "target": "Shake",
+          "context": "Steak &#8216;n Shake Skewers Woke Cracker Barrel Rebrand: They Want to &#8216;Delete the Personality..."
+        },
+        {
+          "source": "Steak",
+          "target": "Cracker Barrel",
+          "context": "Steak &#8216;n Shake Skewers Woke Cracker Barrel Rebrand: They Want to &#8216;Delete the Personality..."
+        }
+      ],
+      "networkDensity": 2.883720930232558
+    },
+    "timestamp": "2025-08-22T22:37:05.954Z"
+  },
+  "analysis_article_1755902226006_7": {
+    "wordCount": 659,
+    "readingTime": 4,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "health",
       "international"
     ],
     "credibility": {
-      "score": 0.6,
-      "level": "medium",
-      "reason": "Substantial content length"
+      "score": 0.35,
+      "level": "low",
+      "reason": "Low credibility domain; Substantial content length"
     },
-    "summary": "Pop Star Kesha Comes Out as ‘Omnisexual’ 1,325 Gotham/GC Images Simon Kent 20 Aug 2025 We live in troubled times.  The world is beset by turmoil, wars, and rumors of wars, but if you were worrying about just what sexuality pop star Kesha embraces amidst that panopoly of woes, rest easy.  The singer ...",
+    "summary": "Exclusive &#8212; American Truckers United Co-Founder Shannon Everett: Foreigners Are Dispatching Foreign Truck Drivers on Our Streets from Overseas Michael Siluk/UCG/Universal Images Group via Getty Hannah Knudsen 22 Aug 2025 Foreigners working from overseas are dispatching foreign truck drivers on...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "And",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Indian",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Florida",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Everett",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Shannon Everett",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Breitbart News Daily",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "California",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "It",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "So",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Texas",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "There",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "America",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Exclusive",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "American Truckers United Co",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Founder Shannon Everett",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Foreigners Are Dispatching Foreign Truck Drivers",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Our Streets",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Overseas Michael Siluk",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Universal Images Group",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Hannah Knudsen",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Foreigners",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "American Truckers United",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "UCG",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Discussing",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Harjinder Singh",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Mexico",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "DOT",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "That",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Google",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Dallas",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "WFAA",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "She",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "He",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Well",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "But",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Eat",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Breitbart",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "August",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Host Mike Slater",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "India",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "United States",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "LISTEN",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "American",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Patriot",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Eastern",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Immigration Politics Radio Breitbart News Daily California",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "On",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Hill",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "And",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Indian",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Florida",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Everett",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Shannon Everett",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Breitbart News Daily",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "California",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 2,
+          "category": "other"
+        }
+      ],
+      "entityCount": 50,
+      "relationships": [
+        {
+          "source": "Exclusive",
+          "target": "American Truckers United Co",
+          "context": "Exclusive &#8212; American Truckers United Co-Founder Shannon Everett: Foreigners Are Dispatching Fo..."
+        },
+        {
+          "source": "Exclusive",
+          "target": "Founder Shannon Everett",
+          "context": "Exclusive &#8212; American Truckers United Co-Founder Shannon Everett: Foreigners Are Dispatching Fo..."
+        },
+        {
+          "source": "Exclusive",
+          "target": "Foreigners Are Dispatching Foreign Truck Drivers",
+          "context": "Exclusive &#8212; American Truckers United Co-Founder Shannon Everett: Foreigners Are Dispatching Fo..."
+        },
+        {
+          "source": "Exclusive",
+          "target": "Our Streets",
+          "context": "Exclusive &#8212; American Truckers United Co-Founder Shannon Everett: Foreigners Are Dispatching Fo..."
+        },
+        {
+          "source": "Exclusive",
+          "target": "Overseas Michael Siluk",
+          "context": "Exclusive &#8212; American Truckers United Co-Founder Shannon Everett: Foreigners Are Dispatching Fo..."
+        },
+        {
+          "source": "Exclusive",
+          "target": "Universal Images Group",
+          "context": "Exclusive &#8212; American Truckers United Co-Founder Shannon Everett: Foreigners Are Dispatching Fo..."
+        },
+        {
+          "source": "Exclusive",
+          "target": "Getty Hannah Knudsen",
+          "context": "Exclusive &#8212; American Truckers United Co-Founder Shannon Everett: Foreigners Are Dispatching Fo..."
+        },
+        {
+          "source": "Exclusive",
+          "target": "Aug",
+          "context": "Exclusive &#8212; American Truckers United Co-Founder Shannon Everett: Foreigners Are Dispatching Fo..."
+        },
+        {
+          "source": "Exclusive",
+          "target": "Foreigners",
+          "context": "Exclusive &#8212; American Truckers United Co-Founder Shannon Everett: Foreigners Are Dispatching Fo..."
+        },
+        {
+          "source": "Exclusive",
+          "target": "Shannon Everett",
+          "context": "Exclusive &#8212; American Truckers United Co-Founder Shannon Everett: Foreigners Are Dispatching Fo..."
+        }
+      ],
+      "networkDensity": 3.76
+    },
+    "timestamp": "2025-08-22T22:37:06.008Z"
+  },
+  "analysis_article_1755902226081_8": {
+    "wordCount": 808,
+    "readingTime": 5,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.1,
+      "level": "low",
+      "reason": "Low credibility domain; 3 sensationalist words detected; Substantial content length"
+    },
+    "summary": "Blue State Blues: Newsom&#8217;s Rise Is an Indictment of the Democratic Party Rich Pedroncelli / Associated Press Joel B.  Pollak 22 Aug 2025 The fact that California Gov.  Gavin Newsom (D) is rising as a likely presidential contender in 2028 is an indictment of the entire Democratic Party.",
+    "biasIndicators": {
+      "political": [
+        "left-wing",
+        "right-wing",
+        "democrat",
+        "republican"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "AD_HOMINEM",
+        "confidence": 0.65,
+        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
+        "excerpt": "It was Newsom who elevated radical George Gascón to lead the San Francisco police department; later, Newsom joined left-wing billionaire George Soros in foisting Gascón on the people of Los Angeles",
+        "startIndex": 700,
+        "endIndex": 897
+      },
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.8,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "During his tenure, California suffered crushing droughts and devastating wildfires",
+        "startIndex": 1462,
+        "endIndex": 1544
+      },
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.65,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "While ordering restaurants to close, Newsom slipped away to dinner with lobbyists at the French Laundry, an appalling example of hypocrisy that led to a recall election effort the following year",
+        "startIndex": 2591,
+        "endIndex": 2785
+      },
+      {
+        "type": "AD_HOMINEM",
+        "confidence": 0.8,
+        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
+        "excerpt": "Newsom is gambling that the typical Democratic primary voter cares more about attacking the opposition than success in government",
+        "startIndex": 4115,
+        "endIndex": 4244
+      }
+    ],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 2,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Newsom",
+          "count": 22,
+          "category": "other"
+        },
+        {
+          "name": "He",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "San Francisco",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "California",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Trump",
+          "count": 3,
+          "category": "political_leader"
+        },
+        {
+          "name": "Pollak",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "It",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Gasc",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Los Angeles",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "During",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "In",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Supreme Court",
+          "count": 2,
+          "category": "judicial"
+        },
+        {
+          "name": "Republicans",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Blue State Blues",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Rise Is",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Indictment",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Democratic Party Rich Pedroncelli",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Associated Press Joel",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "California Gov",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Gavin Newsom",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Democratic Party",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "George Gasc",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "George Soros",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Lieutenant Governor",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Jerry Brown",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Brown",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Once Newsom",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Pacific Palisades",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "January",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "After",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Palisades Fire",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Of",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "While",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "French Laundry",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Yet",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Like Jerry Brown",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "There",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "As",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "That",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "All",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Termed",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "America",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Republican",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Florida",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Democratic",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "But",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Scott Walker",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Joel",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Senior Editor",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Large",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Breitbart News",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Breitbart News Sunday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Sirius",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Patriot",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Sunday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "XM",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "ET",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "PT",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Zionist Conspiracy Wants You",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Amazon",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Robert Novak Journalism Alumni Fellowship",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Twitter",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Politics California Democratic Party Gavin Newsom",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Newsom",
+          "count": 22,
+          "category": "other"
+        },
+        {
+          "name": "He",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "San Francisco",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "California",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Trump",
+          "count": 3,
+          "category": "political_leader"
+        },
+        {
+          "name": "Pollak",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "It",
+          "count": 2,
+          "category": "other"
+        }
+      ],
+      "entityCount": 66,
+      "relationships": [
+        {
+          "source": "Blue State Blues",
+          "target": "Newsom",
+          "context": "Blue State Blues: Newsom&#8217;s Rise Is an Indictment of the Democratic Party Rich Pedroncelli / As..."
+        },
+        {
+          "source": "Blue State Blues",
+          "target": "Rise Is",
+          "context": "Blue State Blues: Newsom&#8217;s Rise Is an Indictment of the Democratic Party Rich Pedroncelli / As..."
+        },
+        {
+          "source": "Blue State Blues",
+          "target": "Indictment",
+          "context": "Blue State Blues: Newsom&#8217;s Rise Is an Indictment of the Democratic Party Rich Pedroncelli / As..."
+        },
+        {
+          "source": "Blue State Blues",
+          "target": "Democratic Party Rich Pedroncelli",
+          "context": "Blue State Blues: Newsom&#8217;s Rise Is an Indictment of the Democratic Party Rich Pedroncelli / As..."
+        },
+        {
+          "source": "Blue State Blues",
+          "target": "Associated Press Joel",
+          "context": "Blue State Blues: Newsom&#8217;s Rise Is an Indictment of the Democratic Party Rich Pedroncelli / As..."
+        },
+        {
+          "source": "Newsom",
+          "target": "Rise Is",
+          "context": "Blue State Blues: Newsom&#8217;s Rise Is an Indictment of the Democratic Party Rich Pedroncelli / As..."
+        },
+        {
+          "source": "Newsom",
+          "target": "Indictment",
+          "context": "Blue State Blues: Newsom&#8217;s Rise Is an Indictment of the Democratic Party Rich Pedroncelli / As..."
+        },
+        {
+          "source": "Newsom",
+          "target": "Democratic Party Rich Pedroncelli",
+          "context": "Blue State Blues: Newsom&#8217;s Rise Is an Indictment of the Democratic Party Rich Pedroncelli / As..."
+        },
+        {
+          "source": "Newsom",
+          "target": "Associated Press Joel",
+          "context": "Blue State Blues: Newsom&#8217;s Rise Is an Indictment of the Democratic Party Rich Pedroncelli / As..."
+        },
+        {
+          "source": "Rise Is",
+          "target": "Indictment",
+          "context": "Blue State Blues: Newsom&#8217;s Rise Is an Indictment of the Democratic Party Rich Pedroncelli / As..."
+        }
+      ],
+      "networkDensity": 2.0303030303030303
+    },
+    "timestamp": "2025-08-22T22:37:06.082Z"
+  },
+  "analysis_article_1755902226151_9": {
+    "wordCount": 1000,
+    "readingTime": 5,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy",
+      "science",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.3,
+      "level": "low",
+      "reason": "Low credibility domain; 1 sensationalist words detected; Contains credible reporting language; Substantial content length"
+    },
+    "summary": "China Flexes Diplomatic Muscle to Defend Venezuela from Trump Admin Anti-Drug Actions Liu Bin/Xinhua via Getty Images Frances Martel 22 Aug 2025 The Chinese Foreign Ministry scolded the government of President Donald Trump on Thursday for approving military deployments to the Caribbean Sea to combat...",
+    "biasIndicators": {
+      "sensationalist": [
+        "secret"
+      ]
+    },
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "right",
+      "confidence": 1,
+      "explanation": "Detected more right-leaning indicators in language. Some neutral reporting language present.",
+      "indicators": {
+        "left": 0,
+        "right": 1,
+        "sensationalist": 0,
+        "neutral": 2
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Maduro",
+          "count": 13,
+          "category": "other"
+        },
+        {
+          "name": "Venezuela",
+          "count": 10,
+          "category": "other"
+        },
+        {
+          "name": "China",
+          "count": 9,
+          "category": "other"
+        },
+        {
+          "name": "Venezuelan",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Thursday",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "We",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "American",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "United States",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "The Chinese Foreign Ministry",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "President Donald Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "Nicol",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Caracas",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Beijing",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Caribbean",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "President Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "President",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "Cartel",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "NOT",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "China Flexes Diplomatic Muscle",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Defend Venezuela",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Trump Admin Anti",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Drug Actions Liu Bin",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Xinhua",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images Frances Martel",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Caribbean Sea",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Lan Hu",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Reports",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aegis",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Marines",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Navy",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Asked",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Tuesday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "White House Press Secretary Karoline Leavitt",
+          "count": 1,
+          "category": "government_body"
+        },
+        {
+          "name": "White House",
+          "count": 1,
+          "category": "government_body"
+        },
+        {
+          "name": "Donald",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "He",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Leavitt",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Soles",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Secretary",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "State Marco Rubio",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "July",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Los Soles",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "And",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Rubio",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Charter",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Mao Ning",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "UN",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Latin America",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Chinese",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Ambassador Lan",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Miraflores",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Artificial Intelligence",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "Without",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "View",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Instagram",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "According",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "South China Morning Post",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "SCMP",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "US",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Maduro",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "America",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "As",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Saturday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Sunday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "VTV",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Some",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Diosdado Cabello",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Cabello",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Multiple",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Western",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Venezuelans",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "In May",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Reuters",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Brazilian",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "On Wednesday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Financial Times",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "Iran",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Russia",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Iraq",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Malaysia",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow Frances Martel",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Facebook",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Twitter",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Asia Latin America National Security Cartel",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Soles China Communism Drug Trafficking Nicolas Maduro Sanctions",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Maduro",
+          "count": 13,
+          "category": "other"
+        },
+        {
+          "name": "Venezuela",
+          "count": 10,
+          "category": "other"
+        },
+        {
+          "name": "China",
+          "count": 9,
+          "category": "other"
+        },
+        {
+          "name": "Venezuelan",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Thursday",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "We",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "American",
+          "count": 3,
+          "category": "other"
+        }
+      ],
+      "entityCount": 88,
+      "relationships": [
+        {
+          "source": "China Flexes Diplomatic Muscle",
+          "target": "Defend Venezuela",
+          "context": "China Flexes Diplomatic Muscle to Defend Venezuela from Trump Admin Anti-Drug Actions Liu Bin/Xinhua..."
+        },
+        {
+          "source": "China Flexes Diplomatic Muscle",
+          "target": "Trump Admin Anti",
+          "context": "China Flexes Diplomatic Muscle to Defend Venezuela from Trump Admin Anti-Drug Actions Liu Bin/Xinhua..."
+        },
+        {
+          "source": "China Flexes Diplomatic Muscle",
+          "target": "Drug Actions Liu Bin",
+          "context": "China Flexes Diplomatic Muscle to Defend Venezuela from Trump Admin Anti-Drug Actions Liu Bin/Xinhua..."
+        },
+        {
+          "source": "China Flexes Diplomatic Muscle",
+          "target": "Xinhua",
+          "context": "China Flexes Diplomatic Muscle to Defend Venezuela from Trump Admin Anti-Drug Actions Liu Bin/Xinhua..."
+        },
+        {
+          "source": "China Flexes Diplomatic Muscle",
+          "target": "Getty Images Frances Martel",
+          "context": "China Flexes Diplomatic Muscle to Defend Venezuela from Trump Admin Anti-Drug Actions Liu Bin/Xinhua..."
+        },
+        {
+          "source": "China Flexes Diplomatic Muscle",
+          "target": "Aug",
+          "context": "China Flexes Diplomatic Muscle to Defend Venezuela from Trump Admin Anti-Drug Actions Liu Bin/Xinhua..."
+        },
+        {
+          "source": "China Flexes Diplomatic Muscle",
+          "target": "The Chinese Foreign Ministry",
+          "context": "China Flexes Diplomatic Muscle to Defend Venezuela from Trump Admin Anti-Drug Actions Liu Bin/Xinhua..."
+        },
+        {
+          "source": "China Flexes Diplomatic Muscle",
+          "target": "President Donald Trump",
+          "context": "China Flexes Diplomatic Muscle to Defend Venezuela from Trump Admin Anti-Drug Actions Liu Bin/Xinhua..."
+        },
+        {
+          "source": "China Flexes Diplomatic Muscle",
+          "target": "Thursday",
+          "context": "China Flexes Diplomatic Muscle to Defend Venezuela from Trump Admin Anti-Drug Actions Liu Bin/Xinhua..."
+        },
+        {
+          "source": "China Flexes Diplomatic Muscle",
+          "target": "Caribbean Sea",
+          "context": "China Flexes Diplomatic Muscle to Defend Venezuela from Trump Admin Anti-Drug Actions Liu Bin/Xinhua..."
+        }
+      ],
+      "networkDensity": 3.8636363636363638
+    },
+    "timestamp": "2025-08-22T22:37:06.153Z"
+  },
+  "analysis_article_1755902226214_10": {
+    "wordCount": 391,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "hard",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy"
+    ],
+    "credibility": {
+      "score": 0.35,
+      "level": "low",
+      "reason": "Low credibility domain; Substantial content length"
+    },
+    "summary": "Fed Abandons Inflation Overshoot Strategy, Returning to Simpler Goal David Paul Morris/Bloomberg via Getty Images John Carney 22 Aug 2025 The Federal Reserve on Friday discarded a central element of the framework it adopted five years ago, formally abandoning a strategy that sought to allow inflatio...",
+    "biasIndicators": {
+      "opinionated": [
+        "clearly"
+      ]
+    },
+    "logicalFallacies": [
+      {
+        "type": "RED_HERRING",
+        "confidence": 0.65,
+        "explanation": "Red Herring: Introducing irrelevant information to distract from the issue.",
+        "excerpt": "“The idea of an intentional, moderate inflation overshoot had proved irrelevant,” Powell said in a speech at the Kansas City Fed’s annual conference in Jackson Hole, noting that the overshoot concept—introduced in 2020 amid fears of chronically weak growth and low inflation—was quickly overtaken by events",
+        "startIndex": 661,
+        "endIndex": 967
+      }
+    ],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "The",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "Fed",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Powell",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Fed Abandons Inflation Overshoot Strategy",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Returning",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Simpler Goal David Paul Morris",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Bloomberg",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images John Carney",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Federal Reserve",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Friday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Chair Jerome",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Kansas City Fed",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Jackson Hole",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Rather",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "In",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "After",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Americans",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Mr",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Officials",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "Economy",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "The",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "Fed",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Powell",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Fed Abandons Inflation Overshoot Strategy",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Returning",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Simpler Goal David Paul Morris",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Bloomberg",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images John Carney",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 21,
+      "relationships": [
+        {
+          "source": "Fed Abandons Inflation Overshoot Strategy",
+          "target": "Returning",
+          "context": "Fed Abandons Inflation Overshoot Strategy, Returning to Simpler Goal David Paul Morris/Bloomberg via..."
+        },
+        {
+          "source": "Fed Abandons Inflation Overshoot Strategy",
+          "target": "Simpler Goal David Paul Morris",
+          "context": "Fed Abandons Inflation Overshoot Strategy, Returning to Simpler Goal David Paul Morris/Bloomberg via..."
+        },
+        {
+          "source": "Fed Abandons Inflation Overshoot Strategy",
+          "target": "Bloomberg",
+          "context": "Fed Abandons Inflation Overshoot Strategy, Returning to Simpler Goal David Paul Morris/Bloomberg via..."
+        },
+        {
+          "source": "Fed Abandons Inflation Overshoot Strategy",
+          "target": "Getty Images John Carney",
+          "context": "Fed Abandons Inflation Overshoot Strategy, Returning to Simpler Goal David Paul Morris/Bloomberg via..."
+        },
+        {
+          "source": "Fed Abandons Inflation Overshoot Strategy",
+          "target": "Aug",
+          "context": "Fed Abandons Inflation Overshoot Strategy, Returning to Simpler Goal David Paul Morris/Bloomberg via..."
+        },
+        {
+          "source": "Fed Abandons Inflation Overshoot Strategy",
+          "target": "The Federal Reserve",
+          "context": "Fed Abandons Inflation Overshoot Strategy, Returning to Simpler Goal David Paul Morris/Bloomberg via..."
+        },
+        {
+          "source": "Fed Abandons Inflation Overshoot Strategy",
+          "target": "Friday",
+          "context": "Fed Abandons Inflation Overshoot Strategy, Returning to Simpler Goal David Paul Morris/Bloomberg via..."
+        },
+        {
+          "source": "Returning",
+          "target": "Simpler Goal David Paul Morris",
+          "context": "Fed Abandons Inflation Overshoot Strategy, Returning to Simpler Goal David Paul Morris/Bloomberg via..."
+        },
+        {
+          "source": "Returning",
+          "target": "Bloomberg",
+          "context": "Fed Abandons Inflation Overshoot Strategy, Returning to Simpler Goal David Paul Morris/Bloomberg via..."
+        },
+        {
+          "source": "Returning",
+          "target": "Getty Images John Carney",
+          "context": "Fed Abandons Inflation Overshoot Strategy, Returning to Simpler Goal David Paul Morris/Bloomberg via..."
+        }
+      ],
+      "networkDensity": 2.0476190476190474
+    },
+    "timestamp": "2025-08-22T22:37:06.215Z"
+  },
+  "analysis_article_1755902226264_11": {
+    "wordCount": 461,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology"
+    ],
+    "credibility": {
+      "score": 0.35,
+      "level": "low",
+      "reason": "Low credibility domain; Substantial content length"
+    },
+    "summary": "Todd Lyons: ICE Will &#8216;Flood the Zone&#8217; to Enforce the Law Despite Boston Mayor Michelle Wu&#8217;s Defiance Matt Stone/MediaNews Group/Boston Herald via Getty Images Lowell Cauffiel 22 Aug 2025 Far-left Boston Mayor Michelle Wu’s refusal to end sanctuary city status will not deter Immigra...",
+    "biasIndicators": {
+      "political": [
+        "conservative",
+        "democrat"
+      ],
+      "opinionated": [
+        "definitely"
+      ]
+    },
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "right",
+      "confidence": 1,
+      "explanation": "Detected more right-leaning indicators in language.",
+      "indicators": {
+        "left": 0,
+        "right": 1,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "ICE",
+          "count": 7,
+          "category": "other"
+        },
+        {
+          "name": "Boston",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "We",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Lyons",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Customs Enforcement",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Mayor Michelle Wu",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Attorney General Pam Bondi",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "WATCH",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Todd Lyons",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Will",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Flood",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Zone",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Enforce",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Law Despite Boston Mayor Michelle Wu",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Defiance Matt Stone",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Group",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Boston Herald",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images Lowell Cauffiel",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Far",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Boston Mayor Michelle Wu",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Immigration",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Acting Director Todd Lyons",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Howie Carr Show",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Wednesday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Massachusetts",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Sanctuary",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "It",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "But",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Democrat Mayor Wu",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Tuesday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Mayor Wu",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Stop",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Unlike",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Boston Trust Act",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Hill",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Boston Mayor Holds News Conference",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Immigration Enforcement Letter",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "As Breitbart News",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "DOJ",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Mayor Holds News Conference",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Carr",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Bringing Hell",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Me",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Homan",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Anti",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Boston Police Commissioner",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "Operation Patriot March",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "America",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Contributor Lowell Cauffiel",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Below",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Line",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "See",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Immigration Law",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Order Pre",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Viral Boston Howie Carr Immigration",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Michelle Wu",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "ICE",
+          "count": 7,
+          "category": "other"
+        },
+        {
+          "name": "Boston",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "We",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Lyons",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Customs Enforcement",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Mayor Michelle Wu",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Attorney General Pam Bondi",
+          "count": 2,
+          "category": "other"
+        }
+      ],
+      "entityCount": 59,
+      "relationships": [
+        {
+          "source": "Todd Lyons",
+          "target": "Will",
+          "context": "Todd Lyons: ICE Will &#8216;Flood the Zone&#8217; to Enforce the Law Despite Boston Mayor Michelle W..."
+        },
+        {
+          "source": "Todd Lyons",
+          "target": "Flood",
+          "context": "Todd Lyons: ICE Will &#8216;Flood the Zone&#8217; to Enforce the Law Despite Boston Mayor Michelle W..."
+        },
+        {
+          "source": "Todd Lyons",
+          "target": "Zone",
+          "context": "Todd Lyons: ICE Will &#8216;Flood the Zone&#8217; to Enforce the Law Despite Boston Mayor Michelle W..."
+        },
+        {
+          "source": "Todd Lyons",
+          "target": "Enforce",
+          "context": "Todd Lyons: ICE Will &#8216;Flood the Zone&#8217; to Enforce the Law Despite Boston Mayor Michelle W..."
+        },
+        {
+          "source": "Todd Lyons",
+          "target": "Law Despite Boston Mayor Michelle Wu",
+          "context": "Todd Lyons: ICE Will &#8216;Flood the Zone&#8217; to Enforce the Law Despite Boston Mayor Michelle W..."
+        },
+        {
+          "source": "Todd Lyons",
+          "target": "Defiance Matt Stone",
+          "context": "Todd Lyons: ICE Will &#8216;Flood the Zone&#8217; to Enforce the Law Despite Boston Mayor Michelle W..."
+        },
+        {
+          "source": "Todd Lyons",
+          "target": "Group",
+          "context": "Todd Lyons: ICE Will &#8216;Flood the Zone&#8217; to Enforce the Law Despite Boston Mayor Michelle W..."
+        },
+        {
+          "source": "Todd Lyons",
+          "target": "Boston Herald",
+          "context": "Todd Lyons: ICE Will &#8216;Flood the Zone&#8217; to Enforce the Law Despite Boston Mayor Michelle W..."
+        },
+        {
+          "source": "Todd Lyons",
+          "target": "Getty Images Lowell Cauffiel",
+          "context": "Todd Lyons: ICE Will &#8216;Flood the Zone&#8217; to Enforce the Law Despite Boston Mayor Michelle W..."
+        },
+        {
+          "source": "Todd Lyons",
+          "target": "Aug",
+          "context": "Todd Lyons: ICE Will &#8216;Flood the Zone&#8217; to Enforce the Law Despite Boston Mayor Michelle W..."
+        }
+      ],
+      "networkDensity": 5.135593220338983
+    },
+    "timestamp": "2025-08-22T22:37:06.265Z"
+  },
+  "analysis_article_1755902226311_12": {
+    "wordCount": 666,
+    "readingTime": 4,
+    "hasExternalLinks": false,
+    "complexity": "easy",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy",
+      "sports",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.35,
+      "level": "low",
+      "reason": "Low credibility domain; Substantial content length"
+    },
+    "summary": "Boston Sports Radio Host Calls Bill Belichick a &#8216;Horny Old Man&#8217; Michael Owens/Getty Images Warner Todd Huston 22 Aug 2025 Former New England Patriots coach Bill Belichick has lost his luster, even in Boston, as sports radio hosts are dinging him as a &#8220;horny old man&#8221; for his r...",
     "biasIndicators": {},
     "logicalFallacies": [
       {
         "type": "AD_HOMINEM",
         "confidence": 0.65,
         "explanation": "Ad Hominem: Attacking the person instead of the argument.",
-        "excerpt": "The singer is now identifying herself as &#8220;omnisexual.&#8221; On dating app Feeld, &#8220;BOY CRAZY&#8221; hitmaker Kesha calls her sexuality “omnisexual” as well as noting her interest in “being dominant” and “kink,” all while offering to send &#8220;feet pics.&#8221; Yes, really",
-        "startIndex": 287,
-        "endIndex": 573
+        "excerpt": "On the tail of Belichick&#8217;s shade at Kraft, radio host Mike Felger blasted the coach, and said, &#8220;If he can look like this delusional, obstinate, completely arrogant, out of his mind, horny, old, half-nuts, old man and go 10-1 and go to the NCAA playoffs, that’s a cool story.&#8221; Bill Belichick and Jordon Hudson attend Michael Rubin&#8217;s 2025 Fanatics Super Bowl Party at The Sugar Mill on February 08, 2025, in New Orleans, Louisiana",
+        "startIndex": 694,
+        "endIndex": 1146
+      },
+      {
+        "type": "AD_HOMINEM",
+        "confidence": 0.65,
+        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
+        "excerpt": "(Mike Coppola/Getty Images for Fanatics) The harsh words came after Belichick tried to explain the difference between being an NFL head coach and what he is doing now as a college coach of the North Carolina Tar Heels",
+        "startIndex": 1148,
+        "endIndex": 1365
       }
     ],
-    "timestamp": "2025-08-20T18:08:27.729Z"
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Belichick",
+          "count": 9,
+          "category": "other"
+        },
+        {
+          "name": "He",
+          "count": 9,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Massarotti",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Robert Kraft",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Jordon Hudson",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "NFL",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Bill Belichick",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Boston",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Patriots",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "There",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "New England",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Felger",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Bill",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "North Carolina",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Boston Sports Radio Host Calls Bill Belichick",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Horny Old Man",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Michael Owens",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images Warner Todd Huston",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Former New England Patriots",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Sports Hub",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Super Bowl",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "New York Post",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "GOAT",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "On",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Kraft",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Mike Felger",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "If",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Michael Rubin",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Fanatics Super Bowl Party",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Sugar Mill",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "February",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "New Orleans",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Louisiana",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "NCAA",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Mike Coppola",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Fanatics",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "North Carolina Tar Heels",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "But",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Boston Globe",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Generic",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "And",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Tony Massarotti",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "What",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Seriously",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Tom Brady",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Super Bowls",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Period",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "End",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "That",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "People",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "As",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "It",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Stay",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "This",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Why",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "You",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "So",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Because",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Tar Heels",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "September",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Horned Frogs",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "TCU",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow Warner Todd Huston",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Facebook",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Warner",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Todd",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Huston",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Truth Social",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "Sports Bill Belichick New England Patriots",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Belichick",
+          "count": 9,
+          "category": "other"
+        },
+        {
+          "name": "He",
+          "count": 9,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Massarotti",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Robert Kraft",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Jordon Hudson",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "NFL",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Bill Belichick",
+          "count": 2,
+          "category": "other"
+        }
+      ],
+      "entityCount": 72,
+      "relationships": [
+        {
+          "source": "Boston Sports Radio Host Calls Bill Belichick",
+          "target": "Horny Old Man",
+          "context": "Boston Sports Radio Host Calls Bill Belichick a &#8216;Horny Old Man&#8217; Michael Owens/Getty Imag..."
+        },
+        {
+          "source": "Boston Sports Radio Host Calls Bill Belichick",
+          "target": "Michael Owens",
+          "context": "Boston Sports Radio Host Calls Bill Belichick a &#8216;Horny Old Man&#8217; Michael Owens/Getty Imag..."
+        },
+        {
+          "source": "Boston Sports Radio Host Calls Bill Belichick",
+          "target": "Getty Images Warner Todd Huston",
+          "context": "Boston Sports Radio Host Calls Bill Belichick a &#8216;Horny Old Man&#8217; Michael Owens/Getty Imag..."
+        },
+        {
+          "source": "Boston Sports Radio Host Calls Bill Belichick",
+          "target": "Aug",
+          "context": "Boston Sports Radio Host Calls Bill Belichick a &#8216;Horny Old Man&#8217; Michael Owens/Getty Imag..."
+        },
+        {
+          "source": "Boston Sports Radio Host Calls Bill Belichick",
+          "target": "Former New England Patriots",
+          "context": "Boston Sports Radio Host Calls Bill Belichick a &#8216;Horny Old Man&#8217; Michael Owens/Getty Imag..."
+        },
+        {
+          "source": "Boston Sports Radio Host Calls Bill Belichick",
+          "target": "Bill Belichick",
+          "context": "Boston Sports Radio Host Calls Bill Belichick a &#8216;Horny Old Man&#8217; Michael Owens/Getty Imag..."
+        },
+        {
+          "source": "Boston Sports Radio Host Calls Bill Belichick",
+          "target": "Boston",
+          "context": "Boston Sports Radio Host Calls Bill Belichick a &#8216;Horny Old Man&#8217; Michael Owens/Getty Imag..."
+        },
+        {
+          "source": "Boston Sports Radio Host Calls Bill Belichick",
+          "target": "Patriots",
+          "context": "Boston Sports Radio Host Calls Bill Belichick a &#8216;Horny Old Man&#8217; Michael Owens/Getty Imag..."
+        },
+        {
+          "source": "Boston Sports Radio Host Calls Bill Belichick",
+          "target": "Robert Kraft",
+          "context": "Boston Sports Radio Host Calls Bill Belichick a &#8216;Horny Old Man&#8217; Michael Owens/Getty Imag..."
+        },
+        {
+          "source": "Horny Old Man",
+          "target": "Michael Owens",
+          "context": "Boston Sports Radio Host Calls Bill Belichick a &#8216;Horny Old Man&#8217; Michael Owens/Getty Imag..."
+        }
+      ],
+      "networkDensity": 3.4027777777777777
+    },
+    "timestamp": "2025-08-22T22:37:06.312Z"
+  },
+  "analysis_article_1755902226405_13": {
+    "wordCount": 406,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology",
+      "economy",
+      "sports",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.2,
+      "level": "low",
+      "reason": "Low credibility domain; 1 sensationalist words detected; Substantial content length"
+    },
+    "summary": "Trump Announces Kennedy Center as Venue For 2026 World Cup Draw Jacquelyn Martin/AP Nick Gilbertson 22 Aug 2025 President Donald Trump announced Friday that the Kennedy Center, or the &#8220;Trump-Kennedy Center&#8221; as he sometimes refers to it, will host the 2026 FIFA World Cup draw on December ...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 1,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "Trump",
+          "count": 8,
+          "category": "political_leader"
+        },
+        {
+          "name": "World Cup",
+          "count": 7,
+          "category": "other"
+        },
+        {
+          "name": "FIFA",
+          "count": 7,
+          "category": "other"
+        },
+        {
+          "name": "Infantino",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "It",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "President Donald Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "Friday",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Kennedy Center",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "President Gianni Infantino",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "Oval Office",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Super Bowls",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "White House",
+          "count": 2,
+          "category": "government_body"
+        },
+        {
+          "name": "Trump Announces Kennedy Center",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Venue For",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "World Cup Draw Jacquelyn Martin",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Nick Gilbertson",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "December",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "AP",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "North America",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The World Cup",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "North American",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Seattle",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Vancouver",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Atlanta",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Miami",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "In",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Gianni",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Super Bowl",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Kennedy Center",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "United States",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Club World Cup",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Only",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Lionel Messi",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Can",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Politics Sports Donald Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Gianni Infantino Kennedy Center World Cup",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "Trump",
+          "count": 8,
+          "category": "political_leader"
+        },
+        {
+          "name": "World Cup",
+          "count": 7,
+          "category": "other"
+        },
+        {
+          "name": "FIFA",
+          "count": 7,
+          "category": "other"
+        },
+        {
+          "name": "Infantino",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "It",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "President Donald Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "Friday",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Kennedy Center",
+          "count": 2,
+          "category": "other"
+        }
+      ],
+      "entityCount": 38,
+      "relationships": [
+        {
+          "source": "Trump Announces Kennedy Center",
+          "target": "Venue For",
+          "context": "Trump Announces Kennedy Center as Venue For 2026 World Cup Draw Jacquelyn Martin/AP Nick Gilbertson ..."
+        },
+        {
+          "source": "Trump Announces Kennedy Center",
+          "target": "World Cup Draw Jacquelyn Martin",
+          "context": "Trump Announces Kennedy Center as Venue For 2026 World Cup Draw Jacquelyn Martin/AP Nick Gilbertson ..."
+        },
+        {
+          "source": "Trump Announces Kennedy Center",
+          "target": "Nick Gilbertson",
+          "context": "Trump Announces Kennedy Center as Venue For 2026 World Cup Draw Jacquelyn Martin/AP Nick Gilbertson ..."
+        },
+        {
+          "source": "Trump Announces Kennedy Center",
+          "target": "Aug",
+          "context": "Trump Announces Kennedy Center as Venue For 2026 World Cup Draw Jacquelyn Martin/AP Nick Gilbertson ..."
+        },
+        {
+          "source": "Trump Announces Kennedy Center",
+          "target": "President Donald Trump",
+          "context": "Trump Announces Kennedy Center as Venue For 2026 World Cup Draw Jacquelyn Martin/AP Nick Gilbertson ..."
+        },
+        {
+          "source": "Trump Announces Kennedy Center",
+          "target": "Friday",
+          "context": "Trump Announces Kennedy Center as Venue For 2026 World Cup Draw Jacquelyn Martin/AP Nick Gilbertson ..."
+        },
+        {
+          "source": "Trump Announces Kennedy Center",
+          "target": "Kennedy Center",
+          "context": "Trump Announces Kennedy Center as Venue For 2026 World Cup Draw Jacquelyn Martin/AP Nick Gilbertson ..."
+        },
+        {
+          "source": "Trump Announces Kennedy Center",
+          "target": "Trump",
+          "context": "Trump Announces Kennedy Center as Venue For 2026 World Cup Draw Jacquelyn Martin/AP Nick Gilbertson ..."
+        },
+        {
+          "source": "Trump Announces Kennedy Center",
+          "target": "World Cup",
+          "context": "Trump Announces Kennedy Center as Venue For 2026 World Cup Draw Jacquelyn Martin/AP Nick Gilbertson ..."
+        },
+        {
+          "source": "Trump Announces Kennedy Center",
+          "target": "December",
+          "context": "Trump Announces Kennedy Center as Venue For 2026 World Cup Draw Jacquelyn Martin/AP Nick Gilbertson ..."
+        }
+      ],
+      "networkDensity": 4.7894736842105265
+    },
+    "timestamp": "2025-08-22T22:37:06.406Z"
+  },
+  "analysis_article_1755902226485_14": {
+    "wordCount": 292,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "sports",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.35,
+      "level": "low",
+      "reason": "Low credibility domain; Substantial content length"
+    },
+    "summary": "ESPN Deletes &#8216;Icons&#8217; of Sports Graphic After Loading it with Little-Known WNBA Players Budrul Chukrut/SOPA Images/LightRocket via Getty Images Warner Todd Huston 22 Aug 2025 ESPN&#8217;s SportsCenter X account deleted a graphic it labeled the &#8220;Icons&#8221; of sports after being cal...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "ESPN",
+          "count": 7,
+          "category": "other"
+        },
+        {
+          "name": "WNBA",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "All",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Icons",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "But",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Burack",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Deletes",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Sports Graphic After Loading",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Little",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Known",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Players Budrul Chukrut",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Images",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images Warner Todd Huston",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "SOPA",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Outkick",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Bobby Burak",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "On",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "NFL",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Given",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Monday Night Football",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Perhaps",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Scottie Scheffler",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Apparently",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Scheffler",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Burak",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow Warner Todd Huston",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Facebook",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Warner",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Todd",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Huston",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Truth Social",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "Sports",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "ESPN",
+          "count": 7,
+          "category": "other"
+        },
+        {
+          "name": "WNBA",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "All",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Icons",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "But",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Burack",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Deletes",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 34,
+      "relationships": [
+        {
+          "source": "Deletes",
+          "target": "Icons",
+          "context": "ESPN Deletes &#8216;Icons&#8217; of Sports Graphic After Loading it with Little-Known WNBA Players B..."
+        },
+        {
+          "source": "Deletes",
+          "target": "Sports Graphic After Loading",
+          "context": "ESPN Deletes &#8216;Icons&#8217; of Sports Graphic After Loading it with Little-Known WNBA Players B..."
+        },
+        {
+          "source": "Deletes",
+          "target": "Little",
+          "context": "ESPN Deletes &#8216;Icons&#8217; of Sports Graphic After Loading it with Little-Known WNBA Players B..."
+        },
+        {
+          "source": "Deletes",
+          "target": "Known",
+          "context": "ESPN Deletes &#8216;Icons&#8217; of Sports Graphic After Loading it with Little-Known WNBA Players B..."
+        },
+        {
+          "source": "Deletes",
+          "target": "Players Budrul Chukrut",
+          "context": "ESPN Deletes &#8216;Icons&#8217; of Sports Graphic After Loading it with Little-Known WNBA Players B..."
+        },
+        {
+          "source": "Deletes",
+          "target": "Images",
+          "context": "ESPN Deletes &#8216;Icons&#8217; of Sports Graphic After Loading it with Little-Known WNBA Players B..."
+        },
+        {
+          "source": "Deletes",
+          "target": "Getty Images Warner Todd Huston",
+          "context": "ESPN Deletes &#8216;Icons&#8217; of Sports Graphic After Loading it with Little-Known WNBA Players B..."
+        },
+        {
+          "source": "Deletes",
+          "target": "Aug",
+          "context": "ESPN Deletes &#8216;Icons&#8217; of Sports Graphic After Loading it with Little-Known WNBA Players B..."
+        },
+        {
+          "source": "Deletes",
+          "target": "ESPN",
+          "context": "ESPN Deletes &#8216;Icons&#8217; of Sports Graphic After Loading it with Little-Known WNBA Players B..."
+        },
+        {
+          "source": "Deletes",
+          "target": "WNBA",
+          "context": "ESPN Deletes &#8216;Icons&#8217; of Sports Graphic After Loading it with Little-Known WNBA Players B..."
+        }
+      ],
+      "networkDensity": 3.411764705882353
+    },
+    "timestamp": "2025-08-22T22:37:06.486Z"
+  },
+  "analysis_article_1755902226522_15": {
+    "wordCount": 377,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology"
+    ],
+    "credibility": {
+      "score": 0.35,
+      "level": "low",
+      "reason": "Low credibility domain; Substantial content length"
+    },
+    "summary": "FBI Agents Raid John Bolton&#8217;s Home and Office PEDRO UGARTE / AFP via Getty Simon Kent 22 Aug 2025 The FBI raided the Bethesda, Maryland, home and office of John Bolton early Friday morning.  Multiple agents entered the residence of the ex-national security adviser to Donald Trump who has now t...",
+    "biasIndicators": {},
+    "logicalFallacies": [
+      {
+        "type": "AD_HOMINEM",
+        "confidence": 0.65,
+        "explanation": "Ad Hominem: Attacking the person instead of the argument.",
+        "excerpt": "“Public corruption will not be tolerated,” Bongino wrote",
+        "startIndex": 1372,
+        "endIndex": 1428
+      }
+    ],
+    "bias": {
+      "direction": "right",
+      "confidence": 1,
+      "explanation": "Detected more right-leaning indicators in language.",
+      "indicators": {
+        "left": 0,
+        "right": 5,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "FBI",
+          "count": 16,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "White House",
+          "count": 7,
+          "category": "government_body"
+        },
+        {
+          "name": "Bolton",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "President Trump",
+          "count": 4,
+          "category": "political_leader"
+        },
+        {
+          "name": "Bethesda",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Maryland",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "John Bolton",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Friday",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "AFP",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Donald Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "August",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Agents Raid John Bolton",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Home",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Office",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Simon Kent",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "PEDRO",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "UGARTE",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Multiple",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "News",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "NBC",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "George",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Conway",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Kellyanne Conway",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "III",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "SAUL",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "LOEB",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Justice Department",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Kash Patel",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Attorney General Pam Bondi",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Deputy Director Dan Bongino",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "NO",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "ONE",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "America",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Justice",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Always",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Bondi",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Public",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Bongino",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "This",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Trump",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Andrew Harnik",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "As Breitbart News",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "In",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "January",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Ellen Knight",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "National Security Council",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Senior Director",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Records",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Access",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Information Security Management",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Room Where It Happened",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "White House Memoir",
+          "count": 1,
+          "category": "government_body"
+        },
+        {
+          "name": "More",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow Simon Kent",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Twitter",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Politics Donald Trump John Bolton",
+          "count": 1,
+          "category": "political_leader"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "FBI",
+          "count": 16,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "White House",
+          "count": 7,
+          "category": "government_body"
+        },
+        {
+          "name": "Bolton",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "President Trump",
+          "count": 4,
+          "category": "political_leader"
+        },
+        {
+          "name": "Bethesda",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Maryland",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "John Bolton",
+          "count": 3,
+          "category": "other"
+        }
+      ],
+      "entityCount": 60,
+      "relationships": [
+        {
+          "source": "Agents Raid John Bolton",
+          "target": "Home",
+          "context": "FBI Agents Raid John Bolton&#8217;s Home and Office PEDRO UGARTE / AFP via Getty Simon Kent 22 Aug 2..."
+        },
+        {
+          "source": "Agents Raid John Bolton",
+          "target": "Office",
+          "context": "FBI Agents Raid John Bolton&#8217;s Home and Office PEDRO UGARTE / AFP via Getty Simon Kent 22 Aug 2..."
+        },
+        {
+          "source": "Agents Raid John Bolton",
+          "target": "Getty Simon Kent",
+          "context": "FBI Agents Raid John Bolton&#8217;s Home and Office PEDRO UGARTE / AFP via Getty Simon Kent 22 Aug 2..."
+        },
+        {
+          "source": "Agents Raid John Bolton",
+          "target": "Aug",
+          "context": "FBI Agents Raid John Bolton&#8217;s Home and Office PEDRO UGARTE / AFP via Getty Simon Kent 22 Aug 2..."
+        },
+        {
+          "source": "Agents Raid John Bolton",
+          "target": "The",
+          "context": "FBI Agents Raid John Bolton&#8217;s Home and Office PEDRO UGARTE / AFP via Getty Simon Kent 22 Aug 2..."
+        },
+        {
+          "source": "Agents Raid John Bolton",
+          "target": "Bethesda",
+          "context": "FBI Agents Raid John Bolton&#8217;s Home and Office PEDRO UGARTE / AFP via Getty Simon Kent 22 Aug 2..."
+        },
+        {
+          "source": "Agents Raid John Bolton",
+          "target": "Maryland",
+          "context": "FBI Agents Raid John Bolton&#8217;s Home and Office PEDRO UGARTE / AFP via Getty Simon Kent 22 Aug 2..."
+        },
+        {
+          "source": "Agents Raid John Bolton",
+          "target": "John Bolton",
+          "context": "FBI Agents Raid John Bolton&#8217;s Home and Office PEDRO UGARTE / AFP via Getty Simon Kent 22 Aug 2..."
+        },
+        {
+          "source": "Agents Raid John Bolton",
+          "target": "Friday",
+          "context": "FBI Agents Raid John Bolton&#8217;s Home and Office PEDRO UGARTE / AFP via Getty Simon Kent 22 Aug 2..."
+        },
+        {
+          "source": "Agents Raid John Bolton",
+          "target": "FBI",
+          "context": "FBI Agents Raid John Bolton&#8217;s Home and Office PEDRO UGARTE / AFP via Getty Simon Kent 22 Aug 2..."
+        }
+      ],
+      "networkDensity": 4.916666666666667
+    },
+    "timestamp": "2025-08-22T22:37:06.522Z"
+  },
+  "analysis_article_1755902226592_16": {
+    "wordCount": 142,
+    "readingTime": 1,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "entertainment"
+    ],
+    "credibility": {
+      "score": 0.4,
+      "level": "low",
+      "reason": "Low credibility domain; Contains credible reporting language; Adequate content length"
+    },
+    "summary": "Apple TV+ Raises Monthly Price amid $1 billion Losses Apple TV+ Breitbart News 22 Aug 2025 Aug.  21 (UPI) — Apple TV+ subscribers who pay from month to month will have to pay more to continue streaming content on the premium service, but annual subscribers won’t be impacted.  Apple TV+ announced Thu...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 1
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "TV",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "Apple",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "CNBC",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Raises Monthly Price",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Losses Apple",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Breitbart News",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "UPI",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Thursday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "New",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Information",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Entertainment Media Tech Apple",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "TV",
+          "count": 6,
+          "category": "other"
+        },
+        {
+          "name": "Apple",
+          "count": 4,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "CNBC",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Raises Monthly Price",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Losses Apple",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Breitbart News",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 13,
+      "relationships": [
+        {
+          "source": "Apple",
+          "target": "Raises Monthly Price",
+          "context": "Apple TV+ Raises Monthly Price amid $1 billion Losses Apple TV+ Breitbart News 22 Aug 2025 Aug..."
+        },
+        {
+          "source": "Apple",
+          "target": "Losses Apple",
+          "context": "Apple TV+ Raises Monthly Price amid $1 billion Losses Apple TV+ Breitbart News 22 Aug 2025 Aug..."
+        },
+        {
+          "source": "Apple",
+          "target": "Breitbart News",
+          "context": "Apple TV+ Raises Monthly Price amid $1 billion Losses Apple TV+ Breitbart News 22 Aug 2025 Aug..."
+        },
+        {
+          "source": "Apple",
+          "target": "Aug",
+          "context": "Apple TV+ Raises Monthly Price amid $1 billion Losses Apple TV+ Breitbart News 22 Aug 2025 Aug..."
+        },
+        {
+          "source": "Apple",
+          "target": "TV",
+          "context": "Apple TV+ Raises Monthly Price amid $1 billion Losses Apple TV+ Breitbart News 22 Aug 2025 Aug..."
+        },
+        {
+          "source": "Raises Monthly Price",
+          "target": "Losses Apple",
+          "context": "Apple TV+ Raises Monthly Price amid $1 billion Losses Apple TV+ Breitbart News 22 Aug 2025 Aug..."
+        },
+        {
+          "source": "Raises Monthly Price",
+          "target": "Breitbart News",
+          "context": "Apple TV+ Raises Monthly Price amid $1 billion Losses Apple TV+ Breitbart News 22 Aug 2025 Aug..."
+        },
+        {
+          "source": "Raises Monthly Price",
+          "target": "Aug",
+          "context": "Apple TV+ Raises Monthly Price amid $1 billion Losses Apple TV+ Breitbart News 22 Aug 2025 Aug..."
+        },
+        {
+          "source": "Raises Monthly Price",
+          "target": "TV",
+          "context": "Apple TV+ Raises Monthly Price amid $1 billion Losses Apple TV+ Breitbart News 22 Aug 2025 Aug..."
+        },
+        {
+          "source": "Losses Apple",
+          "target": "Breitbart News",
+          "context": "Apple TV+ Raises Monthly Price amid $1 billion Losses Apple TV+ Breitbart News 22 Aug 2025 Aug..."
+        }
+      ],
+      "networkDensity": 2.6923076923076925
+    },
+    "timestamp": "2025-08-22T22:37:06.592Z"
+  },
+  "analysis_article_1755902226687_17": {
+    "wordCount": 308,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "economy",
+      "entertainment"
+    ],
+    "credibility": {
+      "score": 0.2,
+      "level": "low",
+      "reason": "Low credibility domain; 1 sensationalist words detected; Substantial content length"
+    },
+    "summary": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearly half of the UK’s TV industry workforce are jobless, a survey released Friday shows, with many workers looking beyond the sector for survival in an unprecedented crisis.  A UK Bectu (Broadcasting Ent...",
+    "biasIndicators": {},
+    "logicalFallacies": [
+      {
+        "type": "APPEAL_TO_EMOTION",
+        "confidence": 0.8,
+        "explanation": "Appeal to Emotion: Manipulating emotions instead of using facts.",
+        "excerpt": "Bectu boss Philippa Childs said the findings are a “wake up call”: These findings lay bare the devastating impact of recent industry challenges compounded by years of insecure employment practices and poor conditions across much of the sector",
+        "startIndex": 874,
+        "endIndex": 1116
+      }
+    ],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 1,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "TV",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Bectu",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Nearly",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "UK",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Deadline",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "March",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Survey Says Nearly Half",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "British",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Workforce Are",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Work Netflix Simon Kent",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Friday",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Broadcasting Entertainment Communications",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Theatre Union",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Philippa Childs",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "These",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "And",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Half",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "February",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow Simon Kent",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Twitter",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Entertainment London",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Europe Politics Hollywood Television",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "TV",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Bectu",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "Nearly",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "UK",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Deadline",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "March",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Survey Says Nearly Half",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "entityCount": 25,
+      "relationships": [
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "British",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "Workforce Are",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "Work Netflix Simon Kent",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "Aug",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "Nearly",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "Friday",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "TV",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "Survey Says Nearly Half",
+          "target": "UK",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "British",
+          "target": "Workforce Are",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        },
+        {
+          "source": "British",
+          "target": "Work Netflix Simon Kent",
+          "context": "Survey Says Nearly Half of British TV Workforce Are out of Work Netflix Simon Kent 22 Aug 2025 Nearl..."
+        }
+      ],
+      "networkDensity": 3.04
+    },
+    "timestamp": "2025-08-22T22:37:06.688Z"
+  },
+  "analysis_article_1755902226715_18": {
+    "wordCount": 365,
+    "readingTime": 2,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "politics",
+      "technology"
+    ],
+    "credibility": {
+      "score": 0.45,
+      "level": "medium",
+      "reason": "Low credibility domain; Contains credible reporting language; Substantial content length"
+    },
+    "summary": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Federal Spaces Michael Siluk/UCG/Universal Images Group via Getty Images Nick Gilbertson 21 Aug 2025 President Donald Trump signed an executive order on Thursday aimed at improving the usability and aest...",
+    "biasIndicators": {},
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 2
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "White House",
+          "count": 7,
+          "category": "government_body"
+        },
+        {
+          "name": "Trump",
+          "count": 4,
+          "category": "political_leader"
+        },
+        {
+          "name": "National Design Studio",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "President Donald Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "Thursday",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "America",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Design",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The Order",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Chief Design Officer",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Federal",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Americans",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Trump Signs Order Establishing",
+          "count": 1,
+          "category": "political_leader"
+        },
+        {
+          "name": "Improve Digital",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Physical Federal Spaces Michael Siluk",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Universal Images Group",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images Nick Gilbertson",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "UCG",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The National Design Studio",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "The Chief Design Officer",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "This",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "United States Web Design System",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Century",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Act",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "USWDS",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "IDEA",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "In",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Government",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Nation",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "According",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "United States",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Legacy",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "As",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Social Security",
+          "count": 1,
+          "category": "law_enforcement"
+        },
+        {
+          "name": "Call",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Politics Digital Donald Trump Executive Order White House",
+          "count": 1,
+          "category": "political_leader"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "White House",
+          "count": 7,
+          "category": "government_body"
+        },
+        {
+          "name": "Trump",
+          "count": 4,
+          "category": "political_leader"
+        },
+        {
+          "name": "National Design Studio",
+          "count": 3,
+          "category": "other"
+        },
+        {
+          "name": "President Donald Trump",
+          "count": 2,
+          "category": "political_leader"
+        },
+        {
+          "name": "Thursday",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "America",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Design",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "The Order",
+          "count": 2,
+          "category": "other"
+        }
+      ],
+      "entityCount": 37,
+      "relationships": [
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "National Design Studio",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "Improve Digital",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "Physical Federal Spaces Michael Siluk",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "Universal Images Group",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "Getty Images Nick Gilbertson",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "Aug",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "President Donald Trump",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "Thursday",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "Trump Signs Order Establishing",
+          "target": "UCG",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        },
+        {
+          "source": "National Design Studio",
+          "target": "Improve Digital",
+          "context": "Trump Signs Order Establishing &#8216;National Design Studio&#8217; to Improve Digital, Physical Fed..."
+        }
+      ],
+      "networkDensity": 3.4324324324324325
+    },
+    "timestamp": "2025-08-22T22:37:06.716Z"
+  },
+  "analysis_article_1755902226770_19": {
+    "wordCount": 512,
+    "readingTime": 3,
+    "hasExternalLinks": false,
+    "complexity": "medium",
+    "keyTopics": [
+      "technology",
+      "education",
+      "entertainment",
+      "international"
+    ],
+    "credibility": {
+      "score": 0.2,
+      "level": "low",
+      "reason": "Low credibility domain; 1 sensationalist words detected; Substantial content length"
+    },
+    "summary": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty Images for Chopard Paul Bois 22 Aug 2025 British pop star Robbie Williams, whose acclaimed 2024 biopic Better Man may go down as one of the best movies of the decade, banned his four children from ha...",
+    "biasIndicators": {
+      "sensationalist": [
+        "revealed"
+      ]
+    },
+    "logicalFallacies": [],
+    "bias": {
+      "direction": "center",
+      "confidence": 0.5,
+      "explanation": "No strong directional bias detected.",
+      "indicators": {
+        "left": 0,
+        "right": 0,
+        "sensationalist": 0,
+        "neutral": 0
+      }
+    },
+    "network": {
+      "entities": [
+        {
+          "name": "They",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Momoa",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "How",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "We",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "TV",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "He",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "You",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "LAUSD",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "Pop Star Robbie Williams",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Giving Phones",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Children Is",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Abuse",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Pascal Le Segretain",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Getty Images",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Chopard Paul Bois",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Aug",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "British",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Robbie Williams",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Better Man",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Williams",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "News London",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Camden",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "ITV",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Tough",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "That",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "It",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Breitbart News",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "April",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Jason Momoa",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Minecraft Movie",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "My",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Everyone",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "As Breitbart News",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Los Angeles Unified School District",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Our",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Nick Melvoin",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Paul Roland Bois",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Christian",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Rotten Tomatoes",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Tubi",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Fawesome",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "EXEMPLUM",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "FREE",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Better",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Killers",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Flower Moon",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Mark Judge",
+          "count": 1,
+          "category": "judicial"
+        },
+        {
+          "name": "Christian Toto",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Google Play",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Vimeo",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Demand",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Movies",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Follow",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Instagram",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Entertainment London",
+          "count": 1,
+          "category": "other"
+        },
+        {
+          "name": "Europe Tech Britain Internet",
+          "count": 1,
+          "category": "other"
+        }
+      ],
+      "topEntities": [
+        {
+          "name": "They",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "Momoa",
+          "count": 5,
+          "category": "other"
+        },
+        {
+          "name": "How",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "We",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "TV",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "He",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "You",
+          "count": 2,
+          "category": "other"
+        },
+        {
+          "name": "LAUSD",
+          "count": 2,
+          "category": "other"
+        }
+      ],
+      "entityCount": 56,
+      "relationships": [
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Giving Phones",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Children Is",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Abuse",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Pascal Le Segretain",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Getty Images",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Chopard Paul Bois",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Aug",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "British",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Robbie Williams",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        },
+        {
+          "source": "Pop Star Robbie Williams",
+          "target": "Better Man",
+          "context": "Pop Star Robbie Williams: Giving Phones to Children Is &#8216;Abuse&#8217; Pascal Le Segretain/Getty..."
+        }
+      ],
+      "networkDensity": 2.2857142857142856
+    },
+    "timestamp": "2025-08-22T22:37:06.771Z"
   }
 }
