@@ -38,6 +38,7 @@ import networkAnalysisRoutes from './routes/networkAnalysisRoutes.js';
 import stockpileSimpleRoutes from './routes/stockpile-simple.js';
 import improvedFeedRoutes from './routes/improvedFeed.js';
 import jsonArticleService from './services/jsonArticleService.js';
+import aiAnalysisRoutes from './routes/aiAnalysis.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -1293,6 +1294,7 @@ app.use('/api/network', publicLimiter, networkAnalysisRoutes);
 // app.use('/api/stockpile', publicLimiter, stockpileRoutes);
 app.use('/api/stockpile-simple', publicLimiter, stockpileSimpleRoutes);
 app.use('/api/feed', publicLimiter, improvedFeedRoutes);
+app.use('/api/ai', analysisLimiter, aiAnalysisRoutes);
 app.use('/api/monitor', adminLimiter, monitorRoutes);
 
 // Apply error monitoring middleware
