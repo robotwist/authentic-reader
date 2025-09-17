@@ -1,2 +1,1 @@
-web: cd authentic-reader-backend && npm start
-release: cd authentic-reader-backend && node scripts/run-migrations.js
+web: node simple-index.js

@@ -19,8 +19,7 @@
     "lint:routes": "eslint ./routes/ --fix",
     "lint:controllers": "eslint ./controllers/ --fix",
     "lint:report": "eslint . --format html --output-file ./eslint-report.html",
-    "check:routes": "node tools/check-controller-routes.js",
-    "heroku-postbuild": "mkdir -p models/onnx && node scripts/create-placeholder-models.js"
+    "check:routes": "node tools/check-controller-routes.js"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",
