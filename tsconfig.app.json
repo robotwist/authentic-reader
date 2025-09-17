@@ -8,7 +8,6 @@
     "skipLibCheck": true,
 
     "moduleResolution": "node",
-    "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": false,
@@ -24,8 +23,6 @@
     
     "noEmitOnError": false,
     "ignoreDeprecations": "5.0",
-    "suppressExcessPropertyErrors": true,
-    "suppressImplicitAnyIndexErrors": true
   },
   "include": ["src"]
 }
