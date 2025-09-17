@@ -1,0 +1,270 @@
+.bias-detection-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--background-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.bias-detection-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: var(--primary-color);
+}
+
+.bias-detection-title .icon {
+  margin-right: 0.5rem;
+  font-size: 1.6rem;
+}
+
+.service-status {
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.service-status h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+.status-healthy, .status-error {
+  display: flex;
+  align-items: center;
+}
+
+.status-healthy {
+  color: var(--success-color);
+}
+
+.status-error {
+  color: var(--error-color);
+}
+
+.status-icon {
+  margin-right: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.bias-detection-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.form-group textarea, .form-group select {
+  padding: 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: var(--input-background);
+  color: var(--text-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  resize: vertical;
+}
+
+.form-group textarea:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.form-group textarea:disabled, .form-group select:disabled {
+  background-color: var(--disabled-background);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.primary-button, .secondary-button {
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.primary-button {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.primary-button:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.secondary-button {
+  background-color: var(--background-secondary);
+  color: var(--text-color);
+}
+
+.secondary-button:hover:not(:disabled) {
+  background-color: var(--background-tertiary);
+}
+
+.primary-button:disabled, .secondary-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.5rem;
+  background-color: var(--error-background);
+  color: var(--error-color);
+  border-radius: 6px;
+}
+
+.error-message .icon {
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.result-container {
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.result-container h3 {
+  margin-top: 0;
+  margin-bottom: 1.2rem;
+  color: var(--text-color);
+  font-size: 1.3rem;
+}
+
+.result-container h4 {
+  margin: 1rem 0 0.5rem 0;
+  color: var(--text-color);
+  font-size: 1.1rem;
+}
+
+/* Bias score visualization */
+.bias-scores-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.bias-score-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.bias-score-label {
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.bias-score-bar-container {
+  height: 1.2rem;
+  background-color: var(--background-tertiary);
+  border-radius: 6px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.bias-score-bar {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.5s ease-out;
+}
+
+.bias-score-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.bias-assessment {
+  background-color: var(--card-background);
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 4px solid var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.bias-assessment p {
+  margin: 0.5rem 0 0 0;
+  line-height: 1.6;
+}
+
+.bias-phrases {
+  background-color: var(--card-background);
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.bias-phrases ul {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.5rem;
+}
+
+.bias-phrases li {
+  margin-bottom: 0.3rem;
+}
+
+.result-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.metadata-item {
+  display: flex;
+  align-items: center;
+}
+
+.metadata-item .icon {
+  margin-right: 0.4rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .bias-detection-container {
+    padding: 1.5rem;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .result-metadata {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+} 

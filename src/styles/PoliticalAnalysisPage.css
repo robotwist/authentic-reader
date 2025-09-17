@@ -1,0 +1,278 @@
+.political-analysis-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--background-color);
+  min-height: 100vh;
+  color: var(--text-color);
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  gap: 20px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border-color);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 40px 20px;
+  background: var(--card-background);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.page-header h1 {
+  margin: 0 0 16px 0;
+  color: var(--text-color);
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: var(--text-light);
+  font-size: 18px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.analysis-intro {
+  margin-bottom: 40px;
+  padding: 30px;
+  background: var(--card-background);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.intro-content h2 {
+  margin: 0 0 16px 0;
+  color: var(--text-color);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.intro-content p {
+  color: var(--text-color);
+  line-height: 1.6;
+  margin: 0 0 30px 0;
+  font-size: 16px;
+}
+
+.axis-explanation h3 {
+  margin: 0 0 20px 0;
+  color: var(--text-color);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.axis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.axis-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  background: var(--bg-color-light);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s ease;
+}
+
+.axis-item:hover {
+  transform: translateY(-2px);
+}
+
+.axis-icon {
+  font-size: 24px;
+  color: var(--primary-color);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.axis-content h4 {
+  margin: 0 0 8px 0;
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.axis-content p {
+  margin: 0;
+  color: var(--text-light);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.analysis-methodology {
+  margin: 40px 0;
+  padding: 30px;
+  background: var(--card-background);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.analysis-methodology h2 {
+  margin: 0 0 30px 0;
+  color: var(--text-color);
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.methodology-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.methodology-card {
+  padding: 24px;
+  background: var(--bg-color-light);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s ease;
+}
+
+.methodology-card:hover {
+  transform: translateY(-2px);
+}
+
+.methodology-card h3 {
+  margin: 0 0 16px 0;
+  color: var(--text-color);
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.methodology-card p {
+  margin: 0;
+  color: var(--text-light);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.usage-guidelines {
+  margin: 40px 0;
+  padding: 30px;
+  background: var(--card-background);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.usage-guidelines h2 {
+  margin: 0 0 30px 0;
+  color: var(--text-color);
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.guidelines-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.guideline-item {
+  padding: 20px;
+  background: var(--bg-color-light);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--primary-color);
+}
+
+.guideline-item h3 {
+  margin: 0 0 12px 0;
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.guideline-item p {
+  margin: 0;
+  color: var(--text-light);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .political-analysis-page {
+    padding: 16px;
+  }
+  
+  .page-header {
+    padding: 30px 20px;
+  }
+  
+  .page-header h1 {
+    font-size: 28px;
+  }
+  
+  .subtitle {
+    font-size: 16px;
+  }
+  
+  .analysis-intro {
+    padding: 20px;
+  }
+  
+  .intro-content h2 {
+    font-size: 20px;
+  }
+  
+  .axis-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .axis-item {
+    padding: 16px;
+  }
+  
+  .methodology-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .methodology-card {
+    padding: 20px;
+  }
+  
+  .guidelines-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .guideline-item {
+    padding: 16px;
+  }
+}

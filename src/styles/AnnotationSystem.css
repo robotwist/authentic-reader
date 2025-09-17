@@ -1,0 +1,316 @@
+.annotation-system-container {
+  margin: 1rem 0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.annotation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.annotation-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.annotation-search {
+  width: 250px;
+}
+
+.filter-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.annotation-loading, 
+.annotation-error, 
+.annotation-empty {
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.annotation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.annotation-item {
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: white;
+  transition: box-shadow 0.2s ease;
+}
+
+.annotation-item:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.annotation-item .annotation-header {
+  margin-bottom: 0.5rem;
+}
+
+.annotation-type {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.annotation-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.annotation-text {
+  padding: 0.5rem 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.annotation-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.annotation-tag {
+  background-color: #f0f0f0;
+  color: #555;
+}
+
+.annotation-reactions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #eee;
+}
+
+.reaction-count {
+  margin-left: 0.25rem;
+}
+
+/* Form styles */
+.annotation-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.annotation-form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .annotation-form-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .annotation-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .annotation-search {
+    width: 100%;
+  }
+}
+
+/* Highlight styles - to be used when implementing text selection in articles */
+.article-highlight {
+  background-color: rgba(255, 235, 59, 0.4);
+  cursor: pointer;
+  position: relative;
+  display: inline;
+}
+
+.article-highlight:hover {
+  background-color: rgba(255, 235, 59, 0.6);
+}
+
+/* Dialog styles */
+.MuiDialog-paper {
+  overflow-y: visible;
+}
+
+.annotation-system {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.active-users {
+  display: flex;
+  align-items: center;
+}
+
+.user-avatars {
+  display: flex;
+  margin-left: 8px;
+}
+
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  margin-left: -8px;
+  border: 2px solid white;
+}
+
+.annotation-controls {
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.annotation-search {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.filter-buttons {
+  display: flex;
+  margin-left: 8px;
+}
+
+.annotation-loading, .annotation-error, .no-annotations {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.annotation-list-container {
+  flex-grow: 1;
+  height: calc(100vh - 200px);
+  min-height: 400px;
+  overflow: hidden;
+}
+
+.virtualized-list-container {
+  height: 100%;
+  width: 100%;
+}
+
+.annotation-item {
+  margin-bottom: 1rem;
+  width: calc(100% - 16px);
+}
+
+.annotation-item .annotation-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.annotation-item .annotation-user {
+  display: flex;
+  align-items: center;
+}
+
+.annotation-item .annotation-content {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.annotation-item .annotation-type {
+  margin-right: 8px;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 4px;
+}
+
+.annotation-item .annotation-text {
+  flex-grow: 1;
+}
+
+.annotation-item .selected-text {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  font-style: italic;
+}
+
+.annotation-item .annotation-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 0.5rem;
+}
+
+.annotation-item .tag, .annotation-item .bias-tag {
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+
+.annotation-item .annotation-reactions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0.5rem;
+}
+
+.annotation-item .annotation-actions {
+  display: flex;
+  align-items: center;
+}
+
+.annotation-type-selector, .annotation-visibility-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.type-chip, .visibility-chip {
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+/* Performance optimizations */
+.annotation-item {
+  contain: content;
+  will-change: transform;
+}
+
+/* Add GPU acceleration for smoother scrolling */
+.virtualized-list-container {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Load items quickly with simpler animation */
+@keyframes fadeIn {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+
+.annotation-item {
+  animation: fadeIn 0.2s ease-out;
+} 

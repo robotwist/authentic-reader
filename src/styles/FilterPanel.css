@@ -1,0 +1,156 @@
+.filter-panel {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.filter-section {
+  margin-bottom: 2rem;
+}
+
+.filter-section:last-child {
+  margin-bottom: 1rem;
+}
+
+.filter-section h3 {
+  font-size: 0.95rem;
+  color: var(--secondary-color);
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  font-weight: 600;
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.filter-chip {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-light);
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-chip:hover {
+  background-color: var(--border-color);
+  color: var(--secondary-color);
+}
+
+.filter-chip.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.toggle-filter {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.toggle-filter:last-child {
+  margin-bottom: 0;
+}
+
+.toggle-filter span {
+  margin-left: 12px;
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+/* Toggle Switch */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ddd;
+  transition: .3s;
+  border-radius: 24px;
+  overflow: hidden; /* Prevent the knob from visually overflowing */
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* Dark mode styles for toggles */
+.dark-mode .slider {
+  background-color: #444;
+}
+
+.dark-mode .slider:before {
+  background-color: #ddd;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+.dark-mode .toggle-filter span {
+  color: #e0e0e0;
+}
+
+/* Clear filters button */
+.clear-filters {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+}
+
+.clear-filters:hover {
+  background-color: var(--background-color);
+  border-color: var(--primary-color);
+} 

@@ -1,0 +1,147 @@
+.search-sort-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.search-form {
+  flex: 1;
+  min-width: 250px;
+}
+
+.search-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  width: 18px;
+  height: 18px;
+  color: var(--text-light);
+  transition: color 0.2s ease;
+}
+
+.search-form.focused .search-icon {
+  color: var(--primary-color);
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 2.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--rounded-md);
+  font-size: 0.95rem;
+  color: var(--text-color);
+  background-color: var(--card-background);
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.search-clear-button {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.search-clear-button:hover {
+  color: var(--text-color);
+}
+
+.search-clear-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sort-label {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.sort-buttons {
+  display: flex;
+  border: 1px solid var(--border-color);
+  border-radius: var(--rounded-md);
+  overflow: hidden;
+}
+
+.sort-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--card-background);
+  border: none;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sort-button:not(:last-child) {
+  border-right: 1px solid var(--border-color);
+}
+
+.sort-button:hover {
+  background-color: rgba(var(--primary-color-rgb), 0.05);
+  color: var(--text-color);
+}
+
+.sort-button.active {
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .search-sort-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-form {
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+  
+  .sort-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .sort-buttons {
+    flex: 1;
+  }
+  
+  .sort-button {
+    flex: 1;
+    text-align: center;
+  }
+} 

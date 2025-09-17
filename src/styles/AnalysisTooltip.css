@@ -1,0 +1,174 @@
+.analysis-tooltip-container {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+}
+
+.analysis-tooltip {
+  position: absolute;
+  z-index: 1000;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 300px;
+  min-width: 200px;
+  animation: tooltipFadeIn 0.2s ease-out;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.analysis-tooltip-top {
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.analysis-tooltip-bottom {
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.analysis-tooltip-left {
+  right: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.analysis-tooltip-right {
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #fbbf24;
+}
+
+.tooltip-header svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.tooltip-title {
+  font-size: 15px;
+}
+
+.tooltip-content {
+  color: #e2e8f0;
+  font-size: 13px;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+}
+
+.analysis-tooltip-top .tooltip-arrow {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top-color: #1e293b;
+}
+
+.analysis-tooltip-bottom .tooltip-arrow {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-color: #1e293b;
+}
+
+.analysis-tooltip-left .tooltip-arrow {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left-color: #1e293b;
+}
+
+.analysis-tooltip-right .tooltip-arrow {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-right-color: #1e293b;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) translateX(-50%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(-50%);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .analysis-tooltip {
+    max-width: 250px;
+    min-width: 180px;
+    font-size: 13px;
+  }
+  
+  .tooltip-title {
+    font-size: 14px;
+  }
+  
+  .tooltip-content {
+    font-size: 12px;
+  }
+}
+
+/* Hover effects for tooltip triggers */
+.analysis-tooltip-container:hover {
+  opacity: 0.9;
+}
+
+/* Special styling for metric tooltips */
+.metric-tooltip .analysis-tooltip {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border: 1px solid #475569;
+}
+
+.metric-tooltip .tooltip-header {
+  color: #60a5fa;
+}
+
+/* Bias analysis specific tooltips */
+.bias-tooltip .analysis-tooltip {
+  background: linear-gradient(135deg, #7c2d12 0%, #991b1b 100%);
+}
+
+.bias-tooltip .tooltip-header {
+  color: #fca5a5;
+}
+
+/* Credibility tooltips */
+.credibility-tooltip .analysis-tooltip {
+  background: linear-gradient(135deg, #14532d 0%, #166534 100%);
+}
+
+.credibility-tooltip .tooltip-header {
+  color: #86efac;
+}
+
+/* Fallacy tooltips */
+.fallacy-tooltip .analysis-tooltip {
+  background: linear-gradient(135deg, #7c2d12 0%, #dc2626 100%);
+}
+
+.fallacy-tooltip .tooltip-header {
+  color: #fca5a5;
+}

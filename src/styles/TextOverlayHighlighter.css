@@ -1,0 +1,209 @@
+/* TextOverlayHighlighter Styles */
+.text-overlay-container {
+  position: relative;
+  font-family: 'Georgia', serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.article-text-with-highlights {
+  position: relative;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Regular text styling */
+.regular-text {
+  font-weight: normal;
+}
+
+/* Highlighted text base styles */
+.highlighted-text {
+  cursor: pointer;
+  position: relative;
+  padding: 0 1px;
+  border-radius: 2px;
+  transition: all 0.2s ease-in-out;
+}
+
+.highlighted-text:hover {
+  filter: brightness(0.9);
+}
+
+/* Fallacy highlight styles */
+.fallacy-highlight {
+  background-color: rgba(255, 82, 82, 0.2);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 82, 82, 0.6);
+  text-decoration-style: wavy;
+  text-decoration-thickness: 2px;
+}
+
+/* Specific fallacy types */
+.fallacy-ad_hominem { background-color: rgba(255, 82, 82, 0.2); }
+.fallacy-straw_man { background-color: rgba(255, 165, 0, 0.2); }
+.fallacy-appeal_to_emotion { background-color: rgba(147, 112, 219, 0.2); }
+.fallacy-red_herring { background-color: rgba(100, 149, 237, 0.2); }
+.fallacy-false_dilemma { background-color: rgba(0, 158, 115, 0.2); }
+.fallacy-slippery_slope { background-color: rgba(240, 128, 128, 0.2); }
+.fallacy-circular_reasoning { background-color: rgba(189, 183, 107, 0.2); }
+.fallacy-appeal_to_authority { background-color: rgba(122, 103, 238, 0.2); }
+.fallacy-bandwagon { background-color: rgba(144, 238, 144, 0.2); }
+.fallacy-appeal_to_ignorance { background-color: rgba(255, 191, 0, 0.2); }
+
+/* Bias highlight styles */
+.bias-highlight {
+  background-color: rgba(64, 224, 208, 0.15);
+  border-bottom: 2px solid rgba(64, 224, 208, 0.4);
+}
+
+/* Specific bias types */
+.bias-left_strong { 
+  background-color: rgba(0, 92, 230, 0.15);
+  border-bottom: 2px solid rgba(0, 92, 230, 0.4);
+}
+.bias-left_moderate { 
+  background-color: rgba(30, 144, 255, 0.15);
+  border-bottom: 2px solid rgba(30, 144, 255, 0.4);
+}
+.bias-center { 
+  background-color: rgba(128, 128, 128, 0.15);
+  border-bottom: 2px solid rgba(128, 128, 128, 0.4);
+}
+.bias-right_moderate { 
+  background-color: rgba(220, 20, 60, 0.15);
+  border-bottom: 2px solid rgba(220, 20, 60, 0.4);
+}
+.bias-right_strong { 
+  background-color: rgba(178, 34, 34, 0.15);
+  border-bottom: 2px solid rgba(178, 34, 34, 0.4);
+}
+
+/* Emotion highlight styles */
+.emotion-highlight {
+  font-style: italic;
+  position: relative;
+}
+
+/* Specific emotion types */
+.emotion-fear { background-color: rgba(128, 0, 128, 0.15); }
+.emotion-anger { background-color: rgba(255, 0, 0, 0.15); }
+.emotion-joy { background-color: rgba(255, 215, 0, 0.15); }
+.emotion-sadness { background-color: rgba(70, 130, 180, 0.15); }
+.emotion-surprise { background-color: rgba(255, 192, 203, 0.15); }
+.emotion-disgust { background-color: rgba(107, 142, 35, 0.15); }
+.emotion-anticipation { background-color: rgba(255, 165, 0, 0.15); }
+.emotion-trust { background-color: rgba(60, 179, 113, 0.15); }
+
+/* Manipulation highlight styles */
+.manipulation-highlight {
+  background-color: rgba(255, 0, 255, 0.1);
+  border-bottom: 1px dashed rgba(255, 0, 255, 0.4);
+}
+
+/* Intensity levels */
+.intensity-low {
+  opacity: 0.7;
+}
+
+.intensity-medium {
+  opacity: 0.85;
+}
+
+.intensity-high {
+  opacity: 1;
+}
+
+/* Tooltip styles */
+.highlight-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.15);
+  padding: 12px 16px;
+  z-index: 100;
+  width: 300px;
+  max-width: 90vw;
+  pointer-events: none;
+  animation: fadeIn 0.2s ease-in-out;
+  border-left: 4px solid #3498db;
+}
+
+.highlight-tooltip h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.highlight-tooltip p {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.confidence-meter {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.confidence-label {
+  margin-right: 8px;
+  font-weight: 500;
+  color: #888;
+}
+
+.confidence-bar {
+  background-color: #eee;
+  height: 6px;
+  flex-grow: 1;
+  border-radius: 3px;
+  margin: 0 8px;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  background-color: #3498db;
+  border-radius: 3px;
+}
+
+.confidence-percentage {
+  font-weight: 600;
+  color: #666;
+  min-width: 40px;
+  text-align: right;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 5px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .text-overlay-container {
+    font-size: 16px;
+  }
+  
+  .highlight-tooltip {
+    width: 280px;
+  }
+} 
