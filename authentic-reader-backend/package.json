@@ -19,7 +19,8 @@
     "lint:routes": "eslint ./routes/ --fix",
     "lint:controllers": "eslint ./controllers/ --fix",
     "lint:report": "eslint . --format html --output-file ./eslint-report.html",
-    "check:routes": "node tools/check-controller-routes.js"
+    "check:routes": "node tools/check-controller-routes.js",
+    "refresh-feeds": "node scripts/refresh-feeds.js"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",

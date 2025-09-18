@@ -77,18 +77,6 @@ export default defineConfig(({ mode }) => {
     // Enable more detailed error messages in development
     build: {
       sourcemap: true,
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            // Split vendor libraries into separate chunks
-            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-            'ui-vendor': ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
-            'chart-vendor': ['chart.js', 'recharts'],
-            'utils-vendor': ['axios', 'dompurify', 'jsdom']
-          }
-        }
-      },
-      // Optimize bundle size
       chunkSizeWarningLimit: 1000,
       minify: 'terser',
       terserOptions: {
