@@ -1,6 +1,6 @@
 // globalTeardown.js
-const { teardownTestDatabase } = require('./setup');
+import { teardownTestDatabase } from './setup.js';
 
-module.exports = async () => {
+export default async () => {
   await teardownTestDatabase();
 }; 

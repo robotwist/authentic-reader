@@ -1,8 +1,10 @@
 import fs from 'fs/promises';
 import path from 'path';
 import axios from 'axios';
-import { parseStringPromise } from 'xml2js';
 import logger from '../utils/logger.js';
+import rssService from './rssService.js';
+import { RSS_CONFIG, CREDIBILITY_RATINGS, BIAS_RATINGS } from '../config/rssConfig.js';
+import enhancedAIAnalysisService from './enhancedAIAnalysisService.js';
 
 /**
  * JSON-based Article Service
@@ -17,7 +19,7 @@ class JsonArticleService {
     this.analysisFile = path.join(this.dataDir, 'analysis.json');
     this.sourcesFile = path.join(this.dataDir, 'sources.json');
     this.cache = new Map();
-    this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
+    this.cacheTimeout = RSS_CONFIG.CACHE_TIMEOUT;
   }
 
   /**
@@ -88,7 +90,7 @@ class JsonArticleService {
     const sourceKeys = Object.keys(this.sources);
     
     // Process sources in batches to avoid overwhelming
-    const batchSize = 3;
+    const batchSize = RSS_CONFIG.DEFAULT_BATCH_SIZE;
     for (let i = 0; i < sourceKeys.length; i += batchSize) {
       const batch = sourceKeys.slice(i, i + batchSize);
       const batchPromises = batch.map(async (sourceKey) => {
@@ -135,34 +137,26 @@ class JsonArticleService {
   }
 
   /**
-   * Fetch articles from a specific source
+   * Fetch articles from a specific source using RSS service
    */
-  async fetchFromSource(source, maxArticles = 10) {
+  async fetchFromSource(source, maxArticles = RSS_CONFIG.DEFAULT_MAX_ARTICLES_PER_SOURCE) {
     try {
       logger.info(`Fetching from ${source.name}...`);
       
-      const response = await axios.get(source.url, {
-        timeout: 15000,
-        headers: {
-          'User-Agent': 'Authentic Reader RSS Fetcher/1.0',
-          'Accept': 'application/rss+xml, application/xml, text/xml, */*'
-        }
+      // Use centralized RSS service instead of duplicating logic
+      const feedData = await rssService.fetchFeed(source.url, {
+        timeout: RSS_CONFIG.LONG_TIMEOUT,
+        maxItems: maxArticles,
+        useCache: true
       });
 
-      const feed = await parseStringPromise(response.data, {
-        explicitArray: false,
-        mergeAttrs: true,
-        normalize: true,
-        normalizeTags: false,
-        trim: true
-      });
-
-      const items = this.extractItems(feed);
       const articles = [];
 
-      for (const item of items.slice(0, maxArticles)) {
+      for (const item of feedData.items.slice(0, maxArticles)) {
         try {
-          const article = await this.processArticleItem(item, source);
+          // Use RSS service's normalizeItem for consistent formatting
+          const normalized = rssService.normalizeItem(item, source.name);
+          const article = await this.processNormalizedItem(normalized, source);
           if (article) {
             articles.push(article);
           }
@@ -180,175 +174,24 @@ class JsonArticleService {
   }
 
   /**
-   * Extract items from RSS feed
+   * Process normalized RSS item into article format
+   * This replaces the old processArticleItem method to work with rssService's normalized items
    */
-  extractItems(feed) {
-    let items = [];
-    
-    logger.info('Extracting items from feed:', {
-      feedKeys: Object.keys(feed),
-      hasRss: !!feed.rss,
-      hasChannel: !!(feed.rss && feed.rss.channel),
-      channelType: feed.rss && feed.rss.channel ? typeof feed.rss.channel : 'undefined',
-      channelIsArray: feed.rss && feed.rss.channel ? Array.isArray(feed.rss.channel) : 'undefined'
-    });
-    
-    if (feed.rss && feed.rss.channel) {
-      // Handle both single channel and array of channels
-      const channels = Array.isArray(feed.rss.channel) ? feed.rss.channel : [feed.rss.channel];
-      for (const channel of channels) {
-        if (channel.item) {
-          const channelItems = Array.isArray(channel.item) ? channel.item : [channel.item];
-          logger.info('Found channel items:', {
-            itemCount: channelItems.length,
-            firstItemKeys: channelItems[0] ? Object.keys(channelItems[0]) : 'none',
-            firstItemTitle: channelItems[0] ? channelItems[0].title : 'none'
-          });
-          items = items.concat(channelItems);
-        }
-      }
-    } else if (feed.feed) {
-      items = feed.feed.entry || [];
-    } else if (feed.rdf && feed.rdf.item) {
-      items = feed.rdf.item || [];
-    }
-
-    // Ensure items is an array
-    if (!Array.isArray(items)) {
-      items = [items];
-    }
-
-    logger.info('Final extracted items:', {
-      itemCount: items.length,
-      firstItemKeys: items[0] ? Object.keys(items[0]) : 'none',
-      firstItemTitle: items[0] ? items[0].title : 'none'
-    });
-
-    return items;
-  }
-
-  /**
-   * Process a single RSS item into an article
-   */
-  async processArticleItem(item, source) {
-    // Safely extract title
-    let rawTitle = '';
-    if (typeof item.title === 'string' && item.title) {
-      rawTitle = item.title;
-    } else if (Array.isArray(item.title) && item.title[0]) {
-      rawTitle = item.title[0];
-    } else if (typeof item['media:title'] === 'string' && item['media:title']) {
-      rawTitle = item['media:title'];
-    } else if (Array.isArray(item['media:title']) && item['media:title'][0]) {
-      rawTitle = item['media:title'][0];
-    }
-    
-    // Debug logging
-    logger.info(`Processing article from ${source.name}:`, {
-      rawTitle,
-      titleType: typeof rawTitle,
-      titleLength: rawTitle ? rawTitle.length : 0,
-      itemKeys: Object.keys(item),
-      itemTitle: item.title,
-      itemTitleType: typeof item.title,
-      itemTitleIsArray: Array.isArray(item.title)
-    });
-    
-    const title = this.decodeHtmlEntities(rawTitle);
-    
-    // Safely extract link
-    let link = '';
-    if (item.link && Array.isArray(item.link) && item.link[0]) {
-      link = item.link[0];
-    } else if (item.link && typeof item.link === 'string') {
-      link = item.link;
-    }
-    
-    // Safely extract description
-    let rawDesc = '';
-    if (typeof item.description === 'string' && item.description) {
-      rawDesc = item.description;
-    } else if (Array.isArray(item.description) && item.description[0]) {
-      rawDesc = item.description[0];
-    } else if (typeof item.summary === 'string' && item.summary) {
-      rawDesc = item.summary;
-    } else if (Array.isArray(item.summary) && item.summary[0]) {
-      rawDesc = item.summary[0];
-    } else if (typeof item['media:description'] === 'string' && item['media:description']) {
-      rawDesc = item['media:description'];
-    } else if (Array.isArray(item['media:description']) && item['media:description'][0]) {
-      rawDesc = item['media:description'][0];
-    }
-    const description = this.decodeHtmlEntities(rawDesc).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-    
-    // Safely extract publication date
-    let pubDate = new Date().toISOString();
-    if (typeof item.pubDate === 'string' && item.pubDate) {
-      pubDate = item.pubDate;
-    } else if (Array.isArray(item.pubDate) && item.pubDate[0]) {
-      pubDate = item.pubDate[0];
-    } else if (typeof item.published === 'string' && item.published) {
-      pubDate = item.published;
-    } else if (Array.isArray(item.published) && item.published[0]) {
-      pubDate = item.published[0];
-    }
-    
-    // Safely extract author
-    let author = source.name;
-    if (typeof item.author === 'string' && item.author) {
-      author = item.author;
-    } else if (Array.isArray(item.author) && item.author[0]) {
-      author = item.author[0];
-    } else if (typeof item['dc:creator'] === 'string' && item['dc:creator']) {
-      author = item['dc:creator'];
-    } else if (Array.isArray(item['dc:creator']) && item['dc:creator'][0]) {
-      author = item['dc:creator'][0];
-    }
-    
-    // Handle different GUID formats
-    let guid = link;
-    if (item.guid) {
-      if (Array.isArray(item.guid) && item.guid[0]) {
-        const guidItem = item.guid[0];
-        if (typeof guidItem === 'object' && guidItem._) {
-          guid = guidItem._;
-        } else if (typeof guidItem === 'string') {
-          guid = guidItem;
-        }
-      } else if (typeof item.guid === 'string') {
-        guid = item.guid;
-      }
-    } else if (item.id) {
-      if (Array.isArray(item.id) && item.id[0]) {
-        guid = item.id[0];
-      } else if (typeof item.id === 'string') {
-        guid = item.id;
-      }
-    }
-
+  async processNormalizedItem(normalized, source) {
     // Check if article already exists
     const existingArticles = await this.loadArticles();
-    if (existingArticles[guid]) {
+    if (existingArticles[normalized.guid]) {
       return null; // Skip if already exists
     }
 
-    // Extract full content if available
-    let fullContent = '';
-    if (typeof item['content:encoded'] === 'string' && item['content:encoded']) {
-      fullContent = item['content:encoded'];
-    } else if (Array.isArray(item['content:encoded']) && item['content:encoded'][0]) {
-      fullContent = item['content:encoded'][0];
-    } else {
-      fullContent = description;
-    }
-
     // Try to fetch full article content if we have a link and content is short
-    if (link && fullContent.length < 1000) {
+    let fullContent = normalized.content;
+    if (normalized.link && fullContent.length < RSS_CONFIG.SHORT_CONTENT_THRESHOLD) {
       try {
-        const contentResponse = await axios.get(link, {
-          timeout: 5000,
+        const contentResponse = await axios.get(normalized.link, {
+          timeout: RSS_CONFIG.CONTENT_FETCH_TIMEOUT,
           headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            'User-Agent': RSS_CONFIG.USER_AGENT
           }
         });
         
@@ -365,19 +208,19 @@ class JsonArticleService {
           }
         }
       } catch (contentError) {
-        logger.debug(`Could not fetch full content for ${link}:`, contentError.message);
+        logger.debug(`Could not fetch full content for ${normalized.link}:`, contentError.message);
       }
     }
 
     // Create article object with proper structure
     const article = {
-      id: guid,
-      title,
-      url: link,
-      author,
-      publishedAt: new Date(pubDate).toISOString(),
+      id: normalized.guid,
+      title: normalized.title,
+      url: normalized.link,
+      author: normalized.author,
+      publishedAt: new Date(normalized.publishDate).toISOString(),
       content: fullContent,
-      summary: description,
+      summary: normalized.description,
       source: {
         name: source.name,
         category: source.category,
@@ -385,10 +228,12 @@ class JsonArticleService {
         reliability: source.reliability
       },
       category: source.category || 'general',
-      categories: source.category ? [source.category] : ['general'],
+      categories: normalized.categories && normalized.categories.length > 0 
+        ? normalized.categories 
+        : (source.category ? [source.category] : ['general']),
       wordCount: this.estimateWordCount(fullContent),
-      complexity: this.assessComplexity({ content: fullContent, title }),
-      tags: this.extractTags(item),
+      complexity: this.assessComplexity({ content: fullContent, title: normalized.title }),
+      tags: normalized.categories || [],
       credibility: this.assessCredibility(source.name),
       bias: this.assessBias(source.name),
       createdAt: new Date().toISOString(),
@@ -398,8 +243,19 @@ class JsonArticleService {
     // Save article
     await this.saveArticle(article);
 
+    // Automatically analyze article in background (non-blocking)
+    // Analysis will be stored and available to all users
+    // Use setTimeout to ensure this doesn't block the response
+    setTimeout(() => {
+      this.analyzeArticle(article).catch(error => {
+        logger.error(`Background analysis failed for article ${article.id}:`, error);
+        // Don't throw - article is still saved even if analysis fails
+      });
+    }, 0);
+
     return article;
   }
+
 
   /**
    * Estimate word count from content
@@ -414,65 +270,26 @@ class JsonArticleService {
    */
   assessComplexity(item) {
     const content = item.content || '';
-    const title = item.title || '';
     const wordCount = this.estimateWordCount(content);
     
-    if (wordCount > 2000) return 'high';
-    if (wordCount > 1000) return 'medium';
+    if (wordCount > RSS_CONFIG.LONG_CONTENT_THRESHOLD) return 'high';
+    if (wordCount > RSS_CONFIG.SHORT_CONTENT_THRESHOLD) return 'medium';
     return 'low';
   }
 
-  /**
-   * Extract tags from article
-   */
-  extractTags(item) {
-    const tags = [];
-    if (item.category) {
-      if (Array.isArray(item.category)) {
-        tags.push(...item.category);
-      } else {
-        tags.push(item.category);
-      }
-    }
-    return tags;
-  }
 
   /**
    * Assess source credibility
    */
   assessCredibility(sourceName) {
-    const credibilityMap = {
-      'BBC News': 'high',
-      'Reuters': 'high',
-      'Associated Press': 'high',
-      'NPR': 'high',
-      'The Guardian': 'high',
-      'New York Times': 'high',
-      'Wall Street Journal': 'high',
-      'The Economist': 'high',
-      'CNN': 'medium',
-      'Fox News': 'medium'
-    };
-    return credibilityMap[sourceName] || 'medium';
+    return CREDIBILITY_RATINGS[sourceName] || 'medium';
   }
 
   /**
    * Assess source bias
    */
   assessBias(sourceName) {
-    const biasMap = {
-      'BBC News': 'center',
-      'Reuters': 'center',
-      'Associated Press': 'center',
-      'NPR': 'center-left',
-      'The Guardian': 'center-left',
-      'New York Times': 'center-left',
-      'Wall Street Journal': 'center-right',
-      'The Economist': 'center',
-      'CNN': 'center-left',
-      'Fox News': 'right'
-    };
-    return biasMap[sourceName] || 'center';
+    return BIAS_RATINGS[sourceName] || 'center';
   }
 
   /**
@@ -677,28 +494,55 @@ class JsonArticleService {
   }
 
   /**
-   * Analyze article content
+   * Analyze article content using enhanced AI analysis service
    */
   async analyzeArticle(article) {
-    const analysis = {
-      wordCount: article.content ? article.content.split(/\s+/).length : 0,
-      readingTime: article.content ? Math.ceil(article.content.split(/\s+/).length / 200) : 0,
-      hasExternalLinks: article.content ? (article.content.includes('http') || article.content.includes('www')) : false,
-      complexity: this.analyzeComplexity(article.content || ''),
-      keyTopics: this.extractKeyTopics(article.title, article.content || ''),
-      credibility: this.assessBasicCredibility(article.link, article.title, article.content || ''),
-      summary: this.generateBasicSummary(article.content || ''),
-      biasIndicators: this.detectBiasIndicators(article.title, article.content || ''),
-      logicalFallacies: this.detectLogicalFallacies(article.content || ''),
-      bias: this.assessBiasDirection(article.title, article.content || ''),
-      network: this.buildNetworkSummary(article.content || ''),
-      timestamp: new Date().toISOString()
-    };
+    try {
+      // Check if analysis already exists
+      const existingAnalysis = await this.getArticleAnalysis(article.id);
+      if (existingAnalysis && existingAnalysis.version === '2.0.0-enhanced') {
+        logger.info(`Enhanced analysis already exists for article: ${article.id}`);
+        return existingAnalysis;
+      }
 
-    // Save analysis
-    await this.saveArticleAnalysis(article.id, analysis);
+      logger.info(`Starting enhanced AI analysis for article: ${article.title || article.id}`);
 
-    return analysis;
+      // Use enhanced AI analysis service
+      const enhancedAnalysis = await enhancedAIAnalysisService.analyzeArticle(article, {
+        startTime: Date.now()
+      });
+
+      // Save enhanced analysis
+      await this.saveArticleAnalysis(article.id, enhancedAnalysis);
+
+      logger.info(`Enhanced AI analysis completed and saved for article: ${article.id}`);
+      return enhancedAnalysis;
+
+    } catch (error) {
+      logger.error(`Error in enhanced analysis for article ${article.id}:`, error);
+      
+      // Fallback to basic analysis if enhanced fails
+      logger.info('Falling back to basic analysis');
+      const basicAnalysis = {
+        wordCount: article.content ? article.content.split(/\s+/).length : 0,
+        readingTime: article.content ? Math.ceil(article.content.split(/\s+/).length / RSS_CONFIG.WORDS_PER_MINUTE) : 0,
+        hasExternalLinks: article.content ? (article.content.includes('http') || article.content.includes('www')) : false,
+        complexity: this.analyzeComplexity(article.content || ''),
+        keyTopics: this.extractKeyTopics(article.title, article.content || ''),
+        credibility: this.assessBasicCredibility(article.link, article.title, article.content || ''),
+        summary: this.generateBasicSummary(article.content || ''),
+        biasIndicators: this.detectBiasIndicators(article.title, article.content || ''),
+        logicalFallacies: this.detectLogicalFallacies(article.content || ''),
+        bias: this.assessBiasDirection(article.title, article.content || ''),
+        network: this.buildNetworkSummary(article.content || ''),
+        timestamp: new Date().toISOString(),
+        version: '1.0.0-basic',
+        error: error.message
+      };
+
+      await this.saveArticleAnalysis(article.id, basicAnalysis);
+      return basicAnalysis;
+    }
   }
 
   /**
@@ -879,20 +723,12 @@ class JsonArticleService {
   }
 
   /**
-   * Decode HTML entities
+   * Decode HTML entities - using rssService's method for consistency
    */
   decodeHtmlEntities(text) {
+    // Reuse the RSS service's HTML entity decoding for consistency
     if (!text) return '';
-    return text
-      .replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
-      .replace(/&nbsp;/g, ' ')
-      .replace(/&#8217;/g, "'")
-      .replace(/&#8220;/g, '"')
-      .replace(/&#8221;/g, '"');
+    return rssService.decodeHtmlEntities(text);
   }
 
   /**

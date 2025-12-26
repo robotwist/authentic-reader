@@ -20,7 +20,8 @@
     "lint:controllers": "eslint ./controllers/ --fix",
     "lint:report": "eslint . --format html --output-file ./eslint-report.html",
     "check:routes": "node tools/check-controller-routes.js",
-    "refresh-feeds": "node scripts/refresh-feeds.js"
+    "refresh-feeds": "node scripts/refresh-feeds.js",
+    "daily-briefing": "node scripts/dailyBriefing.js"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",
@@ -35,6 +36,7 @@
     "jsdom": "^26.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
+    "node-cron": "^4.2.1",
     "node-fetch": "^3.3.2",
     "onnxruntime-node": "^1.18.0",
     "perf_hooks": "^0.0.1",

@@ -3,8 +3,15 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import crypto from 'crypto';
+import fs from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import jsonStorage from './services/jsonStorageService.js';
 import { analyzeArticle } from './services/onDemandAnalysisService.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+import enhancedAIAnalysisService from './services/enhancedAIAnalysisService.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -181,10 +188,47 @@ app.post('/api/articles/:id/analyze', async (req, res) => {
   }
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Enhanced AI Analysis endpoint using expert system prompt
+app.post('/api/ai/analyze', async (req, res) => {
+  try {
+    const { article, options = {} } = req.body;
+
+    if (!article || !article.title) {
+      return res.status(400).json({
+        error: 'Article data is required',
+        message: 'Please provide article with title and content'
+      });
+    }
+
+    console.log('Starting enhanced AI analysis for article:', article.title);
+
+    const analysis = await enhancedAIAnalysisService.analyzeArticle(article, options);
+
+    res.json({
+      success: true,
+      analysis,
+      timestamp: Date.now()
+    });
+
+  } catch (error) {
+    console.error('Enhanced AI analysis failed:', error);
+    res.status(500).json({
+      error: 'Analysis failed',
+      message: error.message,
+      timestamp: Date.now()
+    });
+  }
 });
+
+// Export app for testing
+export default app;
+
+// Start server (only if not in test mode)
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
 // Admin refresh endpoint (simple trigger)
 app.post('/api/admin/refresh', async (req, res) => {
@@ -193,5 +237,32 @@ app.post('/api/admin/refresh', async (req, res) => {
     return res.json({ ok: true, message: 'Refresh scheduled' });
   } catch (e) {
     return res.status(500).json({ error: 'Failed to schedule refresh' });
+  }
+});
+
+// Daily briefing endpoint - serves the generated daily_briefing.json
+app.get('/api/daily-briefing', async (req, res) => {
+  try {
+    const briefingPath = path.join(__dirname, '..', '..', 'data', 'daily_briefing.json');
+    
+    try {
+      const data = await fs.readFile(briefingPath, 'utf-8');
+      const briefing = JSON.parse(data);
+      
+      // Set cache headers (briefing updates daily)
+      res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
+      return res.json(briefing);
+    } catch (fileError) {
+      // File doesn't exist yet - return empty structure
+      return res.json({
+        generatedAt: new Date().toISOString(),
+        version: '1.0.0',
+        topics: {},
+        message: 'Daily briefing not yet generated. Run the daily briefing script to generate it.'
+      });
+    }
+  } catch (e) {
+    console.error('Error serving daily briefing:', e);
+    return res.status(500).json({ error: 'Failed to load daily briefing' });
   }
 });

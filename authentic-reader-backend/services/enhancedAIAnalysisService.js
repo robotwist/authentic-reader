@@ -14,7 +14,7 @@ class EnhancedAIAnalysisService {
     // Use Groq API for LLM inference
     this.groqApiKey = process.env.GROQ_API_KEY;
     this.groqApiUrl = 'https://api.groq.com/openai/v1/chat/completions';
-    this.groqModel = 'llama3-70b-8192'; // PhD-level model
+    this.groqModel = 'llama-3.3-70b-versatile'; // PhD-level model (updated - check Groq docs for latest)
     
     this.fallbackService = process.env.HF_SERVICE_URL || 'http://localhost:8000';
     
@@ -302,7 +302,14 @@ Provide your analysis in the structured format specified in the system prompt.`;
 
       logger.info('Calling Groq API for LLM analysis...', {
         model: this.groqModel,
-        articleTitle: articleTitle.substring(0, 50)
+        articleTitle: articleTitle.substring(0, 50),
+        hasApiKey: !!this.groqApiKey
+      });
+      
+      console.log('DEBUG: Groq API call starting', {
+        hasApiKey: !!this.groqApiKey,
+        model: this.groqModel,
+        url: this.groqApiUrl
       });
 
       // Call Groq API
@@ -363,11 +370,15 @@ Provide your analysis in the structured format specified in the system prompt.`;
       return this.parseAIResponse(parsedResponse, 'groq');
 
     } catch (error) {
-      logger.error('Groq API call failed:', {
+      const errorDetails = {
         error: error.message,
         status: error.response?.status,
-        statusText: error.response?.statusText
-      });
+        statusText: error.response?.statusText,
+        responseData: error.response?.data,
+        stack: error.stack
+      };
+      logger.error('Groq API call failed:', errorDetails);
+      console.error('Groq API Error Details:', JSON.stringify(errorDetails, null, 2));
       throw error;
     }
   }

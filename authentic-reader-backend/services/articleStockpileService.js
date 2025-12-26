@@ -1,93 +1,159 @@
-import { parseStringPromise } from 'xml2js';
-import axios from 'axios';
-import { Article, Analysis, Source } from '../models/index.js';
-import comprehensiveAnalysis from './comprehensiveAnalysisService.js';
-import { logger } from '../utils/logger.js';
+import cron from 'node-cron';
+import jsonArticleService from './jsonArticleService.js';
+import { nlpAnalysisService } from '../services/nlpAnalysisService.js';
+import logger from '../utils/logger.js';
 
 /**
  * Article Stockpile Service
  * 
- * This service manages:
- * 1. RSS feed fetching and article storage
- * 2. Pre-analysis of all articles
- * 3. Database management for fast retrieval
- * 4. Analytics compilation
- * 5. User interaction tracking for analysis improvement
+ * Automatically fetches articles from RSS feeds every 15 minutes,
+ * pre-analyzes them with NLP/ML, and stores everything for instant retrieval.
+ * This provides the core functionality for a real-time news reader.
  */
 class ArticleStockpileService {
   constructor() {
     this.isRunning = false;
     this.lastFetchTime = null;
     this.fetchInterval = 15 * 60 * 1000; // 15 minutes
-    this.maxArticlesPerSource = 50;
+    this.maxArticlesPerSource = 20;
     this.analysisQueue = [];
     this.isAnalyzing = false;
+    this.stats = {
+      totalFetched: 0,
+      totalAnalyzed: 0,
+      lastFetchTime: null,
+      errors: 0,
+      sourcesProcessed: 0
+    };
   }
 
   /**
    * Initialize the stockpile service
    */
   async initialize() {
-    logger.info('Initializing Article Stockpile Service...');
-    
-    // Start the background fetch process
-    this.startBackgroundFetch();
-    
-    // Start the analysis queue processor
-    this.startAnalysisProcessor();
-    
-    logger.info('Article Stockpile Service initialized');
-  }
-
-  /**
-   * Start background RSS fetching
-   */
-  startBackgroundFetch() {
-    if (this.isRunning) return;
-    
-    this.isRunning = true;
-    this.fetchAndStockpile();
-    
-    // Set up recurring fetch
-    setInterval(() => {
-      this.fetchAndStockpile();
-    }, this.fetchInterval);
-  }
-
-  /**
-   * Main method to fetch RSS feeds and stockpile articles
-   */
-  async fetchAndStockpile() {
     try {
-      logger.info('Starting RSS fetch and stockpile process...');
+      await jsonArticleService.initialize();
+      logger.info('ArticleStockpileService initialized');
       
-      // Get all active sources
-      const sources = await Source.findAll({ where: { isActive: true } });
-      logger.info(`Fetching from ${sources.length} sources`);
+      // Start the background fetching
+      this.startBackgroundFetching();
       
-      const newArticles = [];
-      
-      // Fetch from each source
-      for (const source of sources) {
-        try {
-          const articles = await this.fetchFromSource(source);
-          newArticles.push(...articles);
-          logger.info(`Fetched ${articles.length} articles from ${source.name}`);
-        } catch (error) {
-          logger.error(`Error fetching from ${source.name}:`, error.message);
-        }
+      // Do an initial fetch if no articles exist
+      const existingArticles = await jsonArticleService.loadExistingArticles();
+      if (existingArticles.length === 0) {
+        logger.info('No existing articles found, performing initial fetch...');
+        await this.fetchAllArticles();
       }
       
-      // Add new articles to analysis queue
-      this.addToAnalysisQueue(newArticles);
-      
-      // Update last fetch time
-      this.lastFetchTime = new Date();
-      
-      logger.info(`Stockpile process completed. ${newArticles.length} new articles queued for analysis`);
-      
     } catch (error) {
-      logger.error('Error in fetchAndStockpile:', error);
+      logger.error('Error initializing ArticleStockpileService:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Start background fetching with cron job
+   */
+  startBackgroundFetching() {
+    if (this.isRunning) {
+      logger.warn('Background fetching already running');
+      return;
+    }
+
+    // Run every 15 minutes
+    cron.schedule('*/15 * * * *', async () => {
+      try {
+        logger.info('Starting scheduled article fetch...');
+        await this.fetchAllArticles();
+      } catch (error) {
+        logger.error('Error in scheduled fetch:', error);
+        this.stats.errors++;
+      }
+    });
+
+    this.isRunning = true;
+    logger.info('Background article fetching started (every 15 minutes)');
+  }
+
+  /**
+   * Stop background fetching
+   */
+  stopBackgroundFetching() {
+    this.isRunning = false;
+    logger.info('Background article fetching stopped');
+  }
+
+  /**
+   * Fetch articles from all sources
+   */
+  async fetchAllArticles() {
+    const startTime = Date.now();
+    logger.info('Starting article fetch from all sources...');
+
+    try {
+      const sources = jsonArticleService.getSources();
+      if (!sources || sources.length === 0) {
+        logger.warn('No sources configured');
+        return { success: false, message: 'No sources configured' };
+      }
+
+      let totalFetched = 0;
+      let totalErrors = 0;
+
+      // Process sources in batches to avoid overwhelming
+      const batchSize = 3;
+      for (let i = 0; i < sources.length; i += batchSize) {
+        const batch = sources.slice(i, i + batchSize);
+        
+        const batchPromises = batch.map(async (source) => {
+          try {
+            const articles = await this.fetchFromSource(source);
+            totalFetched += articles.length;
+            this.stats.sourcesProcessed++;
+            
+            // Queue articles for analysis
+            for (const article of articles) {
+              this.queueForAnalysis(article);
+            }
+            
+            return articles;
+          } catch (error) {
+            logger.error(`Error fetching from ${source.name}:`, error.message);
+            totalErrors++;
+            return [];
+          }
+        });
+
+        await Promise.all(batchPromises);
+        
+        // Small delay between batches
+        if (i + batchSize < sources.length) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+      }
+
+      this.stats.totalFetched += totalFetched;
+      this.stats.lastFetchTime = new Date().toISOString();
+      this.lastFetchTime = new Date();
+
+      const duration = Date.now() - startTime;
+      logger.info(`Article fetch completed: ${totalFetched} articles fetched in ${duration}ms`);
+
+      // Start analysis processing
+      this.processAnalysisQueue();
+
+      return {
+        success: true,
+        articlesFetched: totalFetched,
+        sourcesProcessed: sources.length,
+        errors: totalErrors,
+        duration
+      };
+
+    } catch (error) {
+      logger.error('Error in fetchAllArticles:', error);
+      this.stats.errors++;
+      return { success: false, error: error.message };
     }
   }
 
@@ -95,386 +161,274 @@ class ArticleStockpileService {
    * Fetch articles from a specific source
    */
   async fetchFromSource(source) {
-    const response = await axios.get(source.url, {
-      timeout: 15000,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        'Accept': 'application/rss+xml, application/xml, text/xml, */*'
-      }
+    try {
+      logger.info(`Fetching articles from ${source.name}...`);
+      
+      const articles = await jsonArticleService.fetchFromSource(source, this.maxArticlesPerSource);
+      
+      logger.info(`Fetched ${articles.length} articles from ${source.name}`);
+      return articles;
+      
+    } catch (error) {
+      logger.error(`Error fetching from ${source.name}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Queue article for analysis
+   */
+  queueForAnalysis(article) {
+    // Check if article already has analysis
+    if (article.analysis) {
+      return;
+    }
+
+    // Add to queue
+    this.analysisQueue.push({
+      article,
+      timestamp: Date.now(),
+      attempts: 0
     });
 
-    const feed = await parseStringPromise(response.data);
-    const items = feed.rss?.channel?.[0]?.item || feed.feed?.entry || [];
-    
-    const articles = [];
-    
-    for (const item of items.slice(0, this.maxArticlesPerSource)) {
-      try {
-        const article = await this.processArticleItem(item, source);
-        if (article) {
-          articles.push(article);
-        }
-      } catch (error) {
-        logger.error(`Error processing article from ${source.name}:`, error.message);
-      }
-    }
-    
-    return articles;
+    logger.debug(`Queued article for analysis: ${article.title}`);
   }
 
   /**
-   * Process a single RSS item into an article
-   */
-  async processArticleItem(item, source) {
-    const rawTitle = item.title?.[0] || item['media:title']?.[0] || '';
-    const title = this.decodeHtmlEntities(rawTitle);
-    const link = item.link?.[0] || item.link?.[0]?.$?.href || '';
-    const rawDesc = item.description?.[0] || item.summary?.[0] || item['media:description']?.[0] || '';
-    const description = this.decodeHtmlEntities(rawDesc).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-    const pubDate = item.pubDate?.[0] || item.published?.[0] || new Date().toISOString();
-    const author = item.author?.[0] || item['dc:creator']?.[0] || source.name;
-    const guid = item.guid?.[0] || item.id?.[0] || link;
-    
-    // Check if article already exists
-    const existingArticle = await Article.findOne({ where: { guid } });
-    if (existingArticle) {
-      return null; // Skip if already exists
-    }
-    
-    // Extract full content if available
-    let fullContent = item['content:encoded']?.[0] || description;
-    
-    // Try to fetch full article content if we have a link
-    if (link && fullContent.length < 1000) {
-      try {
-        const contentResponse = await axios.get(link, {
-          timeout: 5000,
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-          }
-        });
-        
-        // Extract main content from HTML
-        const htmlContent = contentResponse.data;
-        const contentMatch = htmlContent.match(/<article[^>]*>([\s\S]*?)<\/article>/i) ||
-                            htmlContent.match(/<main[^>]*>([\s\S]*?)<\/main>/i) ||
-                            htmlContent.match(/<div[^>]*class="[^"]*content[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
-        
-        if (contentMatch && contentMatch[1]) {
-          const extractedContent = contentMatch[1].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-          if (extractedContent.length > fullContent.length) {
-            fullContent = extractedContent;
-          }
-        }
-      } catch (contentError) {
-        logger.debug(`Could not fetch full content for ${link}:`, contentError.message);
-      }
-    }
-    
-    // Create article in database
-    const article = await Article.create({
-      title,
-      link,
-      author,
-      publishDate: new Date(pubDate),
-      content: fullContent,
-      summary: description,
-      guid,
-      sourceId: source.id,
-      categories: source.category ? [source.category] : []
-    });
-    
-    return article;
-  }
-
-  /**
-   * Add articles to analysis queue
-   */
-  addToAnalysisQueue(articles) {
-    this.analysisQueue.push(...articles);
-    logger.info(`Added ${articles.length} articles to analysis queue. Queue size: ${this.analysisQueue.length}`);
-  }
-
-  /**
-   * Start the analysis queue processor
-   */
-  startAnalysisProcessor() {
-    if (this.isAnalyzing) return;
-    
-    this.isAnalyzing = true;
-    this.processAnalysisQueue();
-  }
-
-  /**
-   * Process the analysis queue
+   * Process analysis queue
    */
   async processAnalysisQueue() {
-    while (this.isAnalyzing && this.analysisQueue.length > 0) {
-      const article = this.analysisQueue.shift();
-      
-      try {
-        await this.analyzeArticle(article);
-        logger.debug(`Analyzed article: ${article.title}`);
-      } catch (error) {
-        logger.error(`Error analyzing article ${article.id}:`, error.message);
-      }
-      
-      // Small delay to prevent overwhelming the system
-      await new Promise(resolve => setTimeout(resolve, 1000));
+    if (this.isAnalyzing || this.analysisQueue.length === 0) {
+      return;
     }
-    
-    // Schedule next processing run
-    if (this.isAnalyzing) {
-      setTimeout(() => this.processAnalysisQueue(), 5000);
+
+    this.isAnalyzing = true;
+    logger.info(`Processing analysis queue: ${this.analysisQueue.length} articles`);
+
+    try {
+      // Process articles in batches
+      const batchSize = 5;
+      while (this.analysisQueue.length > 0) {
+        const batch = this.analysisQueue.splice(0, batchSize);
+        
+        const batchPromises = batch.map(async (queueItem) => {
+          try {
+            await this.analyzeArticle(queueItem.article);
+            this.stats.totalAnalyzed++;
+          } catch (error) {
+            logger.error(`Error analyzing article ${queueItem.article.title}:`, error);
+            
+            // Retry logic
+            queueItem.attempts++;
+            if (queueItem.attempts < 3) {
+              this.analysisQueue.push(queueItem);
+            }
+          }
+        });
+
+        await Promise.all(batchPromises);
+        
+        // Small delay between batches
+        if (this.analysisQueue.length > 0) {
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+      }
+
+    } catch (error) {
+      logger.error('Error processing analysis queue:', error);
+    } finally {
+      this.isAnalyzing = false;
+      logger.info('Analysis queue processing completed');
     }
   }
 
   /**
-   * Analyze a single article comprehensively
+   * Analyze article with NLP/ML service
    */
   async analyzeArticle(article) {
-    const articleData = {
-      articleId: article.id,
-      title: article.title,
-      content: article.content,
-      description: article.summary,
-      link: article.link,
-      author: article.author,
-      source: article.Source?.name || 'Unknown'
-    };
-    
-    // Perform comprehensive analysis
-    const analysis = await comprehensiveAnalysis.analyzeFullArticle(articleData);
-    
-    // Store analysis in database
-    await Analysis.create({
-      articleId: article.id,
-      userId: null, // System analysis
-      biasScore: analysis.biasDetection?.score || 0,
-      biasDirection: analysis.biasDetection?.direction || 'neutral',
-      sentiment: analysis.contentAnalysis?.sentiment || 0,
-      entities: analysis.contentAnalysis?.entities || [],
-      topKeywords: analysis.contentAnalysis?.keywords || [],
-      readingLevel: analysis.contentAnalysis?.readingLevel || 'medium',
-      clickbaitScore: analysis.credibilityAssessment?.clickbaitScore || 0,
-      outrageBaitScore: analysis.credibilityAssessment?.outrageBaitScore || 0,
-      summaryText: analysis.contentAnalysis?.summary || ''
-    });
-    
-    return analysis;
-  }
+    try {
+      // Check if analysis already exists
+      const existingAnalysis = await jsonArticleService.getArticleAnalysis(article.id);
+      if (existingAnalysis) {
+        logger.debug(`Analysis already exists for article: ${article.title}`);
+        return existingAnalysis;
+      }
 
-  /**
-   * Get articles from stockpile with analysis
-   */
-  async getArticlesFromStockpile(options = {}) {
-    const {
-      limit = 50,
-      categories = [],
-      sources = [],
-      offset = 0,
-      includeAnalysis = true
-    } = options;
-    
-    const whereClause = {};
-    
-    if (categories.length > 0) {
-      whereClause.categories = {
-        [Op.overlap]: categories
-      };
-    }
-    
-    if (sources.length > 0) {
-      whereClause.sourceId = {
-        [Op.in]: sources
-      };
-    }
-    
-    const queryOptions = {
-      where: whereClause,
-      limit,
-      offset,
-      order: [['publishDate', 'DESC']],
-      include: [
-        {
-          model: Source,
-          attributes: ['id', 'name', 'category', 'biasRating', 'reliability']
-        }
-      ]
-    };
-    
-    if (includeAnalysis) {
-      queryOptions.include.push({
-        model: Analysis,
-        where: { userId: null }, // System analysis
-        required: false
-      });
-    }
-    
-    const articles = await Article.findAll(queryOptions);
-    
-    return articles.map(article => this.formatArticleForResponse(article));
-  }
+      logger.info(`Analyzing article: ${article.title}`);
 
-  /**
-   * Format article for API response
-   */
-  formatArticleForResponse(article) {
-    const formatted = {
-      id: article.id,
-      title: article.title,
-      link: article.link,
-      author: article.author,
-      publishDate: article.publishDate,
-      content: article.content,
-      summary: article.summary,
-      source: article.Source?.name || 'Unknown',
-      sourceCategory: article.Source?.category || 'unknown',
-      biasRating: article.Source?.biasRating || 'unknown',
-      reliability: article.Source?.reliability || 'unknown',
-      categories: article.categories || []
-    };
-    
-    // Add analysis if available
-    if (article.Analyses && article.Analyses.length > 0) {
-      const analysis = article.Analyses[0];
-      formatted.analysis = {
-        biasScore: analysis.biasScore,
-        biasDirection: analysis.biasDirection,
-        sentiment: analysis.sentiment,
-        entities: analysis.entities,
-        topKeywords: analysis.topKeywords,
-        readingLevel: analysis.readingLevel,
-        clickbaitScore: analysis.clickbaitScore,
-        outrageBaitScore: analysis.outrageBaitScore,
-        summary: analysis.summaryText
-      };
-    }
-    
-    return formatted;
-  }
-
-  /**
-   * Get analytics data
-   */
-  async getAnalytics() {
-    const totalArticles = await Article.count();
-    const totalAnalyses = await Analysis.count({ where: { userId: null } });
-    
-    // Get source distribution
-    const sourceStats = await Article.findAll({
-      attributes: [
-        'sourceId',
-        [sequelize.fn('COUNT', sequelize.col('id')), 'articleCount']
-      ],
-      include: [{
-        model: Source,
-        attributes: ['name', 'category', 'biasRating']
-      }],
-      group: ['sourceId', 'Source.id'],
-      order: [[sequelize.fn('COUNT', sequelize.col('id')), 'DESC']]
-    });
-    
-    // Get bias distribution
-    const biasStats = await Analysis.findAll({
-      attributes: [
-        'biasDirection',
-        [sequelize.fn('COUNT', sequelize.col('id')), 'count'],
-        [sequelize.fn('AVG', sequelize.col('biasScore')), 'avgScore']
-      ],
-      where: { userId: null },
-      group: ['biasDirection'],
-      order: [[sequelize.fn('COUNT', sequelize.col('id')), 'DESC']]
-    });
-    
-    // Get sentiment distribution
-    const sentimentStats = await Analysis.findAll({
-      attributes: [
-        [sequelize.fn('AVG', sequelize.col('sentiment')), 'avgSentiment'],
-        [sequelize.fn('MIN', sequelize.col('sentiment')), 'minSentiment'],
-        [sequelize.fn('MAX', sequelize.col('sentiment')), 'maxSentiment']
-      ],
-      where: { userId: null }
-    });
-    
-    return {
-      totalArticles,
-      totalAnalyses,
-      sourceDistribution: sourceStats,
-      biasDistribution: biasStats,
-      sentimentStats: sentimentStats[0],
-      lastFetchTime: this.lastFetchTime,
-      queueSize: this.analysisQueue.length
-    };
-  }
-
-  /**
-   * Track user interaction for analysis improvement
-   */
-  async trackUserInteraction(articleId, userId, interactionType, feedback = null) {
-    // Store user interaction
-    await UserArticle.create({
-      userId,
-      articleId,
-      interactionType, // 'read', 'save', 'share', 'feedback'
-      feedback,
-      timestamp: new Date()
-    });
-    
-    // If user provided feedback, use it to improve analysis
-    if (feedback && feedback.analysisFeedback) {
-      await this.improveAnalysisFromFeedback(articleId, feedback.analysisFeedback);
-    }
-  }
-
-  /**
-   * Improve analysis based on user feedback
-   */
-  async improveAnalysisFromFeedback(articleId, feedback) {
-    const analysis = await Analysis.findOne({
-      where: { articleId, userId: null }
-    });
-    
-    if (analysis) {
-      // Update analysis based on feedback
-      // This could involve machine learning improvements
-      // For now, we'll just log the feedback
-      logger.info(`User feedback for article ${articleId}:`, feedback);
+      // Perform NLP/ML analysis
+      const analysis = await nlpAnalysisService.analyzeArticle(article);
       
-      // Store feedback for future analysis improvements
-      await Analysis.update({
-        userFeedback: feedback
-      }, {
-        where: { id: analysis.id }
-      });
+      // Save analysis
+      await jsonArticleService.saveArticleAnalysis(article.id, analysis);
+      
+      logger.info(`Analysis completed for: ${article.title}`);
+      return analysis;
+
+    } catch (error) {
+      logger.error(`Error analyzing article ${article.title}:`, error);
+      throw error;
     }
   }
 
   /**
-   * Utility method to decode HTML entities
+   * Get articles with filters and pagination
    */
-  decodeHtmlEntities(text) {
-    if (!text) return '';
-    return text
-      .replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
-      .replace(/&nbsp;/g, ' ');
+  async getArticles(filters = {}) {
+    try {
+      const {
+        limit = 50,
+        offset = 0,
+        categories = [],
+        sources = [],
+        biasRatings = [],
+        includeAnalysis = true,
+        searchQuery = ''
+      } = filters;
+
+      let result;
+
+      if (searchQuery) {
+        result = await jsonArticleService.searchArticles(searchQuery, {
+          limit,
+          offset,
+          categories,
+          sources,
+          biasRatings,
+          includeAnalysis
+        });
+      } else {
+        result = await jsonArticleService.getArticles({
+          limit,
+          offset,
+          categories,
+          sources,
+          biasRatings,
+          includeAnalysis
+        });
+      }
+
+      return {
+        ...result,
+        lastFetchTime: this.stats.lastFetchTime,
+        totalAnalyzed: this.stats.totalAnalyzed,
+        analysisQueueSize: this.analysisQueue.length
+      };
+
+    } catch (error) {
+      logger.error('Error getting articles:', error);
+      throw error;
+    }
   }
 
   /**
-   * Get service status
+   * Get article by ID
    */
-  getStatus() {
+  async getArticleById(id) {
+    try {
+      const article = await jsonArticleService.getArticleById(id);
+      if (!article) {
+        return null;
+      }
+
+      // Ensure analysis is loaded
+      if (!article.analysis) {
+        article.analysis = await jsonArticleService.getArticleAnalysis(id);
+      }
+
+      return article;
+    } catch (error) {
+      logger.error(`Error getting article ${id}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get service statistics
+   */
+  async getStats() {
+    try {
+      const jsonStats = await jsonArticleService.getStats();
+      
+      return {
+        ...this.stats,
+        ...jsonStats,
+        isRunning: this.isRunning,
+        isAnalyzing: this.isAnalyzing,
+        analysisQueueSize: this.analysisQueue.length,
+        lastFetchTime: this.lastFetchTime,
+        uptime: this.lastFetchTime ? Date.now() - this.lastFetchTime.getTime() : 0
+      };
+    } catch (error) {
+      logger.error('Error getting stats:', error);
+      return this.stats;
+    }
+  }
+
+  /**
+   * Force refresh all articles
+   */
+  async forceRefresh() {
+    logger.info('Force refresh requested');
+    return await this.fetchAllArticles();
+  }
+
+  /**
+   * Get sources
+   */
+  getSources() {
+    return jsonArticleService.getSources();
+  }
+
+  /**
+   * Add new source
+   */
+  async addSource(source) {
+    try {
+      // This would need to be implemented in jsonArticleService
+      logger.info(`Adding new source: ${source.name}`);
+      // Implementation would go here
+      return { success: true, source };
+    } catch (error) {
+      logger.error('Error adding source:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Remove source
+   */
+  async removeSource(sourceId) {
+    try {
+      logger.info(`Removing source: ${sourceId}`);
+      // Implementation would go here
+      return { success: true };
+    } catch (error) {
+      logger.error('Error removing source:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get analysis queue status
+   */
+  getAnalysisQueueStatus() {
     return {
-      isRunning: this.isRunning,
-      isAnalyzing: this.isAnalyzing,
-      lastFetchTime: this.lastFetchTime,
       queueSize: this.analysisQueue.length,
-      fetchInterval: this.fetchInterval
+      isProcessing: this.isAnalyzing,
+      oldestItem: this.analysisQueue.length > 0 ? 
+        new Date(this.analysisQueue[0].timestamp) : null
     };
+  }
+
+  /**
+   * Clear analysis queue
+   */
+  clearAnalysisQueue() {
+    const cleared = this.analysisQueue.length;
+    this.analysisQueue = [];
+    logger.info(`Cleared ${cleared} items from analysis queue`);
+    return { cleared };
   }
 }
 

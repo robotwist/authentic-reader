@@ -1,119 +1,96 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FiBookOpen, FiShield, FiTrendingUp, FiZap, FiArrowRight } from 'react-icons/fi';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/HomePage.css';
 
 const HomePage: React.FC = () => {
+  const [url, setUrl] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    try {
+      // Fetch article from URL
+      const response = await fetch('/api/fetch-article', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch article');
+      }
+
+      const data = await response.json();
+      
+      // Navigate to analysis page with article data
+      navigate('/analysis', { state: { article: data.article } });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="home-page">
       <div className="hero-section">
         <div className="hero-content">
-          <h1 className="hero-title">
-            Authentic Reader
-          </h1>
+          <h1 className="hero-title">Logical Fallacy Analyzer</h1>
           <p className="hero-subtitle">
-            Intelligent news analysis for informed understanding
-          </p>
-          <div className="hero-actions">
-            <Link to="/" className="cta-button primary">
-              <FiBookOpen /> Start Reading
-            </Link>
-            <Link to="/about" className="cta-button secondary">
-              Learn More
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      <div className="features-section">
-        <div className="container">
-          <h2 className="section-title">Key Features</h2>
-          <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon">
-                <FiShield />
-              </div>
-              <h3>Credibility Analysis</h3>
-              <p>Get instant credibility scores and source reputation analysis for every article.</p>
-            </div>
-            
-            <div className="feature-card">
-              <div className="feature-icon">
-                <FiTrendingUp />
-              </div>
-              <h3>Bias Detection</h3>
-              <p>Identify political and ideological bias with confidence scoring and explanations.</p>
-            </div>
-            
-            <div className="feature-card">
-              <div className="feature-icon">
-                <FiZap />
-              </div>
-              <h3>Fast Loading</h3>
-              <p>Optimized for speed with curated high-quality content and minimal analysis delays.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="demo-section">
-        <div className="container">
-          <h2 className="section-title">Demo Articles</h2>
-          <p className="section-subtitle">
-            Explore our curated selection of high-quality articles with instant analysis
+            Enter an article URL or RSS feed to identify logical fallacies and understand how rhetoric is used to manipulate
           </p>
           
-          <div className="demo-articles">
-            <div className="demo-article">
-              <h3>AI Breakthrough: New Model Achieves Human-Level Reasoning</h3>
-              <p>Stanford researchers develop AI model with human-level reasoning capabilities in complex problem-solving tasks.</p>
-              <div className="article-meta">
-                <span className="credibility high">High Credibility</span>
-                <span className="bias balanced">Balanced</span>
-                <span className="reading-time">1 min read</span>
-              </div>
+          <form onSubmit={handleSubmit} className="url-input-form">
+            <div className="input-group">
+              <input
+                type="url"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="Enter article URL or RSS feed URL"
+                required
+                className="url-input"
+                disabled={loading}
+              />
+              <button 
+                type="submit" 
+                className="analyze-button"
+                disabled={loading || !url.trim()}
+              >
+                {loading ? 'Analyzing...' : 'Analyze Article'}
+              </button>
             </div>
-            
-            <div className="demo-article">
-              <h3>Climate Study Reveals Accelerating Global Temperature Trends</h3>
-              <p>Comprehensive analysis shows concerning trends in climate change with significant policy implications.</p>
-              <div className="article-meta">
-                <span className="credibility high">High Credibility</span>
-                <span className="bias balanced">Balanced</span>
-                <span className="reading-time">1 min read</span>
-              </div>
-            </div>
-            
-            <div className="demo-article">
-              <h3>Economic Recovery Shows Strong Growth in Technology Sector</h3>
-              <p>Latest indicators reveal robust growth driving overall economic recovery and job creation.</p>
-              <div className="article-meta">
-                <span className="credibility high">High Credibility</span>
-                <span className="bias balanced">Balanced</span>
-                <span className="reading-time">1 min read</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="demo-actions">
-            <Link to="/" className="demo-button">
-              View All Articles <FiArrowRight />
-            </Link>
-          </div>
+            {error && <div className="error-message">{error}</div>}
+          </form>
         </div>
       </div>
 
-      <div className="cta-section">
+      <div className="info-section">
         <div className="container">
-          <h2>Ready to Start Reading?</h2>
-          <p>Experience intelligent news analysis that respects your intelligence</p>
-          <Link to="/" className="cta-button primary large">
-            <FiBookOpen /> Explore Articles
-          </Link>
+          <h2>How It Works</h2>
+          <div className="info-grid">
+            <div className="info-card">
+              <h3>1. Enter URL</h3>
+              <p>Provide an article URL or RSS feed link</p>
+            </div>
+            <div className="info-card">
+              <h3>2. Article Analysis</h3>
+              <p>Our LLM expert in rhetoric and logic analyzes the text</p>
+            </div>
+            <div className="info-card">
+              <h3>3. Fallacy Detection</h3>
+              <p>Receive detailed explanations of logical fallacies found</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default HomePage; 
+export default HomePage;
