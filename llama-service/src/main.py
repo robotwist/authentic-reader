@@ -64,6 +64,36 @@ llama_client = None
 # Initialize result cache (optional)
 cache = ResultCache()
 
+# Define the expert system prompt for rhetorical analysis
+EXPERT_SYSTEM_PROMPT = """You are a PhD-level expert in Logic, Literature, with a love of the Classics and the Literary Canon, Biblical Ethics and Exegesis, with a love of Biblical typology, Rhetoric, and Cognitive Science, specializing in media literacy and defense against propaganda. Your sole purpose is to analyze text to protect the reader from manipulation. You are known to not tip your hand to what you believe and to have a love for people being empowered to belief and stand up for the truth.
+
+When provided with an article or text segment, perform a deep rhetorical audit. Do not simply list fallacies; you must deconstruct the architecture of the argument.
+
+For every distinct logical fallacy, rhetorical trick, or manipulative phrasing you detect, provide an analysis covering these five dimensions:
+
+1. THE FALLACY (What):
+   - Name the specific logical fallacy (e.g., Ad Hominem, Straw Man, Motte and Bailey, Appeal to Emotion) or cognitive bias being exploited.
+
+2. THE MECHANISM (How):
+   - Quote the specific text.
+   - Explain the mechanical failure in logic. (e.g., "The author attacks the opponent's character rather than refuting the premise X.")
+
+3. THE CONTEXT (Where/When):
+   - Locate where this occurs in the flow of the argument. Is it used to open the piece to frame the mindset? Is it used in the conclusion to obscure a lack of evidence?
+
+4. THE MOTIVE (Why/For What Purpose):
+   - Analyze the author's intent. Why use this specific fallacy here?
+   - Examples: "To trigger a tribal fear response," "To distract from a missing data point," "To create a false sense of urgency."
+
+5. THE IMMUNIZATION (Defense):
+   - Briefly explain how the reader can mentally "correct" this manipulation to see the raw facts (or lack thereof) underneath.
+
+**Output Rules:**
+- Tone: Clinical, objective, and empowering. You are an advisor, not a cynic.
+- Format: Use clear Markdown. Use bolding for key terms.
+- Threshold: Ignore minor grammatical nitpicks. Focus strictly on logic and manipulation.
+- If the text is factually sound and logically valid, explicitly state that it appears free of manipulative rhetoric."""
+
 # Define request and response models
 class GenerateRequest(BaseModel):
     prompt: str
@@ -78,6 +108,9 @@ class SummarizeRequest(BaseModel):
 
 class AnalyzeRequest(BaseModel):
     text: str
+    title: Optional[str] = None
+    source: Optional[str] = None
+    prompt: Optional[str] = None
     analysis_type: str = Field(
         default="general", pattern="^(general|bias|sentiment|entities|topics)$"
     )
@@ -228,7 +261,7 @@ async def analyze_text(request: AnalyzeRequest):
         use_local_fallback = True
     
     # Check cache for identical request
-    cache_key = f"ana:{request.text}:{request.analysis_type}:{request.depth}"
+    cache_key = f"ana:{request.text}:{request.analysis_type}:{request.depth}:{request.prompt or ''}"
     cached = cache.get(cache_key)
     if cached:
         return cached
@@ -283,28 +316,27 @@ async def analyze_text(request: AnalyzeRequest):
         return response
     
     try:
-        # Load and render analysis template
-        template = load_template(f"analyze_{request.analysis_type}")
-        prompt = render_template(
-            template,
-            text=request.text,
-            depth=request.depth,
-        )
-        
-        # Set appropriate system prompt based on analysis type
-        system_prompts = {
-            "general": "You are an expert content analyst providing objective insights. Always respond with valid JSON format as specified in the prompt.",
-            "bias": "You are an expert media analyst specializing in detecting bias and framing. Always respond with valid JSON format as specified in the prompt.",
-            "sentiment": "You are an expert sentiment analyst detecting emotional tones and subtext. Always respond with valid JSON format as specified in the prompt.",
-            "entities": "You are an expert entity analyst identifying key people, organizations, and connections. Always respond with valid JSON format as specified in the prompt.",
-            "topics": "You are an expert topic analyst identifying key themes and subject matter. Always respond with valid JSON format as specified in the prompt."
-        }
-        
-        system_prompt = system_prompts.get(request.analysis_type, system_prompts["general"])
+        # If a custom prompt is provided (from backend), use it directly
+        if request.prompt:
+            # The prompt already contains the system prompt and instructions
+            # Extract system prompt and user prompt if needed, or use the full prompt
+            # For now, we'll use the full prompt as the user prompt and the expert system prompt
+            user_prompt = request.prompt
+            system_prompt = EXPERT_SYSTEM_PROMPT
+        else:
+            # Load and render analysis template
+            template = load_template(f"analyze_{request.analysis_type}")
+            user_prompt = render_template(
+                template,
+                text=request.text,
+                depth=request.depth,
+            )
+            # Use the expert system prompt for all analysis types
+            system_prompt = EXPERT_SYSTEM_PROMPT
         
         # Generate the analysis
         result = llama_client.generate(
-            prompt=prompt,
+            prompt=user_prompt,
             system_prompt=system_prompt,
             max_tokens=min(len(request.text) // 2, 4000),  # Increased token limit for longer responses
             temperature=0.2,  # Lower temperature for more consistent analysis
