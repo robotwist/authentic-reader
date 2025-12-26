@@ -11,16 +11,66 @@ import logger from '../utils/logger.js';
 
 class EnhancedAIAnalysisService {
   constructor() {
-    this.primaryService = process.env.OLLAMA_SERVICE_URL || 'http://localhost:8105';
+    // Use Groq API for LLM inference
+    this.groqApiKey = process.env.GROQ_API_KEY;
+    this.groqApiUrl = 'https://api.groq.com/openai/v1/chat/completions';
+    this.groqModel = 'llama3-70b-8192'; // PhD-level model
+    
     this.fallbackService = process.env.HF_SERVICE_URL || 'http://localhost:8000';
-    this.llamaService = process.env.LLAMA_SERVICE_URL || 'http://localhost:8105';
     
     this.analysisCache = new Map();
+    
+    // Log configuration for debugging
+    logger.info('EnhancedAIAnalysisService initialized:', {
+      hasGroqApiKey: !!this.groqApiKey,
+      groqModel: this.groqModel,
+      usingGroq: !!this.groqApiKey
+    });
+    
+    if (!this.groqApiKey) {
+      logger.warn('GROQ_API_KEY not set - LLM analysis will use fallback methods');
+    }
+  }
+
+  /**
+   * Expert System Prompt - PhD-level expert in Logic, Literature, Rhetoric, and Cognitive Science
+   * This is the full expert persona that analyzes text to protect readers from manipulation
+   */
+  getExpertSystemPrompt() {
+    return `You are a PhD-level expert in Logic, Literature, with a love of the Classics and the Literary Canon, Biblical Ethics and Exegesis, with a love of Biblical typology, Rhetoric, and Cognitive Science, specializing in media literacy and defense against propaganda. Your sole purpose is to analyze text to protect the reader from manipulation. You are known to not tip your hand to what you believe and to have a love for people being empowered to belief and stand up for the truth.
+
+When provided with an article or text segment, perform a deep rhetorical audit. Do not simply list fallacies; you must deconstruct the architecture of the argument.
+
+For every distinct logical fallacy, rhetorical trick, or manipulative phrasing you detect, provide an analysis covering these five dimensions:
+
+1. THE FALLACY (What):
+   - Name the specific logical fallacy (e.g., Ad Hominem, Straw Man, Motte and Bailey, Appeal to Emotion) or cognitive bias being exploited.
+
+2. THE MECHANISM (How):
+   - Quote the specific text.
+   - Explain the mechanical failure in logic. (e.g., "The author attacks the opponent's character rather than refuting the premise X.")
+
+3. THE CONTEXT (Where/When):
+   - Locate where this occurs in the flow of the argument. Is it used to open the piece to frame the mindset? Is it used in the conclusion to obscure a lack of evidence?
+
+4. THE MOTIVE (Why/For What Purpose):
+   - Analyze the author's intent. Why use this specific fallacy here?
+   - Examples: "To trigger a tribal fear response," "To distract from a missing data point," "To create a false sense of urgency."
+
+5. THE IMMUNIZATION (Defense):
+   - Briefly explain how the reader can mentally "correct" this manipulation to see the raw facts (or lack thereof) underneath.
+
+**Output Rules:**
+- Tone: Clinical, objective, and empowering. You are an advisor, not a cynic.
+- Format: Use clear Markdown. Use bolding for key terms.
+- Threshold: Ignore minor grammatical nitpicks. Focus strictly on logic and manipulation.
+- If the text is factually sound and logically valid, explicitly state that it appears free of manipulative rhetoric.`;
   }
 
   /**
    * PhD-Level Bias Analysis Prompt
    * Uses the expert system prompt for rhetorical analysis
+   * @deprecated - Use getLogicalFallacySystemPrompt for focused fallacy analysis
    */
   getBiasAnalysisPrompt(article) {
     const content = article.content || article.description || '';
@@ -149,6 +199,23 @@ Remember: Your goal is to empower readers to think critically, not to tell them 
   }
 
   /**
+   * Build logical fallacy analysis prompt
+   * Note: System prompt is now handled separately in callAIService via getExpertSystemPrompt
+   */
+  getLogicalFallacyPrompt(article) {
+    const content = article.content || article.description || '';
+    const title = article.title || '';
+    
+    return `Analyze the following article for logical fallacies and provide a comprehensive analysis following the expert system guidelines:
+
+ARTICLE TO ANALYZE:
+Title: ${title}
+Content: ${content}
+
+Provide your analysis in the structured format specified in the system prompt.`;
+  }
+
+  /**
    * Perform comprehensive AI analysis with key sentence highlighting
    */
   async analyzeArticle(article, options = {}) {
@@ -163,8 +230,10 @@ Remember: Your goal is to empower readers to think critically, not to tell them 
 
       logger.info(`Starting enhanced AI analysis for article: ${article.title || articleId}`);
 
-      // Build the comprehensive prompt
-      const prompt = this.getBiasAnalysisPrompt(article);
+      // Build the comprehensive prompt (use logical fallacy prompt for focused analysis)
+      const prompt = options.focusOnFallacies 
+        ? this.getLogicalFallacyPrompt(article)
+        : this.getBiasAnalysisPrompt(article);
       
       // Try to get analysis from AI service
       let analysisResult;
@@ -213,48 +282,92 @@ Remember: Your goal is to empower readers to think critically, not to tell them 
   }
 
   /**
-   * Call AI service (Ollama/Llama service)
+   * Call Groq API for LLM analysis
+   * Uses the expert system prompt as the system message and the analysis prompt as user message
    */
   async callAIService(prompt, article) {
     try {
-      // Try Llama service first (if available)
-      if (this.llamaService) {
-        try {
-          const response = await axios.post(`${this.llamaService}/analyze`, {
-            text: article.content || article.description || '',
-            title: article.title || '',
-            source: article.source?.name || article.source || '',
-            prompt: prompt
-          }, {
-            timeout: 60000 // 60 second timeout for comprehensive analysis
-          });
+      // Check if Groq API key is configured
+      if (!this.groqApiKey) {
+        throw new Error('GROQ_API_KEY not configured. Cannot perform LLM analysis.');
+      }
 
-          if (response.data && response.data.analysis) {
-            return this.parseAIResponse(response.data.analysis, 'llama');
-          }
-        } catch (error) {
-          logger.warn('Llama service call failed, trying direct Ollama:', error.message);
+      const expertSystemPrompt = this.getExpertSystemPrompt();
+      const articleText = article.content || article.description || '';
+      const articleTitle = article.title || '';
+      const articleSource = article.source?.name || article.source || 'Unknown';
+      
+      // Build the user message with the analysis prompt and article content
+      const userMessage = `${prompt}\n\nARTICLE TO ANALYZE:\nTitle: ${articleTitle}\nSource: ${articleSource}\nContent: ${articleText}`;
+
+      logger.info('Calling Groq API for LLM analysis...', {
+        model: this.groqModel,
+        articleTitle: articleTitle.substring(0, 50)
+      });
+
+      // Call Groq API
+      const response = await axios.post(
+        this.groqApiUrl,
+        {
+          model: this.groqModel,
+          messages: [
+            {
+              role: 'system',
+              content: expertSystemPrompt
+            },
+            {
+              role: 'user',
+              content: userMessage
+            }
+          ],
+          temperature: 0.1, // Keep it analytical
+          response_format: { type: 'json_object' }, // Force valid JSON
+          max_tokens: 4000
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${this.groqApiKey}`,
+            'Content-Type': 'application/json'
+          },
+          timeout: 60000 // 60 second timeout
+        }
+      );
+
+      // Extract the response content
+      const responseContent = response.data?.choices?.[0]?.message?.content;
+      
+      if (!responseContent) {
+        throw new Error('No response content from Groq API');
+      }
+
+      logger.info('Groq API response received, parsing...');
+
+      // Parse the JSON response
+      let parsedResponse;
+      try {
+        parsedResponse = typeof responseContent === 'string' 
+          ? JSON.parse(responseContent) 
+          : responseContent;
+      } catch (parseError) {
+        logger.warn('Failed to parse Groq response as JSON, attempting to extract JSON...', parseError);
+        // Try to extract JSON from markdown code blocks or text
+        const jsonMatch = responseContent.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          parsedResponse = JSON.parse(jsonMatch[0]);
+        } else {
+          throw new Error('Could not parse Groq response as JSON');
         }
       }
 
-      // Try primary service (Ollama) with prompt
-      const response = await axios.post(`${this.primaryService}/analyze`, {
-        text: article.content || article.description || '',
-        title: article.title || '',
-        source: article.source?.name || article.source || '',
-        prompt: prompt,
-        options: {
-          temperature: 0.7,
-          max_tokens: 4000
-        }
-      }, {
-        timeout: 60000
-      });
-
-      return this.parseAIResponse(response.data, 'ollama');
+      // Return parsed response with service marker
+      return this.parseAIResponse(parsedResponse, 'groq');
 
     } catch (error) {
-      logger.error('AI service call failed:', error);
+      logger.error('Groq API call failed:', {
+        error: error.message,
+        status: error.response?.status,
+        statusText: error.response?.statusText
+      });
       throw error;
     }
   }
@@ -263,7 +376,7 @@ Remember: Your goal is to empower readers to think critically, not to tell them 
    * Parse AI response into structured format
    */
   parseAIResponse(data, service) {
-    // If response is already structured JSON
+    // If response is already structured JSON with expected format
     if (typeof data === 'object' && data.keySentences) {
       return { ...data, service };
     }
@@ -275,14 +388,22 @@ Remember: Your goal is to empower readers to think critically, not to tell them 
         if (parsed.keySentences) {
           return { ...parsed, service };
         }
+        // If it's a different structure, try to extract what we need
+        return { ...parsed, service };
       } catch (e) {
-        // Not JSON, continue to fallback
+        logger.warn('Failed to parse response string as JSON:', e.message);
       }
     }
 
-    // If we have analysis object, try to extract structured data
+    // If we have analysis object nested, extract it
     if (data.analysis) {
       return this.parseAIResponse(data.analysis, service);
+    }
+
+    // If data is an object but doesn't have keySentences, try to structure it
+    if (typeof data === 'object' && data !== null) {
+      // Return the data with service marker - let the calling code handle structure
+      return { ...data, service };
     }
 
     // Fallback: return with service marker
