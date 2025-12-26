@@ -135,16 +135,64 @@ class JsonArticleService {
   }
 
   /**
-   * Fetch articles from a specific source
+   * Fetch articles from a specific source using optimized RSS service
    */
   async fetchFromSource(source, maxArticles = 10) {
     try {
       logger.info(`Fetching from ${source.name}...`);
       
+      // Try to use optimized RSS service if available
+      try {
+        const rssServiceModule = await import('../authentic-reader-backend/services/rssService.js');
+        const rssService = rssServiceModule.default;
+        
+        if (rssService && rssService.fetchFeed) {
+          const feedData = await rssService.fetchFeed(source.url, {
+            timeout: 8000,
+            maxItems: maxArticles,
+            useCache: true
+          });
+          
+          const articles = feedData.items.map(item => {
+            const normalized = rssService.normalizeItem(item, source.name);
+            return {
+              id: normalized.guid,
+              title: normalized.title,
+              url: normalized.link,
+              author: normalized.author,
+              publishedAt: normalized.publishDate,
+              content: normalized.content,
+              summary: normalized.description,
+              source: {
+                name: source.name,
+                category: source.category,
+                biasRating: source.biasRating,
+                reliability: source.reliability
+              },
+              category: source.category || 'general',
+              categories: normalized.categories.length > 0 ? normalized.categories : [source.category || 'general'],
+              wordCount: this.estimateWordCount(normalized.content),
+              complexity: this.assessComplexity({ content: normalized.content, title: normalized.title }),
+              tags: normalized.categories,
+              credibility: this.assessCredibility(source.name),
+              bias: this.assessBias(source.name),
+              createdAt: new Date().toISOString(),
+              lastUpdated: new Date().toISOString()
+            };
+          });
+          
+          logger.info(`Fetched ${articles.length} articles from ${source.name}`);
+          return articles;
+        }
+      } catch (rssError) {
+        logger.debug(`RSS service not available, using fallback: ${rssError.message}`);
+      }
+      
+      // Fallback to direct fetch
       const response = await axios.get(source.url, {
-        timeout: 15000,
+        timeout: 8000,
         headers: {
-          'User-Agent': 'Authentic Reader RSS Fetcher/1.0',
+          'User-Agent': 'Authentic Reader RSS Fetcher/2.0',
           'Accept': 'application/rss+xml, application/xml, text/xml, */*'
         }
       });
@@ -153,7 +201,6 @@ class JsonArticleService {
         explicitArray: false,
         mergeAttrs: true,
         normalize: true,
-        normalizeTags: false,
         trim: true
       });
 
@@ -342,32 +389,8 @@ class JsonArticleService {
       fullContent = description;
     }
 
-    // Try to fetch full article content if we have a link and content is short
-    if (link && fullContent.length < 1000) {
-      try {
-        const contentResponse = await axios.get(link, {
-          timeout: 5000,
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-          }
-        });
-        
-        // Extract main content from HTML
-        const htmlContent = contentResponse.data;
-        const contentMatch = htmlContent.match(/<article[^>]*>([\s\S]*?)<\/article>/i) ||
-                            htmlContent.match(/<main[^>]*>([\s\S]*?)<\/main>/i) ||
-                            htmlContent.match(/<div[^>]*class="[^"]*content[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
-        
-        if (contentMatch && contentMatch[1]) {
-          const extractedContent = contentMatch[1].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-          if (extractedContent.length > fullContent.length) {
-            fullContent = extractedContent;
-          }
-        }
-      } catch (contentError) {
-        logger.debug(`Could not fetch full content for ${link}:`, contentError.message);
-      }
-    }
+    // Removed full-content fetching - RSS feeds should contain sufficient content
+    // Full content fetching is slow and inefficient for RSS feeds
 
     // Create article object with proper structure
     const article = {

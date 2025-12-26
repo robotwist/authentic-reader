@@ -4,6 +4,8 @@ import axios from 'axios';
 import xml2js from 'xml2js';
 import { Op } from 'sequelize';
 import { fetchAndExtractArticle } from '../services/contentExtractionService.js';
+import logger from '../utils/logger.js';
+import { RSS_CONFIG } from '../config/rssConfig.js';
 
 // Save article for a user
 export const saveArticle = async (req, res) => {
@@ -72,7 +74,7 @@ export const saveArticle = async (req, res) => {
       article
     });
   } catch (error) {
-    console.error('Error saving article:', error);
+    logger.error('Error saving article:', error);
     res.status(500).json({ error: 'Failed to save article' });
   }
 };
@@ -116,7 +118,7 @@ export const markArticleAsRead = async (req, res) => {
       userArticle
     });
   } catch (error) {
-    console.error('Error marking article as read:', error);
+    logger.error('Error marking article as read:', error);
     res.status(500).json({ error: 'Failed to mark article as read' });
   }
 };
@@ -147,7 +149,7 @@ export const getSavedArticles = async (req, res) => {
 
     res.status(200).json(articles);
   } catch (error) {
-    console.error('Error fetching saved articles:', error);
+    logger.error('Error fetching saved articles:', error);
     res.status(500).json({ error: 'Failed to fetch saved articles' });
   }
 };
@@ -178,7 +180,7 @@ export const getReadArticles = async (req, res) => {
 
     res.status(200).json(articles);
   } catch (error) {
-    console.error('Error fetching read articles:', error);
+    logger.error('Error fetching read articles:', error);
     res.status(500).json({ error: 'Failed to fetch read articles' });
   }
 };
@@ -207,7 +209,7 @@ export const unsaveArticle = async (req, res) => {
 
     res.status(200).json({ message: 'Article unsaved successfully' });
   } catch (error) {
-    console.error('Error unsaving article:', error);
+    logger.error('Error unsaving article:', error);
     res.status(500).json({ error: 'Failed to unsave article' });
   }
 };
@@ -244,12 +246,12 @@ export const getArticleById = async (req, res) => {
       } : null
     });
   } catch (error) {
-    console.error('Error fetching article:', error);
+    logger.error('Error fetching article:', error);
     res.status(500).json({ error: 'Failed to fetch article' });
   }
 };
 
-// Fetch articles from RSS
+// Fetch articles from RSS using optimized service
 export const fetchArticlesFromRSS = async (req, res) => {
   const { sourceId } = req.params;
 
@@ -259,59 +261,38 @@ export const fetchArticlesFromRSS = async (req, res) => {
       return res.status(404).json({ error: 'Source not found' });
     }
 
-    // Fetch RSS feed
-    const response = await axios.get(source.url, {
-      headers: {
-        'User-Agent': 'Authentic Reader RSS Fetcher/1.0',
-        'Accept': 'application/rss+xml, application/xml, text/xml, */*'
-      },
-      timeout: 10000
+    // Use optimized RSS service
+    const rssService = (await import('../services/rssService.js')).default;
+    const feedData = await rssService.fetchFeed(source.url, {
+      timeout: 8000,
+      maxItems: 50,
+      useCache: true
     });
 
-    // Parse XML to JSON
-    const parser = new xml2js.Parser({
-      explicitArray: false,
-      mergeAttrs: true
+    // Normalize items
+    const articles = feedData.items.map(item => {
+      const normalized = rssService.normalizeItem(item, source.name);
+      return {
+        title: normalized.title,
+        link: normalized.link,
+        author: normalized.author,
+        publishDate: normalized.publishDate,
+        content: normalized.content,
+        summary: normalized.description,
+        guid: normalized.guid,
+        sourceId: source.id,
+        source: {
+          id: source.id,
+          name: source.name,
+          url: source.url,
+          category: source.category
+        }
+      };
     });
-
-    const result = await parser.parseStringPromise(response.data);
-    
-    // Extract articles from the feed
-    let items = [];
-    if (result.rss && result.rss.channel) {
-      items = result.rss.channel.item || [];
-    } else if (result.feed) {
-      items = result.feed.entry || [];
-    } else if (result.rdf && result.rdf.item) {
-      items = result.rdf.item || [];
-    }
-
-    // Ensure items is an array
-    if (!Array.isArray(items)) {
-      items = [items];
-    }
-
-    // Map items to our article format
-    const articles = items.map(item => ({
-      title: item.title || 'Untitled',
-      link: item.link || (item.guid && item.guid._ ? item.guid._ : item.guid),
-      author: item.author || item['dc:creator'] || source.name,
-      publishDate: item.pubDate || item.published || new Date().toISOString(),
-      content: item['content:encoded'] || item.content || item.description || '',
-      summary: item.description || item.summary || '',
-      guid: item.guid || item.id || item.link,
-      sourceId: source.id,
-      source: {
-        id: source.id,
-        name: source.name,
-        url: source.url,
-        category: source.category
-      }
-    }));
 
     res.status(200).json(articles);
   } catch (error) {
-    console.error('Error fetching articles from RSS:', error);
+    logger.error('Error fetching articles from RSS:', { sourceId, error: error.message, stack: error.stack });
     res.status(500).json({ 
       error: 'Failed to fetch articles from RSS',
       message: error.message
@@ -349,116 +330,26 @@ export const fetchArticlesFromSource = async (req, res) => {
       return res.status(404).json({ message: 'Source not found' });
     }
     
-    // Fetch the RSS feed
-    const feedUrl = source.url;
-    console.log(`Fetching RSS feed from: ${feedUrl}`);
-    
-    // Fix for Reuters feed which may have special handling needs
-    let adjustedFeedUrl = feedUrl;
-    if (feedUrl.includes('reuters.com')) {
-      // Use alternative Reuters feed URL if needed
-      if (feedUrl === 'https://feeds.reuters.com/reuters/topNews') {
-        // Reuters API has changed, use a different news source as fallback
-        adjustedFeedUrl = 'https://www.cnbc.com/id/100003114/device/rss/rss.html';
-        console.log(`Redirecting Reuters feed to CNBC News feed: ${adjustedFeedUrl}`);
-      }
-    }
-    
-    const response = await axios.get(adjustedFeedUrl, {
-      headers: {
-        'User-Agent': 'Authentic Reader RSS Fetcher/1.0',
-        'Accept': 'application/rss+xml, application/xml, text/xml, */*'
-      },
-      timeout: 15000 // 15 second timeout
+    // Use optimized RSS service
+    const rssService = (await import('../services/rssService.js')).default;
+    const feedData = await rssService.fetchFeed(source.url, {
+      timeout: 8000,
+      maxItems: 50,
+      useCache: true
     });
-    
-    // Parse the XML to JSON
-    const result = await xml2js.parseStringPromise(response.data, {
-      explicitArray: false,
-      mergeAttrs: true,
-      normalize: true,
-      normalizeTags: false,
-      trim: true
-    });
-    
-    // Extract the articles
-    let articles = [];
-    
-    if (result.rss && result.rss.channel) {
-      // Standard RSS format
-      let items = result.rss.channel.item;
-      if (!Array.isArray(items)) items = [items];
-      
-      articles = items.map(item => {
-        // Handle guid which might be an object with _ property or a string
-        let guid = null;
-        if (item.guid) {
-          if (typeof item.guid === 'object' && item.guid._) {
-            guid = item.guid._;
-          } else if (typeof item.guid === 'string') {
-            guid = item.guid;
-          } else {
-            guid = item.link; // Fallback to link
-          }
-        } else {
-          guid = item.link;
-        }
-        
-        // Handle link which might also be complex
-        let link = null;
-        if (item.link) {
-          if (typeof item.link === 'object' && item.link._) {
-            link = item.link._;
-          } else {
-            link = item.link;
-          }
-        }
-        
-        return {
-          title: item.title,
-          link: link,
-          guid: guid,
-          author: item['dc:creator'] || item.author || source.name,
-          publishDate: item.pubDate || item.date || new Date().toISOString(),
-          summary: item.description || '',
-          content: item['content:encoded'] || item.content || item.description || '',
-          sourceId: source.id
-        };
-      });
-    } else if (result.feed) {
-      // Atom format
-      let entries = result.feed.entry;
-      if (!Array.isArray(entries)) entries = [entries];
-      
-      articles = entries.map(entry => {
-        let link = '';
-        if (entry.link) {
-          if (Array.isArray(entry.link)) {
-            const alternateLink = entry.link.find(l => l.rel === 'alternate' || !l.rel);
-            link = alternateLink?.href || entry.link[0]?.href || '';
-          } else {
-            link = entry.link.href || entry.link || '';
-          }
-        }
-        
-        return {
-          title: entry.title,
-          link: link,
-          guid: entry.id || link,
-          author: entry.author?.name || entry.author || source.name,
-          publishDate: entry.published || entry.updated || new Date().toISOString(),
-          summary: entry.summary || '',
-          content: entry.content || entry.summary || '',
-          sourceId: source.id
-        };
-      });
-    }
-    
-    // Process and return the articles
-    const processedArticles = articles.map(article => {
-      // Add the source object to each article
+
+    // Normalize items and add source info
+    const processedArticles = feedData.items.map(item => {
+      const normalized = rssService.normalizeItem(item, source.name);
       return {
-        ...article,
+        title: normalized.title,
+        link: normalized.link,
+        guid: normalized.guid,
+        author: normalized.author,
+        publishDate: normalized.publishDate,
+        summary: normalized.description,
+        content: normalized.content,
+        sourceId: source.id,
         source: {
           id: source.id,
           name: source.name,
@@ -470,7 +361,7 @@ export const fetchArticlesFromSource = async (req, res) => {
     
     res.status(200).json(processedArticles);
   } catch (error) {
-    console.error(`Error fetching articles from source ${req.params.id}:`, error);
+    logger.error(`Error fetching articles from source ${req.params.id}:`, { sourceId: req.params.id, error: error.message, stack: error.stack });
     res.status(500).json({ 
       message: 'Server error fetching articles',
       error: error.message
@@ -571,7 +462,7 @@ export const getAllArticles = async (req, res) => {
       offset: parseInt(offset)
     });
   } catch (error) {
-    console.error('Error fetching articles:', error);
+    logger.error('Error fetching articles:', error);
     res.status(500).json({ message: 'Server error fetching articles' });
   }
 };
@@ -621,7 +512,7 @@ export const getUserSavedArticles = async (req, res) => {
       offset: parseInt(offset)
     });
   } catch (error) {
-    console.error('Error fetching saved articles:', error);
+    logger.error('Error fetching saved articles:', error);
     res.status(500).json({ message: 'Server error fetching saved articles' });
   }
 };
@@ -670,7 +561,7 @@ export const markAsRead = async (req, res) => {
     
     res.json({ message: `Article marked as ${isRead ? 'read' : 'unread'}` });
   } catch (error) {
-    console.error('Error marking article as read:', error);
+    logger.error('Error marking article as read:', error);
     res.status(500).json({ message: 'Server error marking article as read' });
   }
 };
@@ -719,7 +610,7 @@ export const saveUserArticle = async (req, res) => {
     
     res.json({ message: `Article ${isSaved ? 'saved' : 'unsaved'}` });
   } catch (error) {
-    console.error('Error saving article:', error);
+    logger.error('Error saving article:', error);
     res.status(500).json({ message: 'Server error saving article' });
   }
 };
@@ -750,7 +641,7 @@ export const getArticleAnalysis = async (req, res) => {
     
     res.json(analysis);
   } catch (error) {
-    console.error('Error fetching article analysis:', error);
+    logger.error('Error fetching article analysis:', error);
     res.status(500).json({ message: 'Server error fetching article analysis' });
   }
 };
@@ -819,7 +710,7 @@ export const createArticleAnalysis = async (req, res) => {
     
     res.status(201).json(analysis);
   } catch (error) {
-    console.error('Error creating article analysis:', error);
+    logger.error('Error creating article analysis:', error);
     res.status(500).json({ message: 'Server error creating article analysis' });
   }
 };
@@ -835,22 +726,22 @@ export const extractFullArticleContent = async (req, res) => {
   }
 
   try {
-    console.log(`[Controller] Attempting to extract content for URL: ${url}`);
+    logger.info(`[Controller] Attempting to extract content for URL: ${url}`);
     const extractedContent = await fetchAndExtractArticle(url);
 
     if (!extractedContent) {
-      console.warn(`[Controller] Content extraction failed or returned null for ${url}`);
+      logger.warn(`[Controller] Content extraction failed or returned null for ${url}`);
       return res.status(404).json({ 
         message: 'Could not extract main content from the provided URL. The website might be incompatible or blocking requests.',
         url 
       });
     }
 
-    console.log(`[Controller] Successfully extracted content for ${url}. Length: ${extractedContent.length}`);
+    logger.info(`[Controller] Successfully extracted content for ${url}. Length: ${extractedContent.length}`);
     res.json(extractedContent);
 
   } catch (error) {
-    console.error(`[Controller] Error during content extraction for ${url}:`, error);
+    logger.error(`[Controller] Error during content extraction for ${url}:`, error);
     res.status(500).json({ 
       message: 'Server error during content extraction', 
       error: error.message, // Provide error message for debugging
@@ -873,7 +764,7 @@ export const getPublicArticles = async (req, res) => {
     
     res.status(200).json(articles);
   } catch (error) {
-    console.error('Error fetching public articles:', error);
+    logger.error('Error fetching public articles:', error);
     res.status(500).json({ message: 'Server error fetching public articles' });
   }
 };
@@ -895,7 +786,7 @@ export const getPublicArticle = async (req, res) => {
     
     res.status(200).json(article);
   } catch (error) {
-    console.error('Error fetching public article:', error);
+    logger.error('Error fetching public article:', error);
     res.status(500).json({ message: 'Server error fetching article' });
   }
 };
@@ -923,7 +814,7 @@ export const getUserArticles = async (req, res) => {
     
     res.status(200).json(articles);
   } catch (error) {
-    console.error('Error fetching user articles:', error);
+    logger.error('Error fetching user articles:', error);
     res.status(500).json({ message: 'Server error fetching articles' });
   }
 };
@@ -953,7 +844,7 @@ export const createArticle = async (req, res) => {
     
     res.status(201).json(article);
   } catch (error) {
-    console.error('Error creating article:', error);
+    logger.error('Error creating article:', error);
     res.status(500).json({ message: 'Server error creating article' });
   }
 };
@@ -971,7 +862,7 @@ export const getArticle = async (req, res) => {
     
     res.status(200).json(article);
   } catch (error) {
-    console.error('Error fetching article:', error);
+    logger.error('Error fetching article:', error);
     res.status(500).json({ message: 'Server error fetching article' });
   }
 };
@@ -996,7 +887,7 @@ export const updateArticle = async (req, res) => {
     
     res.status(200).json(article);
   } catch (error) {
-    console.error('Error updating article:', error);
+    logger.error('Error updating article:', error);
     res.status(500).json({ message: 'Server error updating article' });
   }
 };
@@ -1014,7 +905,7 @@ export const deleteArticle = async (req, res) => {
     
     res.status(200).json({ message: 'Article deleted successfully' });
   } catch (error) {
-    console.error('Error deleting article:', error);
+    logger.error('Error deleting article:', error);
     res.status(500).json({ message: 'Server error deleting article' });
   }
 };
@@ -1050,7 +941,7 @@ export const bookmarkArticle = async (req, res) => {
     
     res.status(200).json({ message: 'Article bookmarked successfully' });
   } catch (error) {
-    console.error('Error bookmarking article:', error);
+    logger.error('Error bookmarking article:', error);
     res.status(500).json({ message: 'Server error bookmarking article' });
   }
 };
@@ -1076,7 +967,7 @@ export const removeBookmark = async (req, res) => {
     
     res.status(200).json({ message: 'Bookmark removed successfully' });
   } catch (error) {
-    console.error('Error removing bookmark:', error);
+    logger.error('Error removing bookmark:', error);
     res.status(500).json({ message: 'Server error removing bookmark' });
   }
 };
@@ -1106,7 +997,7 @@ export const getBookmarkedArticles = async (req, res) => {
     
     res.status(200).json(articles);
   } catch (error) {
-    console.error('Error fetching bookmarked articles:', error);
+    logger.error('Error fetching bookmarked articles:', error);
     res.status(500).json({ message: 'Server error fetching bookmarked articles' });
   }
 }; 

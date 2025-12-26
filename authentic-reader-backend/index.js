@@ -21,7 +21,7 @@ import monitorRoutes from './routes/monitorRoutes.js';
 
 // Import services
 import onnxService from './services/onnxService.js';
-// import articleStockpileService from './services/articleStockpileService.js';
+import articleStockpileService from './services/articleStockpileService.js';
 // import analyticsService from './services/analyticsService.js';
 
 // Import routes
@@ -34,11 +34,12 @@ import analysisRoutes from './routes/analysis.js';
 import factCheckRoutes from './routes/factCheckRoutes.js';
 import sourceCredibilityRoutes from './routes/sourceCredibilityRoutes.js';
 import networkAnalysisRoutes from './routes/networkAnalysisRoutes.js';
-// import stockpileRoutes from './routes/stockpile.js';
+import stockpileRoutes from './routes/stockpileRoutes.js';
 import stockpileSimpleRoutes from './routes/stockpile-simple.js';
 import improvedFeedRoutes from './routes/improvedFeed.js';
 import jsonArticleService from './services/jsonArticleService.js';
 import aiAnalysisRoutes from './routes/aiAnalysis.js';
+import rssService from './services/rssService.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -52,9 +53,9 @@ jsonArticleService.initialize().catch(error => {
 });
 
 // Initialize article stockpile service
-// articleStockpileService.initialize().catch(error => {
-//   console.error('Failed to initialize article stockpile service:', error);
-// });
+articleStockpileService.initialize().catch(error => {
+  console.error('Failed to initialize article stockpile service:', error);
+});
 
 // Enhanced balanced sources with comprehensive coverage
 const balancedSources = [
@@ -736,170 +737,50 @@ app.get('/health', (req, res) => {
 });
 
 /**
- * Proxy endpoint for fetching RSS feeds
- * Example: /api/rss?url=https://feeds.bbci.co.uk/news/world/rss.xml
+ * Optimized RSS feed endpoint
+ * Example: /api/rss?url=https://feeds.bbci.co.uk/news/world/rss.xml&maxItems=50
  */
-// RSS endpoint with comprehensive analysis
 app.get('/api/rss', async (req, res) => {
   try {
     const feedUrl = req.query.url;
+    const maxItems = parseInt(req.query.maxItems) || 50;
     
     if (!feedUrl) {
       return res.status(400).json({ error: 'URL parameter is required' });
     }
     
-    console.log(`Fetching RSS feed from: ${feedUrl}`);
-    
-    const response = await axios.get(feedUrl, {
-      timeout: 10000,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-      }
+    // Fetch feed using optimized service
+    const feedData = await rssService.fetchFeed(feedUrl, {
+      timeout: 8000,
+      maxItems,
+      useCache: true
     });
-    
-    const feed = await parseStringPromise(response.data);
-    const items = feed.rss?.channel?.[0]?.item || feed.feed?.entry || [];
-    
-    console.log(`Found ${items.length} items in RSS feed`);
-    
-    // Process and analyze each article with comprehensive analysis
-    const processedItems = await Promise.all(items.slice(0, 20).map(async (item, index) => {
-      const rawTitle = item.title?.[0] || item['media:title']?.[0] || '';
-      const title = decodeHtmlEntities(rawTitle);
-      const link = item.link?.[0] || item.link?.[0]?.$?.href || '';
-      const rawDesc = item.description?.[0] || item.summary?.[0] || item['media:description']?.[0] || '';
-      const description = decodeHtmlEntities(rawDesc).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-      const pubDate = item.pubDate?.[0] || item.published?.[0] || '';
-      const author = item.author?.[0] || item['dc:creator']?.[0] || '';
-      
-      // Extract full content if available
-      let fullContent = item['content:encoded']?.[0] || description;
-      
-      // Try to fetch full article content if we have a link
-      if (link && fullContent.length < 1000) {
-        try {
-          const contentResponse = await axios.get(link, {
-            timeout: 5000,
-            headers: {
-              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-            }
-          });
-          
-          // Extract main content from HTML (basic extraction)
-          const htmlContent = contentResponse.data;
-          const contentMatch = htmlContent.match(/<article[^>]*>([\s\S]*?)<\/article>/i) ||
-                              htmlContent.match(/<main[^>]*>([\s\S]*?)<\/main>/i) ||
-                              htmlContent.match(/<div[^>]*class="[^"]*content[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
-          
-          if (contentMatch && contentMatch[1]) {
-            const extractedContent = contentMatch[1].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-            if (extractedContent.length > fullContent.length) {
-              fullContent = extractedContent;
-            }
-          }
-        } catch (contentError) {
-          console.log(`Could not fetch full content for ${link}:`, contentError.message);
-        }
-      }
-      
-      // Prepare article data for comprehensive analysis
-      const articleData = {
-        title,
-        link,
-        description,
-        pubDate,
-        author,
-        content: fullContent,
-        source: feedUrl,
-        fetchedAt: new Date().toISOString()
-      };
-      
-      // Perform comprehensive analysis
-      // const comprehensiveAnalysisResult = await comprehensiveAnalysis.analyzeFullArticle(articleData);
-      
-      // Create enhanced article data with detailed analysis
-      const articleId = `article_${Date.now()}_${index}`;
-      const analysis = {
-        wordCount: fullContent ? fullContent.split(' ').length : 0,
-        readingTime: fullContent ? Math.ceil(fullContent.split(' ').length / 200) : 0,
-        hasExternalLinks: fullContent ? (fullContent.includes('http') || fullContent.includes('www')) : false,
-        complexity: analyzeContentComplexity(fullContent),
-        keyTopics: extractKeyTopics(title, fullContent),
-        credibility: assessBasicCredibility(link, title, fullContent),
-        summary: generateBasicSummary(fullContent),
-        biasIndicators: detectBiasIndicators(title, fullContent),
-        logicalFallacies: detectLogicalFallacies(fullContent),
-        bias: assessBiasDirection(title, fullContent),
-        network: buildNetworkSummary(fullContent),
-        timestamp: new Date().toISOString()
-      };
 
-      // Create enhanced article data with detailed analysis
-      const enhancedArticle = {
-        ...item,
-        articleId: `article_${Date.now()}_${index}`,
-        content: fullContent,
-        analysis: {
-          wordCount: analysis.wordCount,
-          readingTime: analysis.readingTime,
-          hasExternalLinks: analysis.hasExternalLinks,
-          complexity: analysis.complexity,
-          keyTopics: analysis.keyTopics,
-          credibility: {
-            score: analysis.credibility.score,
-            level: analysis.credibility.level,
-            reason: analysis.credibility.reason
-          },
-          summary: analysis.summary,
-          biasIndicators: analysis.biasIndicators,
-          logicalFallacies: analysis.logicalFallacies,
-          biasAnalysis: analysis.bias,
-          networkAnalysis: analysis.network,
-          timestamp: analysis.timestamp
-        }
-      };
-
-      // Save to storage
-      await jsonStorage.saveArticle(articleId, enhancedArticle);
-      await jsonStorage.saveAnalysis(`analysis_${articleId}`, analysis);
-
-      return {
-        title,
-        link,
-        description,
-        pubDate,
-        author,
-        content: fullContent.substring(0, 500) + (fullContent.length > 500 ? '...' : ''),
-        analysis: enhancedArticle.analysis,
-        articleId,
-        source: feedUrl
-      };
-    }));
-
-    const feedInfo = {
-      title: feed.rss?.channel?.[0]?.title?.[0] || feed.feed?.title?.[0] || 'Unknown Feed',
-      description: feed.rss?.channel?.[0]?.description?.[0] || feed.feed?.subtitle?.[0] || '',
-      link: feed.rss?.channel?.[0]?.link?.[0] || feedUrl,
-      itemCount: processedItems.length,
-      lastUpdated: new Date().toISOString()
-    };
+    // Normalize items
+    const items = feedData.items.map(item => 
+      rssService.normalizeItem(item, feedData.title)
+    );
 
     res.json({
-      ...feedInfo,
-      items: processedItems
+      title: feedData.title,
+      description: feedData.description,
+      link: feedData.link,
+      itemCount: items.length,
+      items: items,
+      fetchedAt: feedData.fetchedAt
     });
 
   } catch (error) {
-    console.error('RSS fetch error:', error);
+    logger.error('RSS fetch error:', error);
     res.status(500).json({ 
-      error: 'Failed to fetch content',
+      error: 'Failed to fetch RSS feed',
       message: error.message,
       url: req.query.url
     });
   }
 });
 
-// Endpoint to fetch articles from all balanced sources
+// Optimized endpoint to fetch articles from all balanced sources
 app.get('/api/balanced-feed', async (req, res) => {
   try {
     const { categories = 'all', limit = 50 } = req.query;
@@ -913,191 +794,52 @@ app.get('/api/balanced-feed', async (req, res) => {
       );
     }
     
-    console.log(`Fetching from ${sourcesToFetch.length} sources`);
+    logger.info(`Fetching from ${sourcesToFetch.length} sources`);
     
+    // Extract URLs and fetch concurrently using optimized service
+    const urls = sourcesToFetch.map(s => s.url);
+    const feedResults = await rssService.fetchFeeds(urls, {
+      concurrency: 5,
+      timeout: 8000,
+      maxItems: 10
+    });
+    
+    // Process results and normalize articles
     const allArticles = [];
-    
-    // Fetch from each source (with concurrency limit to avoid overwhelming servers)
-    const concurrencyLimit = 3; // Reduced concurrency for better reliability
-    for (let i = 0; i < sourcesToFetch.length; i += concurrencyLimit) {
-      const batch = sourcesToFetch.slice(i, i + concurrencyLimit);
-      
-      const batchPromises = batch.map(async (source) => {
-        try {
-          console.log(`Fetching from ${source.name}: ${source.url}`);
-          
-          // Fetch RSS feed directly
-          const response = await axios.get(source.url, {
-            timeout: 15000,
-            headers: {
-              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-              'Accept': 'application/rss+xml, application/xml, text/xml, */*'
-            }
-          });
-          
-          // Parse RSS feed
-          const feed = await parseStringPromise(response.data);
-          const items = feed.rss?.channel?.[0]?.item || feed.feed?.entry || [];
-          
-          console.log(`Found ${items.length} items from ${source.name}`);
-          
-          // Process articles from this source
-          const processedArticles = items.slice(0, 10).map((item, index) => {
-            const rawTitle = item.title?.[0] || item['media:title']?.[0] || '';
-            const title = decodeHtmlEntities(rawTitle);
-            const link = item.link?.[0] || item.link?.[0]?.$?.href || '';
-            const rawDesc = item.description?.[0] || item.summary?.[0] || item['media:description']?.[0] || '';
-            const description = decodeHtmlEntities(rawDesc).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-            const pubDate = item.pubDate?.[0] || item.published?.[0] || new Date().toISOString();
-            const author = item.author?.[0] || item['dc:creator']?.[0] || source.name;
-            
-            // Extract full content if available
-            let fullContent = item['content:encoded']?.[0] || description;
-            
-            // Create article ID
-            const articleId = `real_${source.id}_${Date.now()}_${index}`;
-            
-            // Basic analysis
-            const analysis = {
-              wordCount: fullContent ? fullContent.split(' ').length : 0,
-              readingTime: fullContent ? Math.ceil(fullContent.split(' ').length / 200) : 0,
-              hasExternalLinks: fullContent ? (fullContent.includes('http') || fullContent.includes('www')) : false,
-              complexity: analyzeContentComplexity(fullContent),
-              keyTopics: extractKeyTopics(title, fullContent),
-              credibility: assessBasicCredibility(link, title, fullContent),
-              summary: generateBasicSummary(fullContent),
-              biasIndicators: detectBiasIndicators(title, fullContent),
-              logicalFallacies: detectLogicalFallacies(fullContent),
-              bias: assessBiasDirection(title, fullContent),
-              network: buildNetworkSummary(fullContent),
-              timestamp: new Date().toISOString()
-            };
-            
-            return {
-              title,
-              link,
-              description,
-              pubDate,
-              author,
-              content: fullContent.substring(0, 500) + (fullContent.length > 500 ? '...' : ''),
-              source: source.name,
-              sourceCategory: source.category,
-              biasRating: source.biasRating,
-              reliability: source.reliability,
-              sourceDescription: source.description,
-              articleId,
-              analysis: {
-                wordCount: analysis.wordCount,
-                readingTime: analysis.readingTime,
-                hasExternalLinks: analysis.hasExternalLinks,
-                complexity: analysis.complexity,
-                keyTopics: analysis.keyTopics,
-                credibility: analysis.credibility,
-                summary: analysis.summary,
-                biasIndicators: analysis.biasIndicators,
-                logicalFallacies: analysis.logicalFallacies,
-                biasAnalysis: analysis.bias,
-                networkAnalysis: analysis.network,
-                timestamp: analysis.timestamp
-              }
-            };
-          });
-          
-          return processedArticles;
-        } catch (error) {
-          console.log(`Failed to fetch from ${source.name}:`, error.message);
-          // Generate fallback content for failed sources
-          const fallbackContent = `This is sample content from ${source.name} to demonstrate the enhanced analysis features including logical fallacy detection, bias analysis, network analysis, and credibility assessment. This content contains various elements that the analysis engine can detect and evaluate. According to research, this demonstrates how the system works.`;
-          
-          const analysis = {
-            wordCount: fallbackContent.split(' ').length,
-            readingTime: Math.ceil(fallbackContent.split(' ').length / 200),
-            hasExternalLinks: false,
-            complexity: 'medium',
-            keyTopics: ['general'],
-            credibility: assessBasicCredibility(`https://example.com/${source.id}`, `Sample article from ${source.name}`, fallbackContent),
-            summary: generateBasicSummary(fallbackContent),
-            biasIndicators: detectBiasIndicators(`Sample article from ${source.name}`, fallbackContent),
-            logicalFallacies: detectLogicalFallacies(fallbackContent),
-            bias: assessBiasDirection(`Sample article from ${source.name}`, fallbackContent),
-            network: buildNetworkSummary(fallbackContent),
-            timestamp: new Date().toISOString()
-          };
-          
-          return [{
-            title: `Sample article from ${source.name}`,
-            link: `https://example.com/${source.id}`,
-            description: `This is a sample article from ${source.name} to demonstrate the analysis features. The source is currently unavailable.`,
-            pubDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days ago
-            author: source.name,
-            content: fallbackContent,
+    feedResults.forEach((result, index) => {
+      if (result.data && result.data.items) {
+        const source = sourcesToFetch[index];
+        const articles = result.data.items.map(item => {
+          const normalized = rssService.normalizeItem(item, source.name);
+          return {
+            ...normalized,
             source: source.name,
             sourceCategory: source.category,
             biasRating: source.biasRating,
             reliability: source.reliability,
             sourceDescription: source.description,
-            articleId: `fallback_${source.id}_${Date.now() - 7 * 24 * 60 * 60 * 1000}`,
-            analysis: {
-              wordCount: analysis.wordCount,
-              readingTime: analysis.readingTime,
-              hasExternalLinks: analysis.hasExternalLinks,
-              complexity: analysis.complexity,
-              keyTopics: analysis.keyTopics,
-              credibility: analysis.credibility,
-              summary: analysis.summary,
-              biasIndicators: analysis.biasIndicators,
-              logicalFallacies: analysis.logicalFallacies,
-              biasAnalysis: analysis.bias,
-              networkAnalysis: analysis.network,
-              timestamp: analysis.timestamp
-            }
-          }];
-        }
-      });
-      
-      const batchResults = await Promise.all(batchPromises);
-      allArticles.push(...batchResults.flat());
-    }
+            articleId: `${source.id || index}_${normalized.guid}`
+          };
+        });
+        allArticles.push(...articles);
+      }
+    });
     
-    // Separate real articles from sample articles
-    const realArticles = allArticles.filter(article => article.articleId.startsWith('real_'));
-    const sampleArticles = allArticles.filter(article => article.articleId.startsWith('fallback_'));
-    
-    console.log(`Total articles: ${allArticles.length}, Real: ${realArticles.length}, Sample: ${sampleArticles.length}`);
-    
-    // Sort real articles by date (most recent first) and limit to prevent memory issues
-    const sortedRealArticles = realArticles
-      .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
-      .slice(0, parseInt(limit) * 2); // Keep more real articles for better selection
-    
-    // Sort sample articles by date (most recent first) and limit
-    const sortedSampleArticles = sampleArticles
-      .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
-      .slice(0, parseInt(limit) / 2); // Keep fewer sample articles
-    
-    console.log(`Sorted real articles: ${sortedRealArticles.length}, Sample: ${sortedSampleArticles.length}`);
-    
-    // Combine: real articles first, then sample articles
-    const sortedArticles = [...sortedRealArticles, ...sortedSampleArticles]
+    // Sort by publish date (most recent first) and limit
+    const sortedArticles = allArticles
+      .sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate))
       .slice(0, parseInt(limit));
-    
-    // Clear large arrays to free memory
-    allArticles.length = 0;
-    realArticles.length = 0;
-    sampleArticles.length = 0;
     
     res.json({
       articles: sortedArticles,
       totalSources: sourcesToFetch.length,
       totalArticles: sortedArticles.length,
-      realArticles: sortedRealArticles.length,
-      sampleArticles: sortedSampleArticles.length,
       categories: categories,
       timestamp: new Date().toISOString()
     });
     
   } catch (error) {
-    console.error('Balanced feed error:', error);
+    logger.error('Balanced feed error:', error);
     res.status(500).json({ 
       error: 'Failed to fetch balanced feed',
       message: error.message
@@ -1291,7 +1033,7 @@ app.use('/api/analysis', analysisLimiter, analysisRoutes);
 app.use('/api/fact-check', publicLimiter, factCheckRoutes);
 app.use('/api/sources', publicLimiter, sourceCredibilityRoutes);
 app.use('/api/network', publicLimiter, networkAnalysisRoutes);
-// app.use('/api/stockpile', publicLimiter, stockpileRoutes);
+app.use('/api/stockpile', publicLimiter, stockpileRoutes);
 app.use('/api/stockpile-simple', publicLimiter, stockpileSimpleRoutes);
 app.use('/api/feed', publicLimiter, improvedFeedRoutes);
 app.use('/api/ai', analysisLimiter, aiAnalysisRoutes);

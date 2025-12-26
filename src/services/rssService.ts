@@ -83,16 +83,14 @@ export const DEFAULT_SOURCES: RSSSource[] = [
   }
 ];
 
-// Fetch RSS feed from backend API
+// Fetch RSS feed from optimized backend API
 async function parseRSS(url: string): Promise<CustomFeed> {
   try {
-    console.log(`🌐 parseRSS: Fetching RSS from ${url}`);
-    // Use our backend proxy to fetch the RSS feed
-    const apiUrl = `${API_BASE_URL}/api/rss?url=${encodeURIComponent(url)}`;
+    // Use optimized backend proxy
+    const apiUrl = `${API_BASE_URL}/api/rss?url=${encodeURIComponent(url)}&maxItems=50`;
     
-    // Add timeout to prevent hanging
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
     
     try {
       const response = await fetch(apiUrl, { 
@@ -105,28 +103,29 @@ async function parseRSS(url: string): Promise<CustomFeed> {
       }
       
       const data = await response.json();
-      console.log(`🌐 parseRSS: Successfully fetched RSS from ${url}`);
       
-      // Handle different feed formats (RSS, Atom, RDF)
-      if (data.rss && data.rss.channel) {
-        // Standard RSS format
-        return parseRssFormat(data.rss.channel);
-      } else if (data.feed) {
-        // Atom format
-        return parseAtomFormat(data.feed);
-      } else if (data.rdf && data.rdf.channel) {
-        // RDF format
-        return parseRdfFormat(data.rdf);
-      } else if (data.channel) {
-        // Direct channel format
-        return parseRssFormat(data.channel);
+      // Backend now returns normalized format
+      if (data.items && Array.isArray(data.items)) {
+        return {
+          title: data.title || 'Untitled Feed',
+          description: data.description || '',
+          items: data.items.map((item: any) => ({
+            title: item.title,
+            link: item.link,
+            guid: item.guid,
+            pubDate: item.publishDate,
+            description: item.description,
+            content: item.content,
+            author: item.author,
+            categories: item.categories || []
+          }))
+        };
       }
       
-      throw new Error('Unsupported RSS feed format');
+      throw new Error('Invalid RSS response format');
     } catch (fetchError) {
       clearTimeout(timeoutId);
       if (fetchError.name === 'AbortError') {
-        console.error(`Timeout fetching RSS from ${url}`);
         throw new Error(`Timeout fetching RSS from ${url}`);
       }
       throw fetchError;
