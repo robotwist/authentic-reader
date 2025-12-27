@@ -40,9 +40,9 @@ export const API_BASE_URL = (() => {
     return 'https://authentic-reader-backend-c7754cf50ab2.herokuapp.com';
   }
   
-  // Default to Heroku backend for development (no local backend running)
-  console.log('[API Config] Using Heroku backend for development');
-  return 'https://authentic-reader-backend-c7754cf50ab2.herokuapp.com';
+  // Default to local backend for development
+  console.log('[API Config] Using local backend for development');
+  return 'http://localhost:3000';
 })();
 
 // Log the final API base URL
