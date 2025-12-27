@@ -19,8 +19,9 @@
   VITE_ENABLE_CHROMA = "false"
   VITE_ENABLE_FEEDBACK_LOOP = "false"
 
-# Handle SPA routing
+# Handle SPA routing - only redirect when file doesn't exist
 [[redirects]]
   from = "/*"
   to = "/index.html"
-  status = 200 
+  status = 200
+  force = false

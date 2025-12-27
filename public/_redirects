@@ -1,0 +1,7 @@
+# Netlify SPA redirects
+# This file ensures proper routing for single-page applications
+# The 200 status serves index.html while keeping the URL intact
+# Assets and existing files are served directly (not redirected)
+
+/*    /index.html   200
+

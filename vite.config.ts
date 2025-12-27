@@ -11,6 +11,8 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
+    // Ensure absolute paths for assets
+    base: '/',
     plugins: [
       react(),
       VitePWA({
