@@ -83,7 +83,7 @@ export default defineConfig(({ mode }) => {
             // Split vendor libraries into separate chunks
             'react-vendor': ['react', 'react-dom', 'react-router-dom'],
             'ui-vendor': ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
-            'chart-vendor': ['chart.js', 'recharts'],
+            'chart-vendor': ['recharts'],
             'utils-vendor': ['axios', 'dompurify', 'jsdom']
           }
         }
