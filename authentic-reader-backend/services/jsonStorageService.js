@@ -97,15 +97,8 @@ class JSONStorageService {
     return users[userId] || null;
   }
 
-  // Daily briefing management
-  async getDailyBriefing() {
-    return await this.readFile(this.dailyBriefingFile, null);
-  }
-
-  async saveDailyBriefing(briefingData) {
-    await this.writeFile(this.dailyBriefingFile, briefingData);
-    return briefingData;
-  }
+  // Daily briefing management - REMOVED: Now using Postgres only
+  // Daily briefing is stored in the daily_briefing_articles Postgres table
 }
 
 export default new JSONStorageService();

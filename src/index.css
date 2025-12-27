@@ -1,98 +1,94 @@
-/* Dark Mode Theme - Now the default theme for the application */
+/* Sepia/Paper Theme - Intellectual Newspaper Vibe */
 :root {
-  /* Color palette for dark mode */
-  --primary-color: #5c82b8;
-  --primary-color-rgb: 92, 130, 184; /* RGB values for rgba usage */
-  --primary-dark: #4a6fa5;
-  --secondary-color: #4a6fa5;
-  --secondary-color-light: #6187bd;
-  --accent-color: #a3c9a8;
-  --accent-light: #d0e8d3;
-  --background-color: #1a1a2e;
-  --card-background: #222236;
-  --text-color: #e1e1e1;
-  --text-light: #a0a0a0;
-  --border-color: #2a2a3d;
-  --border-color-dark: #3a3a4d;
+  /* Sepia/Paper color palette */
+  --background-color: #F9F7F1; /* Cream */
+  --text-color: #2C2C2C; /* Dark Grey */
+  --text-light: #5A5A5A; /* Medium Grey */
+  --card-background: #FFFFFF;
+  --border-color: #D4C5B9; /* Light sepia border */
+  --border-color-dark: #B8A99D;
   
-  /* Shadows */
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.3);
+  /* Primary colors - Dark grey/serif styling */
+  --primary-color: #2C2C2C;
+  --primary-dark: #1A1A1A;
+  --secondary-color: #5A5A5A;
+  --accent-color: #8B7355; /* Sepia accent */
+  
+  /* Shadows - Subtle for paper effect */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.2);
   
   /* Spacing and sizing */
-  --border-radius: 10px;
+  --border-radius: 4px;
   --content-max-width: 1200px;
   --reading-max-width: 75ch;
   
-  /* Typography */
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  --font-serif: 'Lora', Georgia, 'Times New Roman', Times, serif;
-  --line-height-normal: 1.5;
+  /* Typography - Serif for intellectual feel */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Lora', 'Charter', 'Literata', Georgia, 'Times New Roman', Times, serif;
+  --line-height-normal: 1.6;
   --line-height-relaxed: 1.8;
   
   /* App variables */
   --section-spacing: 2rem;
-  --footer-background: #222236;
+  --footer-background: #F5F3ED;
   --bias-left: #4a6fa5;
   --bias-center: #5a9c8a;
   --bias-right: #b17039;
-  --bias-strong: rgba(255, 255, 255, 0.25);
-  --bias-moderate: rgba(255, 255, 255, 0.15);
-  --bias-slight: rgba(255, 255, 255, 0.1);
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --font-family: 'Lora', 'Charter', Georgia, 'Times New Roman', Times, serif;
   --rounded-sm: 0.25rem;
   --rounded-md: 0.5rem;
   --rounded-lg: 1rem;
   --transition-speed: 0.3s;
   
   /* Table styling */
-  --table-header-bg: #2a2a42;
-  --table-cell-bg: #262640;
-  --table-border: #3a3a4d;
+  --table-header-bg: #F5F3ED;
+  --table-cell-bg: #FFFFFF;
+  --table-border: #D4C5B9;
   
   /* Heading colors */
-  --heading-color: #e0e0e0;
-  --heading-secondary: #c0c0c0;
+  --heading-color: #1A1A1A;
+  --heading-secondary: #2C2C2C;
   
-  /* UI element colors */
-  --button-bg: #2c3e50;
-  --button-text: #e0e0e0;
-  --button-hover-bg: #34495e;
-  --input-bg: #262640;
-  --input-text: #e0e0e0;
-  --input-border: #3a3a4d;
-  --input-focus-border: #5c82b8;
+  /* UI element colors - Dark grey instead of tech blue */
+  --button-bg: #2C2C2C;
+  --button-text: #F9F7F1;
+  --button-hover-bg: #1A1A1A;
+  --input-bg: #FFFFFF;
+  --input-text: #2C2C2C;
+  --input-border: #D4C5B9;
+  --input-focus-border: #8B7355;
   
   /* Additional UI elements */
-  --tooltip-bg: #2d2d45;
-  --tooltip-text: #e0e0e0;
-  --badge-bg: #3a3a4d;
-  --badge-text: #e0e0e0;
+  --tooltip-bg: #2C2C2C;
+  --tooltip-text: #F9F7F1;
+  --badge-bg: #E8E4DC;
+  --badge-text: #2C2C2C;
   
   /* Box and card backgrounds */
-  --bg-color: #222236;
-  --bg-color-light: #2a2a42;
-  --bg-color-lighter: #2d2d45;
+  --bg-color: #FFFFFF;
+  --bg-color-light: #F9F7F1;
+  --bg-color-lighter: #F5F3ED;
 }
 
-/* Apply dark mode classes to everything by default */
+/* Apply Sepia/Paper theme */
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   line-height: var(--line-height-normal);
   color: var(--text-color);
   background-color: var(--background-color);
   min-height: 100vh;
 }
 
-/* Add .dark-mode class to html for compatibility with existing components */
 html {
   background-color: var(--background-color);
 }
 
 html, body, .app {
   min-height: 100vh;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -100,6 +96,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.3;
   color: var(--heading-color);
   margin-bottom: 0.75em;
+  font-family: var(--font-serif);
 }
 
 a {
@@ -110,6 +107,7 @@ a {
 
 a:hover {
   color: var(--primary-dark);
+  text-decoration: underline;
 }
 
 p {
@@ -119,11 +117,11 @@ p {
 
 button {
   cursor: pointer;
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   font-size: 1rem;
   padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: none;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
   transition: all 0.2s;
   background-color: var(--button-bg);
   color: var(--button-text);
@@ -196,6 +194,7 @@ img {
   max-width: var(--content-max-width);
   margin: 0 auto;
   width: 100%;
+  background-color: var(--background-color);
 }
 
 /* App footer */
@@ -221,11 +220,6 @@ img {
 
 .footer-content a:hover {
   color: var(--primary-color);
-}
-
-/* For consistency with existing .dark-mode classes used in components */
-.dark-mode:root, .dark-mode, body, html, .app {
-  color-scheme: dark;
 }
 
 /* Transitions */

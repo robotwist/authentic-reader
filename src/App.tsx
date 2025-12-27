@@ -9,7 +9,7 @@ function App() {
   return (
     <ErrorBoundary>
       <Router>
-        <div className="app dark-mode">
+        <div className="app">
           <SkipLinks />
           <SimpleHeader />
           <main className="main-content" id="main-content">

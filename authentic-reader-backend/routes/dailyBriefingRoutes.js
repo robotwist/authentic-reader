@@ -1,11 +1,11 @@
 import express from 'express';
 import { DailyBriefingArticle } from '../models/index.js';
-import jsonStorage from '../services/jsonStorageService.js';
 
 const router = express.Router();
 
 /**
  * Helper: Convert DB articles to API format
+ * Transforms fallacies from JSONB to match frontend expectations
  */
 function toApiFormat(articles, isArchive = false) {
   if (!articles || articles.length === 0) return null;
@@ -13,6 +13,53 @@ function toApiFormat(articles, isArchive = false) {
   const topics = {};
 
   for (const article of articles) {
+    // Transform fallacies to match frontend structure
+    // Frontend expects: analysis.manipulationAnalysis.logicalFallacies as array
+    const fallaciesData = article.fallacies || {};
+    let logicalFallacies = [];
+    
+    // Handle different possible structures of fallacies data
+    if (fallaciesData.manipulationAnalysis?.logicalFallacies) {
+      // Already in expected format
+      logicalFallacies = fallaciesData.manipulationAnalysis.logicalFallacies;
+    } else if (fallaciesData.logicalFallacies) {
+      // Direct logicalFallacies array
+      logicalFallacies = Array.isArray(fallaciesData.logicalFallacies) 
+        ? fallaciesData.logicalFallacies 
+        : [];
+    } else if (Array.isArray(fallaciesData)) {
+      // Fallacies is already an array
+      logicalFallacies = fallaciesData;
+    } else if (typeof fallaciesData === 'object') {
+      // Try to extract fallacies from nested structure
+      const keys = Object.keys(fallaciesData);
+      if (keys.length > 0) {
+        // Convert object to array format if needed
+        logicalFallacies = Object.values(fallaciesData).filter(item => 
+          item && typeof item === 'object' && (item.type || item.name)
+        );
+      }
+    }
+
+    // Build analysis object matching frontend expectations
+    const analysis = {
+      manipulationAnalysis: {
+        logicalFallacies: logicalFallacies.map((fallacy, index) => ({
+          type: fallacy.type || fallacy.name || 'Unknown',
+          location: fallacy.location || fallacy.excerpt || fallacy.quote || '',
+          explanation: fallacy.explanation || fallacy.description || ''
+        }))
+      },
+      overallAssessment: {
+        reliabilityScore: article.reliabilityScore || fallaciesData.overallAssessment?.reliabilityScore || null
+      }
+    };
+
+    // Preserve other analysis fields if they exist
+    if (fallaciesData.keySentences) {
+      analysis.keySentences = fallaciesData.keySentences;
+    }
+
     topics[article.topic] = {
       topic: article.topicLabel,
       icon: article.icon,
@@ -24,7 +71,7 @@ function toApiFormat(articles, isArchive = false) {
         author: article.author,
         content: article.content
       },
-      analysis: article.fallacies
+      analysis
     };
   }
 
@@ -39,32 +86,24 @@ function toApiFormat(articles, isArchive = false) {
 
 /**
  * GET /api/daily-briefing
- * Get today's briefing (tries DB first, falls back to JSON file)
+ * Get today's briefing from Postgres database
  */
 router.get('/', async (req, res) => {
   try {
-    // Try to get from database first
     const today = new Date().toISOString().split('T')[0];
     const dbArticles = await DailyBriefingArticle.findAll({
       where: { briefingDate: today },
       order: [['topic', 'ASC']]
     });
 
-    if (dbArticles && dbArticles.length === 5) {
-      return res.json(toApiFormat(dbArticles, false));
-    }
-
-    // Fall back to JSON file
-    const briefing = await jsonStorage.getDailyBriefing();
-    
-    if (!briefing) {
+    if (!dbArticles || dbArticles.length === 0) {
       return res.status(404).json({ 
         error: 'Daily briefing not found',
         message: 'Daily briefing has not been generated yet.'
       });
     }
 
-    res.json(briefing);
+    res.json(toApiFormat(dbArticles, false));
   } catch (error) {
     console.error('Error fetching daily briefing:', error);
     res.status(500).json({ 
@@ -86,11 +125,6 @@ router.get('/latest', async (req, res) => {
     });
 
     if (!latestArticle) {
-      // Fall back to JSON file
-      const briefing = await jsonStorage.getDailyBriefing();
-      if (briefing) {
-        return res.json(briefing);
-      }
       return res.status(404).json({ 
         error: 'No briefings found',
         message: 'No daily briefings have been saved yet.'

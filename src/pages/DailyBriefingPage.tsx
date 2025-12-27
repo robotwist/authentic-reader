@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReaderView from '../components/ReaderView';
+import NarrativeThermometer from '../components/NarrativeThermometer';
 import { FallacyData } from '../utils/llmParser';
 import { API_CONFIG } from '../config/api.config';
 import { fallbackBriefing } from '../data/fallbackBriefing';
@@ -362,6 +363,9 @@ const DailyBriefingPage: React.FC = () => {
           </div>
         )}
       </div>
+      
+      {/* Narrative Thermometer - 7-Day Trend */}
+      <NarrativeThermometer />
       
       <div className="topic-grid">
         {TOPIC_KEYS.map((key) => {
