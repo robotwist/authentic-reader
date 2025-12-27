@@ -144,8 +144,76 @@ Article.hasMany(UserArticle, { foreignKey: 'articleId' });
 UserArticle.belongsTo(User, { foreignKey: 'userId' });
 UserArticle.belongsTo(Article, { foreignKey: 'articleId' });
 
+// Daily Briefing Articles for history/archive feature
+const DailyBriefingArticle = sequelize.define('DailyBriefingArticle', {
+  id: {
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    primaryKey: true
+  },
+  briefingDate: {
+    type: Sequelize.DATEONLY,
+    allowNull: false,
+    field: 'briefing_date'
+  },
+  topic: {
+    type: Sequelize.STRING(50),
+    allowNull: false
+  },
+  topicLabel: {
+    type: Sequelize.STRING(100),
+    allowNull: false,
+    field: 'topic_label'
+  },
+  icon: {
+    type: Sequelize.STRING(10),
+    allowNull: false
+  },
+  headline: {
+    type: Sequelize.STRING(500),
+    allowNull: false
+  },
+  source: {
+    type: Sequelize.STRING(200),
+    allowNull: false
+  },
+  author: {
+    type: Sequelize.STRING(200),
+    allowNull: true
+  },
+  url: {
+    type: Sequelize.TEXT,
+    allowNull: true
+  },
+  content: {
+    type: Sequelize.TEXT,
+    allowNull: false
+  },
+  publishDate: {
+    type: Sequelize.DATE,
+    allowNull: true,
+    field: 'publish_date'
+  },
+  fallacies: {
+    type: Sequelize.JSON,
+    allowNull: true,
+    defaultValue: {}
+  },
+  reliabilityScore: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+    field: 'reliability_score'
+  }
+}, {
+  tableName: 'daily_briefing_articles',
+  underscored: true,
+  timestamps: true
+});
+
+db.DailyBriefingArticle = DailyBriefingArticle;
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 export default db;
-export { User, Source, Article, UserSource, UserArticle, Analysis, UserPrefs }; 
+export { User, Source, Article, UserSource, UserArticle, Analysis, UserPrefs, DailyBriefingArticle }; 

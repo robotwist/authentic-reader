@@ -39,9 +39,16 @@ interface DailyBriefing {
   generatedAt: string;
   version: string;
   isOffline?: boolean;
+  isArchive?: boolean;
+  briefingDate?: string;
   topics: {
     [key: string]: DailyBriefingTopic;
   };
+}
+
+interface ArchiveDate {
+  date: string;
+  formatted: string;
 }
 
 const TOPIC_KEYS = ['ukraine', 'gaza', 'epstein', 'diseases', 'trump'] as const;
@@ -52,20 +59,28 @@ const DailyBriefingPage: React.FC = () => {
   const [selectedTopic, setSelectedTopic] = useState<TopicKey | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOffline, setIsOffline] = useState(false);
+  const [showArchive, setShowArchive] = useState(false);
+  const [archiveDates, setArchiveDates] = useState<ArchiveDate[]>([]);
+  const [loadingArchive, setLoadingArchive] = useState(false);
+  const [currentDate, setCurrentDate] = useState<string | null>(null);
 
   useEffect(() => {
     loadDailyBriefing();
   }, []);
 
-  const loadDailyBriefing = async () => {
+  const loadDailyBriefing = async (date?: string) => {
     setLoading(true);
     
     try {
       const backendUrl = API_CONFIG.BASE_URL;
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
       
-      const response = await fetch(`${backendUrl}/api/daily-briefing`, {
+      const endpoint = date 
+        ? `${backendUrl}/api/daily-briefing/archive/${date}`
+        : `${backendUrl}/api/daily-briefing`;
+      
+      const response = await fetch(endpoint, {
         signal: controller.signal
       });
       clearTimeout(timeoutId);
@@ -77,14 +92,49 @@ const DailyBriefingPage: React.FC = () => {
       const data = await response.json();
       setBriefing(data);
       setIsOffline(false);
+      setCurrentDate(data.briefingDate || null);
     } catch (err) {
       console.warn('API unavailable, using fallback data:', err);
-      // Graceful degradation: use fallback data
       setBriefing(fallbackBriefing as DailyBriefing);
       setIsOffline(true);
+      setCurrentDate(null);
     } finally {
       setLoading(false);
     }
+  };
+
+  const loadArchiveDates = async () => {
+    setLoadingArchive(true);
+    try {
+      const backendUrl = API_CONFIG.BASE_URL;
+      const response = await fetch(`${backendUrl}/api/daily-briefing/archive`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        setArchiveDates(data.dates || []);
+      }
+    } catch (err) {
+      console.error('Failed to load archive dates:', err);
+      setArchiveDates([]);
+    } finally {
+      setLoadingArchive(false);
+    }
+  };
+
+  const handleOpenArchive = () => {
+    setShowArchive(true);
+    loadArchiveDates();
+  };
+
+  const handleSelectDate = (date: string) => {
+    setShowArchive(false);
+    setSelectedTopic(null);
+    loadDailyBriefing(date);
+  };
+
+  const handleBackToToday = () => {
+    setCurrentDate(null);
+    loadDailyBriefing();
   };
 
   const convertAnalysisToFallacies = (analysis: DailyBriefingTopic['analysis']): FallacyData[] => {
@@ -139,22 +189,63 @@ const DailyBriefingPage: React.FC = () => {
     loadDailyBriefing();
   };
 
-  // Loading state (brief, with timeout to fallback)
+  // Loading state
   if (loading) {
     return (
       <div className="daily-briefing-page">
         <div className="loading-container">
           <div className="loading-spinner" />
-          <h2>Loading Today's Briefing...</h2>
-          <p>Preparing your daily truth assessment</p>
+          <h2>Loading Briefing...</h2>
+          <p>Preparing your truth assessment</p>
         </div>
       </div>
     );
   }
 
-  // We should always have data now (either API or fallback)
+  // Archive modal
+  if (showArchive) {
+    return (
+      <div className="daily-briefing-page archive-mode">
+        <div className="archive-modal">
+          <div className="archive-header">
+            <h2>📚 Briefing Archive</h2>
+            <button className="close-button" onClick={() => setShowArchive(false)}>
+              ×
+            </button>
+          </div>
+          
+          {loadingArchive ? (
+            <div className="archive-loading">
+              <div className="loading-spinner small" />
+              <p>Loading archive...</p>
+            </div>
+          ) : archiveDates.length === 0 ? (
+            <div className="archive-empty">
+              <p>No archived briefings yet.</p>
+              <p className="archive-hint">Past briefings will appear here once they're saved.</p>
+            </div>
+          ) : (
+            <div className="archive-list">
+              {archiveDates.map(({ date, formatted }) => (
+                <button
+                  key={date}
+                  className="archive-date-button"
+                  onClick={() => handleSelectDate(date)}
+                >
+                  <span className="archive-date-icon">📅</span>
+                  <span className="archive-date-text">{formatted}</span>
+                  <span className="archive-date-arrow">→</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Ensure we have data
   if (!briefing) {
-    // This should never happen, but just in case
     setBriefing(fallbackBriefing as DailyBriefing);
     setIsOffline(true);
     return null;
@@ -173,9 +264,8 @@ const DailyBriefingPage: React.FC = () => {
           <button className="back-button" onClick={handleBackClick}>
             ← Back to Topics
           </button>
-          {isOffline && (
-            <span className="offline-badge">Demo Data</span>
-          )}
+          {isOffline && <span className="offline-badge">Demo Data</span>}
+          {briefing.isArchive && <span className="archive-badge">Archive</span>}
         </div>
         
         {topicData ? (
@@ -237,14 +327,30 @@ const DailyBriefingPage: React.FC = () => {
     <div className="daily-briefing-page dashboard-mode">
       <div className="dashboard-header">
         <p className="briefing-date">
-          {new Date(briefing.generatedAt).toLocaleDateString('en-US', {
-            weekday: 'long',
-            month: 'long',
-            day: 'numeric',
-            year: 'numeric'
-          })}
+          {briefing.briefingDate 
+            ? new Date(briefing.briefingDate + 'T12:00:00').toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+              })
+            : new Date(briefing.generatedAt).toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+              })
+          }
         </p>
-        <h2 className="dashboard-subtitle">Today's Truth Assessment</h2>
+        <h2 className="dashboard-subtitle">
+          {briefing.isArchive ? 'Archived Briefing' : "Today's Truth Assessment"}
+        </h2>
+        
+        {briefing.isArchive && (
+          <button className="back-to-today" onClick={handleBackToToday}>
+            ← Back to Today
+          </button>
+        )}
         
         {isOffline && (
           <div className="offline-banner">
@@ -285,6 +391,12 @@ const DailyBriefingPage: React.FC = () => {
             </button>
           );
         })}
+      </div>
+      
+      <div className="dashboard-actions">
+        <button className="archive-button" onClick={handleOpenArchive}>
+          📚 Browse History
+        </button>
       </div>
       
       <p className="dashboard-footer">

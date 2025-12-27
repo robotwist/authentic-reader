@@ -39,6 +39,7 @@ import stockpileSimpleRoutes from './routes/stockpile-simple.js';
 import improvedFeedRoutes from './routes/improvedFeed.js';
 import jsonArticleService from './services/jsonArticleService.js';
 import aiAnalysisRoutes from './routes/aiAnalysis.js';
+import dailyBriefingRoutes from './routes/dailyBriefingRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -1211,27 +1212,8 @@ app.get('/api/analyses-list', async (req, res) => {
   }
 });
 
-// Daily briefing endpoint
-app.get('/api/daily-briefing', async (req, res) => {
-  try {
-    const briefing = await jsonStorage.getDailyBriefing();
-    
-    if (!briefing) {
-      return res.status(404).json({ 
-        error: 'Daily briefing not found',
-        message: 'Daily briefing has not been generated yet. Please run the daily briefing generation script.'
-      });
-    }
-
-    res.json(briefing);
-  } catch (error) {
-    console.error('Error fetching daily briefing:', error);
-    res.status(500).json({ 
-      error: 'Failed to fetch daily briefing',
-      message: error.message 
-    });
-  }
-});
+// Daily briefing routes (with archive support)
+app.use('/api/daily-briefing', dailyBriefingRoutes);
 
 // Test endpoint to verify route registration
 app.get('/api/test', (req, res) => {
