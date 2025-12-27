@@ -1,12 +1,146 @@
 {
+  "bbc": {
+    "name": "BBC News",
+    "url": "https://feeds.bbci.co.uk/news/rss.xml",
+    "category": "news",
+    "biasRating": "center",
+    "reliability": "high",
+    "description": "BBC World News"
+  },
+  "reuters": {
+    "name": "Reuters",
+    "url": "https://www.reutersagency.com/feed/?best-topics=business-finance&post_type=best",
+    "category": "news",
+    "biasRating": "center",
+    "reliability": "high",
+    "description": "Reuters Top News"
+  },
   "npr": {
     "name": "NPR",
     "url": "https://feeds.npr.org/1001/rss.xml",
-    "description": "National Public Radio"
+    "category": "news",
+    "biasRating": "center-left",
+    "reliability": "high",
+    "description": "NPR News"
   },
-  "bbc": {
-    "name": "BBC News",
-    "url": "http://feeds.bbci.co.uk/news/rss.xml",
-    "description": "BBC News"
+  "ap": {
+    "name": "Associated Press",
+    "url": "https://rsshub.app/apnews/topics/apf-topnews",
+    "category": "news",
+    "biasRating": "center",
+    "reliability": "high",
+    "description": "AP Top News"
+  },
+  "guardian": {
+    "name": "The Guardian",
+    "url": "https://www.theguardian.com/world/rss",
+    "category": "news",
+    "biasRating": "center-left",
+    "reliability": "high",
+    "description": "The Guardian World News"
+  },
+  "nytimes": {
+    "name": "New York Times",
+    "url": "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+    "category": "news",
+    "biasRating": "center-left",
+    "reliability": "high",
+    "description": "NYT Top Stories"
+  },
+  "wsj": {
+    "name": "Wall Street Journal",
+    "url": "https://feeds.wsj.com/rss/RSSWorldNews.xml",
+    "category": "news",
+    "biasRating": "center-right",
+    "reliability": "high",
+    "description": "WSJ World News"
+  },
+  "economist": {
+    "name": "The Economist",
+    "url": "https://www.economist.com/international/rss.xml",
+    "category": "news",
+    "biasRating": "center",
+    "reliability": "high",
+    "description": "The Economist International"
+  },
+  "pbs": {
+    "name": "PBS NewsHour",
+    "url": "https://www.pbs.org/newshour/feeds/rss/headlines",
+    "category": "news",
+    "biasRating": "center",
+    "reliability": "high",
+    "description": "PBS NewsHour Headlines"
+  },
+  "propublica": {
+    "name": "ProPublica",
+    "url": "https://www.propublica.org/feeds/propublica/main",
+    "category": "investigative",
+    "biasRating": "center-left",
+    "reliability": "high",
+    "description": "ProPublica Investigations"
+  },
+  "thehill": {
+    "name": "The Hill",
+    "url": "https://thehill.com/feed/",
+    "category": "politics",
+    "biasRating": "center",
+    "reliability": "medium",
+    "description": "The Hill Political News"
+  },
+  "politico": {
+    "name": "Politico",
+    "url": "https://rss.politico.com/politics-news.xml",
+    "category": "politics",
+    "biasRating": "center-left",
+    "reliability": "medium",
+    "description": "Politico Politics"
+  },
+  "reason": {
+    "name": "Reason",
+    "url": "https://reason.com/feed/",
+    "category": "politics",
+    "biasRating": "right-libertarian",
+    "reliability": "medium",
+    "description": "Reason Magazine"
+  },
+  "nationalreview": {
+    "name": "National Review",
+    "url": "https://www.nationalreview.com/feed/",
+    "category": "politics",
+    "biasRating": "right",
+    "reliability": "medium",
+    "description": "National Review"
+  },
+  "theatlantic": {
+    "name": "The Atlantic",
+    "url": "https://www.theatlantic.com/feed/all/",
+    "category": "news",
+    "biasRating": "center-left",
+    "reliability": "high",
+    "description": "The Atlantic"
+  },
+  "arstechnica": {
+    "name": "Ars Technica",
+    "url": "https://feeds.arstechnica.com/arstechnica/index",
+    "category": "technology",
+    "biasRating": "center",
+    "reliability": "high",
+    "description": "Ars Technica Tech News"
+  },
+  "wired": {
+    "name": "Wired",
+    "url": "https://www.wired.com/feed/rss",
+    "category": "technology",
+    "biasRating": "center-left",
+    "reliability": "high",
+    "description": "Wired Magazine"
+  },
+  "techcrunch": {
+    "name": "TechCrunch",
+    "url": "https://techcrunch.com/feed/",
+    "category": "technology",
+    "biasRating": "center",
+    "reliability": "medium",
+    "description": "TechCrunch Tech News"
   }
 }
