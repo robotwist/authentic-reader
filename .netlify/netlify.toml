@@ -8,7 +8,7 @@ headers = []
 publish = "/home/robwistrand/code/ga/projects/authentic-reader/dist"
 publishOrigin = "config"
 commandOrigin = "config"
-command = "npm ci --include=dev && npm run build:no-types"
+command = "npm ci --include=dev && npm run build"
 functions = "/home/robwistrand/code/ga/projects/authentic-reader/netlify/functions"
 
 [build.environment]
