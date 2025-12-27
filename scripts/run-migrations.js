@@ -2,6 +2,12 @@ import pg from 'pg';
 const { Client } = pg;
 
 async function runMigrations() {
+  // Skip migrations if DATABASE_URL is not set (e.g., using JSON file storage)
+  if (!process.env.DATABASE_URL) {
+    console.log('DATABASE_URL not set, skipping database migrations (using JSON file storage)');
+    process.exit(0);
+  }
+
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
