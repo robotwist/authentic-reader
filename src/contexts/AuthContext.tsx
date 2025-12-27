@@ -1,144 +1,94 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { authApi, User, clearAuth, getCurrentUser, isAuthenticated } from '../services/apiService';
+import { User } from '../types';
+import { getCurrentUser, isAuthenticated as checkAuth, authApi } from '../services/apiService';
 
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
-  token: string | null;
-  login: (credentials: { email?: string; username?: string; password: string }) => Promise<void>;
-  register: (username: string, email: string, password: string) => Promise<void>;
+  login: (emailOrUsername: string, password: string) => Promise<void>;
   logout: () => void;
-  updateUser: (updates: Partial<User>) => Promise<void>;
-  loading: boolean;
-  error: string | null;
+  register: (username: string, email: string, password: string) => Promise<void>;
+  refreshUser: () => Promise<void>;
 }
 
-// Create the context with default values
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  isLoggedIn: false,
-  token: null,
-  login: async () => {},
-  register: async () => {},
-  logout: () => {},
-  updateUser: async () => {},
-  loading: true,
-  error: null,
-});
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Hook for easy access to the auth context
-export const useAuth = () => useContext(AuthContext);
+interface AuthProviderProps {
+  children: ReactNode;
+}
 
-// Auth Provider component
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(getCurrentUser());
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(checkAuth());
 
-  // Check for existing user session on initial load
+  // Load user on mount
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        setLoading(true);
-        if (isAuthenticated()) {
-          const currentUser = getCurrentUser();
-          const storedToken = localStorage.getItem('auth_token');
-          
-          if (currentUser && storedToken) {
-            try {
-              // Verify token validity by calling an API
-              const profile = await authApi.getProfile();
-              setUser(profile);
-              setToken(storedToken);
-            } catch (error) {
-              console.error('Session expired or invalid token:', error);
-              clearAuth();
-              setUser(null);
-              setToken(null);
-            }
-          }
-        }
-      } catch (err) {
-        console.error('Error checking auth status:', err);
-        clearAuth();
-        setUser(null);
-        setToken(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuthStatus();
+    if (isLoggedIn) {
+      refreshUser().catch(() => {
+        // If refresh fails, user might not be valid anymore
+        logout();
+      });
+    }
   }, []);
 
-  // Login handler
-  const login = async (credentials: { email?: string; username?: string; password: string }) => {
+  const login = async (emailOrUsername: string, password: string) => {
     try {
-      setLoading(true);
-      setError(null);
-      const userData = await authApi.login(credentials);
-      setUser(userData);
-      setToken(localStorage.getItem('auth_token'));
-    } catch (error: any) {
-      setError(error.message || 'Failed to login');
+      const loggedInUser = await authApi.login({
+        email: emailOrUsername.includes('@') ? emailOrUsername : undefined,
+        username: emailOrUsername.includes('@') ? undefined : emailOrUsername,
+        password,
+      });
+      setUser(loggedInUser);
+      setIsLoggedIn(true);
+    } catch (error) {
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Register handler
   const register = async (username: string, email: string, password: string) => {
     try {
-      setLoading(true);
-      setError(null);
-      const userData = await authApi.register(username, email, password);
-      setUser(userData);
-      setToken(localStorage.getItem('auth_token'));
-    } catch (error: any) {
-      setError(error.message || 'Failed to register');
+      const newUser = await authApi.register(username, email, password);
+      setUser(newUser);
+      setIsLoggedIn(true);
+    } catch (error) {
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Logout handler
   const logout = () => {
     authApi.logout();
     setUser(null);
-    setToken(null);
+    setIsLoggedIn(false);
   };
 
-  // Update user handler
-  const updateUser = async (updates: Partial<User>) => {
+  const refreshUser = async () => {
     try {
-      setLoading(true);
-      setError(null);
-      const updatedUser = await authApi.updateProfile(updates);
-      setUser((prev) => prev ? { ...prev, ...updatedUser } : updatedUser);
-    } catch (error: any) {
-      setError(error.message || 'Failed to update profile');
+      const currentUser = await authApi.getProfile();
+      setUser(currentUser);
+      setIsLoggedIn(true);
+    } catch (error) {
+      logout();
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
-  const value = {
+  const value: AuthContextType = {
     user,
-    isLoggedIn: !!user,
-    token,
+    isLoggedIn,
     login,
-    register,
     logout,
-    updateUser,
-    loading,
-    error,
+    register,
+    refreshUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export default AuthContext; 
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+

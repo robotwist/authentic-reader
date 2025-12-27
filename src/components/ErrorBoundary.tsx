@@ -1,5 +1,4 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import LogRocket from '../utils/logRocket';
 
 interface Props {
   children: ReactNode;
@@ -28,22 +27,19 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    // Log the error to LogRocket
-    LogRocket.captureException(error);
+    // Log error to console
+    console.error('Error caught by ErrorBoundary:', error, errorInfo);
     
-    // Get the LogRocket session URL for this error
-    const sessionUrl = LogRocket.sessionURL;
-    
-    // Send error details to our backend API
-    if (sessionUrl) {
+    // Optionally send error details to backend API
+    if (process.env.NODE_ENV === 'production') {
       fetch('/api/admin/error-sessions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          sessionUrl,
           error: error.toString(),
+          errorInfo: errorInfo.componentStack,
           userId: (window as any).currentUserId || null
         }),
       }).catch(err => console.error('Failed to send error to backend API:', err));
@@ -51,9 +47,6 @@ class ErrorBoundary extends Component<Props, State> {
     
     // Set the error info in state
     this.setState({ errorInfo });
-    
-    // You can also log to console for development
-    console.error('Error caught by ErrorBoundary:', error, errorInfo);
   }
 
   render(): ReactNode {
