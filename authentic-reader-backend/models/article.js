@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'articleId',
         as: 'collections'
       });
+      Article.hasMany(models.Vote, { foreignKey: 'articleId', as: 'votes' });
     }
   }
 
@@ -72,6 +73,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       unique: true
+    },
+    consensusScore: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+      field: 'consensus_score',
+      comment: 'Community consensus score based on votes (+1 for AGREE, -1 for DISAGREE)'
     }
   }, {
     sequelize,

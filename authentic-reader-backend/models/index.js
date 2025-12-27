@@ -47,7 +47,12 @@ const Article = sequelize.define('Article', {
   imageUrl: Sequelize.STRING,
   categories: Sequelize.JSON,
   guid: Sequelize.STRING,
-  sourceId: Sequelize.INTEGER
+  sourceId: Sequelize.INTEGER,
+  consensusScore: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+    field: 'consensus_score'
+  }
 });
 
 const UserSource = sequelize.define('UserSource', {
@@ -80,6 +85,31 @@ const Analysis = sequelize.define('Analysis', {
   visibility: Sequelize.STRING,
   biasTags: Sequelize.JSON,
   sharedWith: Sequelize.JSON
+});
+
+const Vote = sequelize.define('Vote', {
+  articleId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    field: 'article_id'
+  },
+  userId: {
+    type: Sequelize.UUID,
+    allowNull: false,
+    field: 'user_id'
+  },
+  voteType: {
+    type: Sequelize.ENUM('AGREE', 'DISAGREE', 'MISSED_FALLACY'),
+    allowNull: false,
+    field: 'vote_type'
+  },
+  comment: {
+    type: Sequelize.TEXT,
+    allowNull: true
+  }
+}, {
+  tableName: 'votes',
+  underscored: true
 });
 
 // Define UserPrefs model
@@ -115,6 +145,7 @@ db.UserSource = UserSource;
 db.UserArticle = UserArticle;
 db.Analysis = Analysis;
 db.UserPrefs = UserPrefs;
+db.Vote = Vote;
 
 // Set up associations
 // In a real app, you'd set up proper associations here
@@ -143,6 +174,10 @@ User.hasMany(UserArticle, { foreignKey: 'userId' });
 Article.hasMany(UserArticle, { foreignKey: 'articleId' });
 UserArticle.belongsTo(User, { foreignKey: 'userId' });
 UserArticle.belongsTo(Article, { foreignKey: 'articleId' });
+
+// Vote relationships
+Article.hasMany(Vote, { foreignKey: 'articleId', as: 'votes' });
+Vote.belongsTo(Article, { foreignKey: 'articleId' });
 
 // Daily Briefing Articles for history/archive feature
 const DailyBriefingArticle = sequelize.define('DailyBriefingArticle', {
@@ -216,4 +251,4 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 export default db;
-export { User, Source, Article, UserSource, UserArticle, Analysis, UserPrefs, DailyBriefingArticle }; 
+export { User, Source, Article, UserSource, UserArticle, Analysis, UserPrefs, DailyBriefingArticle, Vote }; 

@@ -3,6 +3,14 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    // Check if articles table already exists
+    const tableInfo = await queryInterface.describeTable('articles').catch(() => null);
+    
+    if (tableInfo) {
+      console.log('Articles table already exists, skipping creation...');
+      return;
+    }
+    
     // Create articles table if it doesn't exist
     await queryInterface.createTable('articles', {
       id: {
