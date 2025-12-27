@@ -8,7 +8,7 @@ module.exports = {
       type: Sequelize.INTEGER,
       allowNull: false,
       defaultValue: 0,
-      comment: 'Community consensus score based on votes (+1 for AGREE, -1 for DISAGREE)'
+      comment: 'Community consensus score based on votes (+1 for UPVOTE, -1 for DOWNVOTE)'
     });
 
     // Create votes table
@@ -29,18 +29,14 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      user_id: {
-        type: Sequelize.UUID,
+      user_fingerprint: {
+        type: Sequelize.STRING(255),
         allowNull: false,
-        comment: 'Anonymous UUID for user identification'
+        comment: 'Browser fingerprint or IP hash for anonymous user identification'
       },
       vote_type: {
-        type: Sequelize.ENUM('AGREE', 'DISAGREE', 'MISSED_FALLACY'),
+        type: Sequelize.ENUM('UPVOTE', 'DOWNVOTE', 'FLAG_MISSING'),
         allowNull: false
-      },
-      comment: {
-        type: Sequelize.TEXT,
-        allowNull: true
       },
       created_at: {
         allowNull: false,
@@ -58,14 +54,14 @@ module.exports = {
     await queryInterface.addIndex('votes', ['article_id'], {
       name: 'votes_article_id_idx'
     });
-    await queryInterface.addIndex('votes', ['user_id'], {
-      name: 'votes_user_id_idx'
+    await queryInterface.addIndex('votes', ['user_fingerprint'], {
+      name: 'votes_user_fingerprint_idx'
     });
     await queryInterface.addIndex('votes', ['vote_type'], {
       name: 'votes_vote_type_idx'
     });
     // Unique constraint: one vote per user per article
-    await queryInterface.addIndex('votes', ['article_id', 'user_id'], {
+    await queryInterface.addIndex('votes', ['article_id', 'user_fingerprint'], {
       unique: true,
       name: 'votes_article_user_unique_idx'
     });

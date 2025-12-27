@@ -19,20 +19,16 @@ module.exports = (sequelize, DataTypes) => {
       },
       field: 'article_id'
     },
-    userId: {
-      type: DataTypes.UUID,
+    userFingerprint: {
+      type: DataTypes.STRING(255),
       allowNull: false,
-      comment: 'Anonymous UUID for user identification',
-      field: 'user_id'
+      comment: 'Browser fingerprint or IP hash for anonymous user identification',
+      field: 'user_fingerprint'
     },
     voteType: {
-      type: DataTypes.ENUM('AGREE', 'DISAGREE', 'MISSED_FALLACY'),
+      type: DataTypes.ENUM('UPVOTE', 'DOWNVOTE', 'FLAG_MISSING'),
       allowNull: false,
       field: 'vote_type'
-    },
-    comment: {
-      type: DataTypes.TEXT,
-      allowNull: true
     }
   }, {
     sequelize,
@@ -44,14 +40,14 @@ module.exports = (sequelize, DataTypes) => {
         fields: ['article_id']
       },
       {
-        fields: ['user_id']
+        fields: ['user_fingerprint']
       },
       {
         fields: ['vote_type']
       },
       {
         unique: true,
-        fields: ['article_id', 'user_id']
+        fields: ['article_id', 'user_fingerprint']
       }
     ]
   });

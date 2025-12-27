@@ -478,6 +478,59 @@ export const articlesApi = {
   }
 };
 
+// Vote API functions
+export interface VoteResponse {
+  message: string;
+  vote: {
+    id: number;
+    articleId: number;
+    voteType: 'UPVOTE' | 'DOWNVOTE' | 'FLAG_MISSING';
+    createdAt: string;
+  };
+  consensus: {
+    score: number;
+    totalVotes: number;
+    upvoteCount: number;
+    agreePercentage: number;
+    downvoteCount: number;
+    flagMissingCount: number;
+  };
+}
+
+export interface VoteStats {
+  articleId: number;
+  consensus: {
+    score: number;
+    totalVotes: number;
+    upvoteCount: number;
+    agreePercentage: number;
+    downvoteCount: number;
+    flagMissingCount: number;
+  };
+}
+
+export const voteApi = {
+  // Cast a vote on an article
+  castVote: async (articleId: number, voteType: 'UPVOTE' | 'DOWNVOTE' | 'FLAG_MISSING', userFingerprint: string): Promise<VoteResponse> => {
+    return apiRequest<VoteResponse>(
+      '/api/vote',
+      'POST',
+      { articleId, voteType, userFingerprint },
+      false // Public endpoint
+    );
+  },
+
+  // Get vote statistics for an article
+  getVoteStats: async (articleId: number): Promise<VoteStats> => {
+    return apiRequest<VoteStats>(
+      `/api/vote/${articleId}`,
+      'GET',
+      undefined,
+      false // Public endpoint
+    );
+  }
+};
+
 // Stockpile Analytics API functions
 export const getStockpileAnalytics = async () => {
   try {

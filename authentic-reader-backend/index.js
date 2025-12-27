@@ -40,6 +40,8 @@ import improvedFeedRoutes from './routes/improvedFeed.js';
 import jsonArticleService from './services/jsonArticleService.js';
 import aiAnalysisRoutes from './routes/aiAnalysis.js';
 import dailyBriefingRoutes from './routes/dailyBriefingRoutes.js';
+import trendsRoutes from './routes/trendsRoutes.js';
+import voteRoutes from './routes/vote.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -1215,6 +1217,9 @@ app.get('/api/analyses-list', async (req, res) => {
 // Daily briefing routes (with archive support)
 app.use('/api/daily-briefing', dailyBriefingRoutes);
 
+// Trends routes
+app.use('/api/trends', trendsRoutes);
+
 // Test endpoint to verify route registration
 app.get('/api/test', (req, res) => {
   res.json({ message: 'Test endpoint working', timestamp: new Date().toISOString() });
@@ -1289,6 +1294,7 @@ app.get('/api/content', async (req, res) => {
 app.use('/api/users', authLimiter, userRoutes);
 app.use('/api/sources', publicLimiter, sourceRoutes);
 app.use('/api/articles', apiLimiter, articleRoutes);
+app.use('/api/vote', publicLimiter, voteRoutes);
 app.use('/api/admin', adminLimiter, adminRoutes);
 app.use('/api/onnx', analysisLimiter, onnxRoutes);
 app.use('/api/analysis', analysisLimiter, analysisRoutes);

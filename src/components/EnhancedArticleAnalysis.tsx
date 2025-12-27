@@ -11,10 +11,15 @@ import {
   FiEye,
   FiBarChart,
   FiAward,
-  FiClock
+  FiClock,
+  FiThumbsUp,
+  FiThumbsDown,
+  FiFlag
 } from 'react-icons/fi';
 import { Article } from '../types/Article';
 import comprehensiveAnalysisService, { ComprehensiveAnalysisResult } from '../services/comprehensiveAnalysisService';
+import { voteApi, VoteStats } from '../services/apiService';
+import { getUserFingerprint } from '../utils/fingerprint';
 import '../styles/EnhancedArticleAnalysis.css';
 
 interface EnhancedArticleAnalysisProps {
@@ -32,6 +37,9 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'fallacies' | 'bias' | 'credibility' | 'readability'>('overview');
+  const [voteStats, setVoteStats] = useState<VoteStats | null>(null);
+  const [isVoting, setIsVoting] = useState(false);
+  const [userVote, setUserVote] = useState<'UPVOTE' | 'DOWNVOTE' | 'FLAG_MISSING' | null>(null);
 
   const performAnalysisCallback = React.useCallback(async () => {
     if (!article.title && !article.content && !article.summary) {
@@ -76,6 +84,86 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
       performAnalysisCallback();
     }
   }, [isOpen, article, analysis, performAnalysisCallback]);
+
+  // Fetch vote stats when component opens
+  useEffect(() => {
+    const fetchVoteStats = async () => {
+      // Try to get numeric article ID
+      const articleId = getArticleId();
+      if (!articleId) return;
+
+      try {
+        const stats = await voteApi.getVoteStats(articleId);
+        setVoteStats(stats);
+      } catch (error) {
+        console.error('Error fetching vote stats:', error);
+        // Silently fail - voting is optional
+      }
+    };
+
+    if (isOpen && article) {
+      fetchVoteStats();
+    }
+  }, [isOpen, article]);
+
+  // Helper to get numeric article ID
+  const getArticleId = (): number | null => {
+    // Check if article has a numeric ID
+    if (article && 'id' in article) {
+      const id = (article as any).id;
+      if (typeof id === 'number') {
+        return id;
+      }
+      // Try to parse string ID as number
+      const parsed = parseInt(id, 10);
+      if (!isNaN(parsed)) {
+        return parsed;
+      }
+    }
+    // Check for articleId field
+    if (article && 'articleId' in article) {
+      const articleId = (article as any).articleId;
+      if (typeof articleId === 'number') {
+        return articleId;
+      }
+    }
+    return null;
+  };
+
+  // Handle voting
+  const handleVote = async (voteType: 'UPVOTE' | 'DOWNVOTE' | 'FLAG_MISSING') => {
+    const articleId = getArticleId();
+    if (!articleId) {
+      setError('Article ID not available for voting');
+      return;
+    }
+
+    setIsVoting(true);
+    const userFingerprint = getUserFingerprint();
+    const previousVote = userVote; // Store previous vote for rollback
+
+    try {
+      // Optimistic update
+      setUserVote(voteType);
+
+      const response = await voteApi.castVote(articleId, voteType, userFingerprint);
+      
+      // Update vote stats with response
+      if (response.consensus) {
+        setVoteStats({
+          articleId,
+          consensus: response.consensus
+        });
+      }
+    } catch (error) {
+      console.error('Error casting vote:', error);
+      // Revert optimistic update
+      setUserVote(previousVote);
+      setError('Failed to record vote. Please try again.');
+    } finally {
+      setIsVoting(false);
+    }
+  };
 
   // Helper functions for UI display
   const getBiasLevelText = (score: number): string => {
@@ -500,6 +588,64 @@ const EnhancedArticleAnalysis: React.FC<EnhancedArticleAnalysisProps> = ({
                   </div>
                 </div>
               )}
+
+              {/* Citizen Jury Section */}
+              <div className="citizen-jury-section">
+                <div className="section-header">
+                  <FiAward className="section-icon" />
+                  <h3>The Citizen Jury</h3>
+                  <p className="section-subtitle">Help improve AI accuracy by voting on this analysis</p>
+                </div>
+
+                {voteStats && (
+                  <div className="consensus-score-badge">
+                    <span className="score-label">Consensus Score</span>
+                    <span className="score-value">{voteStats.consensus.agreePercentage}% Agree</span>
+                    <span className="score-details">
+                      {voteStats.consensus.totalVotes} {voteStats.consensus.totalVotes === 1 ? 'vote' : 'votes'}
+                    </span>
+                  </div>
+                )}
+
+                <div className="vote-buttons">
+                  <button
+                    className={`vote-button vote-upvote ${userVote === 'UPVOTE' ? 'active' : ''}`}
+                    onClick={() => handleVote('UPVOTE')}
+                    disabled={isVoting || !getArticleId()}
+                    title="Accurate Analysis"
+                  >
+                    <FiThumbsUp className="vote-icon" />
+                    <span>Accurate Analysis</span>
+                  </button>
+
+                  <button
+                    className={`vote-button vote-downvote ${userVote === 'DOWNVOTE' ? 'active' : ''}`}
+                    onClick={() => handleVote('DOWNVOTE')}
+                    disabled={isVoting || !getArticleId()}
+                    title="Missed Something"
+                  >
+                    <FiThumbsDown className="vote-icon" />
+                    <span>Missed Something</span>
+                  </button>
+
+                  <button
+                    className={`vote-button vote-flag ${userVote === 'FLAG_MISSING' ? 'active' : ''}`}
+                    onClick={() => handleVote('FLAG_MISSING')}
+                    disabled={isVoting || !getArticleId()}
+                    title="Flag Missing Information"
+                  >
+                    <FiFlag className="vote-icon" />
+                    <span>Flag Missing</span>
+                  </button>
+                </div>
+
+                {!getArticleId() && (
+                  <p className="vote-note">
+                    <FiInfo className="info-icon" />
+                    Voting requires a valid article ID
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         )}
