@@ -138,32 +138,59 @@ const DailyBriefingPage: React.FC = () => {
     loadDailyBriefing();
   };
 
-  const convertAnalysisToFallacies = (analysis: DailyBriefingTopic['analysis']): FallacyData[] => {
-    if (!analysis) return [];
+  /**
+   * Data Normalizer: Extract fallacies from article data
+   * Checks multiple paths to handle both old and new data structures
+   */
+  const getFallacies = (article: DailyBriefingTopic): FallacyData[] => {
+    if (!article) return [];
     
     const fallacies: FallacyData[] = [];
+    const analysis = article.analysis;
     
+    if (!analysis) return [];
+    
+    // Path 1: New nested format (analysis.manipulationAnalysis.logicalFallacies)
     if (analysis.manipulationAnalysis?.logicalFallacies) {
-      analysis.manipulationAnalysis.logicalFallacies.forEach((fallacy, index) => {
+      const logicalFallacies = analysis.manipulationAnalysis.logicalFallacies;
+      if (Array.isArray(logicalFallacies)) {
+        logicalFallacies.forEach((fallacy, index) => {
+          fallacies.push({
+            id: `fallacy-${index}`,
+            type: fallacy.type || 'Unknown',
+            excerpt: fallacy.location || fallacy.excerpt || '',
+            explanation: fallacy.explanation || '',
+            mechanism: `The author uses ${fallacy.type || 'a fallacy'} by ${fallacy.location || 'manipulation'}`,
+            motive: 'To manipulate reader perception',
+            severity: 'medium' as const
+          });
+        });
+      }
+    }
+    
+    // Path 2: Direct fallacies array (if flattened)
+    if (Array.isArray((analysis as any).logicalFallacies)) {
+      (analysis as any).logicalFallacies.forEach((fallacy: any, index: number) => {
         fallacies.push({
-          id: `fallacy-${index}`,
-          type: fallacy.type,
-          excerpt: fallacy.location,
-          explanation: fallacy.explanation,
-          mechanism: `The author uses ${fallacy.type} by ${fallacy.location}`,
+          id: `fallacy-direct-${index}`,
+          type: fallacy.type || fallacy.name || 'Unknown',
+          excerpt: fallacy.location || fallacy.excerpt || fallacy.quote || '',
+          explanation: fallacy.explanation || fallacy.description || '',
+          mechanism: `The author uses ${fallacy.type || fallacy.name || 'a fallacy'}`,
           motive: 'To manipulate reader perception',
           severity: 'medium' as const
         });
       });
     }
     
-    if (analysis.keySentences) {
+    // Path 3: Key sentences with manipulation techniques
+    if (analysis.keySentences && Array.isArray(analysis.keySentences)) {
       analysis.keySentences.forEach((sentence, index) => {
         if (sentence.manipulationTechniques && sentence.manipulationTechniques.length > 0) {
           fallacies.push({
             id: `sentence-${index}`,
             type: sentence.manipulationTechniques[0],
-            excerpt: sentence.sentence,
+            excerpt: sentence.sentence || '',
             explanation: `This sentence uses ${sentence.manipulationTechniques.join(', ')}`,
             mechanism: 'Manipulative language detected',
             motive: 'To influence reader perception',
@@ -174,6 +201,97 @@ const DailyBriefingPage: React.FC = () => {
     }
     
     return fallacies;
+  };
+
+  /**
+   * Data Normalizer: Extract bias information from article data
+   * Checks multiple paths to handle both old and new data structures
+   */
+  const getBias = (article: DailyBriefingTopic): {
+    direction?: string;
+    score?: number;
+    confidence?: number;
+    explanation?: string;
+  } | null => {
+    if (!article || !article.analysis) return null;
+    
+    const analysis = article.analysis;
+    
+    // Path 1: New nested format (analysis.biasAnalysis)
+    if ((analysis as any).biasAnalysis) {
+      const biasAnalysis = (analysis as any).biasAnalysis;
+      return {
+        direction: biasAnalysis.direction || biasAnalysis.political?.direction,
+        score: biasAnalysis.score || biasAnalysis.scores?.overall || biasAnalysis.scores?.political?.leftRight,
+        confidence: biasAnalysis.confidence || biasAnalysis.scores?.political?.confidence,
+        explanation: biasAnalysis.explanation || biasAnalysis.summary?.explanation
+      };
+    }
+    
+    // Path 2: Direct bias object (if flattened)
+    if ((analysis as any).bias) {
+      const bias = (analysis as any).bias;
+      return {
+        direction: bias.direction,
+        score: bias.score,
+        confidence: bias.confidence,
+        explanation: bias.explanation
+      };
+    }
+    
+    // Path 3: Overall assessment (may contain bias info)
+    if (analysis.overallAssessment) {
+      return {
+        score: analysis.overallAssessment.reliabilityScore,
+        explanation: 'Reliability assessment available'
+      };
+    }
+    
+    return null;
+  };
+
+  /**
+   * Data Normalizer: Extract summary from article data
+   * Checks multiple paths to handle both old and new data structures
+   */
+  const getSummary = (article: DailyBriefingTopic): string | null => {
+    if (!article) return null;
+    
+    // Path 1: Direct summary on article
+    if ((article.article as any).summary) {
+      return (article.article as any).summary;
+    }
+    
+    // Path 2: Analysis summary
+    if (article.analysis) {
+      const analysis = article.analysis;
+      
+      // Check nested summary
+      if ((analysis as any).summary) {
+        return (analysis as any).summary;
+      }
+      
+      // Check summaryText
+      if ((analysis as any).summaryText) {
+        return (analysis as any).summaryText;
+      }
+      
+      // Check overallAssessment summary
+      if (analysis.overallAssessment && (analysis.overallAssessment as any).summary) {
+        return (analysis.overallAssessment as any).summary;
+      }
+    }
+    
+    return null;
+  };
+
+  /**
+   * Convert analysis to fallacies format (uses getFallacies helper)
+   */
+  const convertAnalysisToFallacies = (analysis: DailyBriefingTopic['analysis']): FallacyData[] => {
+    // Use the robust getFallacies helper
+    const topicData = { analysis } as DailyBriefingTopic;
+    return getFallacies(topicData);
   };
 
   const getReliabilityClass = (score: number): string => {
@@ -255,9 +373,10 @@ const DailyBriefingPage: React.FC = () => {
   // Reader view (article selected)
   if (selectedTopic) {
     const topicData = briefing.topics[selectedTopic];
-    const fallacies = topicData?.analysis 
-      ? convertAnalysisToFallacies(topicData.analysis)
-      : [];
+    // Use robust data normalizers
+    const fallacies = topicData ? getFallacies(topicData) : [];
+    const bias = topicData ? getBias(topicData) : null;
+    const summary = topicData ? getSummary(topicData) : null;
 
     return (
       <div className="daily-briefing-page reader-mode">
@@ -300,6 +419,76 @@ const DailyBriefingPage: React.FC = () => {
               articleContent={topicData.article.content}
               fallacyData={fallacies}
             />
+            
+            {/* Analysis Section: Fallacies, Bias, Summary */}
+            {(fallacies.length > 0 || bias || summary) && (
+              <section className="article-analysis-section">
+                <h2 className="analysis-section-title">Analysis</h2>
+                
+                {/* Fallacies */}
+                {fallacies.length > 0 && (
+                  <div className="analysis-subsection">
+                    <h3 className="subsection-title">Logical Fallacies</h3>
+                    <div className="fallacies-list">
+                      {fallacies.map((fallacy) => (
+                        <div key={fallacy.id} className="fallacy-item">
+                          <div className="fallacy-header">
+                            <span className="fallacy-type">{fallacy.type}</span>
+                            <span className={`severity-badge severity-${fallacy.severity}`}>
+                              {fallacy.severity}
+                            </span>
+                          </div>
+                          {fallacy.excerpt && (
+                            <p className="fallacy-excerpt">{fallacy.excerpt}</p>
+                          )}
+                          {fallacy.explanation && (
+                            <p className="fallacy-explanation">{fallacy.explanation}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Bias Analysis */}
+                {bias && (
+                  <div className="analysis-subsection">
+                    <h3 className="subsection-title">Bias Analysis</h3>
+                    <div className="bias-info">
+                      {bias.direction && (
+                        <div className="bias-item">
+                          <span className="bias-label">Direction:</span>
+                          <span className="bias-value">{bias.direction}</span>
+                        </div>
+                      )}
+                      {bias.score !== undefined && (
+                        <div className="bias-item">
+                          <span className="bias-label">Score:</span>
+                          <span className="bias-value">{bias.score}/100</span>
+                        </div>
+                      )}
+                      {bias.confidence !== undefined && (
+                        <div className="bias-item">
+                          <span className="bias-label">Confidence:</span>
+                          <span className="bias-value">{Math.round(bias.confidence * 100)}%</span>
+                        </div>
+                      )}
+                      {bias.explanation && (
+                        <p className="bias-explanation">{bias.explanation}</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Summary */}
+                {summary && (
+                  <div className="analysis-subsection">
+                    <h3 className="subsection-title">Summary</h3>
+                    <p className="summary-text">{summary}</p>
+                  </div>
+                )}
+              </section>
+            )}
             
             <footer className="article-footer">
               {!isOffline && topicData.article.url && (

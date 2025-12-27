@@ -17,21 +17,22 @@ export const API_BASE_URL = (() => {
   const viteUrl = import.meta.env?.VITE_API_URL;
   if (viteUrl) {
     console.log('[API Config] Using Vite API URL:', viteUrl);
-    return viteUrl;
+    // Remove trailing slash if present
+    return viteUrl.replace(/\/$/, '');
   }
   
   // Then check for CRA format environment variables
   const craUrl = window.env?.REACT_APP_API_URL;
   if (craUrl) {
     console.log('[API Config] Using CRA API URL:', craUrl);
-    return craUrl;
+    return craUrl.replace(/\/$/, '');
   }
   
   // Check for Railway URL (will be set by Railway)
   const railwayUrl = import.meta.env?.VITE_RAILWAY_URL;
   if (railwayUrl) {
     console.log('[API Config] Using Railway API URL:', railwayUrl);
-    return railwayUrl;
+    return railwayUrl.replace(/\/$/, '');
   }
   
   // Production fallback - use Heroku backend
