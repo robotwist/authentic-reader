@@ -8,6 +8,7 @@ class JSONStorageService {
     this.articlesFile = path.join(this.dataDir, 'articles.json');
     this.analysisFile = path.join(this.dataDir, 'analysis.json');
     this.usersFile = path.join(this.dataDir, 'users.json');
+    this.dailyBriefingFile = path.join(this.dataDir, 'daily_briefing.json');
   }
 
   async ensureDataDir() {
@@ -94,6 +95,16 @@ class JSONStorageService {
   async getUser(userId) {
     const users = await this.getUsers();
     return users[userId] || null;
+  }
+
+  // Daily briefing management
+  async getDailyBriefing() {
+    return await this.readFile(this.dailyBriefingFile, null);
+  }
+
+  async saveDailyBriefing(briefingData) {
+    await this.writeFile(this.dailyBriefingFile, briefingData);
+    return briefingData;
   }
 }
 

@@ -1211,6 +1211,28 @@ app.get('/api/analyses-list', async (req, res) => {
   }
 });
 
+// Daily briefing endpoint
+app.get('/api/daily-briefing', async (req, res) => {
+  try {
+    const briefing = await jsonStorage.getDailyBriefing();
+    
+    if (!briefing) {
+      return res.status(404).json({ 
+        error: 'Daily briefing not found',
+        message: 'Daily briefing has not been generated yet. Please run the daily briefing generation script.'
+      });
+    }
+
+    res.json(briefing);
+  } catch (error) {
+    console.error('Error fetching daily briefing:', error);
+    res.status(500).json({ 
+      error: 'Failed to fetch daily briefing',
+      message: error.message 
+    });
+  }
+});
+
 // Test endpoint to verify route registration
 app.get('/api/test', (req, res) => {
   res.json({ message: 'Test endpoint working', timestamp: new Date().toISOString() });
