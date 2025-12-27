@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReaderView from '../components/ReaderView';
 import { FallacyData } from '../utils/llmParser';
 import { API_CONFIG } from '../config/api.config';
+import { fallbackBriefing } from '../data/fallbackBriefing';
 import './DailyBriefingPage.css';
 
 interface DailyBriefingTopic {
@@ -37,6 +38,7 @@ interface DailyBriefingTopic {
 interface DailyBriefing {
   generatedAt: string;
   version: string;
+  isOffline?: boolean;
   topics: {
     [key: string]: DailyBriefingTopic;
   };
@@ -49,28 +51,37 @@ const DailyBriefingPage: React.FC = () => {
   const [briefing, setBriefing] = useState<DailyBriefing | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<TopicKey | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
     loadDailyBriefing();
   }, []);
 
   const loadDailyBriefing = async () => {
+    setLoading(true);
+    
     try {
-      setLoading(true);
-      setError(null);
-      
       const backendUrl = API_CONFIG.BASE_URL;
-      const response = await fetch(`${backendUrl}/api/daily-briefing`);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+      
+      const response = await fetch(`${backendUrl}/api/daily-briefing`, {
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+      
       if (!response.ok) {
-        throw new Error('Failed to load daily briefing');
+        throw new Error('API returned error status');
       }
       
       const data = await response.json();
       setBriefing(data);
+      setIsOffline(false);
     } catch (err) {
-      console.error('Error loading daily briefing:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load daily briefing');
+      console.warn('API unavailable, using fallback data:', err);
+      // Graceful degradation: use fallback data
+      setBriefing(fallbackBriefing as DailyBriefing);
+      setIsOffline(true);
     } finally {
       setLoading(false);
     }
@@ -124,7 +135,11 @@ const DailyBriefingPage: React.FC = () => {
     setSelectedTopic(null);
   };
 
-  // Loading state
+  const handleRetry = () => {
+    loadDailyBriefing();
+  };
+
+  // Loading state (brief, with timeout to fallback)
   if (loading) {
     return (
       <div className="daily-briefing-page">
@@ -137,19 +152,12 @@ const DailyBriefingPage: React.FC = () => {
     );
   }
 
-  // Error state
-  if (error || !briefing) {
-    return (
-      <div className="daily-briefing-page">
-        <div className="error-container">
-          <h2>Unable to Load Briefing</h2>
-          <p>{error || 'Daily briefing not available'}</p>
-          <button className="retry-button" onClick={loadDailyBriefing}>
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
+  // We should always have data now (either API or fallback)
+  if (!briefing) {
+    // This should never happen, but just in case
+    setBriefing(fallbackBriefing as DailyBriefing);
+    setIsOffline(true);
+    return null;
   }
 
   // Reader view (article selected)
@@ -161,9 +169,14 @@ const DailyBriefingPage: React.FC = () => {
 
     return (
       <div className="daily-briefing-page reader-mode">
-        <button className="back-button" onClick={handleBackClick}>
-          ← Back to Topics
-        </button>
+        <div className="reader-nav">
+          <button className="back-button" onClick={handleBackClick}>
+            ← Back to Topics
+          </button>
+          {isOffline && (
+            <span className="offline-badge">Demo Data</span>
+          )}
+        </div>
         
         {topicData ? (
           <article className="briefing-article">
@@ -198,14 +211,16 @@ const DailyBriefingPage: React.FC = () => {
             />
             
             <footer className="article-footer">
-              <a 
-                href={topicData.article.url} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="original-link"
-              >
-                Read Original Source →
-              </a>
+              {!isOffline && topicData.article.url && (
+                <a 
+                  href={topicData.article.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="original-link"
+                >
+                  Read Original Source →
+                </a>
+              )}
             </footer>
           </article>
         ) : (
@@ -230,6 +245,16 @@ const DailyBriefingPage: React.FC = () => {
           })}
         </p>
         <h2 className="dashboard-subtitle">Today's Truth Assessment</h2>
+        
+        {isOffline && (
+          <div className="offline-banner">
+            <span className="offline-icon">📡</span>
+            <span className="offline-text">Showing demo data — backend warming up</span>
+            <button className="retry-link" onClick={handleRetry}>
+              Try again
+            </button>
+          </div>
+        )}
       </div>
       
       <div className="topic-grid">
