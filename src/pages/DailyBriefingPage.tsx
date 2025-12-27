@@ -47,7 +47,7 @@ type TopicKey = typeof TOPIC_KEYS[number];
 
 const DailyBriefingPage: React.FC = () => {
   const [briefing, setBriefing] = useState<DailyBriefing | null>(null);
-  const [selectedTopic, setSelectedTopic] = useState<TopicKey>('ukraine');
+  const [selectedTopic, setSelectedTopic] = useState<TopicKey | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -60,7 +60,6 @@ const DailyBriefingPage: React.FC = () => {
       setLoading(true);
       setError(null);
       
-      // Load from backend API endpoint that serves daily_briefing.json
       const backendUrl = API_CONFIG.BASE_URL;
       const response = await fetch(`${backendUrl}/api/daily-briefing`);
       if (!response.ok) {
@@ -82,7 +81,6 @@ const DailyBriefingPage: React.FC = () => {
     
     const fallacies: FallacyData[] = [];
     
-    // Convert logical fallacies
     if (analysis.manipulationAnalysis?.logicalFallacies) {
       analysis.manipulationAnalysis.logicalFallacies.forEach((fallacy, index) => {
         fallacies.push({
@@ -97,7 +95,6 @@ const DailyBriefingPage: React.FC = () => {
       });
     }
     
-    // Convert key sentences with manipulation techniques
     if (analysis.keySentences) {
       analysis.keySentences.forEach((sentence, index) => {
         if (sentence.manipulationTechniques && sentence.manipulationTechniques.length > 0) {
@@ -117,124 +114,159 @@ const DailyBriefingPage: React.FC = () => {
     return fallacies;
   };
 
+  const getReliabilityClass = (score: number): string => {
+    if (score >= 70) return 'high';
+    if (score >= 50) return 'medium';
+    return 'low';
+  };
+
+  const handleBackClick = () => {
+    setSelectedTopic(null);
+  };
+
+  // Loading state
   if (loading) {
     return (
       <div className="daily-briefing-page">
         <div className="loading-container">
           <div className="loading-spinner" />
-          <h2>Loading Daily Briefing...</h2>
-          <p>Fetching today's truth assessment</p>
+          <h2>Loading Today's Briefing...</h2>
+          <p>Preparing your daily truth assessment</p>
         </div>
       </div>
     );
   }
 
+  // Error state
   if (error || !briefing) {
     return (
       <div className="daily-briefing-page">
         <div className="error-container">
-          <h2>Unable to Load Daily Briefing</h2>
+          <h2>Unable to Load Briefing</h2>
           <p>{error || 'Daily briefing not available'}</p>
           <button className="retry-button" onClick={loadDailyBriefing}>
-            Retry
+            Try Again
           </button>
         </div>
       </div>
     );
   }
 
-  const selectedTopicData = briefing.topics[selectedTopic];
-  const fallacies = selectedTopicData?.analysis 
-    ? convertAnalysisToFallacies(selectedTopicData.analysis)
-    : [];
+  // Reader view (article selected)
+  if (selectedTopic) {
+    const topicData = briefing.topics[selectedTopic];
+    const fallacies = topicData?.analysis 
+      ? convertAnalysisToFallacies(topicData.analysis)
+      : [];
 
-  return (
-    <div className="daily-briefing-page">
-      <header className="briefing-header">
-        <div className="briefing-title">
-          <h1>Daily Truth Assessment</h1>
-          <p className="briefing-date">
-            Generated: {new Date(briefing.generatedAt).toLocaleDateString('en-US', {
-              weekday: 'long',
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </p>
-        </div>
+    return (
+      <div className="daily-briefing-page reader-mode">
+        <button className="back-button" onClick={handleBackClick}>
+          ← Back to Topics
+        </button>
         
-        <nav className="topic-selector">
-          {TOPIC_KEYS.map((key) => {
-            const topic = briefing.topics[key];
-            if (!topic) return null;
-            
-            return (
-              <button
-                key={key}
-                className={`topic-button ${selectedTopic === key ? 'active' : ''}`}
-                onClick={() => setSelectedTopic(key)}
-                aria-label={`Select topic: ${topic.topic}`}
-                title={topic.topic}
-              >
-                <span className="topic-icon">{topic.icon}</span>
-                <span className="topic-name">{topic.topic}</span>
-              </button>
-            );
-          })}
-        </nav>
-      </header>
-
-      {selectedTopicData ? (
-        <div className="briefing-content">
+        {topicData ? (
           <article className="briefing-article">
             <header className="article-header">
-              <h2 className="article-title">{selectedTopicData.article.title}</h2>
+              <div className="topic-badge">
+                <span className="topic-icon">{topicData.icon}</span>
+                <span className="topic-label">{topicData.topic}</span>
+              </div>
+              <h1 className="article-title">{topicData.article.title}</h1>
               <div className="article-meta">
-                <span className="article-source">{selectedTopicData.article.source}</span>
-                {selectedTopicData.article.publishDate && (
+                <span className="article-source">{topicData.article.source}</span>
+                {topicData.article.publishDate && (
                   <span className="article-date">
-                    {new Date(selectedTopicData.article.publishDate).toLocaleDateString()}
+                    {new Date(topicData.article.publishDate).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric'
+                    })}
                   </span>
                 )}
-                {selectedTopicData.article.author && (
-                  <span className="article-author">{selectedTopicData.article.author}</span>
+                {topicData.analysis?.overallAssessment && (
+                  <span className={`reliability-badge ${getReliabilityClass(topicData.analysis.overallAssessment.reliabilityScore)}`}>
+                    {topicData.analysis.overallAssessment.reliabilityScore}/100 Reliability
+                  </span>
                 )}
               </div>
-              {selectedTopicData.analysis?.overallAssessment && (
-                <div className="reliability-score">
-                  <span className="score-label">Reliability Score:</span>
-                  <span className={`score-value ${selectedTopicData.analysis.overallAssessment.reliabilityScore >= 70 ? 'high' : selectedTopicData.analysis.overallAssessment.reliabilityScore >= 50 ? 'medium' : 'low'}`}>
-                    {selectedTopicData.analysis.overallAssessment.reliabilityScore}/100
-                  </span>
-                </div>
-              )}
             </header>
             
             <ReaderView
-              articleContent={selectedTopicData.article.content}
+              articleContent={topicData.article.content}
               fallacyData={fallacies}
             />
             
             <footer className="article-footer">
               <a 
-                href={selectedTopicData.article.url} 
+                href={topicData.article.url} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="original-article-link"
+                className="original-link"
               >
-                Read Original Article →
+                Read Original Source →
               </a>
             </footer>
           </article>
-        </div>
-      ) : (
-        <div className="no-article">
-          <p>No article available for this topic.</p>
-        </div>
-      )}
+        ) : (
+          <div className="no-article">
+            <p>Article not available for this topic.</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Dashboard view (5-card grid)
+  return (
+    <div className="daily-briefing-page dashboard-mode">
+      <div className="dashboard-header">
+        <p className="briefing-date">
+          {new Date(briefing.generatedAt).toLocaleDateString('en-US', {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+          })}
+        </p>
+        <h2 className="dashboard-subtitle">Today's Truth Assessment</h2>
+      </div>
+      
+      <div className="topic-grid">
+        {TOPIC_KEYS.map((key) => {
+          const topic = briefing.topics[key];
+          if (!topic) return null;
+          
+          const reliabilityScore = topic.analysis?.overallAssessment?.reliabilityScore;
+          
+          return (
+            <button
+              key={key}
+              className="topic-card"
+              onClick={() => setSelectedTopic(key)}
+              aria-label={`Read about ${topic.topic}`}
+            >
+              <div className="card-icon">{topic.icon}</div>
+              <h3 className="card-topic">{topic.topic}</h3>
+              <p className="card-headline">{topic.article.title}</p>
+              <div className="card-meta">
+                <span className="card-source">{topic.article.source}</span>
+                {reliabilityScore !== undefined && (
+                  <span className={`card-reliability ${getReliabilityClass(reliabilityScore)}`}>
+                    {reliabilityScore}/100
+                  </span>
+                )}
+              </div>
+            </button>
+          );
+        })}
+      </div>
+      
+      <p className="dashboard-footer">
+        Click any topic to read the full analysis
+      </p>
     </div>
   );
 };
 
 export default DailyBriefingPage;
-
