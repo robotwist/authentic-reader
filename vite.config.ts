@@ -78,7 +78,10 @@ export default defineConfig(({ mode }) => {
     define: envWithProcessPrefix,
     // Enable more detailed error messages in development
     build: {
-      sourcemap: true,
+      // Disable sourcemaps in production to speed up build
+      sourcemap: mode === 'development',
+      // Increase chunk size limit
+      chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
           manualChunks: {
@@ -90,15 +93,11 @@ export default defineConfig(({ mode }) => {
           }
         }
       },
-      // Optimize bundle size
-      chunkSizeWarningLimit: 1000,
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          drop_console: mode === 'production',
-          drop_debugger: mode === 'production'
-        }
-      }
+      // Use esbuild for faster minification
+      minify: 'esbuild',
+      // Optimize build performance
+      target: 'esnext',
+      cssCodeSplit: true
     },
     server: {
       // Configure dev server if needed
