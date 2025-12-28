@@ -8,7 +8,7 @@ class JSONStorageService {
     this.articlesFile = path.join(this.dataDir, 'articles.json');
     this.analysisFile = path.join(this.dataDir, 'analysis.json');
     this.usersFile = path.join(this.dataDir, 'users.json');
-    this.dailyBriefingFile = path.join(this.dataDir, 'daily_briefing.json');
+    // Note: daily_briefing.json removed - using Postgres only (daily_briefing_articles table)
   }
 
   async ensureDataDir() {

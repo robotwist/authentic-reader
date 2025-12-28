@@ -1,26 +1,48 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import DOMPurify from 'dompurify';
 import { FallacyData } from '../utils/llmParser';
+import { Analysis } from '../types/Article';
 import './ReaderView.css';
 
 interface ReaderViewProps {
   articleContent: string; // HTML content
   fallacyData?: FallacyData[];
+  analysis?: Analysis; // Rich LLM analysis payload from Postgres
 }
 
 const ReaderView: React.FC<ReaderViewProps> = ({ 
   articleContent, 
-  fallacyData = []
+  fallacyData = [],
+  analysis
 }) => {
   const [activeFallacyId, setActiveFallacyId] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
-  // Find active fallacy data
+  // Convert Analysis fallacies to FallacyData format for display
+  const analysisFallacies = useMemo(() => {
+    if (!analysis?.fallacies) return [];
+    return analysis.fallacies.map((fallacy, index) => ({
+      id: `analysis-fallacy-${index}`,
+      type: fallacy.type,
+      excerpt: fallacy.quote,
+      explanation: fallacy.why_it_matters,
+      severity: (fallacy.severity?.toLowerCase() || 'medium') as 'high' | 'medium' | 'low',
+      betterAlternative: fallacy.better_alternative
+    }));
+  }, [analysis]);
+
+  // Merge fallacyData with analysis fallacies (analysis takes precedence)
+  const allFallacies = useMemo(() => {
+    if (analysisFallacies.length > 0) return analysisFallacies;
+    return fallacyData;
+  }, [analysisFallacies, fallacyData]);
+
+  // Find active fallacy from merged list
   const activeFallacy = useMemo(() => {
-    if (!activeFallacyId || !fallacyData) return null;
-    return fallacyData.find(f => f.id === activeFallacyId) || null;
-  }, [activeFallacyId, fallacyData]);
+    if (!activeFallacyId || !allFallacies) return null;
+    return allFallacies.find(f => f.id === activeFallacyId) || null;
+  }, [activeFallacyId, allFallacies]);
 
   // Sanitize and inject fallacy triggers into HTML
   const processedHtml = useMemo(() => {
@@ -41,7 +63,7 @@ const ReaderView: React.FC<ReaderViewProps> = ({
     });
 
     // If no fallacies, return sanitized HTML as-is
-    if (!fallacyData || fallacyData.length === 0) {
+    if (!allFallacies || allFallacies.length === 0) {
       return sanitized;
     }
 
@@ -118,8 +140,8 @@ const ReaderView: React.FC<ReaderViewProps> = ({
       }
     };
 
-    // Process each fallacy
-    fallacyData.forEach((fallacy) => {
+    // Process each fallacy - use allFallacies for proper ID mapping
+    allFallacies.forEach((fallacy) => {
       if (!fallacy.excerpt) return;
       
       const children = Array.from(body.childNodes);
@@ -127,7 +149,7 @@ const ReaderView: React.FC<ReaderViewProps> = ({
     });
 
     return body.innerHTML;
-  }, [articleContent, fallacyData]);
+  }, [articleContent, allFallacies]);
 
   // Handle clicks on fallacy triggers
   useEffect(() => {
@@ -183,10 +205,58 @@ const ReaderView: React.FC<ReaderViewProps> = ({
   return (
     <div className="reader-view" ref={containerRef}>
       <div className="reader-content-wrapper">
+        {/* Analysis Summary Header - Receipt Style */}
+        {analysis && (
+          <div className="analysis-receipt-header">
+            <div className="receipt-header-row">
+              <span className="receipt-label">ANALYSIS_ID</span>
+              <span className="receipt-value">{analysis.bias_rating || 'N/A'}</span>
+            </div>
+            {analysis.tone && (
+              <div className="receipt-header-row">
+                <span className="receipt-label">TONE</span>
+                <span className="receipt-value">{analysis.tone.toUpperCase()}</span>
+              </div>
+            )}
+            {analysis.confidence_score !== undefined && (
+              <div className="receipt-header-row">
+                <span className="receipt-label">CONFIDENCE</span>
+                <span className="receipt-value">{Math.round(analysis.confidence_score)}%</span>
+              </div>
+            )}
+            {analysis.bias_rating && (
+              <div className="receipt-header-row">
+                <span className="receipt-label">BIAS_RATING</span>
+                <span className="receipt-value">{analysis.bias_rating.toUpperCase()}</span>
+              </div>
+            )}
+          </div>
+        )}
+
         <div 
           className="reader-content prose"
           dangerouslySetInnerHTML={{ __html: processedHtml }}
         />
+
+        {/* Educational Insight Section - Receipt Style */}
+        {analysis?.educational_insight && (
+          <div className="analysis-educational-insight">
+            <div className="receipt-section-header">
+              <span className="receipt-section-label">EDUCATIONAL_INSIGHT</span>
+            </div>
+            <p className="receipt-section-text">{analysis.educational_insight}</p>
+          </div>
+        )}
+
+        {/* Analysis Summary Section - Receipt Style */}
+        {analysis?.summary && (
+          <div className="analysis-summary-section">
+            <div className="receipt-section-header">
+              <span className="receipt-section-label">SUMMARY</span>
+            </div>
+            <p className="receipt-section-text">{analysis.summary}</p>
+          </div>
+        )}
       </div>
       
       {/* Sidebar for fallacy analysis */}
@@ -234,6 +304,14 @@ const ReaderView: React.FC<ReaderViewProps> = ({
               <div className="fallacy-section">
                 <h3 className="fallacy-section-title">MOTIVE</h3>
                 <p className="fallacy-section-text">{activeFallacy.motive}</p>
+              </div>
+            )}
+
+            {/* Better Alternative - New field from Analysis */}
+            {activeFallacy.betterAlternative && (
+              <div className="fallacy-section">
+                <h3 className="fallacy-section-title">BETTER_ALTERNATIVE</h3>
+                <p className="fallacy-section-text">{activeFallacy.betterAlternative}</p>
               </div>
             )}
 

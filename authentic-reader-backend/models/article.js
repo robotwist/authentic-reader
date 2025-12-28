@@ -80,6 +80,12 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0,
       field: 'consensus_score',
       comment: 'Community consensus score based on votes (+1 for AGREE, -1 for DISAGREE)'
+    },
+    analysisPayload: {
+      type: DataTypes.JSONB,
+      allowNull: true,
+      field: 'analysis_payload',
+      comment: 'Rich LLM analysis payload: { summary, bias, confidence_score, tone, fallacies[], educational_insight }'
     }
   }, {
     sequelize,

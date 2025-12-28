@@ -13,6 +13,29 @@ export interface Source {
 }
 
 /**
+ * Interface for fallacy analysis within an article
+ */
+export interface Fallacy {
+  type: string;
+  quote: string;
+  why_it_matters: string;
+  better_alternative: string;
+  severity: string;
+}
+
+/**
+ * Interface for rich LLM analysis data stored in Postgres
+ */
+export interface Analysis {
+  summary: string;
+  bias_rating: string; // "Left", "Center", "Right", etc.
+  confidence_score: number;
+  tone: string; // e.g., "Alarmist", "Neutral", "Informative"
+  educational_insight: string; // The "Lesson"
+  fallacies: Fallacy[];
+}
+
+/**
  * Interface representing an article in the system
  */
 export interface Article {
@@ -34,6 +57,7 @@ export interface Article {
     score: number;
     label: string;
   };
+  analysis?: Analysis; // Rich LLM analysis payload from Postgres
 }
 
 /**
