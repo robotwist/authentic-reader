@@ -1,70 +1,139 @@
-/* Narrative Thermometer Component Styles - Sepia Theme */
+/* NarrativeThermometer - Swiss Brutalist / Sharp Lines */
+/* Bordered chart container, linear interpolation, no dots */
+
+/* ============================================
+   CONTAINER - BORDERED
+   ============================================ */
+
 .narrative-thermometer-container {
-  background: transparent;
-  border: 1px solid #D4C5B9;
-  border-radius: 4px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+  background: var(--bg-white, #FFFFFF);
+  border: 2px solid var(--text-ink, #1A1A1A);
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
 }
 
+/* ============================================
+   HEADER - MONOSPACE
+   ============================================ */
+
 .thermometer-header {
-  font-size: 1.25rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: #2C2C2C;
-  margin: 0 0 1.5rem 0;
-  text-align: center;
-  letter-spacing: 0.025em;
-  font-family: 'Lora', 'Charter', 'Georgia', serif;
+  color: var(--text-ink, #1A1A1A);
+  margin: 0;
+  text-align: left;
+  letter-spacing: 0.1em;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 2px solid var(--text-ink, #1A1A1A);
+  background: var(--bg-paper, #F9F7F1);
 }
+
+/* ============================================
+   CHART CONTAINER - BORDERED
+   ============================================ */
 
 .thermometer-chart {
   width: 100%;
-  min-height: 300px;
+  min-height: 280px;
+  padding: 1.5rem;
+  background: var(--bg-white, #FFFFFF);
 }
+
+/* ============================================
+   LOADING / ERROR / EMPTY STATES
+   ============================================ */
 
 .thermometer-loading,
 .thermometer-error,
 .thermometer-empty {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 250px;
-  color: #5A5A5A;
-  font-size: 0.875rem;
-  gap: 0.75rem;
-  font-family: 'Lora', 'Charter', 'Georgia', serif;
+  min-height: 200px;
+  color: var(--text-muted, #4A4A4A);
+  font-size: 0.6875rem;
+  gap: 0.5rem;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: var(--bg-white, #FFFFFF);
+  padding: 2rem;
 }
 
 .loading-spinner-small {
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(212, 197, 185, 0.3);
-  border-top-color: #8B7355;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--text-muted, #CCCCCC);
+  border-top-color: var(--text-ink, #1A1A1A);
+  animation: spin-square 0.6s steps(4) infinite;
 }
 
-@keyframes spin {
+@keyframes spin-square {
   to { transform: rotate(360deg); }
 }
 
 .thermometer-error {
-  color: #8b2e2e;
+  color: var(--text-ink, #1A1A1A);
 }
 
-/* Custom tooltip styles (handled inline via Recharts contentStyle) */
-/* Additional responsive adjustments */
+/* ============================================
+   RECHARTS OVERRIDES
+   ============================================ */
+
+/* Custom tooltip and legend styling */
+.recharts-tooltip-wrapper {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace) !important;
+}
+
+.recharts-legend-wrapper {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace) !important;
+  padding-top: 1rem !important;
+}
+
+.recharts-text {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace) !important;
+}
+
+/* Grid lines - more visible */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: var(--text-ink, #1A1A1A) !important;
+  stroke-opacity: 0.15 !important;
+}
+
+/* Axis lines */
+.recharts-xAxis line,
+.recharts-yAxis line {
+  stroke: var(--text-ink, #1A1A1A) !important;
+}
+
+/* Legend - Uppercase */
+.recharts-legend-item-text {
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  font-size: 0.625rem !important;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
 @media (max-width: 768px) {
   .narrative-thermometer-container {
-    padding: 1rem;
+    margin: 0;
   }
 
   .thermometer-header {
-    font-size: 1.125rem;
-    margin-bottom: 1rem;
+    font-size: 0.6875rem;
+    padding: 1rem;
   }
 
   .thermometer-chart {
-    min-height: 250px;
+    min-height: 220px;
+    padding: 1rem;
   }
 }

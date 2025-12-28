@@ -1,134 +1,237 @@
-/* Sepia/Paper Theme - Intellectual Newspaper Vibe */
+/* Swiss Brutalist / Analog Theme */
+/* Text-only, Visible Grids, Monospace Data */
+
+/* ============================================
+   PHASE 2: GLOBAL TYPOGRAPHY & DESIGN TOKENS
+   ============================================ */
+
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:wght@700;800;900&display=swap');
+
 :root {
-  /* Sepia/Paper color palette */
-  --background-color: #F9F7F1; /* Cream */
-  --text-color: #2C2C2C; /* Dark Grey */
-  --text-light: #5A5A5A; /* Medium Grey */
-  --card-background: #FFFFFF;
-  --border-color: #D4C5B9; /* Light sepia border */
-  --border-color-dark: #B8A99D;
+  /* ========== CORE TYPOGRAPHY ========== */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-tech: 'JetBrains Mono', 'Courier New', monospace;
   
-  /* Primary colors - Dark grey/serif styling */
-  --primary-color: #2C2C2C;
-  --primary-dark: #1A1A1A;
-  --secondary-color: #5A5A5A;
-  --accent-color: #8B7355; /* Sepia accent */
+  /* Legacy aliases for compatibility */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --font-sans: 'JetBrains Mono', monospace;
   
-  /* Shadows - Subtle for paper effect */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.2);
+  /* ========== SWISS BRUTALIST COLORS ========== */
+  --bg-paper: #F9F7F1;         /* Warm newsprint */
+  --bg-white: #FFFFFF;         /* Pure white for cards */
+  --text-ink: #1A1A1A;         /* Near black ink */
+  --text-muted: #4A4A4A;       /* Secondary text */
+  --border-ink: 1px solid #2C2C2C;
+  --border-heavy: 2px solid #1A1A1A;
   
-  /* Spacing and sizing */
-  --border-radius: 4px;
-  --content-max-width: 1200px;
-  --reading-max-width: 75ch;
+  /* Legacy color variables */
+  --background-color: var(--bg-paper);
+  --text-color: var(--text-ink);
+  --text-light: var(--text-muted);
+  --card-background: var(--bg-white);
+  --border-color: #2C2C2C;
+  --border-color-dark: #000000;
   
-  /* Typography - Serif for intellectual feel */
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-serif: 'Lora', 'Charter', 'Literata', Georgia, 'Times New Roman', Times, serif;
+  /* Primary colors - Monochrome */
+  --primary-color: #1A1A1A;
+  --primary-dark: #000000;
+  --secondary-color: #4A4A4A;
+  --accent-color: #1A1A1A;
+  
+  /* ========== BRUTALIST SHADOWS ========== */
+  --shadow-sm: 2px 2px 0px 0px #1A1A1A;
+  --shadow-md: 4px 4px 0px 0px #1A1A1A;
+  --shadow-lg: 6px 6px 0px 0px #1A1A1A;
+  --shadow-card: 4px 4px 0px 0px #2C2C2C;
+  
+  /* ========== ZERO RADIUS - GLOBAL RESET ========== */
+  --radius: 0px;
+  --border-radius: 0px;
+  --rounded-sm: 0px;
+  --rounded-md: 0px;
+  --rounded-lg: 0px;
+  
+  /* ========== LAYOUT ========== */
+  --content-max-width: 1400px;
+  --reading-max-width: 70ch;
+  --grid-gap: 1px;
+  
+  /* ========== TYPOGRAPHY SCALE ========== */
   --line-height-normal: 1.6;
   --line-height-relaxed: 1.8;
+  --line-height-tight: 1.2;
   
-  /* App variables */
+  /* ========== UI ELEMENTS ========== */
   --section-spacing: 2rem;
-  --footer-background: #F5F3ED;
-  --bias-left: #4a6fa5;
-  --bias-center: #5a9c8a;
-  --bias-right: #b17039;
-  --font-family: 'Lora', 'Charter', Georgia, 'Times New Roman', Times, serif;
-  --rounded-sm: 0.25rem;
-  --rounded-md: 0.5rem;
-  --rounded-lg: 1rem;
-  --transition-speed: 0.3s;
+  --footer-background: #EBEBEB;
+  --transition-speed: 0s; /* NO TRANSITIONS - Brutalist */
   
   /* Table styling */
-  --table-header-bg: #F5F3ED;
+  --table-header-bg: #EBEBEB;
   --table-cell-bg: #FFFFFF;
-  --table-border: #D4C5B9;
+  --table-border: #1A1A1A;
   
   /* Heading colors */
-  --heading-color: #1A1A1A;
-  --heading-secondary: #2C2C2C;
+  --heading-color: #000000;
+  --heading-secondary: #1A1A1A;
   
-  /* UI element colors - Dark grey instead of tech blue */
-  --button-bg: #2C2C2C;
-  --button-text: #F9F7F1;
-  --button-hover-bg: #1A1A1A;
+  /* UI element colors */
+  --button-bg: #1A1A1A;
+  --button-text: #FFFFFF;
+  --button-hover-bg: #000000;
   --input-bg: #FFFFFF;
-  --input-text: #2C2C2C;
-  --input-border: #D4C5B9;
-  --input-focus-border: #8B7355;
+  --input-text: #1A1A1A;
+  --input-border: #1A1A1A;
+  --input-focus-border: #000000;
   
   /* Additional UI elements */
-  --tooltip-bg: #2C2C2C;
-  --tooltip-text: #F9F7F1;
-  --badge-bg: #E8E4DC;
-  --badge-text: #2C2C2C;
+  --tooltip-bg: #1A1A1A;
+  --tooltip-text: #FFFFFF;
+  --badge-bg: #EBEBEB;
+  --badge-text: #1A1A1A;
   
-  /* Box and card backgrounds */
+  /* Box backgrounds */
   --bg-color: #FFFFFF;
-  --bg-color-light: #F9F7F1;
-  --bg-color-lighter: #F5F3ED;
+  --bg-color-light: var(--bg-paper);
+  --bg-color-lighter: #EBEBEB;
+  
+  /* Bias colors - Monochrome */
+  --bias-left: #1A1A1A;
+  --bias-center: #4A4A4A;
+  --bias-right: #1A1A1A;
+  --font-family: 'Playfair Display', Georgia, serif;
 }
 
-/* Apply Sepia/Paper theme */
-body {
-  font-family: var(--font-serif);
-  line-height: var(--line-height-normal);
-  color: var(--text-color);
-  background-color: var(--background-color);
-  min-height: 100vh;
+/* ============================================
+   GLOBAL BORDER-RADIUS RESET
+   ============================================ */
+
+*, *::before, *::after {
+  border-radius: 0px !important;
 }
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
 
 html {
-  background-color: var(--background-color);
+  background-color: var(--bg-paper);
+}
+
+body {
+  font-family: var(--font-tech);
+  line-height: var(--line-height-normal);
+  color: var(--text-ink);
+  background-color: var(--bg-paper);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
 }
 
 html, body, .app {
   min-height: 100vh;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  background-color: var(--bg-paper);
+  color: var(--text-ink);
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  line-height: 1.3;
+/* ============================================
+   TYPOGRAPHY - SWISS BRUTALIST HIERARCHY
+   ============================================ */
+
+/* Display Headlines - Playfair Display */
+h1, h2, h3 {
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+h1, h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
   color: var(--heading-color);
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+/* Subheadings - Monospace */
+h3, h4, h5, h6 {
+  font-family: var(--font-tech);
+  font-weight: 600;
+  color: var(--heading-color);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+h4, h5, h6 {
+  line-height: 1.3;
   margin-bottom: 0.75em;
-  font-family: var(--font-serif);
 }
 
-a {
-  text-decoration: none;
-  color: var(--primary-color);
-  transition: color 0.2s;
-}
+h3 { font-size: 1rem; }
+h4 { font-size: 0.875rem; }
+h5 { font-size: 0.75rem; }
+h6 { font-size: 0.6875rem; }
 
-a:hover {
-  color: var(--primary-dark);
-  text-decoration: underline;
+/* Body text & inline elements - Open spacing */
+p, span, div, li {
+  line-height: 1.6;
 }
 
 p {
   margin-bottom: 1rem;
-  line-height: var(--line-height-relaxed);
 }
+
+/* Links - Underlined, no color change */
+a {
+  text-decoration: underline;
+  color: var(--primary-color);
+  transition: none;
+}
+
+a:hover {
+  color: var(--primary-dark);
+  text-decoration: none;
+}
+
+/* ============================================
+   BRUTALIST BUTTONS
+   ============================================ */
 
 button {
   cursor: pointer;
-  font-family: var(--font-serif);
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
-  border: 1px solid var(--border-color);
-  transition: all 0.2s;
+  font-family: var(--font-tech);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.625rem 1rem;
+  border-radius: 0 !important;
+  border: var(--border-ink);
+  transition: none;
   background-color: var(--button-bg);
   color: var(--button-text);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 button:hover {
   background-color: var(--button-hover-bg);
+  box-shadow: var(--shadow-sm);
+  transform: translate(-1px, -1px);
+}
+
+button:active {
+  transform: translate(0, 0);
+  box-shadow: none;
 }
 
 button:focus {
@@ -136,38 +239,51 @@ button:focus {
   outline-offset: 2px;
 }
 
+/* Text button variant */
+.text-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-ink);
+  padding: 0.25rem 0.5rem;
+  font-family: var(--font-tech);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.text-btn:hover {
+  text-decoration: underline;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ============================================
+   IMAGES & MEDIA
+   ============================================ */
+
 img {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-/* Reading experience enhancements */
-.article-content {
-  font-family: var(--font-serif);
-  max-width: var(--reading-max-width);
-  margin: 0 auto;
-  font-size: 1.125rem;
-}
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
 
-/* Utility classes */
 .container {
   max-width: var(--content-max-width);
   margin: 0 auto;
   padding: 0 1.5rem;
 }
 
-.text-center {
-  text-align: center;
-}
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
 
-.text-serif {
-  font-family: var(--font-serif);
-}
-
-.text-sans {
-  font-family: var(--font-sans);
-}
+.text-serif { font-family: var(--font-display); }
+.text-mono { font-family: var(--font-tech); }
 
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
@@ -179,13 +295,34 @@ img {
 .mb-3 { margin-bottom: 1.5rem; }
 .mb-4 { margin-bottom: 2rem; }
 
-/* App Layout */
+/* ============================================
+   HORIZONTAL RULES - SWISS STYLE
+   ============================================ */
+
+hr {
+  border: none;
+  border-top: 1px solid var(--text-ink);
+  margin: 1.5rem 0;
+}
+
+hr.heavy {
+  border-top-width: 2px;
+}
+
+hr.dashed {
+  border-top-style: dashed;
+}
+
+/* ============================================
+   APP LAYOUT
+   ============================================ */
+
 .app {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  background-color: var(--bg-paper);
+  color: var(--text-ink);
 }
 
 .main-content {
@@ -194,14 +331,14 @@ img {
   max-width: var(--content-max-width);
   margin: 0 auto;
   width: 100%;
-  background-color: var(--background-color);
+  background-color: var(--bg-paper);
 }
 
 /* App footer */
 .app-footer {
   background-color: var(--footer-background);
   padding: 1.5rem 1rem;
-  border-top: 1px solid var(--border-color);
+  border-top: var(--border-heavy);
   margin-top: 2rem;
 }
 
@@ -209,12 +346,15 @@ img {
   max-width: var(--content-max-width);
   margin: 0 auto;
   text-align: center;
-  color: var(--text-light);
-  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-family: var(--font-tech);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .footer-content a {
-  color: var(--text-light);
+  color: var(--text-muted);
   margin: 0 0.5rem;
 }
 
@@ -222,23 +362,16 @@ img {
   color: var(--primary-color);
 }
 
-/* Transitions */
-.fade-enter {
-  opacity: 0;
-}
+/* ============================================
+   TRANSITIONS - DISABLED FOR BRUTALIST
+   ============================================ */
 
-.fade-enter-active {
-  opacity: 1;
-  transition: opacity 300ms;
-}
-
-.fade-exit {
-  opacity: 1;
-}
-
+.fade-enter,
+.fade-enter-active,
+.fade-exit,
 .fade-exit-active {
-  opacity: 0;
-  transition: opacity 300ms;
+  transition: none;
+  animation: none;
 }
 
 /* Utility classes */
@@ -246,7 +379,10 @@ img {
   display: none;
 }
 
-/* Media Queries */
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
 @media (max-width: 768px) {
   .main-content {
     padding: 1rem 0.75rem;
@@ -254,5 +390,28 @@ img {
   
   .app-footer {
     padding: 1rem 0.75rem;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  body {
+    background-color: white;
+    color: black;
+  }
+  
+  * {
+    box-shadow: none !important;
   }
 }

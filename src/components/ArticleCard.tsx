@@ -1,12 +1,7 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useState } from 'react';
 import '../styles/ArticleCard.css';
 import { Article } from '../types/Article';
 import { formatDate, truncateText } from '../utils/textUtils';
-import { 
-  FaBookmark, FaRegBookmark, FaChevronRight, 
-  FaEye, FaEyeSlash, FaTextHeight, FaSpinner 
-} from 'react-icons/fa';
-import { HiOutlineDocumentText } from 'react-icons/hi';
 import { Badge } from './ui/Badge';
 import { getArticleTypeIcon } from '../utils/articleUtils';
 import defaultImage from '../assets/default-article.svg';
@@ -116,7 +111,7 @@ const ArticleCard = memo(({ article, onSave, onAnalyze, isSaved = false, isRead 
     >
       {article.saved && (
         <div className="saved-badge">
-          <FaBookmark className="saved-icon" />
+          <span className="saved-icon">[SAVED]</span>
         </div>
       )}
       
@@ -161,7 +156,7 @@ const ArticleCard = memo(({ article, onSave, onAnalyze, isSaved = false, isRead 
             title={article.read ? "Mark as unread" : "Mark as read"}
             aria-pressed={article.read}
           >
-            {article.read ? <FaEye /> : <FaEyeSlash />}
+            {article.read ? '[READ]' : '[UNREAD]'}
           </button>
           
           <button 
@@ -170,7 +165,7 @@ const ArticleCard = memo(({ article, onSave, onAnalyze, isSaved = false, isRead 
             title={article.saved ? "Remove from saved" : "Save for later"}
             aria-pressed={article.saved}
           >
-            {article.saved ? <FaBookmark /> : <FaRegBookmark />}
+            {article.saved ? '[SAVED]' : '[SAVE]'}
           </button>
           
           {onAnalyze && (
@@ -181,7 +176,7 @@ const ArticleCard = memo(({ article, onSave, onAnalyze, isSaved = false, isRead 
               disabled={isAnalyzing}
               aria-busy={isAnalyzing}
             >
-              {isAnalyzing ? <FaSpinner className="fa-spin" /> : <FaTextHeight />}
+              {isAnalyzing ? '[...]' : '[ANALYSIS]'}
             </button>
           )}
           
@@ -192,7 +187,7 @@ const ArticleCard = memo(({ article, onSave, onAnalyze, isSaved = false, isRead 
             className="read-more-link"
             onClick={(e) => e.stopPropagation()}
           >
-            Read <FaChevronRight />
+            READ →
           </a>
         </div>
       </div>

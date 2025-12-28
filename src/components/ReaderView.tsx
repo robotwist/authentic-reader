@@ -200,35 +200,39 @@ const ReaderView: React.FC<ReaderViewProps> = ({
         >
           <div className="fallacy-sidebar-header">
             <h2 id="fallacy-sidebar-title" className="fallacy-sidebar-title">
-              {activeFallacy.type}
+              [BIAS_DETECTED]
             </h2>
             <button
               className="fallacy-sidebar-close"
               onClick={() => setActiveFallacyId(null)}
               aria-label="Close sidebar"
             >
-              ×
+              [CLOSE_VIEW]
             </button>
           </div>
 
           <div className="fallacy-sidebar-content">
+            <div className="fallacy-type-label">
+              TYPE: {activeFallacy.type.toUpperCase()}
+            </div>
+            
             {activeFallacy.explanation && (
               <div className="fallacy-section">
-                <h3 className="fallacy-section-title">Explanation</h3>
+                <h3 className="fallacy-section-title">EXPLANATION</h3>
                 <p className="fallacy-section-text">{activeFallacy.explanation}</p>
               </div>
             )}
 
             {activeFallacy.mechanism && (
               <div className="fallacy-section">
-                <h3 className="fallacy-section-title">The Mechanism</h3>
+                <h3 className="fallacy-section-title">MECHANISM</h3>
                 <p className="fallacy-section-text">{activeFallacy.mechanism}</p>
               </div>
             )}
 
             {activeFallacy.motive && (
               <div className="fallacy-section">
-                <h3 className="fallacy-section-title">The Motive</h3>
+                <h3 className="fallacy-section-title">MOTIVE</h3>
                 <p className="fallacy-section-text">{activeFallacy.motive}</p>
               </div>
             )}
@@ -236,7 +240,7 @@ const ReaderView: React.FC<ReaderViewProps> = ({
             {activeFallacy.severity && (
               <div className="fallacy-meta">
                 <span className={`severity-badge severity-${activeFallacy.severity}`}>
-                  {activeFallacy.severity} severity
+                  SEVERITY: {activeFallacy.severity.toUpperCase()}
                 </span>
               </div>
             )}

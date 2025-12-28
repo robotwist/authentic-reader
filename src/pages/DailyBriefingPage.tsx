@@ -327,9 +327,9 @@ const DailyBriefingPage: React.FC = () => {
       <div className="daily-briefing-page archive-mode">
         <div className="archive-modal">
           <div className="archive-header">
-            <h2>📚 Briefing Archive</h2>
+            <h2>BRIEFING ARCHIVE</h2>
             <button className="close-button" onClick={() => setShowArchive(false)}>
-              ×
+              (CLOSE)
             </button>
           </div>
           
@@ -340,8 +340,8 @@ const DailyBriefingPage: React.FC = () => {
             </div>
           ) : archiveDates.length === 0 ? (
             <div className="archive-empty">
-              <p>No archived briefings yet.</p>
-              <p className="archive-hint">Past briefings will appear here once they're saved.</p>
+              <p>NO ARCHIVED BRIEFINGS.</p>
+              <p className="archive-hint">Past briefings will appear here once saved.</p>
             </div>
           ) : (
             <div className="archive-list">
@@ -351,7 +351,7 @@ const DailyBriefingPage: React.FC = () => {
                   className="archive-date-button"
                   onClick={() => handleSelectDate(date)}
                 >
-                  <span className="archive-date-icon">📅</span>
+                  <span className="archive-date-icon">[DATE]</span>
                   <span className="archive-date-text">{formatted}</span>
                   <span className="archive-date-arrow">→</span>
                 </button>
@@ -392,8 +392,7 @@ const DailyBriefingPage: React.FC = () => {
           <article className="briefing-article">
             <header className="article-header">
               <div className="topic-badge">
-                <span className="topic-icon">{topicData.icon}</span>
-                <span className="topic-label">{topicData.topic}</span>
+                <span className="topic-label">[{topicData.topic.toUpperCase()}]</span>
               </div>
               <h1 className="article-title">{topicData.article.title}</h1>
               <div className="article-meta">
@@ -532,9 +531,9 @@ const DailyBriefingPage: React.FC = () => {
               })
           }
         </p>
-        <h2 className="dashboard-subtitle">
-          {briefing.isArchive ? 'Archived Briefing' : "Today's Truth Assessment"}
-        </h2>
+        <h1 className="dashboard-subtitle">
+          {briefing.isArchive ? 'THE ARCHIVE' : 'THE DAILY LOGIC'}
+        </h1>
         
         {briefing.isArchive && (
           <button className="back-to-today" onClick={handleBackToToday}>
@@ -544,10 +543,10 @@ const DailyBriefingPage: React.FC = () => {
         
         {isOffline && (
           <div className="offline-banner">
-            <span className="offline-icon">📡</span>
-            <span className="offline-text">Showing demo data — backend warming up</span>
+            <span className="offline-icon">[OFFLINE]</span>
+            <span className="offline-text">DEMO DATA — BACKEND WARMING UP</span>
             <button className="retry-link" onClick={handleRetry}>
-              Try again
+              (RETRY)
             </button>
           </div>
         )}
@@ -570,8 +569,7 @@ const DailyBriefingPage: React.FC = () => {
               onClick={() => setSelectedTopic(key)}
               aria-label={`Read about ${topic.topic}`}
             >
-              <div className="card-icon">{topic.icon}</div>
-              <h3 className="card-topic">{topic.topic}</h3>
+              <h3 className="card-topic">[{topic.topic.toUpperCase()}]</h3>
               <p className="card-headline">{topic.article.title}</p>
               <div className="card-meta">
                 <span className="card-source">{topic.article.source}</span>
@@ -588,7 +586,7 @@ const DailyBriefingPage: React.FC = () => {
       
       <div className="dashboard-actions">
         <button className="archive-button" onClick={handleOpenArchive}>
-          📚 Browse History
+          [ARCHIVE] BROWSE HISTORY
         </button>
       </div>
       

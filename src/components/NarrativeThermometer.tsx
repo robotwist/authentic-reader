@@ -116,10 +116,10 @@ const NarrativeThermometer: React.FC = () => {
   if (loading) {
     return (
       <div className="narrative-thermometer-container">
-        <h3 className="thermometer-header">7-Day Propaganda Trend</h3>
+        <h3 className="thermometer-header">7-DAY PROPAGANDA TREND</h3>
         <div className="thermometer-loading">
           <div className="loading-spinner-small" />
-          <span>Loading trend data...</span>
+          <span>LOADING...</span>
         </div>
       </div>
     );
@@ -128,10 +128,10 @@ const NarrativeThermometer: React.FC = () => {
   if (error) {
     return (
       <div className="narrative-thermometer-container">
-        <h3 className="thermometer-header">7-Day Propaganda Trend</h3>
+        <h3 className="thermometer-header">7-DAY PROPAGANDA TREND</h3>
         <div className="thermometer-error">
-          <span>⚠️ Trend data unavailable</span>
-          <p style={{ fontSize: '0.875rem', marginTop: '0.5rem', color: '#5A5A5A' }}>
+          <span>[ERROR] TREND DATA UNAVAILABLE</span>
+          <p style={{ fontSize: '0.6875rem', marginTop: '0.5rem', color: '#4A4A4A', fontFamily: "'JetBrains Mono', monospace" }}>
             Historical data will appear here once briefing articles are saved.
           </p>
         </div>
@@ -146,11 +146,11 @@ const NarrativeThermometer: React.FC = () => {
   if (chartData.length === 0) {
     return (
       <div className="narrative-thermometer-container">
-        <h3 className="thermometer-header">7-Day Propaganda Trend</h3>
+        <h3 className="thermometer-header">7-DAY PROPAGANDA TREND</h3>
         <div className="thermometer-empty">
-          <span>No trend data available yet</span>
-          <p style={{ fontSize: '0.875rem', marginTop: '0.5rem', color: '#5A5A5A' }}>
-            Historical data will appear here once briefing articles are saved over multiple days.
+          <span>NO DATA AVAILABLE</span>
+          <p style={{ fontSize: '0.6875rem', marginTop: '0.5rem', color: '#4A4A4A', fontFamily: "'JetBrains Mono', monospace" }}>
+            Historical data will appear here once briefing articles are saved.
           </p>
         </div>
       </div>
@@ -159,73 +159,86 @@ const NarrativeThermometer: React.FC = () => {
 
   return (
     <div className="narrative-thermometer-container">
-      <h3 className="thermometer-header">7-Day Propaganda Trend</h3>
+      <h3 className="thermometer-header">7-DAY PROPAGANDA TREND</h3>
       <div className="thermometer-chart">
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(212, 197, 185, 0.3)" />
+            <CartesianGrid strokeDasharray="0" stroke="rgba(26, 26, 26, 0.12)" />
             <XAxis 
               dataKey="date" 
-              stroke="#8B7355"
+              stroke="#1A1A1A"
+              tick={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace" }}
               style={{ 
-                fontSize: '12px',
-                fontFamily: "'Lora', 'Charter', 'Georgia', serif"
+                fontSize: '10px',
+                fontFamily: "'JetBrains Mono', monospace"
               }}
             />
             <YAxis 
               label={{ 
-                value: 'Rhetorical Heat', 
+                value: 'RHETORICAL HEAT', 
                 angle: -90, 
                 position: 'insideLeft',
                 style: { 
                   textAnchor: 'middle', 
-                  fill: '#5A5A5A',
-                  fontFamily: "'Lora', 'Charter', 'Georgia', serif"
+                  fill: '#1A1A1A',
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: '9px',
+                  letterSpacing: '0.08em'
                 }
               }}
-              stroke="#8B7355"
+              stroke="#1A1A1A"
+              tick={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace" }}
               style={{ 
-                fontSize: '12px',
-                fontFamily: "'Lora', 'Charter', 'Georgia', serif"
+                fontSize: '10px',
+                fontFamily: "'JetBrains Mono', monospace"
               }}
             />
             <Tooltip 
               contentStyle={{
-                backgroundColor: '#F9F7F1',
-                border: '1px solid #D4C5B9',
-                borderRadius: '8px',
-                color: '#2C2C2C',
-                fontFamily: "'Lora', 'Charter', 'Georgia', serif"
+                backgroundColor: '#FFFFFF',
+                border: '2px solid #1A1A1A',
+                borderRadius: '0',
+                color: '#1A1A1A',
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '11px',
+                boxShadow: '3px 3px 0px 0px #1A1A1A',
+                padding: '10px 12px'
               }}
               labelStyle={{ 
-                color: '#2C2C2C', 
+                color: '#1A1A1A', 
                 marginBottom: '8px',
-                fontFamily: "'Lora', 'Charter', 'Georgia', serif",
-                fontWeight: 600
+                fontFamily: "'JetBrains Mono', monospace",
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em'
               }}
               itemStyle={{
-                color: '#5A5A5A',
-                fontFamily: "'Lora', 'Charter', 'Georgia', serif"
+                color: '#4A4A4A',
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '10px'
               }}
             />
             <Legend 
               wrapperStyle={{ 
-                paddingTop: '20px',
-                fontFamily: "'Lora', 'Charter', 'Georgia', serif",
-                color: '#2C2C2C'
+                paddingTop: '16px',
+                fontFamily: "'JetBrains Mono', monospace",
+                color: '#1A1A1A',
+                fontSize: '10px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em'
               }}
-              iconType="line"
+              iconType="plainline"
             />
             {topics.map(topic => (
               <Line
                 key={topic}
-                type="monotone"
+                type="linear"
                 dataKey={topic}
-                name={TOPIC_LABELS[topic] || topic}
-                stroke={TOPIC_COLORS[topic] || '#5A5A5A'}
+                name={TOPIC_LABELS[topic]?.toUpperCase() || topic.toUpperCase()}
+                stroke={TOPIC_COLORS[topic] || '#1A1A1A'}
                 strokeWidth={2}
-                dot={{ r: 4, fill: TOPIC_COLORS[topic] || '#5A5A5A' }}
-                activeDot={{ r: 6 }}
+                dot={false}
+                activeDot={false}
               />
             ))}
           </LineChart>
