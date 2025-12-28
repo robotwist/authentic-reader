@@ -52,6 +52,11 @@ const Article = sequelize.define('Article', {
     type: Sequelize.INTEGER,
     defaultValue: 0,
     field: 'consensus_score'
+  },
+  analysisPayload: {
+    type: Sequelize.JSONB,
+    allowNull: true,
+    field: 'analysis_payload'
   }
 });
 

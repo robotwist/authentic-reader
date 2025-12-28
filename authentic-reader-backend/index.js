@@ -42,6 +42,8 @@ import aiAnalysisRoutes from './routes/aiAnalysis.js';
 import dailyBriefingRoutes from './routes/dailyBriefingRoutes.js';
 import trendsRoutes from './routes/trendsRoutes.js';
 import voteRoutes from './routes/vote.js';
+import cron from 'node-cron';
+import { generateDailyBriefing } from './scripts/dailyBriefing.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -1345,6 +1347,19 @@ const startServer = async () => {
         
         // Initialize default data if needed
         await initializeDefaultData();
+        
+        // Schedule Daily Briefing to run every day at 6:00 AM
+        cron.schedule('0 6 * * *', async () => {
+          console.log('⏰ Starting scheduled Daily Briefing...');
+          try {
+            await generateDailyBriefing();
+            console.log('✅ Scheduled briefing completed.');
+          } catch (error) {
+            console.error('❌ Scheduled briefing failed:', error);
+          }
+        });
+        
+        console.log('⏰ Job Scheduler Active: Daily Briefing set for 06:00.');
         
       } catch (error) {
         console.error('Unable to initialize JSON storage:', error);

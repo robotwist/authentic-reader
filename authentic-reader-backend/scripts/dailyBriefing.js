@@ -1,0 +1,374 @@
+#!/usr/bin/env node
+
+/**
+ * Daily Briefing Script
+ * 
+ * Orchestrates RSS fetching, AI analysis, and database storage for daily briefing articles.
+ * Topics: Ukraine, Gaza, Public Health, Justice, Economy
+ * 
+ * Usage: npm run daily-briefing (from authentic-reader-backend directory)
+ */
+
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import db from '../models/index.js';
+import rssService from '../services/rssService.js';
+import productionAIService from '../services/productionAIService.js';
+import logger from '../utils/logger.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load environment variables
+dotenv.config({ path: join(__dirname, '..', '.env') });
+
+// Define topics for daily briefing
+const TOPICS = [
+  { name: 'Ukraine', keywords: ['ukraine', 'ukrainian', 'russia', 'russian', 'kyiv', 'zelensky', 'war in ukraine'] },
+  { name: 'Gaza', keywords: ['gaza', 'palestine', 'israel', 'hamas', 'gaza strip', 'west bank'] },
+  { name: 'Public Health', keywords: ['health', 'medical', 'disease', 'vaccine', 'public health', 'healthcare', 'hospital', 'doctor'] },
+  { name: 'Justice', keywords: ['justice', 'court', 'law', 'legal', 'judge', 'trial', 'lawsuit', 'supreme court'] },
+  { name: 'Economy', keywords: ['economy', 'economic', 'market', 'stock', 'finance', 'inflation', 'recession', 'employment', 'gdp'] }
+];
+
+/**
+ * Check if article matches topic based on keywords
+ */
+function articleMatchesTopic(article, topic) {
+  const text = `${article.title || ''} ${article.content || ''} ${article.description || ''}`.toLowerCase();
+  return topic.keywords.some(keyword => text.includes(keyword.toLowerCase()));
+}
+
+/**
+ * Fetch articles from RSS for a specific topic
+ */
+async function fetchArticlesForTopic(topic, seenUrls, sources) {
+  const articles = [];
+  
+  logger.info(`[Topic: ${topic.name}] Fetching articles from ${sources.length} sources...`);
+  
+  for (const source of sources) {
+    try {
+      logger.debug(`Fetching from ${source.name} (${source.url})...`);
+      
+      // Fetch RSS feed
+      const feedData = await rssService.fetchFeed(source.url, {
+        maxItems: 20,
+        timeout: 15000
+      });
+      
+      if (!feedData || !feedData.items) {
+        logger.warn(`No items found in feed from ${source.name}`);
+        continue;
+      }
+      
+      // Process each item
+      for (const item of feedData.items) {
+        const normalizedItem = rssService.normalizeItem(item, source.name);
+        
+        // Skip if already seen
+        if (seenUrls.has(normalizedItem.link)) {
+          continue;
+        }
+        
+        // Check if article matches topic
+        if (articleMatchesTopic(normalizedItem, topic)) {
+          // Add source information
+          const article = {
+            ...normalizedItem,
+            sourceId: source.id,
+            source: {
+              id: source.id,
+              name: source.name,
+              url: source.url,
+              category: source.category
+            }
+          };
+          
+          articles.push(article);
+          seenUrls.add(normalizedItem.link);
+          
+          logger.debug(`Found matching article: ${normalizedItem.title.substring(0, 60)}...`);
+        }
+      }
+    } catch (error) {
+      logger.error(`Error fetching from ${source.name}:`, error.message);
+      continue;
+    }
+  }
+  
+  logger.info(`[Topic: ${topic.name}] Found ${articles.length} unique articles`);
+  return articles;
+}
+
+/**
+ * Analyze article with AI service
+ */
+async function analyzeArticle(article) {
+  try {
+    logger.info(`Analyzing article: ${article.title.substring(0, 60)}...`);
+    
+    // Use production AI service
+    const analysis = await productionAIService.analyzeArticle(article, {
+      includeBias: true,
+      includeSentiment: true,
+      includeCredibility: true,
+      includeFallacies: true,
+      includeSummary: true
+    });
+    
+    // Format analysis payload for database
+    const analysisPayload = {
+      summary: analysis.summary || article.description || '',
+      bias: analysis.bias || {},
+      sentiment: analysis.sentiment || {},
+      credibility: analysis.credibility || {},
+      fallacies: analysis.fallacies || [],
+      confidence_score: analysis.confidence || 0.5,
+      tone: analysis.sentiment?.label || 'neutral',
+      educational_insight: analysis.summary || '',
+      service: analysis.service || 'unknown',
+      timestamp: new Date().toISOString()
+    };
+    
+    return analysisPayload;
+  } catch (error) {
+    logger.error(`Error analyzing article:`, error.message);
+    
+    // Return basic fallback analysis
+    return {
+      summary: article.description || article.content?.substring(0, 200) || '',
+      bias: { overall: 'unknown' },
+      sentiment: { label: 'neutral', score: 0 },
+      credibility: { overall: 'medium' },
+      fallacies: [],
+      confidence_score: 0.3,
+      tone: 'neutral',
+      educational_insight: article.description || '',
+      service: 'fallback',
+      timestamp: new Date().toISOString()
+    };
+  }
+}
+
+/**
+ * Save article to database
+ */
+async function saveArticle(article, analysisPayload, sourceId) {
+  try {
+    // Parse publish date
+    let publishDate = null;
+    if (article.publishDate) {
+      publishDate = new Date(article.publishDate);
+      if (isNaN(publishDate.getTime())) {
+        publishDate = new Date();
+      }
+    } else {
+      publishDate = new Date();
+    }
+    
+    // Check if article already exists by guid
+    const existingArticle = await db.Article.findOne({
+      where: { guid: article.guid || article.link }
+    });
+    
+    if (existingArticle) {
+      logger.debug(`Article already exists: ${article.title.substring(0, 60)}...`);
+      return existingArticle;
+    }
+    
+    // Create new article
+    const savedArticle = await db.Article.create({
+      title: article.title,
+      link: article.link,
+      author: article.author || null,
+      publishDate: publishDate,
+      content: article.content || article.description || '',
+      summary: article.description || '',
+      guid: article.guid || article.link,
+      sourceId: sourceId,
+      categories: article.categories || [],
+      analysisPayload: analysisPayload
+    });
+    
+    logger.info(`Saved article: ${article.title.substring(0, 60)}...`);
+    return savedArticle;
+  } catch (error) {
+    logger.error(`Error saving article:`, error.message);
+    logger.error(`Full error:`, error);
+    if (error.errors) {
+      logger.error(`Validation errors:`, error.errors);
+    }
+    throw error;
+  }
+}
+
+/**
+ * Main orchestrator function
+ * Exported for use in cron jobs or other automation
+ */
+export const generateDailyBriefing = async () => {
+  logger.info('🚀 Starting Daily Briefing Generation...\n');
+  
+  try {
+    // Test database connection
+    await db.sequelize.authenticate();
+    logger.info('✅ Database connection established');
+    
+    // Get all active sources from database
+    const sources = await db.Source.findAll({
+      where: {},
+      limit: 50 // Limit to prevent too many requests
+    });
+    
+    if (sources.length === 0) {
+      logger.warn('⚠️  No sources found in database. Creating fallback sources...');
+      // Create fallback sources in database if they don't exist
+      const fallbackSourcesConfig = [
+        { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/rss.xml', category: 'news' },
+        { name: 'Reuters', url: 'https://www.reutersagency.com/feed/?best-topics=business-finance&post_type=best', category: 'news' },
+        { name: 'NPR', url: 'https://feeds.npr.org/1001/rss.xml', category: 'news' },
+        { name: 'Associated Press', url: 'https://rsshub.app/apnews/topics/apf-topnews', category: 'news' },
+        { name: 'The Guardian', url: 'https://www.theguardian.com/world/rss', category: 'news' }
+      ];
+      
+      for (const sourceConfig of fallbackSourcesConfig) {
+        const [source, created] = await db.Source.findOrCreate({
+          where: { name: sourceConfig.name },
+          defaults: {
+            name: sourceConfig.name,
+            url: sourceConfig.url,
+            category: sourceConfig.category,
+            description: `Default RSS feed source: ${sourceConfig.name}`
+          }
+        });
+        sources.push(source);
+        if (created) {
+          logger.info(`Created source: ${sourceConfig.name}`);
+        }
+      }
+    }
+    
+    logger.info(`📰 Found ${sources.length} sources to fetch from\n`);
+    
+    // Initialize seen URLs set for deduplication
+    const seenUrls = new Set();
+    
+    // Get existing article URLs to avoid duplicates
+    const existingArticles = await db.Article.findAll({
+      attributes: ['guid', 'link'],
+      limit: 1000
+    });
+    
+    existingArticles.forEach(article => {
+      if (article.guid) seenUrls.add(article.guid);
+      if (article.link) seenUrls.add(article.link);
+    });
+    
+    logger.info(`📋 Found ${seenUrls.size} existing articles to skip\n`);
+    
+    // Process each topic
+    let totalArticles = 0;
+    let totalSaved = 0;
+    
+    for (const topic of TOPICS) {
+      logger.info(`\n📌 Processing topic: ${topic.name}`);
+      logger.info(`   Keywords: ${topic.keywords.join(', ')}`);
+      
+      try {
+        // Fetch articles for this topic
+        const articles = await fetchArticlesForTopic(topic, seenUrls, sources);
+        totalArticles += articles.length;
+        
+        if (articles.length === 0) {
+          logger.info(`   No articles found for ${topic.name}`);
+          continue;
+        }
+        
+        // Process each article: analyze and save
+        for (const article of articles) {
+          try {
+            // Analyze article
+            logger.info(`   Analyzing: ${article.title.substring(0, 60)}...`);
+            const analysisPayload = await analyzeArticle(article);
+            
+            // Get or create source
+            let sourceId = article.sourceId;
+            if (!sourceId) {
+              // Try to find source by name
+              const source = await db.Source.findOne({
+                where: { name: article.source?.name || 'Unknown' }
+              });
+              
+              if (source) {
+                sourceId = source.id;
+              } else {
+                // Create source if it doesn't exist
+                const newSource = await db.Source.create({
+                  name: article.source?.name || 'Unknown',
+                  url: article.source?.url || article.link,
+                  category: article.source?.category || 'news',
+                  description: article.source?.description || ''
+                });
+                sourceId = newSource.id;
+              }
+            }
+            
+            // Save article
+            await saveArticle(article, analysisPayload, sourceId);
+            totalSaved++;
+            
+            logger.info(`   ✅ Saved: ${article.title.substring(0, 60)}...`);
+          } catch (error) {
+            logger.error(`   ❌ Error processing article:`, error.message);
+            if (error.errors) {
+              logger.error(`   Validation errors:`, JSON.stringify(error.errors, null, 2));
+            }
+            if (error.stack) {
+              logger.error(`   Stack trace:`, error.stack);
+            }
+            continue;
+          }
+        }
+        
+        logger.info(`   ✅ Topic ${topic.name}: ${articles.length} articles processed`);
+      } catch (error) {
+        logger.error(`   ❌ Error processing topic ${topic.name}:`, error.message);
+        continue;
+      }
+    }
+    
+    logger.info(`\n🎉 Daily Briefing Generation Complete!`);
+    logger.info(`   Total articles found: ${totalArticles}`);
+    logger.info(`   Total articles saved: ${totalSaved}`);
+    logger.info(`   Topics processed: ${TOPICS.length}`);
+    
+  } catch (error) {
+    logger.error('❌ Fatal error in daily briefing generation:', error);
+    console.error('Daily briefing generation failed:', error);
+    // Don't throw - just return so it can be used as a module without crashing
+    return;
+  } finally {
+    // Only close database connection if running as standalone script
+    // When imported as a module, the connection should remain open
+    if (process.argv[1] === fileURLToPath(import.meta.url)) {
+      await db.sequelize.close();
+      logger.info('Database connection closed');
+    }
+  }
+};
+
+// Self-running check: Execute the script if run directly via CLI
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  generateDailyBriefing()
+    .then(() => {
+      logger.info('Script completed successfully');
+      process.exit(0);
+    })
+    .catch((error) => {
+      logger.error('Script failed:', error);
+      process.exit(1);
+    });
+}
+

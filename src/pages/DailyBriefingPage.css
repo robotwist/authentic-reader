@@ -198,7 +198,8 @@
 .topic-card:hover .card-topic,
 .topic-card:hover .card-headline,
 .topic-card:hover .card-source,
-.topic-card:hover .card-reliability {
+.topic-card:hover .card-reliability,
+.topic-card:hover .card-logic-score {
   color: var(--bg-white, #FFFFFF);
 }
 
@@ -267,6 +268,59 @@
 .card-source {
   color: var(--text-muted, #4A4A4A);
   font-weight: 500;
+}
+
+.card-scores {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.card-logic-score {
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--text-ink, #1A1A1A);
+  background: transparent;
+  cursor: help;
+  font-size: 0.5625rem;
+  white-space: nowrap;
+  position: relative;
+}
+
+.card-logic-score.score-high {
+  background: #E8F5E9;
+  color: #2E7D32;
+  border-color: #2E7D32;
+}
+
+.card-logic-score.score-medium {
+  background: #FFF9C4;
+  color: #F57F17;
+  border-color: #F57F17;
+}
+
+.card-logic-score.score-low {
+  background: #FFEBEE;
+  color: #C62828;
+  border-color: #C62828;
+}
+
+.topic-card:hover .card-logic-score.score-high {
+  background: #2E7D32;
+  color: var(--bg-white, #FFFFFF);
+  border-color: var(--bg-white, #FFFFFF);
+}
+
+.topic-card:hover .card-logic-score.score-medium {
+  background: #F57F17;
+  color: var(--bg-white, #FFFFFF);
+  border-color: var(--bg-white, #FFFFFF);
+}
+
+.topic-card:hover .card-logic-score.score-low {
+  background: #C62828;
+  color: var(--bg-white, #FFFFFF);
+  border-color: var(--bg-white, #FFFFFF);
 }
 
 .card-reliability {

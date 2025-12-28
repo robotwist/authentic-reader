@@ -6,6 +6,7 @@ import { API_CONFIG } from '../config/api.config';
 import { fallbackBriefing } from '../data/fallbackBriefing';
 import useEnhancedAnalysis from '../hooks/useEnhancedAnalysis';
 import { AnalysisResult } from '../services/enhancedCognitiveAnalysisService';
+import { calculateLogicScore, calculateLogicScoreFromFallacies, getScoreColorClass, formatScoreBreakdown } from '../utils/scoring';
 import './DailyBriefingPage.css';
 
 interface DailyBriefingTopic {
@@ -679,6 +680,13 @@ const DailyBriefingPage: React.FC = () => {
           
           const reliabilityScore = topic.analysis?.overallAssessment?.reliabilityScore;
           
+          // Calculate logic score from fallacies
+          const fallacies = getFallacies(topic);
+          const logicScoreResult = calculateLogicScoreFromFallacies(fallacies);
+          const logicScore = logicScoreResult.totalScore;
+          const scoreColorClass = getScoreColorClass(logicScore);
+          const scoreBreakdown = formatScoreBreakdown(logicScoreResult);
+          
           return (
             <button
               key={key}
@@ -690,11 +698,19 @@ const DailyBriefingPage: React.FC = () => {
               <p className="card-headline">{topic.article.title}</p>
               <div className="card-meta">
                 <span className="card-source">{topic.article.source}</span>
-                {reliabilityScore !== undefined && (
-                  <span className={`card-reliability ${getReliabilityClass(reliabilityScore)}`}>
-                    {reliabilityScore}/100
+                <div className="card-scores">
+                  <span 
+                    className={`card-logic-score ${scoreColorClass}`}
+                    title={scoreBreakdown}
+                  >
+                    SCORE: {logicScore}
                   </span>
-                )}
+                  {reliabilityScore !== undefined && (
+                    <span className={`card-reliability ${getReliabilityClass(reliabilityScore)}`}>
+                      {reliabilityScore}/100
+                    </span>
+                  )}
+                </div>
               </div>
             </button>
           );
