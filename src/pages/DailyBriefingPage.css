@@ -973,6 +973,224 @@
 }
 
 /* ============================================
+   LLM ANALYSIS ENHANCEMENTS
+   ============================================ */
+
+/* Analyzing Badge */
+.analyzing-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  padding: 0.375rem 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: var(--bg-paper, #F9F7F1);
+  border: 1px solid var(--text-ink, #1A1A1A);
+  color: var(--text-muted, #4A4A4A);
+}
+
+.analyzing-spinner {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--text-muted, #4A4A4A);
+  border-top-color: var(--text-ink, #1A1A1A);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* LLM Badge */
+.llm-badge {
+  font-size: 0.5625rem;
+  font-weight: 600;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  padding: 0.375rem 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--text-ink, #1A1A1A);
+  color: var(--bg-white, #FFFFFF);
+  border: 1px solid var(--text-ink, #1A1A1A);
+}
+
+/* Tone Badge */
+.tone-badge {
+  font-size: 0.5625rem;
+  font-weight: 600;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  padding: 0.375rem 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--bg-paper, #F9F7F1);
+  border: 1px solid var(--text-ink, #1A1A1A);
+  color: var(--text-ink, #1A1A1A);
+}
+
+/* Bias Meter */
+.bias-meter-container {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--bg-paper, #F9F7F1);
+  border: 1px solid var(--text-ink, #1A1A1A);
+}
+
+.bias-meter {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.bias-label-left,
+.bias-label-right {
+  font-size: 0.5rem;
+  font-weight: 700;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted, #4A4A4A);
+  width: 40px;
+}
+
+.bias-label-right {
+  text-align: right;
+}
+
+.bias-track {
+  flex: 1;
+  height: 8px;
+  background: linear-gradient(to right, 
+    #2563eb 0%, 
+    #60a5fa 25%, 
+    #9ca3af 50%, 
+    #f87171 75%, 
+    #dc2626 100%
+  );
+  position: relative;
+  border: 1px solid var(--text-ink, #1A1A1A);
+}
+
+.bias-indicator {
+  position: absolute;
+  top: -4px;
+  width: 16px;
+  height: 16px;
+  background: var(--text-ink, #1A1A1A);
+  border: 2px solid var(--bg-white, #FFFFFF);
+  transform: translateX(-50%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.bias-confidence {
+  display: block;
+  text-align: center;
+  margin-top: 0.5rem;
+  font-size: 0.5625rem;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  color: var(--text-muted, #4A4A4A);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Bias Direction Colors */
+.bias-value.bias-left,
+.bias-indicator.bias-left {
+  color: #2563eb;
+}
+
+.bias-value.bias-centerleft {
+  color: #60a5fa;
+}
+
+.bias-value.bias-center {
+  color: #6b7280;
+}
+
+.bias-value.bias-centerright {
+  color: #f87171;
+}
+
+.bias-value.bias-right {
+  color: #dc2626;
+}
+
+/* Manipulation Techniques */
+.techniques-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.technique-tag {
+  font-size: 0.5625rem;
+  font-weight: 600;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  padding: 0.375rem 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--text-ink, #1A1A1A);
+  color: var(--bg-white, #FFFFFF);
+}
+
+/* Better Alternative Box */
+.better-alternative {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #f0fdf4;
+  border: 1px solid #16a34a;
+  border-left: 3px solid #16a34a;
+}
+
+.alternative-label {
+  display: block;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #16a34a;
+  margin-bottom: 0.375rem;
+}
+
+.alternative-text {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  color: #166534;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* No Fallacies Message */
+.no-fallacies {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  color: #16a34a;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 1rem;
+  background: #f0fdf4;
+  border: 1px solid #16a34a;
+  text-align: center;
+}
+
+/* Analysis Loading State */
+.analysis-loading {
+  font-size: 0.625rem;
+  color: var(--text-muted, #4A4A4A);
+  font-weight: 400;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ============================================
    RESPONSIVE ADJUSTMENTS
    ============================================ */
 
@@ -996,5 +1214,24 @@
   
   .article-analysis-section {
     padding: 1.5rem;
+  }
+  
+  .bias-meter-container {
+    padding: 0.75rem;
+  }
+  
+  .bias-label-left,
+  .bias-label-right {
+    font-size: 0.4375rem;
+    width: 30px;
+  }
+  
+  .techniques-list {
+    gap: 0.375rem;
+  }
+  
+  .technique-tag {
+    font-size: 0.5rem;
+    padding: 0.25rem 0.5rem;
   }
 }

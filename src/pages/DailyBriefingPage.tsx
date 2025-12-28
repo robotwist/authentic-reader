@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ReaderView from '../components/ReaderView';
 import NarrativeThermometer from '../components/NarrativeThermometer';
 import { FallacyData } from '../utils/llmParser';
 import { API_CONFIG } from '../config/api.config';
 import { fallbackBriefing } from '../data/fallbackBriefing';
+import useEnhancedAnalysis from '../hooks/useEnhancedAnalysis';
+import { AnalysisResult } from '../services/enhancedCognitiveAnalysisService';
 import './DailyBriefingPage.css';
 
 interface DailyBriefingTopic {
@@ -64,6 +66,16 @@ const DailyBriefingPage: React.FC = () => {
   const [archiveDates, setArchiveDates] = useState<ArchiveDate[]>([]);
   const [loadingArchive, setLoadingArchive] = useState(false);
   const [currentDate, setCurrentDate] = useState<string | null>(null);
+  
+  // Enhanced LLM Analysis Hook
+  const {
+    analyzeArticle: runEnhancedAnalysis,
+    analysis: enhancedAnalysis,
+    fallacyData: enhancedFallacies,
+    isLoading: isAnalyzing,
+    isLLMAvailable,
+    clearAnalysis
+  } = useEnhancedAnalysis();
 
   useEffect(() => {
     loadDailyBriefing();
@@ -302,11 +314,37 @@ const DailyBriefingPage: React.FC = () => {
 
   const handleBackClick = () => {
     setSelectedTopic(null);
+    clearAnalysis(); // Clear enhanced analysis when going back
   };
 
   const handleRetry = () => {
     loadDailyBriefing();
   };
+  
+  // Handle topic selection and trigger LLM analysis
+  const handleTopicSelect = useCallback((topic: TopicKey) => {
+    setSelectedTopic(topic);
+    
+    // Get the topic data and trigger enhanced analysis
+    if (briefing?.topics[topic]) {
+      const topicData = briefing.topics[topic];
+      
+      // Strip HTML tags for analysis
+      const textContent = topicData.article.content
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      
+      // Run enhanced LLM analysis in background
+      runEnhancedAnalysis(textContent, {
+        title: topicData.article.title,
+        source: topicData.article.source,
+        author: topicData.article.author
+      }).catch(err => {
+        console.warn('Enhanced analysis failed, using fallback:', err);
+      });
+    }
+  }, [briefing, runEnhancedAnalysis]);
 
   // Loading state
   if (loading) {
@@ -373,10 +411,26 @@ const DailyBriefingPage: React.FC = () => {
   // Reader view (article selected)
   if (selectedTopic) {
     const topicData = briefing.topics[selectedTopic];
-    // Use robust data normalizers
-    const fallacies = topicData ? getFallacies(topicData) : [];
-    const bias = topicData ? getBias(topicData) : null;
-    const summary = topicData ? getSummary(topicData) : null;
+    
+    // Use enhanced analysis if available, otherwise fall back to static data
+    const fallacies = enhancedFallacies.length > 0 
+      ? enhancedFallacies 
+      : (topicData ? getFallacies(topicData) : []);
+    const staticBias = topicData ? getBias(topicData) : null;
+    const staticSummary = topicData ? getSummary(topicData) : null;
+    
+    // Enhanced analysis values (from LLM)
+    const analysisSource = enhancedAnalysis ? 'LLM' : 'Static';
+    const displayBias = enhancedAnalysis ? {
+      direction: enhancedAnalysis.bias,
+      score: enhancedAnalysis.bias === 'center' ? 50 : 
+             enhancedAnalysis.bias.includes('center') ? 65 : 80,
+      confidence: enhancedAnalysis.biasConfidence / 100,
+      explanation: `${enhancedAnalysis.tone} tone detected. ${enhancedAnalysis.summary}`
+    } : staticBias;
+    const displaySummary = enhancedAnalysis?.summary || staticSummary;
+    const reliabilityScore = enhancedAnalysis?.reliabilityScore || 
+                             topicData?.analysis?.overallAssessment?.reliabilityScore;
 
     return (
       <div className="daily-briefing-page reader-mode">
@@ -386,6 +440,17 @@ const DailyBriefingPage: React.FC = () => {
           </button>
           {isOffline && <span className="offline-badge">Demo Data</span>}
           {briefing.isArchive && <span className="archive-badge">Archive</span>}
+          {isAnalyzing && (
+            <span className="analyzing-badge">
+              <span className="analyzing-spinner" />
+              Analyzing...
+            </span>
+          )}
+          {enhancedAnalysis && !isAnalyzing && (
+            <span className="llm-badge" title="Analysis powered by LLM">
+              ✨ LLM Analysis
+            </span>
+          )}
         </div>
         
         {topicData ? (
@@ -406,12 +471,41 @@ const DailyBriefingPage: React.FC = () => {
                     })}
                   </span>
                 )}
-                {topicData.analysis?.overallAssessment && (
-                  <span className={`reliability-badge ${getReliabilityClass(topicData.analysis.overallAssessment.reliabilityScore)}`}>
-                    {topicData.analysis.overallAssessment.reliabilityScore}/100 Reliability
+                {reliabilityScore !== undefined && (
+                  <span className={`reliability-badge ${getReliabilityClass(reliabilityScore)}`}>
+                    {reliabilityScore}/100 Reliability
+                  </span>
+                )}
+                {enhancedAnalysis?.tone && (
+                  <span className="tone-badge">
+                    {enhancedAnalysis.tone}
                   </span>
                 )}
               </div>
+              
+              {/* Enhanced Bias Meter */}
+              {enhancedAnalysis && (
+                <div className="bias-meter-container">
+                  <div className="bias-meter">
+                    <span className="bias-label-left">LEFT</span>
+                    <div className="bias-track">
+                      <div 
+                        className={`bias-indicator bias-${enhancedAnalysis.bias.replace('-', '')}`}
+                        style={{
+                          left: enhancedAnalysis.bias === 'left' ? '10%' :
+                                enhancedAnalysis.bias === 'center-left' ? '30%' :
+                                enhancedAnalysis.bias === 'center' ? '50%' :
+                                enhancedAnalysis.bias === 'center-right' ? '70%' : '90%'
+                        }}
+                      />
+                    </div>
+                    <span className="bias-label-right">RIGHT</span>
+                  </div>
+                  <span className="bias-confidence">
+                    {enhancedAnalysis.biasConfidence}% confidence
+                  </span>
+                </div>
+              )}
             </header>
             
             <ReaderView
@@ -419,75 +513,98 @@ const DailyBriefingPage: React.FC = () => {
               fallacyData={fallacies}
             />
             
-            {/* Analysis Section: Fallacies, Bias, Summary */}
-            {(fallacies.length > 0 || bias || summary) && (
-              <section className="article-analysis-section">
-                <h2 className="analysis-section-title">Analysis</h2>
-                
-                {/* Fallacies */}
-                {fallacies.length > 0 && (
-                  <div className="analysis-subsection">
-                    <h3 className="subsection-title">Logical Fallacies</h3>
-                    <div className="fallacies-list">
-                      {fallacies.map((fallacy) => (
-                        <div key={fallacy.id} className="fallacy-item">
-                          <div className="fallacy-header">
-                            <span className="fallacy-type">{fallacy.type}</span>
-                            <span className={`severity-badge severity-${fallacy.severity}`}>
-                              {fallacy.severity}
-                            </span>
+            {/* Analysis Section: Enhanced with LLM data */}
+            <section className="article-analysis-section">
+              <h2 className="analysis-section-title">
+                Analysis
+                {isAnalyzing && <span className="analysis-loading"> (Analyzing with AI...)</span>}
+              </h2>
+              
+              {/* Manipulation Techniques (NEW from LLM) */}
+              {enhancedAnalysis?.manipulationTechniques && enhancedAnalysis.manipulationTechniques.length > 0 && (
+                <div className="analysis-subsection">
+                  <h3 className="subsection-title">Manipulation Techniques</h3>
+                  <div className="techniques-list">
+                    {enhancedAnalysis.manipulationTechniques.map((technique, i) => (
+                      <span key={i} className="technique-tag">{technique}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Fallacies - Now with Better Alternatives */}
+              {fallacies.length > 0 && (
+                <div className="analysis-subsection">
+                  <h3 className="subsection-title">Logical Fallacies ({fallacies.length})</h3>
+                  <div className="fallacies-list">
+                    {fallacies.map((fallacy) => (
+                      <div key={fallacy.id} className="fallacy-item">
+                        <div className="fallacy-header">
+                          <span className="fallacy-type">{fallacy.type}</span>
+                          <span className={`severity-badge severity-${fallacy.severity}`}>
+                            {fallacy.severity}
+                          </span>
+                        </div>
+                        {fallacy.excerpt && (
+                          <p className="fallacy-excerpt">"{fallacy.excerpt}"</p>
+                        )}
+                        {fallacy.explanation && (
+                          <p className="fallacy-explanation">{fallacy.explanation}</p>
+                        )}
+                        {/* Better Alternative - from enhanced analysis */}
+                        {fallacy.motive && fallacy.motive.startsWith('A fair argument') && (
+                          <div className="better-alternative">
+                            <span className="alternative-label">✓ Better Approach:</span>
+                            <p className="alternative-text">{fallacy.motive.replace('A fair argument would instead: ', '')}</p>
                           </div>
-                          {fallacy.excerpt && (
-                            <p className="fallacy-excerpt">{fallacy.excerpt}</p>
-                          )}
-                          {fallacy.explanation && (
-                            <p className="fallacy-explanation">{fallacy.explanation}</p>
-                          )}
-                        </div>
-                      ))}
-                    </div>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                )}
-                
-                {/* Bias Analysis */}
-                {bias && (
-                  <div className="analysis-subsection">
-                    <h3 className="subsection-title">Bias Analysis</h3>
-                    <div className="bias-info">
-                      {bias.direction && (
-                        <div className="bias-item">
-                          <span className="bias-label">Direction:</span>
-                          <span className="bias-value">{bias.direction}</span>
-                        </div>
-                      )}
-                      {bias.score !== undefined && (
-                        <div className="bias-item">
-                          <span className="bias-label">Score:</span>
-                          <span className="bias-value">{bias.score}/100</span>
-                        </div>
-                      )}
-                      {bias.confidence !== undefined && (
-                        <div className="bias-item">
-                          <span className="bias-label">Confidence:</span>
-                          <span className="bias-value">{Math.round(bias.confidence * 100)}%</span>
-                        </div>
-                      )}
-                      {bias.explanation && (
-                        <p className="bias-explanation">{bias.explanation}</p>
-                      )}
-                    </div>
+                </div>
+              )}
+              
+              {fallacies.length === 0 && !isAnalyzing && (
+                <div className="analysis-subsection">
+                  <h3 className="subsection-title">Logical Fallacies</h3>
+                  <p className="no-fallacies">No significant logical fallacies detected.</p>
+                </div>
+              )}
+              
+              {/* Bias Analysis */}
+              {displayBias && (
+                <div className="analysis-subsection">
+                  <h3 className="subsection-title">Bias Analysis</h3>
+                  <div className="bias-info">
+                    {displayBias.direction && (
+                      <div className="bias-item">
+                        <span className="bias-label">Direction:</span>
+                        <span className={`bias-value bias-${displayBias.direction.replace('-', '')}`}>
+                          {displayBias.direction.toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                    {displayBias.confidence !== undefined && (
+                      <div className="bias-item">
+                        <span className="bias-label">Confidence:</span>
+                        <span className="bias-value">{Math.round(displayBias.confidence * 100)}%</span>
+                      </div>
+                    )}
+                    {displayBias.explanation && (
+                      <p className="bias-explanation">{displayBias.explanation}</p>
+                    )}
                   </div>
-                )}
-                
-                {/* Summary */}
-                {summary && (
-                  <div className="analysis-subsection">
-                    <h3 className="subsection-title">Summary</h3>
-                    <p className="summary-text">{summary}</p>
-                  </div>
-                )}
-              </section>
-            )}
+                </div>
+              )}
+              
+              {/* Summary */}
+              {displaySummary && (
+                <div className="analysis-subsection">
+                  <h3 className="subsection-title">AI Summary</h3>
+                  <p className="summary-text">{displaySummary}</p>
+                </div>
+              )}
+            </section>
             
             <footer className="article-footer">
               {!isOffline && topicData.article.url && (
@@ -566,7 +683,7 @@ const DailyBriefingPage: React.FC = () => {
             <button
               key={key}
               className="topic-card"
-              onClick={() => setSelectedTopic(key)}
+              onClick={() => handleTopicSelect(key)}
               aria-label={`Read about ${topic.topic}`}
             >
               <h3 className="card-topic">[{topic.topic.toUpperCase()}]</h3>

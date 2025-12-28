@@ -12,7 +12,6 @@ const SimpleHeader: React.FC = () => {
           alt="Authentic Internet" 
           className="simple-header-logo" 
         />
-        <h1 className="simple-header-title">The Daily Briefing</h1>
       </div>
     </header>
   );
