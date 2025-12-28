@@ -72,13 +72,13 @@ export const DEFAULT_SOURCES: RSSSource[] = [
   {
     id: 6,
     name: 'Reuters',
-    url: 'https://www.reutersagency.com/feed/',
+    url: 'https://www.reutersagency.com/feed/?best-topics=political-general&post_type=best',
     category: 'news'
   },
   {
     id: 7,
     name: 'BBC News',
-    url: 'http://feeds.bbci.co.uk/news/world/rss.xml',
+    url: 'http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml',
     category: 'news'
   }
 ];

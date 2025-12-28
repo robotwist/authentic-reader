@@ -590,9 +590,17 @@ const DailyBriefingPage: React.FC = () => {
         </button>
       </div>
       
-      <p className="dashboard-footer">
-        Click any topic to read the full analysis
-      </p>
+      <footer className="publisher-footer">
+        <div className="publisher-content">
+          <span className="publisher-text">PUBLISHED BY</span>
+          <span className="publisher-brand">AUTHENTIC INTERNET</span>
+          <img 
+            src="/authentic-internet-logo.png" 
+            alt="Authentic Internet" 
+            className="publisher-logo"
+          />
+        </div>
+      </footer>
     </div>
   );
 };
