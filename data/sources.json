@@ -1,7 +1,7 @@
 {
   "bbc": {
-    "name": "BBC News",
-    "url": "https://feeds.bbci.co.uk/news/rss.xml",
+    "name": "BBC World News",
+    "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
     "category": "news",
     "biasRating": "center",
     "reliability": "high",
@@ -47,6 +47,38 @@
     "reliability": "high",
     "description": "NYT Top Stories"
   },
+  "nytimes-health": {
+    "name": "New York Times Health",
+    "url": "https://rss.nytimes.com/services/xml/rss/nyt/Health.xml",
+    "category": "health",
+    "biasRating": "center-left",
+    "reliability": "high",
+    "description": "NYT Health News"
+  },
+  "cnbc": {
+    "name": "CNBC Finance",
+    "url": "https://www.cnbc.com/id/10000664/device/rss/rss.html",
+    "category": "finance",
+    "biasRating": "center",
+    "reliability": "high",
+    "description": "CNBC Finance News"
+  },
+  "aljazeera": {
+    "name": "Al Jazeera",
+    "url": "https://www.aljazeera.com/xml/rss/all.xml",
+    "category": "news",
+    "biasRating": "center",
+    "reliability": "high",
+    "description": "Al Jazeera International News"
+  },
+  "sciencedaily-health": {
+    "name": "ScienceDaily Health",
+    "url": "https://www.sciencedaily.com/rss/top/health.xml",
+    "category": "health",
+    "biasRating": "center",
+    "reliability": "high",
+    "description": "ScienceDaily Health News"
+  },
   "wsj": {
     "name": "Wall Street Journal",
     "url": "https://feeds.wsj.com/rss/RSSWorldNews.xml",
@@ -81,10 +113,10 @@
   },
   "thehill": {
     "name": "The Hill",
-    "url": "https://thehill.com/feed/",
+    "url": "https://thehill.com/homenews/feed/",
     "category": "politics",
     "biasRating": "center",
-    "reliability": "medium",
+    "reliability": "high",
     "description": "The Hill Political News"
   },
   "politico": {

@@ -19,8 +19,10 @@ export interface Fallacy {
   type: string;
   quote: string;
   why_it_matters: string;
-  better_alternative: string;
+  better_alternative?: string;
   severity: string;
+  subtext?: string;
+  missing_context?: string;
 }
 
 /**

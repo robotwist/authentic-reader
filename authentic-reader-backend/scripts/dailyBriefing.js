@@ -23,13 +23,42 @@ const __dirname = dirname(__filename);
 // Load environment variables
 dotenv.config({ path: join(__dirname, '..', '.env') });
 
-// Define topics for daily briefing
+// Define topics for daily briefing with topic-specific sources
 const TOPICS = [
-  { name: 'Ukraine', keywords: ['ukraine', 'ukrainian', 'russia', 'russian', 'kyiv', 'zelensky', 'war in ukraine'] },
-  { name: 'Gaza', keywords: ['gaza', 'palestine', 'israel', 'hamas', 'gaza strip', 'west bank'] },
-  { name: 'Public Health', keywords: ['health', 'medical', 'disease', 'vaccine', 'public health', 'healthcare', 'hospital', 'doctor'] },
-  { name: 'Justice', keywords: ['justice', 'court', 'law', 'legal', 'judge', 'trial', 'lawsuit', 'supreme court'] },
-  { name: 'Economy', keywords: ['economy', 'economic', 'market', 'stock', 'finance', 'inflation', 'recession', 'employment', 'gdp'] }
+  { 
+    name: 'Ukraine', 
+    keywords: ['ukraine', 'ukrainian', 'russia', 'russian', 'kyiv', 'zelensky', 'war in ukraine'],
+    sourceUrls: [
+      'https://feeds.bbci.co.uk/news/world/rss.xml', // BBC World (primary)
+      'https://www.aljazeera.com/xml/rss/all.xml' // Al Jazeera (backup)
+    ]
+  },
+  { 
+    name: 'Gaza', 
+    keywords: ['gaza', 'palestine', 'israel', 'hamas', 'gaza strip', 'west bank'],
+    sourceUrls: ['https://www.aljazeera.com/xml/rss/all.xml'] // Al Jazeera
+  },
+  { 
+    name: 'Public Health', 
+    keywords: ['health', 'medical', 'disease', 'vaccine', 'public health', 'healthcare', 'hospital', 'doctor'],
+    sourceUrls: [
+      'https://www.sciencedaily.com/rss/top/health.xml', // ScienceDaily (primary)
+      'https://rss.nytimes.com/services/xml/rss/nyt/Health.xml' // NYT Health (backup)
+    ]
+  },
+  { 
+    name: 'Justice', 
+    keywords: ['justice', 'court', 'law', 'legal', 'judge', 'trial', 'lawsuit', 'supreme court'],
+    sourceUrls: ['https://thehill.com/homenews/feed/'] // The Hill
+  },
+  { 
+    name: 'Economy', 
+    keywords: ['economy', 'economic', 'market', 'stock', 'finance', 'inflation', 'recession', 'employment', 'gdp'],
+    sourceUrls: [
+      'https://www.cnbc.com/id/10000664/device/rss/rss.html', // CNBC Finance (primary)
+      'https://rss.nytimes.com/services/xml/rss/nyt/Economy.xml' // NYT Economy (backup)
+    ]
+  }
 ];
 
 /**
@@ -41,16 +70,61 @@ function articleMatchesTopic(article, topic) {
 }
 
 /**
- * Fetch articles from RSS for a specific topic
+ * Convert topic source URLs to source objects with names extracted from URLs
  */
-async function fetchArticlesForTopic(topic, seenUrls, sources) {
+function getTopicSourceObjects(topicSourceUrls) {
+  const urlToNameMap = {
+    'https://feeds.bbci.co.uk/news/world/rss.xml': 'BBC World News',
+    'https://www.aljazeera.com/xml/rss/all.xml': 'Al Jazeera',
+    'https://rss.nytimes.com/services/xml/rss/nyt/Health.xml': 'New York Times Health',
+    'https://www.sciencedaily.com/rss/top/health.xml': 'ScienceDaily Health',
+    'https://thehill.com/homenews/feed/': 'The Hill',
+    'https://www.cnbc.com/id/10000664/device/rss/rss.html': 'CNBC Finance',
+    'https://rss.nytimes.com/services/xml/rss/nyt/Economy.xml': 'New York Times Economy'
+  };
+  
+  return topicSourceUrls.map(url => ({
+    id: null, // Will be resolved from database if exists
+    name: urlToNameMap[url] || new URL(url).hostname.replace('www.', ''),
+    url: url,
+    category: 'news'
+  }));
+}
+
+/**
+ * Fetch articles from RSS for a specific topic using topic-specific sources
+ */
+async function fetchArticlesForTopic(topic, seenUrls, allSources) {
   const articles = [];
   
-  logger.info(`[Topic: ${topic.name}] Fetching articles from ${sources.length} sources...`);
+  // Use topic-specific sources if defined, otherwise fall back to all sources
+  let sourcesToUse;
+  if (topic.sourceUrls && topic.sourceUrls.length > 0) {
+    // Convert topic URLs to source objects
+    const topicSourceObjects = getTopicSourceObjects(topic.sourceUrls);
+    
+    // Try to find matching sources in database by URL
+    sourcesToUse = topicSourceObjects.map(topicSource => {
+      const dbSource = allSources.find(s => s.url === topicSource.url);
+      if (dbSource) {
+        return dbSource;
+      }
+      return topicSource; // Use URL-based source object if not in DB
+    });
+    
+    logger.info(`[Topic: ${topic.name}] Using ${sourcesToUse.length} topic-specific source(s)...`);
+  } else {
+    sourcesToUse = allSources;
+    logger.info(`[Topic: ${topic.name}] Using all ${sourcesToUse.length} available sources...`);
+  }
   
-  for (const source of sources) {
+  let totalItemsFetched = 0;
+  let totalItemsSkipped = 0;
+  let totalItemsNoMatch = 0;
+  
+  for (const source of sourcesToUse) {
     try {
-      logger.debug(`Fetching from ${source.name} (${source.url})...`);
+      logger.info(`  Fetching from ${source.name} (${source.url})...`);
       
       // Fetch RSS feed
       const feedData = await rssService.fetchFeed(source.url, {
@@ -59,9 +133,12 @@ async function fetchArticlesForTopic(topic, seenUrls, sources) {
       });
       
       if (!feedData || !feedData.items) {
-        logger.warn(`No items found in feed from ${source.name}`);
+        logger.warn(`  ⚠️  No items found in feed from ${source.name}`);
         continue;
       }
+      
+      logger.info(`  📄 Fetched ${feedData.items.length} items from ${source.name}`);
+      totalItemsFetched += feedData.items.length;
       
       // Process each item
       for (const item of feedData.items) {
@@ -69,6 +146,7 @@ async function fetchArticlesForTopic(topic, seenUrls, sources) {
         
         // Skip if already seen
         if (seenUrls.has(normalizedItem.link)) {
+          totalItemsSkipped++;
           continue;
         }
         
@@ -82,23 +160,25 @@ async function fetchArticlesForTopic(topic, seenUrls, sources) {
               id: source.id,
               name: source.name,
               url: source.url,
-              category: source.category
+              category: source.category || 'news'
             }
           };
           
           articles.push(article);
           seenUrls.add(normalizedItem.link);
           
-          logger.debug(`Found matching article: ${normalizedItem.title.substring(0, 60)}...`);
+          logger.info(`  ✅ Found matching article: ${normalizedItem.title.substring(0, 60)}...`);
+        } else {
+          totalItemsNoMatch++;
         }
       }
     } catch (error) {
-      logger.error(`Error fetching from ${source.name}:`, error.message);
+      logger.error(`  ❌ Error fetching from ${source.name}:`, error.message);
       continue;
     }
   }
   
-  logger.info(`[Topic: ${topic.name}] Found ${articles.length} unique articles`);
+  logger.info(`[Topic: ${topic.name}] Summary: ${totalItemsFetched} items fetched, ${totalItemsSkipped} already seen, ${totalItemsNoMatch} didn't match keywords, ${articles.length} new articles found`);
   return articles;
 }
 

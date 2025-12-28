@@ -321,6 +321,95 @@
 }
 
 /* ============================================
+   NEUTRAL REWRITE - LIGHT GREY/GREEN BACKGROUND
+   ============================================ */
+
+.fallacy-neutral-rewrite {
+  background-color: #F5F5F0; /* Very light grey with faint green tint */
+  border: 1px solid #E0E0DB;
+  border-bottom: 1px dashed var(--text-muted, #CCCCCC);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.neutral-rewrite-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.75rem 0;
+  color: var(--text-ink, #1A1A1A);
+  display: block;
+}
+
+.neutral-rewrite-text {
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--text-ink, #1A1A1A);
+  margin: 0;
+  font-family: 'Courier New', 'Courier', 'JetBrains Mono', monospace;
+  background-color: transparent;
+}
+
+/* ============================================
+   SCORE BREAKDOWN - MONOSPACED MATH
+   ============================================ */
+
+.fallacy-score-breakdown {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px dashed var(--text-muted, #CCCCCC);
+}
+
+.score-math {
+  font-family: 'Courier New', 'Courier', 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.8;
+  color: var(--text-ink, #1A1A1A);
+  display: block;
+  text-align: right;
+  padding-left: 2rem;
+}
+
+.score-math-line {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+/* ============================================
+   MISSING CONTEXT - WARNING BOX
+   ============================================ */
+
+.fallacy-missing-context {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 2px solid var(--text-ink, #000000);
+  background-color: var(--bg-white, #FFFFFF);
+}
+
+.missing-context-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.missing-context-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.missing-context-text {
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--text-ink, #1A1A1A);
+  margin: 0;
+  font-family: var(--font-display, 'Playfair Display', serif);
+}
+
+/* ============================================
    SEVERITY BADGE - TEXT ONLY
    ============================================ */
 

@@ -22,7 +22,7 @@ export interface Fallacy {
   /** The type/name of the fallacy (e.g., "Ad Hominem", "Straw Man") */
   type: string;
   
-  /** The exact text excerpt containing the fallacy */
+  /** The exact text excerpt containing the fallacy (renamed from "quote" for consistency) */
   excerpt: string;
   
   /** Severity level of the fallacy */
@@ -31,16 +31,28 @@ export interface Fallacy {
   /** Explanation of why this is a fallacy and how it manipulates */
   explanation: string;
   
-  /** What a healthy, logical argument would look like instead */
-  betterAlternative: string;
+  /** What the author is really trying to imply (subtext/intent) */
+  subtext?: string;
+  
+  /** Rewrite this sentence to be neutral and factual */
+  correction?: string;
+  
+  /** What a healthy, logical argument would look like instead (kept for backward compatibility) */
+  betterAlternative?: string;
 }
 
 /**
  * The complete analysis result from the LLM
  */
 export interface AnalysisResult {
-  /** A 2-3 sentence summary of the article's main claims and approach */
+  /** A 1-sentence summary of the core claim, stripped of emotional language */
   summary: string;
+  
+  /** Tone rating: One of: Alarmist, Dismissive, Objective, Fawning, Cynical */
+  tone_rating?: string;
+  
+  /** 1 sentence explaining *how* the tone is achieved */
+  tone_explanation?: string;
   
   /** Political bias direction */
   bias: 'left' | 'center-left' | 'center' | 'center-right' | 'right';
@@ -48,17 +60,26 @@ export interface AnalysisResult {
   /** Confidence in the bias assessment (1-100) */
   biasConfidence: number;
   
-  /** The overall tone of the article */
-  tone: string;
+  /** Why the bias assessment was made (explanation) */
+  bias_explanation?: string;
+  
+  /** The overall tone of the article (kept for backward compatibility) */
+  tone?: string;
   
   /** Array of detected logical fallacies */
   fallacies: Fallacy[];
   
+  /** What creates a false impression by being omitted */
+  missing_context?: string;
+  
+  /** A general tip for the reader on how to spot this specific pattern in future news */
+  educational_insight?: string;
+  
   /** Overall reliability score (0-100) */
   reliabilityScore: number;
   
-  /** Key manipulation techniques used */
-  manipulationTechniques: string[];
+  /** Key manipulation techniques used (kept for backward compatibility) */
+  manipulationTechniques?: string[];
 }
 
 /**
@@ -66,18 +87,26 @@ export interface AnalysisResult {
  */
 interface LLMAnalysisResponse {
   summary: string;
+  tone_rating?: string;
+  tone_explanation?: string;
   bias: string;
-  biasConfidence: number;
-  tone: string;
+  biasConfidence?: number;
+  bias_explanation?: string;
+  tone?: string;
   fallacies: Array<{
     type: string;
-    excerpt: string;
-    severity: string;
-    explanation: string;
-    betterAlternative: string;
+    quote?: string;
+    excerpt?: string;
+    subtext?: string;
+    correction?: string;
+    severity?: string;
+    explanation?: string;
+    betterAlternative?: string;
   }>;
-  reliabilityScore: number;
-  manipulationTechniques: string[];
+  missing_context?: string;
+  educational_insight?: string;
+  reliabilityScore?: number;
+  manipulationTechniques?: string[];
 }
 
 // ============================================
@@ -258,46 +287,44 @@ class EnhancedCognitiveAnalysisService {
       .map(f => `- ${f.name}: ${f.description}`)
       .join('\n');
 
-    return `You are an expert Logic Analyst and Media Literacy Specialist. Your job is to analyze news articles for logical fallacies, bias, and manipulation techniques.
+    return `You are an expert Media Literacy Coach and Logic Interpreter.
+Your goal is not just to grade the article, but to help a reader understand *how* they are being manipulated.
 
-## YOUR TASK
-Analyze the provided article text and detect:
-1. Logical fallacies (with exact quotes)
-2. Political bias and direction
-3. Overall tone and rhetorical approach
-4. Manipulation techniques employed
+Analyze the provided text and output a JSON object with this specific "Interpretative" structure:
 
-## FALLACY TAXONOMY
-Look specifically for these fallacy types:
-${fallacyList}
-
-## OUTPUT FORMAT
-You MUST output ONLY valid JSON matching this exact structure:
 {
-  "summary": "2-3 sentence summary of the article's main claims and rhetorical approach",
-  "bias": "left" | "center-left" | "center" | "center-right" | "right",
-  "biasConfidence": 1-100,
-  "tone": "single word or short phrase describing tone (e.g., 'Alarmist', 'Analytical', 'Neutral', 'Persuasive', 'Inflammatory')",
+  "summary": "A 1-sentence summary of the core claim, stripped of emotional language.",
+  "tone_rating": "One of: Alarmist, Dismissive, Objective, Fawning, Cynical",
+  "tone_explanation": "1 sentence explaining *how* the tone is achieved (e.g., 'Uses words like 'catastrophic' and 'nightmare' to induce panic').",
+  "bias_rating": "Left | Center-Left | Center | Center-Right | Right",
+  "bias_explanation": "Why? (e.g., 'Focuses exclusively on the negative impacts of the policy while ignoring cited benefits').",
   "fallacies": [
     {
-      "type": "Exact fallacy name from taxonomy",
-      "excerpt": "The EXACT quote from the article (must be verbatim text that appears in the article)",
-      "severity": "low" | "medium" | "high",
-      "explanation": "Why this is a fallacy and how it attempts to manipulate the reader",
-      "betterAlternative": "How a logical, fair argument would present this point"
+      "type": "Name of Fallacy",
+      "quote": "The exact manipulative text",
+      "subtext": "What is the author *really* trying to imply here?",
+      "correction": "Rewrite this sentence to be neutral and factual."
     }
   ],
-  "reliabilityScore": 0-100,
-  "manipulationTechniques": ["List of manipulation techniques used, e.g., 'emotional language', 'anonymous sources', 'loaded framing'"]
+  "missing_context": "What creates a false impression by being omitted? (e.g., 'The article mentions the price hike but ignores the global inflation context').",
+  "educational_insight": "A general tip for the reader on how to spot this specific pattern in future news."
 }
+
+## FALLACY TAXONOMY
+When analyzing fallacies, look specifically for these types:
+${fallacyList}
 
 ## CRITICAL RULES
 1. Output ONLY the JSON object - no preamble, no markdown, no explanation
-2. The "excerpt" field MUST contain exact verbatim text from the article
-3. Only report fallacies you are confident about (>70% confidence)
-4. If no fallacies are detected, return an empty array for "fallacies"
-5. Be specific in explanations - don't use generic language
-6. The "betterAlternative" should show what fair journalism would look like`;
+2. The "quote" field in fallacies MUST contain exact verbatim text from the article
+3. Focus on interpretation: Help the reader understand subtext and intent, not just label fallacies
+4. The "subtext" field should reveal what the author is really trying to imply
+5. The "correction" field should show what neutral, factual journalism would look like
+6. "missing_context" should identify what's omitted that would change the reader's understanding
+7. "educational_insight" should teach the reader how to spot this manipulation pattern in the future
+8. Only report fallacies you are confident about (>70% confidence)
+9. If no fallacies are detected, return an empty array for "fallacies"
+10. Be specific and insightful - help the reader become a more critical consumer of media`;
   }
 
   /**
@@ -373,13 +400,21 @@ You MUST output ONLY valid JSON matching this exact structure:
 
       const parsed: LLMAnalysisResponse = JSON.parse(jsonStr);
 
+      // Normalize bias - handle both "bias" and "bias_rating" fields
+      const biasValue = parsed.bias || parsed.bias_rating || 'center';
+
       // Validate and normalize the response
       const result: AnalysisResult = {
         summary: parsed.summary || 'Analysis completed.',
-        bias: this.normalizeBias(parsed.bias),
+        tone_rating: parsed.tone_rating,
+        tone_explanation: parsed.tone_explanation,
+        bias: this.normalizeBias(biasValue),
         biasConfidence: Math.max(0, Math.min(100, parsed.biasConfidence || 50)),
-        tone: parsed.tone || 'Neutral',
+        bias_explanation: parsed.bias_explanation,
+        tone: parsed.tone || parsed.tone_rating || 'Neutral',
         reliabilityScore: Math.max(0, Math.min(100, parsed.reliabilityScore || 50)),
+        missing_context: parsed.missing_context,
+        educational_insight: parsed.educational_insight,
         manipulationTechniques: Array.isArray(parsed.manipulationTechniques) 
           ? parsed.manipulationTechniques 
           : [],
@@ -396,19 +431,26 @@ You MUST output ONLY valid JSON matching this exact structure:
 
   /**
    * Normalize bias string to valid enum value
+   * Handles both "Left" and "left", "Center-Left" and "center-left", etc.
    */
   private normalizeBias(bias: string): AnalysisResult['bias'] {
     const normalized = (bias || '').toLowerCase().trim();
     
+    // Handle explicit Center-Left, Center-Right first
+    if (normalized === 'center-left' || normalized === 'center left' || normalized.includes('center-left')) {
+      return 'center-left';
+    }
+    if (normalized === 'center-right' || normalized === 'center right' || normalized.includes('center-right')) {
+      return 'center-right';
+    }
+    if (normalized === 'center') {
+      return 'center';
+    }
+    // Handle Left (but not Center-Left)
     if (normalized.includes('left') && !normalized.includes('center')) {
       return 'left';
     }
-    if (normalized.includes('center-left') || normalized.includes('center left')) {
-      return 'center-left';
-    }
-    if (normalized.includes('center-right') || normalized.includes('center right')) {
-      return 'center-right';
-    }
+    // Handle Right (but not Center-Right)
     if (normalized.includes('right') && !normalized.includes('center')) {
       return 'right';
     }
@@ -423,18 +465,24 @@ You MUST output ONLY valid JSON matching this exact structure:
     
     return fallacies
       .filter(f => {
-        // Verify the excerpt exists in the original text
-        if (!f.excerpt) return false;
-        const normalizedExcerpt = f.excerpt.toLowerCase().trim();
+        // Verify the excerpt/quote exists in the original text
+        const excerptText = f.excerpt || f.quote;
+        if (!excerptText) return false;
+        const normalizedExcerpt = excerptText.toLowerCase().trim();
         return normalizedOriginal.includes(normalizedExcerpt);
       })
-      .map(f => ({
-        type: f.type || 'Unknown Fallacy',
-        excerpt: f.excerpt.trim(),
-        severity: this.normalizeSeverity(f.severity),
-        explanation: f.explanation || 'This argument contains a logical flaw.',
-        betterAlternative: f.betterAlternative || 'Present evidence-based reasoning without manipulation.'
-      }));
+      .map(f => {
+        const excerptText = f.excerpt || f.quote || '';
+        return {
+          type: f.type || 'Unknown Fallacy',
+          excerpt: excerptText.trim(),
+          severity: this.normalizeSeverity(f.severity || 'medium'),
+          explanation: f.explanation || 'This argument contains a logical flaw.',
+          subtext: f.subtext,
+          correction: f.correction,
+          betterAlternative: f.betterAlternative || f.correction || 'Present evidence-based reasoning without manipulation.'
+        };
+      });
   }
 
   /**
@@ -499,11 +547,14 @@ You MUST output ONLY valid JSON matching this exact structure:
       for (const { pattern, type, severity } of heuristicPatterns) {
         const match = sentence.match(pattern);
         if (match && fallacies.length < 5) {
+          const excerpt = match[0];
           fallacies.push({
             type,
-            excerpt: match[0],
+            excerpt,
             severity,
             explanation: `This phrase may indicate a ${type} fallacy. Manual verification recommended.`,
+            subtext: `This phrase attempts to manipulate the reader's perception using ${type.toLowerCase()} techniques.`,
+            correction: excerpt.replace(/[.!?]+$/, '') + ' (verification needed).',
             betterAlternative: 'Present claims with verifiable evidence and named sources.'
           });
         }
@@ -523,15 +574,31 @@ You MUST output ONLY valid JSON matching this exact structure:
 
     // Tone detection
     const emotionalWords = (lowerText.match(/outrage|shocking|horrific|devastating|unprecedented|historic|critical|urgent|crisis/g) || []).length;
-    const tone = emotionalWords > 3 ? 'Alarmist' : 
-                 emotionalWords > 1 ? 'Persuasive' : 'Analytical';
+    const toneRating = emotionalWords > 3 ? 'Alarmist' : 
+                       emotionalWords > 1 ? 'Persuasive' : 'Objective';
+    const toneExplanation = emotionalWords > 3 
+      ? 'Uses emotional language and crisis framing to heighten urgency.' 
+      : emotionalWords > 1 
+      ? 'Employs persuasive language to influence reader opinion.'
+      : 'Maintains relatively neutral language.';
 
     return {
       summary: `Analysis of "${metadata?.title || 'article'}" from ${metadata?.source || 'unknown source'}. This is a heuristic-based analysis; LLM analysis unavailable.`,
+      tone_rating: toneRating,
+      tone_explanation: toneExplanation,
       bias,
       biasConfidence: 40, // Lower confidence for heuristic analysis
-      tone,
+      bias_explanation: bias !== 'center' 
+        ? `Heuristic analysis detected ${bias} indicators through word pattern matching.`
+        : 'No strong bias indicators detected in heuristic analysis.',
+      tone: toneRating,
       fallacies,
+      missing_context: fallacies.length > 0 
+        ? 'This heuristic analysis may miss important context that would affect understanding. Full LLM analysis recommended.'
+        : 'No missing context detected in heuristic scan.',
+      educational_insight: fallacies.length > 0
+        ? 'When you see loaded emotional language or logical fallacies, pause and ask: What is the author trying to make me feel? What facts are missing?'
+        : 'Always consider what perspective or information might be missing from any news article.',
       reliabilityScore: Math.max(30, 70 - (fallacies.length * 10)),
       manipulationTechniques: fallacies.map(f => f.type)
     };

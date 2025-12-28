@@ -28,7 +28,8 @@ const ReaderView: React.FC<ReaderViewProps> = ({
       excerpt: fallacy.quote,
       explanation: fallacy.why_it_matters,
       severity: (fallacy.severity?.toLowerCase() || 'medium') as 'high' | 'medium' | 'low',
-      betterAlternative: fallacy.better_alternative
+      betterAlternative: fallacy.better_alternative,
+      missingContext: fallacy.missing_context
     }));
   }, [analysis]);
 
@@ -307,11 +308,34 @@ const ReaderView: React.FC<ReaderViewProps> = ({
               </div>
             )}
 
-            {/* Better Alternative - New field from Analysis */}
+            {/* Score Breakdown - Math Section */}
+            {activeFallacy.severity && (
+              <div className="fallacy-section fallacy-score-breakdown">
+                <h3 className="fallacy-section-title">SCORE_BREAKDOWN</h3>
+                <div className="score-math">
+                  <div className="score-math-line">100</div>
+                  <div className="score-math-line">- {activeFallacy.severity === 'high' ? '10' : activeFallacy.severity === 'medium' ? '5' : '2'}</div>
+                  <div className="score-math-line">= {activeFallacy.severity === 'high' ? '90' : activeFallacy.severity === 'medium' ? '95' : '98'}</div>
+                </div>
+              </div>
+            )}
+
+            {/* Missing Context - Warning Box */}
+            {activeFallacy.missingContext && (
+              <div className="fallacy-section fallacy-missing-context">
+                <div className="missing-context-header">
+                  <span className="missing-context-icon">⚠️</span>
+                  <h3 className="fallacy-section-title">MISSING_CONTEXT</h3>
+                </div>
+                <p className="missing-context-text">{activeFallacy.missingContext}</p>
+              </div>
+            )}
+
+            {/* Better Alternative - Neutral Rewrite */}
             {activeFallacy.betterAlternative && (
-              <div className="fallacy-section">
-                <h3 className="fallacy-section-title">BETTER_ALTERNATIVE</h3>
-                <p className="fallacy-section-text">{activeFallacy.betterAlternative}</p>
+              <div className="fallacy-section fallacy-neutral-rewrite">
+                <h3 className="fallacy-section-title neutral-rewrite-label">NEUTRAL REWRITE:</h3>
+                <p className="neutral-rewrite-text">{activeFallacy.betterAlternative}</p>
               </div>
             )}
 

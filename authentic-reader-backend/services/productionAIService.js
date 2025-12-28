@@ -7,6 +7,17 @@
  * 3. Backup: ONNX local models
  */
 
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load environment variables immediately with correct path
+dotenv.config({ path: join(__dirname, '..', '.env') });
+console.log("🔍 Loaded API Key:", process.env.GROQ_API_KEY ? "Yes (Masked)" : "NO - MISSING");
+
 import axios from 'axios';
 import logger from '../utils/logger.js';
 
@@ -16,6 +27,8 @@ class ProductionAIService {
     this.fallbackService = process.env.HF_SERVICE_URL || 'http://localhost:8000';
     this.hfApiKey = process.env.HUGGING_FACE_API_KEY;
     this.openaiApiKey = process.env.OPENAI_API_KEY;
+    this.groqApiKey = process.env.GROQ_API_KEY;
+    this.groqModel = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
     
     this.analysisQueue = [];
     this.isProcessing = false;
@@ -91,11 +104,53 @@ class ProductionAIService {
   async performAnalysis(request) {
     const { article, options } = request;
     
+    // Verify API Keys
+    console.log("🔑 Checking API Keys:");
+    console.log("  - GROQ_API_KEY:", !!process.env.GROQ_API_KEY);
+    console.log("  - HUGGING_FACE_API_KEY:", !!this.hfApiKey);
+    console.log("  - OPENAI_API_KEY:", !!this.openaiApiKey);
+    console.log("  - Primary Service URL:", this.primaryService);
+    console.log("  - Fallback Service URL:", this.fallbackService);
+    
     try {
-      // Try primary service (Ollama) first
+      // Try Groq API first (if API key is available)
+      if (this.groqApiKey) {
+        try {
+          const result = await this.tryGroqService(article, options);
+          return result;
+        } catch (groqError) {
+          // If it's a rate limit error, log it clearly and fall through to fallback
+          if (groqError.message?.includes('rate limit')) {
+            logger.warn('⚠️  GROQ rate limit reached. Falling back to alternative service.');
+          }
+          throw groqError; // Re-throw to trigger fallback chain
+        }
+      }
+      
+      // Fallback to Ollama if Groq not available
       const result = await this.tryPrimaryService(article, options);
       return result;
     } catch (primaryError) {
+      const isRateLimit = primaryError.message?.includes('rate limit') || 
+                         (primaryError.response && primaryError.response.status === 429);
+      
+      if (isRateLimit) {
+        logger.warn('⚠️  Rate limit encountered. Attempting fallback service...');
+      } else {
+        console.error("❌ PRIMARY SERVICE CRASHED:", primaryError.message);
+        if (primaryError.response) {
+          console.error("  Response Status:", primaryError.response.status);
+          console.error("  Response Data:", JSON.stringify(primaryError.response.data, null, 2));
+          console.error("  Response Headers:", primaryError.response.headers);
+        }
+        if (primaryError.request) {
+          console.error("  Request made but no response received");
+          console.error("  Request URL:", primaryError.config?.url);
+        }
+        if (primaryError.stack) {
+          console.error("  Stack:", primaryError.stack);
+        }
+      }
       logger.warn('Primary service failed, trying fallback:', primaryError.message);
       
       try {
@@ -103,6 +158,15 @@ class ProductionAIService {
         const result = await this.tryFallbackService(article, options);
         return result;
       } catch (fallbackError) {
+        console.error("❌ FALLBACK SERVICE CRASHED:", fallbackError.message);
+        if (fallbackError.response) {
+          console.error("  Response Status:", fallbackError.response.status);
+          console.error("  Response Data:", JSON.stringify(fallbackError.response.data, null, 2));
+        }
+        if (fallbackError.request) {
+          console.error("  Request made but no response received");
+          console.error("  Request URL:", fallbackError.config?.url);
+        }
         logger.warn('Fallback service failed, using basic analysis:', fallbackError.message);
         
         // Use basic local analysis as last resort
@@ -112,35 +176,206 @@ class ProductionAIService {
   }
 
   /**
+   * Try Groq API service (Primary LLM)
+   * Includes rate limit handling with retry logic
+   */
+  async tryGroqService(article, options, retryCount = 0) {
+    if (!this.groqApiKey) {
+      throw new Error('GROQ_API_KEY not configured');
+    }
+
+    const maxRetries = 3;
+    const baseDelay = 60000; // 60 seconds base delay for rate limits
+
+    try {
+      const articleText = article.content || article.description || '';
+      const title = article.title || '';
+      const sourceName = article.source?.name || 'Unknown';
+
+      // Build the system prompt for analysis
+      const systemPrompt = `You are an expert Media Literacy Coach. Analyze the news article and return valid JSON with this structure:
+{
+  "summary": "String - A concise summary of the article's core claim",
+  "tone_rating": "String (e.g., Alarmist, Cynical, Objective, Fawning)",
+  "bias_rating": "String (e.g., left, center, right, center-left, center-right)",
+  "confidence_score": Number (0-100),
+  "educational_insight": "String - A general tip for this type of article",
+  "missing_context": "String - What critical info was left out?",
+  "fallacies": [
+    {
+      "type": "String - Name of Fallacy",
+      "quote": "String - The exact spin text from article",
+      "subtext": "String - What is the author trying to make the reader feel?",
+      "better_alternative": "String - Rewrite the quote to be neutral and factual"
+    }
+  ]
+}
+
+CRITICAL: Output ONLY valid JSON - no markdown, no preamble.`;
+
+      // Build user prompt
+      let userPrompt = '';
+      if (title) userPrompt += `TITLE: ${title}\n`;
+      if (sourceName) userPrompt += `SOURCE: ${sourceName}\n`;
+      userPrompt += `\nARTICLE TEXT:\n${articleText}`;
+
+      // Reduce max_tokens on retry to lower token usage when rate limited
+      const maxTokens = retryCount > 0 ? 1500 : 2000;
+
+      const response = await axios.post(
+        'https://api.groq.com/openai/v1/chat/completions',
+        {
+          model: this.groqModel,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
+          ],
+          temperature: 0.1,
+          max_tokens: maxTokens,
+          response_format: { type: 'json_object' }
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${this.groqApiKey}`,
+            'Content-Type': 'application/json'
+          },
+          timeout: 30000
+        }
+      );
+
+      const content = response.data.choices[0]?.message?.content;
+      if (!content) {
+        throw new Error('No content in Groq response');
+      }
+
+      // Parse JSON response
+      let analysisData;
+      try {
+        analysisData = JSON.parse(content);
+      } catch (parseError) {
+        // Try to extract JSON from markdown code blocks
+        const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/) || content.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          analysisData = JSON.parse(jsonMatch[1] || jsonMatch[0]);
+        } else {
+          throw new Error('Could not parse Groq response as JSON');
+        }
+      }
+
+      // Format the response to match expected structure
+      return {
+        summary: analysisData.summary || articleText.substring(0, 200),
+        bias: {
+          overall: analysisData.bias_rating || 'center',
+          rating: analysisData.bias_rating || 'center'
+        },
+        sentiment: {
+          label: analysisData.tone_rating || 'neutral',
+          score: analysisData.confidence_score ? analysisData.confidence_score / 100 : 0.5
+        },
+        credibility: {
+          overall: 'medium',
+          score: analysisData.confidence_score ? analysisData.confidence_score / 100 : 0.5
+        },
+        fallacies: analysisData.fallacies || [],
+        confidence: analysisData.confidence_score ? analysisData.confidence_score / 100 : 0.8,
+        service: 'groq',
+        timestamp: Date.now(),
+        educational_insight: analysisData.educational_insight || '',
+        missing_context: analysisData.missing_context || ''
+      };
+    } catch (error) {
+      // Handle rate limit errors (429) with retry logic
+      if (error.response && error.response.status === 429) {
+        const rateLimitInfo = error.response.data?.error || {};
+        const limitType = rateLimitInfo.message?.includes('TPM') ? 'TPM (Tokens Per Minute)' : 
+                         rateLimitInfo.message?.includes('RPM') ? 'RPM (Requests Per Minute)' : 
+                         'Rate Limit';
+        
+        logger.warn(`⚠️  GROQ Rate Limit Hit (${limitType}):`, rateLimitInfo.message || 'Rate limit exceeded');
+        
+        if (retryCount < maxRetries) {
+          // Exponential backoff: 60s, 120s, 180s
+          const delay = baseDelay * (retryCount + 1);
+          logger.info(`⏳ Retrying GROQ request in ${delay / 1000}s (attempt ${retryCount + 1}/${maxRetries})...`);
+          
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return this.tryGroqService(article, options, retryCount + 1);
+        } else {
+          logger.error(`❌ GROQ Rate Limit: Max retries (${maxRetries}) exceeded. Falling back to alternative service.`);
+          throw new Error(`GROQ rate limit exceeded after ${maxRetries} retries: ${rateLimitInfo.message || 'Rate limit exceeded'}`);
+        }
+      }
+      
+      // Log other errors
+      console.error("❌ GROQ SERVICE ERROR:");
+      console.error("  Error Message:", error.message);
+      if (error.response) {
+        console.error("  Response Status:", error.response.status);
+        console.error("  Response Data:", JSON.stringify(error.response.data, null, 2));
+      }
+      throw error;
+    }
+  }
+
+  /**
    * Try primary AI service (Ollama)
    */
   async tryPrimaryService(article, options) {
-    const response = await axios.post(`${this.primaryService}/analyze`, {
-      text: article.content || article.description,
-      title: article.title,
-      source: article.source?.name,
-      options
-    }, {
-      timeout: 30000 // 30 second timeout
-    });
+    try {
+      const response = await axios.post(`${this.primaryService}/analyze`, {
+        text: article.content || article.description,
+        title: article.title,
+        source: article.source?.name,
+        options
+      }, {
+        timeout: 30000 // 30 second timeout
+      });
 
-    return this.formatAnalysisResult(response.data, 'ollama');
+      return this.formatAnalysisResult(response.data, 'ollama');
+    } catch (error) {
+      console.error("❌ PRIMARY SERVICE ERROR DETAILS:");
+      console.error("  URL:", `${this.primaryService}/analyze`);
+      console.error("  Error Message:", error.message);
+      if (error.response) {
+        console.error("  Response Status:", error.response.status);
+        console.error("  Response Data:", JSON.stringify(error.response.data, null, 2));
+      }
+      if (error.request) {
+        console.error("  No response received - service may be down");
+      }
+      throw error;
+    }
   }
 
   /**
    * Try fallback service (Hugging Face)
    */
   async tryFallbackService(article, options) {
-    const response = await axios.post(`${this.fallbackService}/analyze`, {
-      text: article.content || article.description,
-      title: article.title,
-      source: article.source?.name,
-      options
-    }, {
-      timeout: 20000 // 20 second timeout
-    });
+    try {
+      const response = await axios.post(`${this.fallbackService}/analyze`, {
+        text: article.content || article.description,
+        title: article.title,
+        source: article.source?.name,
+        options
+      }, {
+        timeout: 20000 // 20 second timeout
+      });
 
-    return this.formatAnalysisResult(response.data, 'huggingface');
+      return this.formatAnalysisResult(response.data, 'huggingface');
+    } catch (error) {
+      console.error("❌ FALLBACK SERVICE ERROR DETAILS:");
+      console.error("  URL:", `${this.fallbackService}/analyze`);
+      console.error("  Error Message:", error.message);
+      if (error.response) {
+        console.error("  Response Status:", error.response.status);
+        console.error("  Response Data:", JSON.stringify(error.response.data, null, 2));
+      }
+      if (error.request) {
+        console.error("  No response received - service may be down");
+      }
+      throw error;
+    }
   }
 
   /**
