@@ -1,0 +1,70 @@
+/* Narrative Thermometer Component Styles - Sepia Theme */
+.narrative-thermometer-container {
+  background: transparent;
+  border: 1px solid #D4C5B9;
+  border-radius: 4px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.thermometer-header {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2C2C2C;
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+  letter-spacing: 0.025em;
+  font-family: 'Lora', 'Charter', 'Georgia', serif;
+}
+
+.thermometer-chart {
+  width: 100%;
+  min-height: 300px;
+}
+
+.thermometer-loading,
+.thermometer-error,
+.thermometer-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+  color: #5A5A5A;
+  font-size: 0.875rem;
+  gap: 0.75rem;
+  font-family: 'Lora', 'Charter', 'Georgia', serif;
+}
+
+.loading-spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(212, 197, 185, 0.3);
+  border-top-color: #8B7355;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.thermometer-error {
+  color: #8b2e2e;
+}
+
+/* Custom tooltip styles (handled inline via Recharts contentStyle) */
+/* Additional responsive adjustments */
+@media (max-width: 768px) {
+  .narrative-thermometer-container {
+    padding: 1rem;
+  }
+
+  .thermometer-header {
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+  }
+
+  .thermometer-chart {
+    min-height: 250px;
+  }
+}
