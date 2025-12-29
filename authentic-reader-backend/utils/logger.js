@@ -1,5 +1,34 @@
 import winston from 'winston';
 
+// Determine if we're in production (Heroku sets NODE_ENV=production)
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Create transports array
+const transports = [];
+
+// Always add console transport (required for Heroku logs)
+transports.push(
+  new winston.transports.Console({
+    format: isProduction
+      ? winston.format.combine(
+          winston.format.timestamp(),
+          winston.format.json()
+        )
+      : winston.format.combine(
+          winston.format.colorize(),
+          winston.format.simple()
+        )
+  })
+);
+
+// Only add file transports in development (files don't persist on Heroku)
+if (!isProduction) {
+  transports.push(
+    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'logs/combined.log' })
+  );
+}
+
 // Create logger configuration
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
@@ -9,23 +38,7 @@ const logger = winston.createLogger({
     winston.format.json()
   ),
   defaultMeta: { service: 'authentic-reader-backend' },
-  transports: [
-    // Write all logs with importance level of `error` or less to `error.log`
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    // Write all logs with importance level of `info` or less to `combined.log`
-    new winston.transports.File({ filename: 'logs/combined.log' }),
-  ],
+  transports
 });
-
-// If we're not in production then log to the `console` with the format:
-// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.simple()
-    )
-  }));
-}
 
 export default logger;

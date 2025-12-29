@@ -35,6 +35,9 @@ const Source = sequelize.define('Source', {
   url: Sequelize.STRING,
   category: Sequelize.STRING,
   description: Sequelize.TEXT
+}, {
+  tableName: 'sources',
+  underscored: true
 });
 
 const Article = sequelize.define('Article', {
@@ -58,6 +61,9 @@ const Article = sequelize.define('Article', {
     allowNull: true,
     field: 'analysis_payload'
   }
+}, {
+  tableName: 'articles',
+  underscored: true
 });
 
 const UserSource = sequelize.define('UserSource', {

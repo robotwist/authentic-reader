@@ -1348,7 +1348,7 @@ const startServer = async () => {
         // Initialize default data if needed
         await initializeDefaultData();
         
-        // Schedule Daily Briefing to run every day at 6:00 AM
+        // Schedule Daily Briefing to run every day at 6:00 AM UTC
         cron.schedule('0 6 * * *', async () => {
           console.log('⏰ Starting scheduled Daily Briefing...');
           try {
@@ -1359,7 +1359,22 @@ const startServer = async () => {
           }
         });
         
-        console.log('⏰ Job Scheduler Active: Daily Briefing set for 06:00.');
+        console.log('⏰ Job Scheduler Active: Daily Briefing set for 06:00 UTC.');
+        
+        // Run briefing immediately on startup if RUN_BRIEFING_ON_STARTUP is set
+        // This ensures articles are populated right after deployment
+        if (process.env.RUN_BRIEFING_ON_STARTUP === 'true') {
+          console.log('🚀 RUN_BRIEFING_ON_STARTUP enabled - running briefing in 30 seconds...');
+          setTimeout(async () => {
+            console.log('⏰ Starting immediate Daily Briefing...');
+            try {
+              await generateDailyBriefing();
+              console.log('✅ Immediate briefing completed.');
+            } catch (error) {
+              console.error('❌ Immediate briefing failed:', error);
+            }
+          }, 30000); // Wait 30 seconds for server to stabilize
+        }
         
       } catch (error) {
         console.error('Unable to initialize JSON storage:', error);
