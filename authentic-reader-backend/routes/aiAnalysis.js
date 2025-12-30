@@ -7,6 +7,7 @@
 import express from 'express';
 import productionAIService from '../services/productionAIService.js';
 import industryLeadingAnalysisService from '../services/industryLeadingAnalysisService.js';
+import crossSourceComparisonService from '../services/crossSourceComparisonService.js';
 import logger from '../utils/logger.js';
 
 const router = express.Router();
@@ -82,6 +83,53 @@ router.post('/analyze-deep', async (req, res) => {
     logger.error('Deep analysis failed:', error);
     res.status(500).json({
       error: 'Deep analysis failed',
+      message: error.message,
+      timestamp: Date.now()
+    });
+  }
+});
+
+/**
+ * POST /api/ai/compare-sources
+ * Cross-source comparison: See how different sources cover the same story
+ * 
+ * This is a KEY industry-leading feature that shows readers:
+ * - How left/right/center sources frame the same story
+ * - What each source emphasizes or omits
+ * - Which source is most balanced
+ */
+router.post('/compare-sources', async (req, res) => {
+  try {
+    const { article, keywords } = req.body;
+
+    if (!article || !article.title) {
+      return res.status(400).json({
+        error: 'Article data is required',
+        message: 'Please provide article with title and content'
+      });
+    }
+
+    if (!keywords || !Array.isArray(keywords) || keywords.length < 2) {
+      return res.status(400).json({
+        error: 'Keywords required',
+        message: 'Please provide at least 2 keywords to find related coverage'
+      });
+    }
+
+    logger.info('Starting cross-source comparison for:', article.title);
+
+    const comparison = await crossSourceComparisonService.compareStoryCoverage(article, keywords);
+
+    res.json({
+      success: true,
+      comparison,
+      timestamp: Date.now()
+    });
+
+  } catch (error) {
+    logger.error('Cross-source comparison failed:', error);
+    res.status(500).json({
+      error: 'Cross-source comparison failed',
       message: error.message,
       timestamp: Date.now()
     });

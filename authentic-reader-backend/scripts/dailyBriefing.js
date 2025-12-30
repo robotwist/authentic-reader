@@ -14,7 +14,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import db from '../models/index.js';
 import rssService from '../services/rssService.js';
-import productionAIService from '../services/productionAIService.js';
+import industryLeadingAnalysisService from '../services/industryLeadingAnalysisService.js';
 import { fetchAndExtractArticle } from '../services/contentExtractionService.js';
 import logger from '../utils/logger.js';
 
@@ -225,50 +225,113 @@ async function fetchFullArticleContent(article) {
 }
 
 /**
- * Analyze article with AI service
+ * Analyze article with INDUSTRY-LEADING AI service
+ * Now returns comprehensive analysis with:
+ * - Logic scores with 5-dimension breakdown
+ * - Claim verification
+ * - Emotional manipulation scoring
+ * - Stakeholder analysis
+ * - Reader guidance
  */
 async function analyzeArticle(article) {
   try {
-    logger.info(`Analyzing article: ${article.title.substring(0, 60)}...`);
+    logger.info(`🔬 Deep analyzing article: ${article.title.substring(0, 60)}...`);
     
-    // Use production AI service
-    const analysis = await productionAIService.analyzeArticle(article, {
-      includeBias: true,
-      includeSentiment: true,
-      includeCredibility: true,
-      includeFallacies: true,
-      includeSummary: true
-    });
+    // Use industry-leading deep analysis service
+    const fullAnalysis = await industryLeadingAnalysisService.analyzeArticle(article);
     
-    // Format analysis payload for database
+    // Format comprehensive analysis payload for database
     const analysisPayload = {
-      summary: analysis.summary || article.description || '',
-      bias: analysis.bias || {},
-      sentiment: analysis.sentiment || {},
-      credibility: analysis.credibility || {},
-      fallacies: analysis.fallacies || [],
-      confidence_score: analysis.confidence || 0.5,
-      tone: analysis.sentiment?.label || 'neutral',
-      educational_insight: analysis.summary || '',
-      service: analysis.service || 'unknown',
+      // Core analysis
+      summary: fullAnalysis.executive_summary?.one_sentence || article.description || '',
+      executive_summary: fullAnalysis.executive_summary || null,
+      
+      // Logic scoring
+      logic_score: fullAnalysis.logic_score || null,
+      
+      // Bias analysis  
+      bias: {
+        overall: fullAnalysis.bias_analysis?.political_lean || 'center',
+        confidence: fullAnalysis.bias_analysis?.confidence || 50,
+        evidence: fullAnalysis.bias_analysis?.evidence || [],
+        framing: fullAnalysis.bias_analysis?.framing || '',
+        missing_perspectives: fullAnalysis.bias_analysis?.what_perspectives_missing || []
+      },
+      
+      // Emotional manipulation
+      emotional_manipulation: fullAnalysis.emotional_manipulation || null,
+      
+      // Rhetorical analysis with manipulation techniques
+      rhetorical_analysis: fullAnalysis.rhetorical_analysis || null,
+      fallacies: (fullAnalysis.rhetorical_analysis?.manipulation_techniques || []).map(t => ({
+        type: t.type,
+        category: t.category,
+        quote: t.quote,
+        explanation: t.explanation,
+        neutral_rewrite: t.neutral_rewrite,
+        severity: t.severity
+      })),
+      
+      // Claim verification
+      claim_verification: fullAnalysis.claim_verification || [],
+      
+      // Stakeholder analysis
+      stakeholder_analysis: fullAnalysis.stakeholder_analysis || null,
+      
+      // Missing context
+      missing_context: fullAnalysis.missing_context || null,
+      
+      // Reader guidance
+      reader_guidance: fullAnalysis.reader_guidance || null,
+      
+      // Overall assessment
+      overall_assessment: fullAnalysis.overall_assessment || null,
+      
+      // Legacy fields for backward compatibility
+      sentiment: { 
+        label: fullAnalysis.emotional_manipulation?.intended_emotional_response || 'neutral',
+        score: (100 - (fullAnalysis.emotional_manipulation?.score || 50)) / 100
+      },
+      credibility: { 
+        overall: fullAnalysis.overall_assessment?.reliability || 'medium',
+        score: (fullAnalysis.logic_score?.overall || 50) / 100
+      },
+      confidence_score: (fullAnalysis.logic_score?.overall || 50) / 100,
+      tone: fullAnalysis.emotional_manipulation?.intended_emotional_response || 'neutral',
+      educational_insight: fullAnalysis.reader_guidance?.media_literacy_lesson || '',
+      
+      // Metadata
+      service: 'industry-leading',
+      analysis_version: '2.0',
       timestamp: new Date().toISOString()
     };
     
+    logger.info(`   ✅ Deep analysis complete - Logic Score: ${fullAnalysis.logic_score?.overall || 'N/A'}`);
     return analysisPayload;
   } catch (error) {
-    logger.error(`Error analyzing article:`, error.message);
+    logger.error(`Error in deep analysis:`, error.message);
     
     // Return basic fallback analysis
     return {
       summary: article.description || article.content?.substring(0, 200) || '',
+      executive_summary: null,
+      logic_score: null,
       bias: { overall: 'unknown' },
+      emotional_manipulation: null,
+      rhetorical_analysis: null,
+      fallacies: [],
+      claim_verification: [],
+      stakeholder_analysis: null,
+      missing_context: null,
+      reader_guidance: null,
+      overall_assessment: { reliability: 'unknown', recommended_action: 'verify' },
       sentiment: { label: 'neutral', score: 0 },
       credibility: { overall: 'medium' },
-      fallacies: [],
       confidence_score: 0.3,
       tone: 'neutral',
       educational_insight: article.description || '',
       service: 'fallback',
+      analysis_version: '2.0',
       timestamp: new Date().toISOString()
     };
   }

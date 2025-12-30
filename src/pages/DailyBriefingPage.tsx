@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import ReaderView from '../components/ReaderView';
 import NarrativeThermometer from '../components/NarrativeThermometer';
+import DeepAnalysisPanel from '../components/DeepAnalysisPanel';
 import { FallacyData } from '../utils/llmParser';
 import { API_CONFIG } from '../config/api.config';
 import { fallbackBriefing } from '../data/fallbackBriefing';
@@ -67,6 +68,8 @@ const DailyBriefingPage: React.FC = () => {
   const [archiveDates, setArchiveDates] = useState<ArchiveDate[]>([]);
   const [loadingArchive, setLoadingArchive] = useState(false);
   const [currentDate, setCurrentDate] = useState<string | null>(null);
+  const [deepAnalysis, setDeepAnalysis] = useState<any>(null);
+  const [isLoadingDeep, setIsLoadingDeep] = useState(false);
   
   // Enhanced LLM Analysis Hook
   const {
@@ -310,15 +313,19 @@ const DailyBriefingPage: React.FC = () => {
   const handleBackClick = () => {
     setSelectedTopic(null);
     clearAnalysis(); // Clear enhanced analysis when going back
+    setDeepAnalysis(null); // Clear deep analysis
+    setIsLoadingDeep(false);
   };
 
   const handleRetry = () => {
     loadDailyBriefing();
   };
   
-  // Handle topic selection and trigger LLM analysis
-  const handleTopicSelect = useCallback((topic: TopicKey) => {
+  // Handle topic selection and trigger DEEP LLM analysis
+  const handleTopicSelect = useCallback(async (topic: TopicKey) => {
     setSelectedTopic(topic);
+    setDeepAnalysis(null);
+    setIsLoadingDeep(true);
     
     // Get the topic data and trigger enhanced analysis
     if (briefing?.topics[topic]) {
@@ -338,6 +345,33 @@ const DailyBriefingPage: React.FC = () => {
       }).catch(err => {
         console.warn('Enhanced analysis failed, using fallback:', err);
       });
+      
+      // Also fetch DEEP industry-leading analysis
+      try {
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/ai/analyze-deep`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            article: {
+              title: topicData.article.title,
+              content: textContent,
+              source: topicData.article.source,
+              author: topicData.article.author
+            }
+          })
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.analysis) {
+            setDeepAnalysis(data.analysis);
+          }
+        }
+      } catch (err) {
+        console.warn('Deep analysis request failed:', err);
+      } finally {
+        setIsLoadingDeep(false);
+      }
     }
   }, [briefing, runEnhancedAnalysis]);
 
@@ -501,7 +535,16 @@ const DailyBriefingPage: React.FC = () => {
               fallacyData={fallacies}
             />
             
-            {/* Analysis Section: Enhanced with LLM data */}
+            {/* DEEP ANALYSIS PANEL - Industry Leading */}
+            {(deepAnalysis || isLoadingDeep) && (
+              <DeepAnalysisPanel 
+                analysis={deepAnalysis} 
+                isLoading={isLoadingDeep}
+              />
+            )}
+            
+            {/* Analysis Section: Enhanced with LLM data (fallback if no deep analysis) */}
+            {!deepAnalysis && !isLoadingDeep && (
             <section className="article-analysis-section">
               <h2 className="analysis-section-title">
                 Analysis
@@ -593,6 +636,7 @@ const DailyBriefingPage: React.FC = () => {
                 </div>
               )}
             </section>
+            )}  {/* End fallback analysis section */}
             
             <footer className="article-footer">
               {!isOffline && topicData.article.url && (
