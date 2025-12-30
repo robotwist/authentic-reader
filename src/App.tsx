@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import SimpleHeader from './components/SimpleHeader';
+import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
 import DailyBriefingPage from './pages/DailyBriefingPage';
 
@@ -16,6 +17,7 @@ function App() {
               <Route path="*" element={<DailyBriefingPage />} />
             </Routes>
           </main>
+          <Footer />
         </div>
       </Router>
     </ErrorBoundary>

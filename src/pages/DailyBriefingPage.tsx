@@ -637,7 +637,7 @@ const DailyBriefingPage: React.FC = () => {
           }
         </p>
         <h1 className="dashboard-subtitle">
-          {briefing.isArchive ? 'THE ARCHIVE' : 'THE DAILY LOGIC'}
+          {briefing.isArchive ? 'THE ARCHIVE' : 'THE DAILY AUTHENTIC'}
         </h1>
         
         {briefing.isArchive && (
@@ -702,18 +702,6 @@ const DailyBriefingPage: React.FC = () => {
           [ARCHIVE] BROWSE HISTORY
         </button>
       </div>
-      
-      <footer className="publisher-footer">
-        <div className="publisher-content">
-          <span className="publisher-text">PUBLISHED BY</span>
-          <span className="publisher-brand">AUTHENTIC INTERNET</span>
-          <img 
-            src="/authentic-internet-logo.png" 
-            alt="Authentic Internet" 
-            className="publisher-logo"
-          />
-        </div>
-      </footer>
     </div>
   );
 };

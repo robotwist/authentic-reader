@@ -22,6 +22,16 @@
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
 
+.simple-header-title {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
 @media (max-width: 768px) {
   .simple-header {
     padding: 0.75rem 1rem;
@@ -30,6 +40,10 @@
   .simple-header-logo {
     width: 36px;
     height: 36px;
+  }
+  
+  .simple-header-title {
+    font-size: 1.25rem;
   }
 }
 
