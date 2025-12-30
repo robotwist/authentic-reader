@@ -1,0 +1,99 @@
+/* ============================================
+   SITE FOOTER - Authentic Internet Branding
+   ============================================ */
+
+.site-footer {
+  background: var(--bg-white, #FFFFFF);
+  border-top: 3px solid var(--text-ink, #1A1A1A);
+  margin-top: 2rem;
+  position: relative;
+}
+
+/* Double line effect above footer */
+.site-footer::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--text-ink, #1A1A1A);
+}
+
+/* ============================================
+   FOOTER UPPER SECTION
+   ============================================ */
+
+.footer-upper {
+  padding: 3rem 2rem 2rem;
+  max-width: var(--content-max-width, 1400px);
+  margin: 0 auto;
+}
+
+.footer-brand {
+  text-align: left;
+}
+
+.footer-brand-name {
+  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-ink, #1A1A1A);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.footer-tagline {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.8125rem;
+  font-style: italic;
+  color: var(--text-muted, #4A4A4A);
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+/* ============================================
+   FOOTER LOWER SECTION
+   ============================================ */
+
+.footer-lower {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid var(--text-ink, #1A1A1A);
+  max-width: var(--content-max-width, 1400px);
+  margin: 0 auto;
+}
+
+.footer-copyright {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.6875rem;
+  color: var(--text-muted, #4A4A4A);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 768px) {
+  .footer-upper {
+    padding: 2rem 1rem 1.5rem;
+  }
+  
+  .footer-brand-name {
+    font-size: 1.25rem;
+  }
+  
+  .footer-tagline {
+    font-size: 0.75rem;
+  }
+  
+  .footer-lower {
+    padding: 1rem;
+  }
+  
+  .footer-copyright {
+    font-size: 0.625rem;
+  }
+}
