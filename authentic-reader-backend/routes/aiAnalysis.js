@@ -6,6 +6,7 @@
 
 import express from 'express';
 import productionAIService from '../services/productionAIService.js';
+import industryLeadingAnalysisService from '../services/industryLeadingAnalysisService.js';
 import logger from '../utils/logger.js';
 
 const router = express.Router();
@@ -39,6 +40,48 @@ router.post('/analyze', async (req, res) => {
     logger.error('AI analysis failed:', error);
     res.status(500).json({
       error: 'Analysis failed',
+      message: error.message,
+      timestamp: Date.now()
+    });
+  }
+});
+
+/**
+ * POST /api/ai/analyze-deep
+ * Industry-leading comprehensive article analysis
+ * Returns detailed analysis with logic scores, claim verification, etc.
+ */
+router.post('/analyze-deep', async (req, res) => {
+  try {
+    const { article, format = 'full' } = req.body;
+
+    if (!article || !article.title) {
+      return res.status(400).json({
+        error: 'Article data is required',
+        message: 'Please provide article with title and content'
+      });
+    }
+
+    logger.info('Starting DEEP analysis for article:', article.title);
+
+    const fullAnalysis = await industryLeadingAnalysisService.analyzeArticle(article);
+    
+    // Return in requested format
+    const analysis = format === 'legacy' 
+      ? industryLeadingAnalysisService.toLegacyFormat(fullAnalysis)
+      : fullAnalysis;
+
+    res.json({
+      success: true,
+      analysis,
+      analysis_type: 'industry-leading',
+      timestamp: Date.now()
+    });
+
+  } catch (error) {
+    logger.error('Deep analysis failed:', error);
+    res.status(500).json({
+      error: 'Deep analysis failed',
       message: error.message,
       timestamp: Date.now()
     });
