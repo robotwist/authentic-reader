@@ -1290,3 +1290,278 @@
     padding: 0.25rem 0.5rem;
   }
 }
+
+/* ============================================
+   CROSS-SOURCE COMPARISON - Brutalist Style
+   ============================================ */
+
+.cross-source-section {
+  margin-top: 2rem;
+  border: 2px solid var(--text-ink, #1A1A1A);
+  background: var(--bg-paper, #F9F7F1);
+}
+
+.cross-source-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: var(--text-ink, #1A1A1A);
+  color: var(--bg-paper, #F9F7F1);
+}
+
+.cross-source-title {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin: 0;
+}
+
+.compare-button {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 1rem;
+  background: var(--bg-paper, #F9F7F1);
+  color: var(--text-ink, #1A1A1A);
+  border: none;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.compare-button:hover {
+  background: #fff;
+}
+
+.compare-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.comparison-loading {
+  padding: 2rem;
+  text-align: center;
+}
+
+.comparison-loading p {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted, #4A4A4A);
+  margin: 0;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.comparison-results {
+  padding: 1.25rem;
+}
+
+.comparison-subtitle {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted, #4A4A4A);
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Related Sources */
+.related-sources {
+  margin-bottom: 1.5rem;
+}
+
+.related-source-item {
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--text-ink, #1A1A1A);
+  background: transparent;
+}
+
+.related-source-item:last-child {
+  margin-bottom: 0;
+}
+
+.source-meta {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.source-name {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-ink, #1A1A1A);
+}
+
+.source-category {
+  font-size: 0.5rem;
+  font-weight: 600;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  letter-spacing: 0.1em;
+  color: var(--text-muted, #4A4A4A);
+}
+
+.source-headline {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-ink, #1A1A1A);
+  margin: 0 0 0.5rem;
+}
+
+.source-link {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-ink, #1A1A1A);
+  text-decoration: none;
+}
+
+.source-link:hover {
+  text-decoration: underline;
+}
+
+/* Framing Comparison */
+.framing-comparison {
+  margin-bottom: 1.5rem;
+}
+
+.framing-item {
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--text-ink, #1A1A1A);
+  border-left-width: 3px;
+}
+
+.framing-item:last-child {
+  margin-bottom: 0;
+}
+
+.framing-header {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.framing-source {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-ink, #1A1A1A);
+}
+
+.framing-lean {
+  font-size: 0.5rem;
+  font-weight: 600;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  letter-spacing: 0.1em;
+  color: var(--text-muted, #4A4A4A);
+}
+
+.framing-detail {
+  font-size: 0.8125rem;
+  font-family: var(--font-body, 'Georgia', serif);
+  line-height: 1.5;
+  color: var(--text-ink, #1A1A1A);
+  margin: 0 0 0.5rem;
+}
+
+.framing-detail:last-child {
+  margin-bottom: 0;
+}
+
+.framing-label {
+  font-size: 0.5rem;
+  font-weight: 700;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted, #4A4A4A);
+  margin-right: 0.5rem;
+}
+
+/* Reader Takeaway */
+.reader-takeaway {
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.03);
+  border: 2px solid var(--text-ink, #1A1A1A);
+}
+
+.takeaway-item {
+  font-size: 0.875rem;
+  font-family: var(--font-body, 'Georgia', serif);
+  line-height: 1.5;
+  color: var(--text-ink, #1A1A1A);
+  margin: 0 0 0.75rem;
+}
+
+.takeaway-item:last-child {
+  margin-bottom: 0;
+}
+
+.takeaway-label {
+  display: block;
+  font-size: 0.5rem;
+  font-weight: 700;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted, #4A4A4A);
+  margin-bottom: 0.25rem;
+}
+
+.no-comparison {
+  padding: 2rem;
+  text-align: center;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted, #4A4A4A);
+  margin: 0;
+}
+
+/* Article Footer Update */
+.original-link {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-ink, #1A1A1A);
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--text-ink, #1A1A1A);
+  display: inline-block;
+  transition: all 0.1s ease;
+}
+
+.original-link:hover {
+  background: var(--text-ink, #1A1A1A);
+  color: var(--bg-paper, #F9F7F1);
+}

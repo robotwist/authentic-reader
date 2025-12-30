@@ -70,6 +70,8 @@ const DailyBriefingPage: React.FC = () => {
   const [currentDate, setCurrentDate] = useState<string | null>(null);
   const [deepAnalysis, setDeepAnalysis] = useState<any>(null);
   const [isLoadingDeep, setIsLoadingDeep] = useState(false);
+  const [crossSourceComparison, setCrossSourceComparison] = useState<any>(null);
+  const [isLoadingComparison, setIsLoadingComparison] = useState(false);
   
   // Enhanced LLM Analysis Hook
   const {
@@ -315,6 +317,55 @@ const DailyBriefingPage: React.FC = () => {
     clearAnalysis(); // Clear enhanced analysis when going back
     setDeepAnalysis(null); // Clear deep analysis
     setIsLoadingDeep(false);
+    setCrossSourceComparison(null); // Clear cross-source comparison
+    setIsLoadingComparison(false);
+  };
+
+  // Fetch cross-source comparison for the current article
+  const handleCompareSource = async () => {
+    if (!selectedTopic || !briefing?.topics[selectedTopic]) return;
+    
+    const topicData = briefing.topics[selectedTopic];
+    setIsLoadingComparison(true);
+    setCrossSourceComparison(null);
+    
+    // Extract keywords from the topic
+    const keywordMap: Record<string, string[]> = {
+      ukraine: ['ukraine', 'russia', 'war', 'zelensky', 'putin', 'peace'],
+      gaza: ['gaza', 'israel', 'hamas', 'palestine', 'ceasefire'],
+      diseases: ['health', 'disease', 'vaccine', 'medical', 'outbreak'],
+      epstein: ['court', 'justice', 'law', 'judge', 'trial', 'legal'],
+      trump: ['economy', 'market', 'inflation', 'trade', 'tariff']
+    };
+    
+    const keywords = keywordMap[selectedTopic] || [selectedTopic];
+    
+    try {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/api/ai/compare-sources`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          article: {
+            title: topicData.article.title,
+            content: topicData.article.content,
+            source: topicData.article.source,
+            url: topicData.article.url
+          },
+          keywords
+        })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setCrossSourceComparison(data.comparison);
+        }
+      }
+    } catch (err) {
+      console.warn('Cross-source comparison failed:', err);
+    } finally {
+      setIsLoadingComparison(false);
+    }
   };
 
   const handleRetry = () => {
@@ -638,6 +689,105 @@ const DailyBriefingPage: React.FC = () => {
             </section>
             )}  {/* End fallback analysis section */}
             
+            {/* CROSS-SOURCE COMPARISON */}
+            <section className="cross-source-section">
+              <div className="cross-source-header">
+                <h2 className="cross-source-title">[CROSS-SOURCE COMPARISON]</h2>
+                {!crossSourceComparison && !isLoadingComparison && (
+                  <button 
+                    className="compare-button"
+                    onClick={handleCompareSource}
+                    disabled={isOffline}
+                  >
+                    [COMPARE SOURCES]
+                  </button>
+                )}
+              </div>
+              
+              {isLoadingComparison && (
+                <div className="comparison-loading">
+                  <p>[SEARCHING OTHER SOURCES...]</p>
+                </div>
+              )}
+              
+              {crossSourceComparison && crossSourceComparison.found && (
+                <div className="comparison-results">
+                  <div className="related-sources">
+                    <h3 className="comparison-subtitle">[RELATED COVERAGE]</h3>
+                    {crossSourceComparison.related_sources?.map((source: any, i: number) => (
+                      <div key={i} className="related-source-item">
+                        <div className="source-meta">
+                          <span className="source-name">{source.name}</span>
+                          <span className="source-category">[{source.category?.toUpperCase()}]</span>
+                        </div>
+                        <p className="source-headline">{source.title}</p>
+                        {source.url && (
+                          <a 
+                            href={source.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="source-link"
+                          >
+                            [READ]
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {crossSourceComparison.comparison_analysis && (
+                    <div className="comparison-analysis">
+                      {crossSourceComparison.comparison_analysis.framing_comparison && (
+                        <div className="framing-comparison">
+                          <h3 className="comparison-subtitle">[FRAMING DIFFERENCES]</h3>
+                          {crossSourceComparison.comparison_analysis.framing_comparison.map((frame: any, i: number) => (
+                            <div key={i} className="framing-item">
+                              <div className="framing-header">
+                                <span className="framing-source">{frame.source}</span>
+                                <span className="framing-lean">[{frame.political_lean?.toUpperCase()}]</span>
+                              </div>
+                              {frame.emphasis && (
+                                <p className="framing-detail">
+                                  <span className="framing-label">[EMPHASIS]</span> {frame.emphasis}
+                                </p>
+                              )}
+                              {frame.downplayed && (
+                                <p className="framing-detail">
+                                  <span className="framing-label">[DOWNPLAYED]</span> {frame.downplayed}
+                                </p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {crossSourceComparison.comparison_analysis.reader_takeaway && (
+                        <div className="reader-takeaway">
+                          <h3 className="comparison-subtitle">[READER TAKEAWAY]</h3>
+                          {crossSourceComparison.comparison_analysis.reader_takeaway.most_balanced && (
+                            <p className="takeaway-item">
+                              <span className="takeaway-label">[MOST BALANCED]</span>
+                              {crossSourceComparison.comparison_analysis.reader_takeaway.most_balanced}
+                            </p>
+                          )}
+                          {crossSourceComparison.comparison_analysis.reader_takeaway.recommendation && (
+                            <p className="takeaway-item">
+                              <span className="takeaway-label">[RECOMMENDATION]</span>
+                              {crossSourceComparison.comparison_analysis.reader_takeaway.recommendation}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {crossSourceComparison && !crossSourceComparison.found && (
+                <p className="no-comparison">[NO RELATED COVERAGE FOUND FROM OTHER SOURCES]</p>
+              )}
+            </section>
+            
             <footer className="article-footer">
               {!isOffline && topicData.article.url && (
                 <a 
@@ -646,7 +796,7 @@ const DailyBriefingPage: React.FC = () => {
                   rel="noopener noreferrer"
                   className="original-link"
                 >
-                  Read Original Source →
+                  [READ ORIGINAL SOURCE]
                 </a>
               )}
             </footer>
