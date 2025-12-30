@@ -233,9 +233,28 @@ async function analyzeArticle(article) {
 }
 
 /**
- * Save article to database
+ * Topic key mapping for daily briefing
  */
-async function saveArticle(article, analysisPayload, sourceId) {
+const TOPIC_KEY_MAP = {
+  'Ukraine': 'ukraine',
+  'Gaza': 'gaza',
+  'Public Health': 'diseases',
+  'Justice': 'epstein',
+  'Economy': 'trump'
+};
+
+const TOPIC_ICON_MAP = {
+  'ukraine': '🇺🇦',
+  'gaza': '🕊️',
+  'diseases': '🦠',
+  'epstein': '📄',
+  'trump': '⚖️'
+};
+
+/**
+ * Save article to database (both Article and DailyBriefingArticle tables)
+ */
+async function saveArticle(article, analysisPayload, sourceId, topicName = null) {
   try {
     // Parse publish date
     let publishDate = null;
@@ -248,7 +267,7 @@ async function saveArticle(article, analysisPayload, sourceId) {
       publishDate = new Date();
     }
     
-    // Check if article already exists by guid
+    // Check if article already exists by guid in Article table
     const existingArticle = await db.Article.findOne({
       where: { guid: article.guid || article.link }
     });
@@ -258,7 +277,7 @@ async function saveArticle(article, analysisPayload, sourceId) {
       return existingArticle;
     }
     
-    // Create new article
+    // Create new article in Article table
     const savedArticle = await db.Article.create({
       title: article.title,
       link: article.link,
@@ -271,6 +290,37 @@ async function saveArticle(article, analysisPayload, sourceId) {
       categories: article.categories || [],
       analysisPayload: analysisPayload
     });
+    
+    // ALSO save to DailyBriefingArticle table for the daily briefing page
+    if (topicName) {
+      const topicKey = TOPIC_KEY_MAP[topicName] || topicName.toLowerCase().replace(/\s+/g, '_');
+      const today = new Date().toISOString().split('T')[0];
+      
+      try {
+        // Use upsert to avoid duplicates for same topic on same day
+        await db.DailyBriefingArticle.upsert({
+          briefingDate: today,
+          topic: topicKey,
+          topicLabel: topicName,
+          icon: TOPIC_ICON_MAP[topicKey] || '📰',
+          headline: article.title,
+          source: article.source?.name || 'Unknown',
+          author: article.author || null,
+          url: article.link,
+          content: article.content || article.description || '',
+          publishDate: publishDate,
+          fallacies: analysisPayload || {},
+          reliabilityScore: analysisPayload?.confidence_score 
+            ? Math.round(analysisPayload.confidence_score * 100) 
+            : null
+        });
+        
+        logger.info(`Saved to DailyBriefingArticle: ${topicKey}`);
+      } catch (briefingError) {
+        logger.error(`Error saving to DailyBriefingArticle:`, briefingError.message);
+        // Don't fail the whole save if briefing save fails
+      }
+    }
     
     logger.info(`Saved article: ${article.title.substring(0, 60)}...`);
     return savedArticle;
@@ -395,8 +445,8 @@ export const generateDailyBriefing = async () => {
               }
             }
             
-            // Save article
-            await saveArticle(article, analysisPayload, sourceId);
+            // Save article (to both Article and DailyBriefingArticle tables)
+            await saveArticle(article, analysisPayload, sourceId, topic.name);
             totalSaved++;
             
             logger.info(`   ✅ Saved: ${article.title.substring(0, 60)}...`);
