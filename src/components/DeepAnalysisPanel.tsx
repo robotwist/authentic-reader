@@ -1,12 +1,11 @@
 /**
- * DeepAnalysisPanel - Industry-Leading Analysis Display
+ * DeepAnalysisPanel - Brutalist Design
  * 
- * Displays comprehensive AI analysis with:
- * - Logic Score with 5-dimension breakdown
- * - Claim verification status
- * - Emotional manipulation scoring
- * - Stakeholder analysis
- * - Reader guidance
+ * Industry-leading analysis with Swiss brutalist aesthetic:
+ * - No emojis or icons
+ * - Black, white, and grey shading only
+ * - Monospace fonts for data
+ * - Visible borders and grids
  */
 
 import React, { useState } from 'react';
@@ -137,7 +136,7 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
     return (
       <div className="deep-analysis-panel loading">
         <div className="analysis-loading-spinner" />
-        <p>Running industry-leading analysis...</p>
+        <p className="analysis-loading-text">[ANALYZING...]</p>
       </div>
     );
   }
@@ -146,79 +145,62 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
     return null;
   }
 
-  const getGradeColor = (grade: string) => {
-    switch (grade) {
-      case 'A': return 'grade-a';
-      case 'B': return 'grade-b';
-      case 'C': return 'grade-c';
-      case 'D': return 'grade-d';
-      case 'F': return 'grade-f';
-      default: return '';
-    }
-  };
-
-  const getVerificationIcon = (status: string) => {
+  const getVerificationLabel = (status: string) => {
     switch (status) {
-      case 'verified': return '✅';
-      case 'disputed': return '⚠️';
-      case 'false': return '❌';
-      case 'needs_context': return '📝';
-      default: return '❓';
+      case 'verified': return '[VERIFIED]';
+      case 'disputed': return '[DISPUTED]';
+      case 'false': return '[FALSE]';
+      case 'needs_context': return '[NEEDS CONTEXT]';
+      default: return '[UNVERIFIED]';
     }
-  };
-
-  const getSeverityClass = (severity: string) => {
-    return `severity-${severity}`;
-  };
-
-  const getReliabilityClass = (reliability: string) => {
-    return `reliability-${reliability}`;
-  };
-
-  const getActionClass = (action: string) => {
-    return `action-${action}`;
   };
 
   return (
     <div className="deep-analysis-panel">
-      {/* LOGIC SCORE - Hero Section */}
+      <header className="panel-header">
+        <h2 className="panel-title">[DEEP ANALYSIS]</h2>
+        <span className="panel-version">V2.0</span>
+      </header>
+
+      {/* LOGIC SCORE */}
       {analysis.logic_score && (
-        <section className="analysis-section logic-score-section">
+        <section className="analysis-section">
           <header 
-            className="section-header clickable"
+            className="section-header"
             onClick={() => toggleSection('logic-score')}
           >
-            <h2>
-              <span className="section-icon">🎯</span>
-              Logic Score
-              <span className={`grade-badge ${getGradeColor(analysis.logic_score.grade)}`}>
-                {analysis.logic_score.grade}
-              </span>
-            </h2>
-            <span className="expand-icon">{expandedSections.has('logic-score') ? '−' : '+'}</span>
+            <h3 className="section-title">[LOGIC SCORE]</h3>
+            <span className="section-toggle">
+              {expandedSections.has('logic-score') ? '[-]' : '[+]'}
+            </span>
           </header>
           
           {expandedSections.has('logic-score') && (
             <div className="section-content">
               <div className="score-hero">
-                <div className="score-circle">
-                  <span className="score-number">{analysis.logic_score.overall}</span>
-                  <span className="score-label">/ 100</span>
+                <div className="score-display">
+                  <span className="score-value">{analysis.logic_score.overall}</span>
+                  <span className="score-max">/100</span>
                 </div>
-                <p className="score-explanation">{analysis.logic_score.explanation}</p>
+                <div className="score-grade">
+                  <span className="grade-label">GRADE:</span>
+                  <span className="grade-value">{analysis.logic_score.grade}</span>
+                </div>
               </div>
               
+              <p className="score-explanation">{analysis.logic_score.explanation}</p>
+              
               <div className="score-breakdown">
+                <h4 className="breakdown-title">[BREAKDOWN]</h4>
                 {Object.entries(analysis.logic_score.breakdown).map(([key, value]) => (
-                  <div key={key} className="breakdown-item">
+                  <div key={key} className="breakdown-row">
                     <span className="breakdown-label">
-                      {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      {key.replace(/_/g, ' ').toUpperCase()}
                     </span>
-                    <div className="breakdown-bar-container">
+                    <div className="breakdown-bar-track">
                       <div 
-                        className="breakdown-bar" 
+                        className="breakdown-bar-fill" 
                         style={{ width: `${value}%` }}
-                        data-value={value}
                       />
                     </div>
                     <span className="breakdown-value">{value}</span>
@@ -232,26 +214,25 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
 
       {/* EXECUTIVE SUMMARY */}
       {analysis.executive_summary && (
-        <section className="analysis-section executive-summary-section">
+        <section className="analysis-section">
           <header 
-            className="section-header clickable"
+            className="section-header"
             onClick={() => toggleSection('executive-summary')}
           >
-            <h2>
-              <span className="section-icon">📋</span>
-              Executive Summary
-            </h2>
-            <span className="expand-icon">{expandedSections.has('executive-summary') ? '−' : '+'}</span>
+            <h3 className="section-title">[SUMMARY]</h3>
+            <span className="section-toggle">
+              {expandedSections.has('executive-summary') ? '[-]' : '[+]'}
+            </span>
           </header>
           
           {expandedSections.has('executive-summary') && (
             <div className="section-content">
-              <p className="one-sentence">{analysis.executive_summary.one_sentence}</p>
+              <p className="summary-main">{analysis.executive_summary.one_sentence}</p>
               
               {analysis.executive_summary.key_claims && (
-                <div className="key-claims">
-                  <h4>Key Claims</h4>
-                  <ul>
+                <div className="summary-block">
+                  <h4 className="block-title">[KEY CLAIMS]</h4>
+                  <ul className="claims-list">
                     {analysis.executive_summary.key_claims.map((claim, i) => (
                       <li key={i}>{claim}</li>
                     ))}
@@ -260,8 +241,8 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
               )}
               
               {analysis.executive_summary.why_it_matters && (
-                <div className="why-matters">
-                  <h4>Why It Matters</h4>
+                <div className="summary-block">
+                  <h4 className="block-title">[SIGNIFICANCE]</h4>
                   <p>{analysis.executive_summary.why_it_matters}</p>
                 </div>
               )}
@@ -272,34 +253,30 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
 
       {/* CLAIM VERIFICATION */}
       {analysis.claim_verification && analysis.claim_verification.length > 0 && (
-        <section className="analysis-section claim-verification-section">
+        <section className="analysis-section">
           <header 
-            className="section-header clickable"
+            className="section-header"
             onClick={() => toggleSection('claims')}
           >
-            <h2>
-              <span className="section-icon">🔍</span>
-              Claim Verification
-              <span className="count-badge">{analysis.claim_verification.length}</span>
-            </h2>
-            <span className="expand-icon">{expandedSections.has('claims') ? '−' : '+'}</span>
+            <h3 className="section-title">[CLAIM VERIFICATION]</h3>
+            <span className="section-count">{analysis.claim_verification.length}</span>
+            <span className="section-toggle">
+              {expandedSections.has('claims') ? '[-]' : '[+]'}
+            </span>
           </header>
           
           {expandedSections.has('claims') && (
             <div className="section-content">
-              <div className="claims-list">
-                {analysis.claim_verification.map((claim, i) => (
-                  <div key={i} className={`claim-item status-${claim.verification_status}`}>
-                    <div className="claim-header">
-                      <span className="verification-icon">{getVerificationIcon(claim.verification_status)}</span>
-                      <span className="verification-status">{claim.verification_status.replace('_', ' ').toUpperCase()}</span>
-                      <span className="claim-confidence">{claim.confidence}% confidence</span>
-                    </div>
-                    <p className="claim-text">"{claim.claim}"</p>
-                    {claim.notes && <p className="claim-notes">{claim.notes}</p>}
+              {analysis.claim_verification.map((claim, i) => (
+                <div key={i} className={`claim-item status-${claim.verification_status}`}>
+                  <div className="claim-header">
+                    <span className="claim-status">{getVerificationLabel(claim.verification_status)}</span>
+                    <span className="claim-confidence">{claim.confidence}% CONF</span>
                   </div>
-                ))}
-              </div>
+                  <p className="claim-text">"{claim.claim}"</p>
+                  {claim.notes && <p className="claim-notes">{claim.notes}</p>}
+                </div>
+              ))}
             </div>
           )}
         </section>
@@ -307,39 +284,42 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
 
       {/* EMOTIONAL MANIPULATION */}
       {analysis.emotional_manipulation && (
-        <section className="analysis-section emotional-section">
+        <section className="analysis-section">
           <header 
-            className="section-header clickable"
+            className="section-header"
             onClick={() => toggleSection('emotional')}
           >
-            <h2>
-              <span className="section-icon">🎭</span>
-              Emotional Manipulation
-              <span className={`score-badge ${analysis.emotional_manipulation.score > 60 ? 'high' : analysis.emotional_manipulation.score > 30 ? 'medium' : 'low'}`}>
-                {analysis.emotional_manipulation.score}/100
-              </span>
-            </h2>
-            <span className="expand-icon">{expandedSections.has('emotional') ? '−' : '+'}</span>
+            <h3 className="section-title">[EMOTIONAL MANIPULATION]</h3>
+            <span className="section-score">{analysis.emotional_manipulation.score}/100</span>
+            <span className="section-toggle">
+              {expandedSections.has('emotional') ? '[-]' : '[+]'}
+            </span>
           </header>
           
           {expandedSections.has('emotional') && (
             <div className="section-content">
-              <div className="emotional-meter">
-                <div 
-                  className="emotional-fill" 
-                  style={{ width: `${analysis.emotional_manipulation.score}%` }}
-                />
-                <span className="emotional-value">{analysis.emotional_manipulation.score}%</span>
+              <div className="manipulation-meter">
+                <div className="meter-track">
+                  <div 
+                    className="meter-fill" 
+                    style={{ width: `${analysis.emotional_manipulation.score}%` }}
+                  />
+                </div>
+                <div className="meter-labels">
+                  <span>LOW</span>
+                  <span>HIGH</span>
+                </div>
               </div>
               
-              <p className="emotional-intent">
-                <strong>Intended Response:</strong> {analysis.emotional_manipulation.intended_emotional_response}
-              </p>
+              <div className="emotional-intent">
+                <span className="intent-label">[INTENDED RESPONSE]</span>
+                <span className="intent-value">{analysis.emotional_manipulation.intended_emotional_response}</span>
+              </div>
               
-              {analysis.emotional_manipulation.emotional_words && (
+              {analysis.emotional_manipulation.emotional_words && analysis.emotional_manipulation.emotional_words.length > 0 && (
                 <div className="emotional-words">
-                  <h4>Loaded Words Detected</h4>
-                  <div className="word-tags">
+                  <h4 className="block-title">[LOADED WORDS]</h4>
+                  <div className="word-list">
                     {analysis.emotional_manipulation.emotional_words.map((word, i) => (
                       <span key={i} className="word-tag">{word}</span>
                     ))}
@@ -348,13 +328,13 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
               )}
               
               {analysis.emotional_manipulation.techniques_used?.length > 0 && (
-                <div className="techniques-used">
-                  <h4>Techniques Identified</h4>
+                <div className="techniques-block">
+                  <h4 className="block-title">[TECHNIQUES IDENTIFIED]</h4>
                   {analysis.emotional_manipulation.techniques_used.map((tech, i) => (
-                    <div key={i} className={`technique-item ${getSeverityClass(tech.severity)}`}>
+                    <div key={i} className="technique-item">
                       <div className="technique-header">
-                        <span className="technique-name">{tech.technique}</span>
-                        <span className="technique-severity">{tech.severity}</span>
+                        <span className="technique-name">{tech.technique.toUpperCase()}</span>
+                        <span className="technique-severity">[{tech.severity.toUpperCase()}]</span>
                       </div>
                       <blockquote className="technique-quote">"{tech.quote}"</blockquote>
                       <p className="technique-impact">{tech.impact}</p>
@@ -369,40 +349,39 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
 
       {/* MANIPULATION TECHNIQUES */}
       {analysis.rhetorical_analysis?.manipulation_techniques?.length > 0 && (
-        <section className="analysis-section manipulation-section">
+        <section className="analysis-section">
           <header 
-            className="section-header clickable"
+            className="section-header"
             onClick={() => toggleSection('manipulation')}
           >
-            <h2>
-              <span className="section-icon">⚠️</span>
-              Rhetorical Manipulation
-              <span className="count-badge">{analysis.rhetorical_analysis.manipulation_techniques.length}</span>
-            </h2>
-            <span className="expand-icon">{expandedSections.has('manipulation') ? '−' : '+'}</span>
+            <h3 className="section-title">[RHETORICAL MANIPULATION]</h3>
+            <span className="section-count">{analysis.rhetorical_analysis.manipulation_techniques.length}</span>
+            <span className="section-toggle">
+              {expandedSections.has('manipulation') ? '[-]' : '[+]'}
+            </span>
           </header>
           
           {expandedSections.has('manipulation') && (
             <div className="section-content">
               {analysis.rhetorical_analysis.manipulation_techniques.map((tech, i) => (
-                <div key={i} className={`manipulation-item ${getSeverityClass(tech.severity)}`}>
+                <div key={i} className="manipulation-item">
                   <div className="manipulation-header">
-                    <span className="manipulation-type">{tech.type}</span>
-                    <span className="manipulation-category">{tech.category}</span>
-                    <span className={`severity-badge ${tech.severity}`}>{tech.severity}</span>
+                    <span className="manipulation-type">{tech.type.toUpperCase()}</span>
+                    <span className="manipulation-category">[{tech.category.toUpperCase()}]</span>
+                    <span className="manipulation-severity">{tech.severity.toUpperCase()}</span>
                   </div>
                   
                   <div className="manipulation-content">
                     <div className="quote-block">
-                      <span className="quote-label">Original:</span>
+                      <span className="quote-label">[ORIGINAL]</span>
                       <blockquote>"{tech.quote}"</blockquote>
                     </div>
                     
                     <p className="manipulation-explanation">{tech.explanation}</p>
                     
                     <div className="rewrite-block">
-                      <span className="rewrite-label">✓ Neutral Alternative:</span>
-                      <p className="neutral-rewrite">{tech.neutral_rewrite}</p>
+                      <span className="rewrite-label">[NEUTRAL ALTERNATIVE]</span>
+                      <p>{tech.neutral_rewrite}</p>
                     </div>
                   </div>
                 </div>
@@ -414,23 +393,22 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
 
       {/* STAKEHOLDER ANALYSIS */}
       {analysis.stakeholder_analysis && (
-        <section className="analysis-section stakeholder-section">
+        <section className="analysis-section">
           <header 
-            className="section-header clickable"
+            className="section-header"
             onClick={() => toggleSection('stakeholders')}
           >
-            <h2>
-              <span className="section-icon">👥</span>
-              Stakeholder Analysis
-            </h2>
-            <span className="expand-icon">{expandedSections.has('stakeholders') ? '−' : '+'}</span>
+            <h3 className="section-title">[STAKEHOLDER ANALYSIS]</h3>
+            <span className="section-toggle">
+              {expandedSections.has('stakeholders') ? '[-]' : '[+]'}
+            </span>
           </header>
           
           {expandedSections.has('stakeholders') && (
             <div className="section-content">
               <div className="stakeholder-grid">
-                <div className="stakeholder-column benefits">
-                  <h4>Who Benefits</h4>
+                <div className="stakeholder-column">
+                  <h4 className="column-title">[WHO BENEFITS]</h4>
                   <ul>
                     {analysis.stakeholder_analysis.who_benefits.map((entity, i) => (
                       <li key={i}>{entity}</li>
@@ -438,8 +416,8 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
                   </ul>
                 </div>
                 
-                <div className="stakeholder-column harmed">
-                  <h4>Who Is Harmed</h4>
+                <div className="stakeholder-column">
+                  <h4 className="column-title">[WHO IS HARMED]</h4>
                   <ul>
                     {analysis.stakeholder_analysis.who_is_harmed.map((entity, i) => (
                       <li key={i}>{entity}</li>
@@ -449,15 +427,15 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
               </div>
               
               {analysis.stakeholder_analysis.author_perspective && (
-                <div className="author-perspective">
-                  <h4>Author's Perspective</h4>
+                <div className="stakeholder-block">
+                  <h4 className="block-title">[AUTHOR PERSPECTIVE]</h4>
                   <p>{analysis.stakeholder_analysis.author_perspective}</p>
                 </div>
               )}
               
               {analysis.stakeholder_analysis.potential_conflicts && (
-                <div className="conflicts">
-                  <h4>Potential Conflicts</h4>
+                <div className="stakeholder-block">
+                  <h4 className="block-title">[POTENTIAL CONFLICTS]</h4>
                   <p>{analysis.stakeholder_analysis.potential_conflicts}</p>
                 </div>
               )}
@@ -468,23 +446,22 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
 
       {/* READER GUIDANCE */}
       {analysis.reader_guidance && (
-        <section className="analysis-section guidance-section">
+        <section className="analysis-section">
           <header 
-            className="section-header clickable"
+            className="section-header"
             onClick={() => toggleSection('guidance')}
           >
-            <h2>
-              <span className="section-icon">📚</span>
-              Reader Guidance
-            </h2>
-            <span className="expand-icon">{expandedSections.has('guidance') ? '−' : '+'}</span>
+            <h3 className="section-title">[READER GUIDANCE]</h3>
+            <span className="section-toggle">
+              {expandedSections.has('guidance') ? '[-]' : '[+]'}
+            </span>
           </header>
           
           {expandedSections.has('guidance') && (
             <div className="section-content">
               {analysis.reader_guidance.critical_questions?.length > 0 && (
-                <div className="critical-questions">
-                  <h4>Questions to Ask</h4>
+                <div className="guidance-block">
+                  <h4 className="block-title">[QUESTIONS TO ASK]</h4>
                   <ul>
                     {analysis.reader_guidance.critical_questions.map((q, i) => (
                       <li key={i}>{q}</li>
@@ -494,8 +471,8 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
               )}
               
               {analysis.reader_guidance.what_to_verify?.length > 0 && (
-                <div className="verify-list">
-                  <h4>What to Verify</h4>
+                <div className="guidance-block">
+                  <h4 className="block-title">[WHAT TO VERIFY]</h4>
                   <ul>
                     {analysis.reader_guidance.what_to_verify.map((item, i) => (
                       <li key={i}>{item}</li>
@@ -505,8 +482,8 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
               )}
               
               {analysis.reader_guidance.media_literacy_lesson && (
-                <div className="literacy-lesson">
-                  <h4>🎓 Media Literacy Lesson</h4>
+                <div className="guidance-block lesson">
+                  <h4 className="block-title">[MEDIA LITERACY LESSON]</h4>
                   <p>{analysis.reader_guidance.media_literacy_lesson}</p>
                 </div>
               )}
@@ -517,23 +494,20 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
 
       {/* OVERALL ASSESSMENT */}
       {analysis.overall_assessment && (
-        <section className="analysis-section assessment-section">
+        <section className="analysis-section assessment">
           <header className="section-header">
-            <h2>
-              <span className="section-icon">📊</span>
-              Overall Assessment
-            </h2>
+            <h3 className="section-title">[OVERALL ASSESSMENT]</h3>
           </header>
           
           <div className="section-content">
             <div className="assessment-badges">
-              <div className={`assessment-badge ${getReliabilityClass(analysis.overall_assessment.reliability)}`}>
-                <span className="badge-label">Reliability</span>
+              <div className="assessment-badge">
+                <span className="badge-label">RELIABILITY</span>
                 <span className="badge-value">{analysis.overall_assessment.reliability.toUpperCase()}</span>
               </div>
               
-              <div className={`assessment-badge ${getActionClass(analysis.overall_assessment.recommended_action)}`}>
-                <span className="badge-label">Recommended Action</span>
+              <div className="assessment-badge">
+                <span className="badge-label">ACTION</span>
                 <span className="badge-value">{analysis.overall_assessment.recommended_action.toUpperCase()}</span>
               </div>
             </div>
