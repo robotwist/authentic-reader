@@ -1,0 +1,65 @@
+name: Deploy to Heroku
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'authentic-reader-backend/**'
+      - '.github/workflows/deploy-heroku.yml'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  deploy:
+    name: Deploy Backend to Heroku
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+      
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+      
+      - name: Login to Heroku
+        run: |
+          echo "${{ secrets.HEROKU_API_KEY }}" | heroku auth:token
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      
+      - name: Deploy to Heroku
+        run: |
+          cd authentic-reader-backend
+          
+          # Initialize git repo in backend directory
+          git init
+          git add -A
+          git commit -m "Deploy from GitHub Actions - ${{ github.sha }}"
+          
+          # Add Heroku remote
+          git remote add heroku https://git.heroku.com/authentic-reader-backend.git || git remote set-url heroku https://git.heroku.com/authentic-reader-backend.git
+          
+          # Push to Heroku
+          git push --force heroku HEAD:main
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      
+      - name: Run migrations (optional)
+        continue-on-error: true
+        run: |
+          heroku run npm run migrate --app authentic-reader-backend
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      
+      - name: Deployment status
+        run: |
+          echo "✅ Deployment completed successfully!"
+          echo "Backend URL: https://authentic-reader-backend-c7754cf50ab2.herokuapp.com"
