@@ -15,6 +15,7 @@ import { dirname, join } from 'path';
 import db from '../models/index.js';
 import rssService from '../services/rssService.js';
 import productionAIService from '../services/productionAIService.js';
+import { fetchAndExtractArticle } from '../services/contentExtractionService.js';
 import logger from '../utils/logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -180,6 +181,47 @@ async function fetchArticlesForTopic(topic, seenUrls, allSources) {
   
   logger.info(`[Topic: ${topic.name}] Summary: ${totalItemsFetched} items fetched, ${totalItemsSkipped} already seen, ${totalItemsNoMatch} didn't match keywords, ${articles.length} new articles found`);
   return articles;
+}
+
+/**
+ * Fetch full article content from the source URL
+ * Uses Mozilla Readability to extract clean article text
+ */
+async function fetchFullArticleContent(article) {
+  if (!article.link) {
+    logger.warn(`No link for article: ${article.title?.substring(0, 40)}`);
+    return article;
+  }
+  
+  try {
+    logger.info(`Fetching full content from: ${article.link.substring(0, 60)}...`);
+    const extracted = await fetchAndExtractArticle(article.link);
+    
+    if (extracted && extracted.textContent) {
+      // Use extracted full content
+      const fullContent = extracted.textContent.trim();
+      
+      if (fullContent.length > (article.content?.length || 0)) {
+        logger.info(`  ✅ Extracted ${fullContent.length} chars (was ${article.content?.length || 0})`);
+        return {
+          ...article,
+          content: fullContent,
+          // Keep HTML version for display
+          contentHtml: extracted.content,
+          // Use extracted author if available
+          author: extracted.byline || article.author,
+          // Use extracted title if better
+          title: extracted.title || article.title
+        };
+      }
+    }
+    
+    logger.warn(`  ⚠️  Could not extract full content, using RSS snippet`);
+    return article;
+  } catch (error) {
+    logger.error(`  ❌ Content extraction failed: ${error.message}`);
+    return article;
+  }
 }
 
 /**
@@ -416,10 +458,14 @@ export const generateDailyBriefing = async () => {
           continue;
         }
         
-        // Process each article: analyze and save
-        for (const article of articles) {
+        // Process each article: fetch full content, analyze and save
+        for (let article of articles) {
           try {
-            // Analyze article
+            // First, fetch full article content from source
+            logger.info(`   Fetching full content: ${article.title.substring(0, 50)}...`);
+            article = await fetchFullArticleContent(article);
+            
+            // Analyze article with full content
             logger.info(`   Analyzing: ${article.title.substring(0, 60)}...`);
             const analysisPayload = await analyzeArticle(article);
             
