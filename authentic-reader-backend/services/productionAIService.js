@@ -25,11 +25,28 @@ class ProductionAIService {
   constructor() {
     this.groqApiKey = process.env.GROQ_API_KEY;
     this.groqModel = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+    this.lastCallTime = 0;
+    this.minDelayMs = 3000; // 3 seconds between Groq calls to avoid rate limits
     
     // Log initialization status
     console.log("🔍 ProductionAIService initialized:");
     console.log("  - GROQ_API_KEY:", this.groqApiKey ? "✅ Set" : "❌ Missing");
     console.log("  - GROQ_MODEL:", this.groqModel);
+    console.log("  - Rate limit delay:", this.minDelayMs, "ms between calls");
+  }
+
+  /**
+   * Wait to respect rate limits
+   */
+  async waitForRateLimit() {
+    const now = Date.now();
+    const timeSinceLastCall = now - this.lastCallTime;
+    if (timeSinceLastCall < this.minDelayMs) {
+      const waitTime = this.minDelayMs - timeSinceLastCall;
+      console.log(`  ⏳ Rate limit: waiting ${waitTime}ms...`);
+      await new Promise(resolve => setTimeout(resolve, waitTime));
+    }
+    this.lastCallTime = Date.now();
   }
 
   /**
@@ -42,6 +59,9 @@ class ProductionAIService {
     // Try Groq API first
     if (this.groqApiKey) {
       try {
+        // Wait to respect rate limits
+        await this.waitForRateLimit();
+        
         console.log("  🤖 Attempting Groq API analysis...");
         const result = await this.tryGroqService(article, options);
         console.log("  ✅ Groq analysis successful");

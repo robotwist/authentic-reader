@@ -41,7 +41,7 @@ export function calculateLogicScore(article: Article): ScoreBreakdown {
       total: 100,
       base: 100,
       deductions: [],
-      ratingColor: score >= 90 ? '#10B981' : score >= 70 ? '#F59E0B' : '#EF4444'
+      ratingColor: score >= 90 ? '#2A2A2A' : score >= 70 ? '#5A5A5A' : '#8A8A8A'
     };
   }
 
@@ -91,7 +91,7 @@ export function calculateLogicScore(article: Article): ScoreBreakdown {
     total: finalScore,
     base: 100,
     deductions,
-    ratingColor: finalScore >= 90 ? '#10B981' : finalScore >= 70 ? '#F59E0B' : '#EF4444' // Green/Yellow/Red
+    ratingColor: finalScore >= 90 ? '#2A2A2A' : finalScore >= 70 ? '#5A5A5A' : '#8A8A8A' // Neutral grey shading
   };
 }
 
