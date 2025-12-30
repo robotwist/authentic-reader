@@ -307,12 +307,6 @@ const DailyBriefingPage: React.FC = () => {
     return getFallacies(topicData);
   };
 
-  const getReliabilityClass = (score: number): string => {
-    if (score >= 70) return 'high';
-    if (score >= 50) return 'medium';
-    return 'low';
-  };
-
   const handleBackClick = () => {
     setSelectedTopic(null);
     clearAnalysis(); // Clear enhanced analysis when going back
@@ -430,8 +424,6 @@ const DailyBriefingPage: React.FC = () => {
       explanation: `${enhancedAnalysis.tone} tone detected. ${enhancedAnalysis.summary}`
     } : staticBias;
     const displaySummary = enhancedAnalysis?.summary || staticSummary;
-    const reliabilityScore = enhancedAnalysis?.reliabilityScore || 
-                             topicData?.analysis?.overallAssessment?.reliabilityScore;
 
     return (
       <div className="daily-briefing-page reader-mode">
@@ -470,11 +462,6 @@ const DailyBriefingPage: React.FC = () => {
                       day: 'numeric',
                       year: 'numeric'
                     })}
-                  </span>
-                )}
-                {reliabilityScore !== undefined && (
-                  <span className={`reliability-badge ${getReliabilityClass(reliabilityScore)}`}>
-                    {reliabilityScore}/100 Reliability
                   </span>
                 )}
                 {enhancedAnalysis?.tone && (
@@ -678,8 +665,6 @@ const DailyBriefingPage: React.FC = () => {
           const topic = briefing.topics[key];
           if (!topic) return null;
           
-          const reliabilityScore = topic.analysis?.overallAssessment?.reliabilityScore;
-          
           // Calculate logic score from fallacies
           const fallacies = getFallacies(topic);
           const logicScoreResult = calculateLogicScoreFromFallacies(fallacies);
@@ -705,11 +690,6 @@ const DailyBriefingPage: React.FC = () => {
                   >
                     SCORE: {logicScore}
                   </span>
-                  {reliabilityScore !== undefined && (
-                    <span className={`card-reliability ${getReliabilityClass(reliabilityScore)}`}>
-                      {reliabilityScore}/100
-                    </span>
-                  )}
                 </div>
               </div>
             </button>
