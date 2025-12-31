@@ -588,6 +588,26 @@
   color: var(--text-ink, #1A1A1A);
 }
 
+.analysis-timestamp {
+  font-size: 0.625rem;
+  color: var(--text-muted, #4A4A4A);
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.analysis-quality-badge {
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--text-ink, #1A1A1A);
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--text-ink, #1A1A1A);
+  background: var(--bg-paper, #F9F7F1);
+}
+
 .reliability-badge {
   font-weight: 600;
   padding: 0.375rem 0.75rem;
@@ -616,6 +636,29 @@
 /* ============================================
    ANALYSIS SECTION - RECEIPT STYLE
    ============================================ */
+
+/* Visual separator between article content and analysis */
+.briefing-article > .reader-view {
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 3px solid var(--text-ink, #1A1A1A);
+  position: relative;
+}
+
+.briefing-article > .reader-view::after {
+  content: '[ANALYSIS FOLLOWS]';
+  position: absolute;
+  bottom: -1.5rem;
+  left: 2rem;
+  background: var(--bg-paper, #F9F7F1);
+  padding: 0 1rem;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-ink, #1A1A1A);
+}
 
 .article-analysis-section {
   padding: 2rem;
@@ -1160,6 +1203,38 @@
   padding: 1.5rem;
   background: var(--bg-paper, #F9F7F1);
   border: 2px solid var(--text-ink, #1A1A1A);
+  position: relative;
+}
+
+.comparison-help-link {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+}
+
+.help-link {
+  background: transparent;
+  border: none;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted, #4A4A4A);
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 2px;
+}
+
+.help-link:hover {
+  color: var(--text-ink, #1A1A1A);
+}
+
+.help-link:focus-visible {
+  outline: 2px solid var(--text-ink, #1A1A1A);
+  outline-offset: 2px;
 }
 
 .comparison-preview {
@@ -1227,6 +1302,16 @@
 .comparison-cta-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.comparison-cta-button:focus-visible {
+  outline: 3px solid var(--text-ink, #1A1A1A);
+  outline-offset: 2px;
+}
+
+.comparison-cta-button:focus-visible.primary {
+  outline: 3px solid var(--bg-paper, #F9F7F1);
+  outline-offset: 2px;
 }
 
 @media (min-width: 768px) {

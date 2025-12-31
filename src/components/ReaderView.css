@@ -44,11 +44,13 @@
   line-height: 1.75;
   text-align: justify;
   text-indent: 1.5rem;
+  position: relative;
 }
 
 .reader-content.prose p:first-of-type {
   text-indent: 0;
 }
+
 
 /* Drop cap for first paragraph */
 .reader-content.prose p:first-of-type::first-letter {

@@ -557,6 +557,21 @@ const DailyBriefingPage: React.FC = () => {
                     {enhancedAnalysis.tone}
                   </span>
                 )}
+                {briefing?.generatedAt && (
+                  <span className="analysis-timestamp" title="Analysis last updated">
+                    Updated: {new Date(briefing.generatedAt).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: '2-digit'
+                    })}
+                  </span>
+                )}
+                {enhancedAnalysis?.biasConfidence && (
+                  <span className="analysis-quality-badge" title="Analysis confidence score">
+                    Quality: {Math.round(enhancedAnalysis.biasConfidence)}%
+                  </span>
+                )}
               </div>
               
               {/* Enhanced Bias Meter */}
@@ -585,6 +600,17 @@ const DailyBriefingPage: React.FC = () => {
 
               {/* Cross-Source Comparison - Prominent Placement */}
               <div className="comparison-cta-section">
+                <div className="comparison-help-link">
+                  <button
+                    className="help-link"
+                    onClick={() => {
+                      alert('Cross-Source Comparison: See how different news sources (left, center, right) cover the same story. Compare framing, language, and what each source emphasizes or omits.');
+                    }}
+                    aria-label="What is cross-source comparison?"
+                  >
+                    [WHAT IS THIS?]
+                  </button>
+                </div>
                 {crossSourceComparison?.found && crossSourceComparison.related_sources ? (
                   <div className="comparison-preview">
                     <div className="comparison-preview-stats">
@@ -610,6 +636,7 @@ const DailyBriefingPage: React.FC = () => {
                       className="comparison-cta-button primary"
                       onClick={() => setShowFullComparison(true)}
                       title="View side-by-side comparison with all sources"
+                      aria-label={`View full comparison with ${crossSourceComparison.related_sources.length} sources`}
                     >
                       [VIEW FULL COMPARISON]
                     </button>
@@ -621,6 +648,8 @@ const DailyBriefingPage: React.FC = () => {
                       onClick={handleCompareSource}
                       disabled={isLoadingComparison}
                       title="Find and compare this article with other sources"
+                      aria-label="Compare this article with other news sources"
+                      aria-busy={isLoadingComparison}
                     >
                       {isLoadingComparison ? '[SEARCHING...]' : '[COMPARE WITH OTHER SOURCES]'}
                     </button>
@@ -628,6 +657,7 @@ const DailyBriefingPage: React.FC = () => {
                       className="comparison-cta-button secondary"
                       onClick={() => setShowFullComparison(true)}
                       title="Open full comparison view (will search for sources)"
+                      aria-label="Open full side-by-side comparison view"
                     >
                       [FULL COMPARISON VIEW]
                     </button>
