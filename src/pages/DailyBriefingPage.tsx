@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import ReaderView from '../components/ReaderView';
 import NarrativeThermometer from '../components/NarrativeThermometer';
 import DeepAnalysisPanel from '../components/DeepAnalysisPanel';
+import SourceComparisonView from '../components/SourceComparisonView';
 import { FallacyData } from '../utils/llmParser';
 import { API_CONFIG } from '../config/api.config';
 import { fallbackBriefing } from '../data/fallbackBriefing';
@@ -72,6 +73,7 @@ const DailyBriefingPage: React.FC = () => {
   const [isLoadingDeep, setIsLoadingDeep] = useState(false);
   const [crossSourceComparison, setCrossSourceComparison] = useState<any>(null);
   const [isLoadingComparison, setIsLoadingComparison] = useState(false);
+  const [showFullComparison, setShowFullComparison] = useState(false);
   
   // Enhanced LLM Analysis Hook
   const {
@@ -319,6 +321,7 @@ const DailyBriefingPage: React.FC = () => {
     setIsLoadingDeep(false);
     setCrossSourceComparison(null); // Clear cross-source comparison
     setIsLoadingComparison(false);
+    setShowFullComparison(false); // Reset comparison view
   };
 
   // Fetch cross-source comparison for the current article
@@ -690,18 +693,48 @@ const DailyBriefingPage: React.FC = () => {
             )}  {/* End fallback analysis section */}
             
             {/* CROSS-SOURCE COMPARISON */}
+            {showFullComparison ? (
+              <SourceComparisonView
+                primaryArticle={{
+                  title: topicData.article.title,
+                  content: topicData.article.content,
+                  source: topicData.article.source,
+                  url: topicData.article.url
+                }}
+                keywords={(() => {
+                  const keywordMap: Record<string, string[]> = {
+                    ukraine: ['ukraine', 'russia', 'war', 'zelensky', 'putin', 'peace'],
+                    gaza: ['gaza', 'israel', 'hamas', 'palestine', 'ceasefire'],
+                    diseases: ['health', 'disease', 'vaccine', 'medical', 'outbreak'],
+                    epstein: ['court', 'justice', 'law', 'judge', 'trial', 'legal'],
+                    trump: ['economy', 'market', 'inflation', 'trade', 'tariff']
+                  };
+                  return keywordMap[selectedTopic] || [selectedTopic];
+                })()}
+                onClose={() => setShowFullComparison(false)}
+              />
+            ) : (
             <section className="cross-source-section">
               <div className="cross-source-header">
                 <h2 className="cross-source-title">[CROSS-SOURCE COMPARISON]</h2>
-                {!crossSourceComparison && !isLoadingComparison && (
+                <div className="header-buttons">
+                  {!crossSourceComparison && !isLoadingComparison && (
+                    <button 
+                      className="compare-button"
+                      onClick={handleCompareSource}
+                      disabled={isOffline}
+                    >
+                      [QUICK COMPARE]
+                    </button>
+                  )}
                   <button 
-                    className="compare-button"
-                    onClick={handleCompareSource}
+                    className="compare-button full-view"
+                    onClick={() => setShowFullComparison(true)}
                     disabled={isOffline}
                   >
-                    [COMPARE SOURCES]
+                    [FULL VIEW]
                   </button>
-                )}
+                </div>
               </div>
               
               {isLoadingComparison && (
@@ -787,6 +820,7 @@ const DailyBriefingPage: React.FC = () => {
                 <p className="no-comparison">[NO RELATED COVERAGE FOUND FROM OTHER SOURCES]</p>
               )}
             </section>
+            )}
             
             <footer className="article-footer">
               {!isOffline && topicData.article.url && (

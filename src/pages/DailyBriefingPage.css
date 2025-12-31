@@ -1310,6 +1310,11 @@
   color: var(--bg-paper, #F9F7F1);
 }
 
+.header-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .cross-source-title {
   font-size: 0.6875rem;
   font-weight: 700;
@@ -1340,6 +1345,16 @@
 .compare-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.compare-button.full-view {
+  background: transparent;
+  color: var(--bg-paper, #F9F7F1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.compare-button.full-view:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .comparison-loading {
