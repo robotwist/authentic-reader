@@ -49,8 +49,34 @@ const ReaderView: React.FC<ReaderViewProps> = ({
   const processedHtml = useMemo(() => {
     if (!articleContent) return '';
 
+    // If content appears to be plain text (no HTML tags), format it into paragraphs
+    let formattedContent = articleContent;
+    if (!/<[a-z][\s\S]*>/i.test(articleContent)) {
+      // First try splitting on double newlines
+      let paragraphs = formattedContent
+        .split(/\n\n+/)
+        .map(p => p.trim())
+        .filter(p => p.length > 0);
+      
+      // If no double newlines, try splitting on sentence boundaries (period + space + capital)
+      if (paragraphs.length === 1 && paragraphs[0].length > 200) {
+        paragraphs = formattedContent
+          .replace(/([.!?])\s+([A-Z])/g, '$1\n\n$2')
+          .split(/\n\n+/)
+          .map(p => p.trim())
+          .filter(p => p.length > 20); // Filter out very short fragments
+      }
+      
+      // Format into HTML paragraphs
+      if (paragraphs.length > 0) {
+        formattedContent = paragraphs.map(p => `<p>${p}</p>`).join('\n');
+      } else {
+        formattedContent = `<p>${formattedContent}</p>`;
+      }
+    }
+
     // Sanitize HTML for security (preserve formatting)
-    const sanitized = DOMPurify.sanitize(articleContent, {
+    const sanitized = DOMPurify.sanitize(formattedContent, {
       ALLOWED_TAGS: [
         'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
         'br', 'strong', 'em', 'b', 'i', 'u', 'sub', 'sup',
