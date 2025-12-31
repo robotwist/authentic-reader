@@ -272,6 +272,32 @@
   background: rgba(0, 0, 0, 0.02);
 }
 
+/* Article Content */
+.info-block.article-content {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.article-text {
+  font-family: var(--font-body, 'Georgia', serif);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--text-ink, #1A1A1A);
+  max-height: 600px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.01);
+}
+
+.article-text p {
+  margin: 0 0 1rem;
+}
+
+.article-text p:last-child {
+  margin-bottom: 0;
+}
+
 /* Source Links */
 .source-link {
   display: inline-block;

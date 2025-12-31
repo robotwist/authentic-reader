@@ -10,6 +10,7 @@
 import axios from 'axios';
 import logger from '../utils/logger.js';
 import rssService from './rssService.js';
+import { fetchAndExtractArticle } from './contentExtractionService.js';
 
 // Diverse source pool for comparison
 const COMPARISON_SOURCES = {
@@ -76,8 +77,31 @@ class CrossSourceComparisonService {
             const matches = keywords.filter(kw => text.includes(kw.toLowerCase()));
             
             if (matches.length >= 2) { // At least 2 keyword matches
+              // Fetch full article content
+              let fullContent = normalized.content || normalized.description || '';
+              
+              if (normalized.link) {
+                try {
+                  logger.debug(`Fetching full content from ${normalized.link.substring(0, 60)}...`);
+                  const extracted = await fetchAndExtractArticle(normalized.link);
+                  
+                  if (extracted && extracted.textContent) {
+                    const extractedText = extracted.textContent.trim();
+                    if (extractedText.length > fullContent.length) {
+                      fullContent = extractedText;
+                      logger.debug(`  ✅ Extracted ${extractedText.length} chars (was ${fullContent.length})`);
+                    }
+                  }
+                } catch (extractError) {
+                  logger.debug(`  ⚠️  Content extraction failed: ${extractError.message}`);
+                  // Continue with RSS snippet if extraction fails
+                }
+              }
+              
               relatedArticles.push({
                 ...normalized,
+                content: fullContent, // Use full extracted content
+                description: fullContent.substring(0, 500), // Keep description for display
                 source: {
                   name: source.name,
                   category: category,
@@ -152,14 +176,17 @@ Compare the coverage and return JSON with this structure:
 
 CRITICAL: Return ONLY valid JSON.`;
 
-    const articlesContext = relatedArticles.map(a => 
-      `SOURCE: ${a.source?.name || 'Unknown'} (${a.source?.category || 'unknown'} leaning)\nHEADLINE: ${a.title}\nSNIPPET: ${(a.description || '').substring(0, 300)}`
-    ).join('\n\n---\n\n');
+    // Use full content for analysis (up to 3000 chars per article to stay within token limits)
+    const articlesContext = relatedArticles.map(a => {
+      const content = a.content || a.description || '';
+      const contentPreview = content.length > 3000 ? content.substring(0, 3000) + '...' : content;
+      return `SOURCE: ${a.source?.name || 'Unknown'} (${a.source?.category || 'unknown'} leaning)\nHEADLINE: ${a.title}\nCONTENT: ${contentPreview}`;
+    }).join('\n\n---\n\n');
 
     const userPrompt = `PRIMARY ARTICLE:
 SOURCE: ${primaryArticle.source || 'Unknown'}
 HEADLINE: ${primaryArticle.title}
-CONTENT: ${(primaryArticle.content || primaryArticle.description || '').substring(0, 1000)}
+CONTENT: ${(primaryArticle.content || primaryArticle.description || '').substring(0, 3000)}
 
 RELATED COVERAGE FROM OTHER SOURCES:
 ${articlesContext}
@@ -234,7 +261,9 @@ Analyze how these different sources frame the same story.`;
         name: a.source?.name,
         category: a.source?.category,
         title: a.title,
-        url: a.link
+        url: a.link,
+        content: a.content || a.description || '', // Include full content
+        description: (a.content || a.description || '').substring(0, 500) // Preview for display
       })),
       comparison_analysis: comparison,
       generated_at: new Date().toISOString()

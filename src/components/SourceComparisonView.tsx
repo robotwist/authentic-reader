@@ -18,6 +18,7 @@ interface SourceData {
   category: string;
   headline: string;
   url?: string;
+  content?: string; // Full article content
   keySpins: string[];
   loadedWords: string[];
   framing: string;
@@ -148,6 +149,7 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
           category: 'your-source',
           headline: primaryArticle.title || '',
           url: primaryArticle.url,
+          content: primaryArticle.content || '', // Full article content
           keySpins: framingPrimary ? [
             framingPrimary.emphasis && `Emphasizes: ${framingPrimary.emphasis}`,
             framingPrimary.downplayed && `Downplays: ${framingPrimary.downplayed}`,
@@ -161,6 +163,7 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
           category: contrastingSource?.category || 'unknown',
           headline: contrastingSource?.title || '',
           url: contrastingSource?.url,
+          content: contrastingSource?.content || '', // Full article content
           keySpins: framingContrast ? [
             framingContrast.emphasis && `Emphasizes: ${framingContrast.emphasis}`,
             framingContrast.downplayed && `Downplays: ${framingContrast.downplayed}`,
@@ -284,6 +287,17 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
                 </ul>
               </div>
             )}
+            
+            {comparison.sourceA.content && (
+              <div className="info-block article-content">
+                <span className="block-label">[FULL ARTICLE]</span>
+                <div className="article-text">
+                  {comparison.sourceA.content.split('\n').map((paragraph, i) => 
+                    paragraph.trim() ? <p key={i}>{paragraph.trim()}</p> : null
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </section>
@@ -369,6 +383,17 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
               </div>
             )}
             
+            {comparison.sourceB.content && (
+              <div className="info-block article-content">
+                <span className="block-label">[FULL ARTICLE]</span>
+                <div className="article-text">
+                  {comparison.sourceB.content.split('\n').map((paragraph, i) => 
+                    paragraph.trim() ? <p key={i}>{paragraph.trim()}</p> : null
+                  )}
+                </div>
+              </div>
+            )}
+            
             {comparison.sourceB.url && (
               <a 
                 href={comparison.sourceB.url}
@@ -376,7 +401,7 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
                 rel="noopener noreferrer"
                 className="source-link"
               >
-                [READ FULL ARTICLE]
+                [READ ORIGINAL SOURCE]
               </a>
             )}
           </div>
