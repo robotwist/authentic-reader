@@ -582,6 +582,58 @@ const DailyBriefingPage: React.FC = () => {
                   </span>
                 </div>
               )}
+
+              {/* Cross-Source Comparison - Prominent Placement */}
+              <div className="comparison-cta-section">
+                {crossSourceComparison?.found && crossSourceComparison.related_sources ? (
+                  <div className="comparison-preview">
+                    <div className="comparison-preview-stats">
+                      <span className="comparison-count">
+                        {crossSourceComparison.related_sources.length} sources found
+                      </span>
+                      <span className="comparison-breakdown">
+                        ({(() => {
+                          const breakdown = crossSourceComparison.related_sources.reduce((acc: any, s: any) => {
+                            const cat = s.category || 'unknown';
+                            acc[cat] = (acc[cat] || 0) + 1;
+                            return acc;
+                          }, {});
+                          const parts = [];
+                          if (breakdown.left) parts.push(`${breakdown.left} left`);
+                          if (breakdown.center) parts.push(`${breakdown.center} center`);
+                          if (breakdown.right) parts.push(`${breakdown.right} right`);
+                          return parts.join(', ') || 'various perspectives';
+                        })()})
+                      </span>
+                    </div>
+                    <button 
+                      className="comparison-cta-button primary"
+                      onClick={() => setShowFullComparison(true)}
+                      title="View side-by-side comparison with all sources"
+                    >
+                      [VIEW FULL COMPARISON]
+                    </button>
+                  </div>
+                ) : (
+                  <div className="comparison-cta-buttons">
+                    <button 
+                      className="comparison-cta-button primary"
+                      onClick={handleCompareSource}
+                      disabled={isLoadingComparison}
+                      title="Find and compare this article with other sources"
+                    >
+                      {isLoadingComparison ? '[SEARCHING...]' : '[COMPARE WITH OTHER SOURCES]'}
+                    </button>
+                    <button 
+                      className="comparison-cta-button secondary"
+                      onClick={() => setShowFullComparison(true)}
+                      title="Open full comparison view (will search for sources)"
+                    >
+                      [FULL COMPARISON VIEW]
+                    </button>
+                  </div>
+                )}
+              </div>
             </header>
             
             <ReaderView
@@ -692,8 +744,8 @@ const DailyBriefingPage: React.FC = () => {
             </section>
             )}  {/* End fallback analysis section */}
             
-            {/* CROSS-SOURCE COMPARISON */}
-            {showFullComparison ? (
+            {/* CROSS-SOURCE COMPARISON - Full Modal View */}
+            {showFullComparison && (
               <SourceComparisonView
                 primaryArticle={{
                   title: topicData.article.title,
@@ -713,38 +765,23 @@ const DailyBriefingPage: React.FC = () => {
                 })()}
                 onClose={() => setShowFullComparison(false)}
               />
-            ) : (
+            )}
+
+            {/* CROSS-SOURCE COMPARISON - Inline Results (Secondary/Detailed View) */}
+            {!showFullComparison && crossSourceComparison && crossSourceComparison.found && (
             <section className="cross-source-section">
               <div className="cross-source-header">
-                <h2 className="cross-source-title">[CROSS-SOURCE COMPARISON]</h2>
-                <div className="header-buttons">
-                  {!crossSourceComparison && !isLoadingComparison && (
-                    <button 
-                      className="compare-button"
-                      onClick={handleCompareSource}
-                      title="Compare this article with other sources (inline summary)"
-                    >
-                      [COMPARE SOURCES]
-                    </button>
-                  )}
-                  <button 
-                    className="compare-button full-view"
-                    onClick={() => setShowFullComparison(true)}
-                    title="Open full comparison view with side-by-side analysis"
-                  >
-                    [FULL COMPARISON VIEW]
-                  </button>
-                </div>
+                <h2 className="cross-source-title">[DETAILED COMPARISON RESULTS]</h2>
+                <button 
+                  className="compare-button full-view"
+                  onClick={() => setShowFullComparison(true)}
+                  title="Open full comparison view with side-by-side analysis"
+                >
+                  [VIEW FULL COMPARISON]
+                </button>
               </div>
               
-              {isLoadingComparison && (
-                <div className="comparison-loading">
-                  <p>[SEARCHING OTHER SOURCES...]</p>
-                </div>
-              )}
-              
-              {crossSourceComparison && crossSourceComparison.found && (
-                <div className="comparison-results">
+              <div className="comparison-results">
                   <div className="related-sources">
                     <h3 className="comparison-subtitle">[RELATED COVERAGE]</h3>
                     {crossSourceComparison.related_sources?.map((source: any, i: number) => (

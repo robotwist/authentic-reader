@@ -1151,6 +1151,100 @@
   letter-spacing: 0.08em;
 }
 
+/* ============================================
+   CROSS-SOURCE COMPARISON CTA (Prominent)
+   ============================================ */
+
+.comparison-cta-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--bg-paper, #F9F7F1);
+  border: 2px solid var(--text-ink, #1A1A1A);
+}
+
+.comparison-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comparison-preview-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.comparison-count {
+  font-weight: 700;
+  color: var(--text-ink, #1A1A1A);
+}
+
+.comparison-breakdown {
+  color: var(--text-muted, #4A4A4A);
+  font-size: 0.5625rem;
+}
+
+.comparison-cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.comparison-cta-button {
+  padding: 1rem 1.5rem;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 2px solid var(--text-ink, #1A1A1A);
+  background: var(--bg-paper, #F9F7F1);
+  color: var(--text-ink, #1A1A1A);
+  cursor: pointer;
+  transition: all 0.1s ease;
+  text-align: center;
+}
+
+.comparison-cta-button.primary {
+  background: var(--text-ink, #1A1A1A);
+  color: var(--bg-paper, #F9F7F1);
+}
+
+.comparison-cta-button.primary:hover:not(:disabled) {
+  background: var(--bg-paper, #F9F7F1);
+  color: var(--text-ink, #1A1A1A);
+}
+
+.comparison-cta-button.secondary:hover:not(:disabled) {
+  background: var(--text-ink, #1A1A1A);
+  color: var(--bg-paper, #F9F7F1);
+}
+
+.comparison-cta-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+  .comparison-cta-buttons {
+    flex-direction: row;
+  }
+  
+  .comparison-cta-button {
+    flex: 1;
+  }
+  
+  .comparison-preview {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
 /* Bias Direction Colors */
 .bias-value.bias-left,
 .bias-indicator.bias-left {

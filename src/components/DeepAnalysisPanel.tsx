@@ -116,8 +116,9 @@ interface Props {
 }
 
 const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
+  // Expand Executive Summary by default - most important section for quick scan
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
-    new Set(['logic-score', 'executive-summary'])
+    new Set(['executive-summary'])
   );
 
   const toggleSection = (section: string) => {
