@@ -722,7 +722,6 @@ const DailyBriefingPage: React.FC = () => {
                     <button 
                       className="compare-button"
                       onClick={handleCompareSource}
-                      disabled={isOffline}
                     >
                       [QUICK COMPARE]
                     </button>
@@ -730,7 +729,6 @@ const DailyBriefingPage: React.FC = () => {
                   <button 
                     className="compare-button full-view"
                     onClick={() => setShowFullComparison(true)}
-                    disabled={isOffline}
                   >
                     [FULL VIEW]
                   </button>
