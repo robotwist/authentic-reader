@@ -722,15 +722,17 @@ const DailyBriefingPage: React.FC = () => {
                     <button 
                       className="compare-button"
                       onClick={handleCompareSource}
+                      title="Compare this article with other sources (inline summary)"
                     >
-                      [QUICK COMPARE]
+                      [COMPARE SOURCES]
                     </button>
                   )}
                   <button 
                     className="compare-button full-view"
                     onClick={() => setShowFullComparison(true)}
+                    title="Open full comparison view with side-by-side analysis"
                   >
-                    [FULL VIEW]
+                    [FULL COMPARISON VIEW]
                   </button>
                 </div>
               </div>
