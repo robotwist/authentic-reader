@@ -109,10 +109,10 @@ router.post('/compare-sources', async (req, res) => {
       });
     }
 
-    if (!keywords || !Array.isArray(keywords) || keywords.length < 2) {
+    if (!keywords || !Array.isArray(keywords) || keywords.length === 0) {
       return res.status(400).json({
         error: 'Keywords required',
-        message: 'Please provide at least 2 keywords to find related coverage'
+        message: 'Please provide at least one keyword to find related coverage'
       });
     }
 

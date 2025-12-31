@@ -341,7 +341,11 @@ const DailyBriefingPage: React.FC = () => {
       trump: ['economy', 'market', 'inflation', 'trade', 'tariff']
     };
     
-    const keywords = keywordMap[selectedTopic] || [selectedTopic];
+    // Ensure we always have at least 2 keywords for the API
+    const baseKeywords = keywordMap[selectedTopic] || [selectedTopic];
+    const keywords = baseKeywords.length >= 2 
+      ? baseKeywords 
+      : [...baseKeywords, 'news', 'story']; // Add generic keywords if needed
     
     try {
       const response = await fetch(`${API_CONFIG.BASE_URL}/api/ai/compare-sources`, {
@@ -362,10 +366,26 @@ const DailyBriefingPage: React.FC = () => {
         const data = await response.json();
         if (data.success) {
           setCrossSourceComparison(data.comparison);
+        } else {
+          console.warn('Comparison API returned success=false:', data);
         }
+      } else {
+        // Try to extract error message from response
+        let errorMessage = `Server error: ${response.status}`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorData.error || errorMessage;
+        } catch {
+          // Response is not JSON
+        }
+        console.error('Comparison API error:', errorMessage);
       }
     } catch (err) {
-      console.warn('Cross-source comparison failed:', err);
+      // Network error or other fetch failure
+      const errorMessage = err instanceof TypeError && err.message.includes('fetch')
+        ? 'Network error: Unable to connect to the server'
+        : err instanceof Error ? err.message : 'Unknown error';
+      console.error('Cross-source comparison failed:', errorMessage, err);
     } finally {
       setIsLoadingComparison(false);
     }

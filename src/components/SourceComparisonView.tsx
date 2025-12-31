@@ -147,7 +147,15 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch comparison');
+        // Try to extract error message from response
+        let errorMessage = `Server error: ${response.status} ${response.statusText}`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorData.error || errorMessage;
+        } catch {
+          // Response is not JSON, use status text
+        }
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -246,7 +254,19 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
 
     } catch (err) {
       console.error('Comparison fetch failed:', err);
-      setError('Failed to load source comparison');
+      
+      // Provide more specific error messages
+      let errorMessage = 'Failed to load source comparison';
+      
+      if (err instanceof TypeError && err.message.includes('fetch')) {
+        // Network error (CORS, connection failure, etc.)
+        errorMessage = 'Network error: Unable to connect to the server. Please check your connection.';
+      } else if (err instanceof Error) {
+        // Use the error message from the API or the caught error
+        errorMessage = err.message || errorMessage;
+      }
+      
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
