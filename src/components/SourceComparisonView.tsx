@@ -91,58 +91,64 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
       const relatedSources = data.comparison.related_sources || [];
       const analysis = data.comparison.comparison_analysis || {};
 
-      // Find a left-leaning and right-leaning source for contrast
-      const leftSource = relatedSources.find((s: any) => 
-        s.category === 'left' || s.category === 'center-left'
-      );
-      const rightSource = relatedSources.find((s: any) => 
-        s.category === 'right' || s.category === 'center-right'
+      // Filter out sources that match the primary article
+      const otherSources = relatedSources.filter((s: any) => 
+        s.name !== primaryArticle.source && 
+        s.url !== primaryArticle.url &&
+        s.title !== primaryArticle.title
       );
 
-      // If we don't have both, use any two different sources
-      const sourceA = leftSource || relatedSources[0];
-      const sourceB = rightSource || relatedSources[1] || relatedSources[0];
-
-      if (!sourceA) {
-        setError('Not enough sources found for comparison');
+      if (otherSources.length === 0) {
+        setError('No contrasting sources found');
         return;
       }
 
-      // Extract framing info for each source
-      const framingA = analysis.framing_comparison?.find((f: any) => 
-        f.source === sourceA?.name
+      // Find a contrasting source - prefer different political lean
+      // Assume primary article is "center" if unknown, look for left or right
+      const contrastingSource = 
+        otherSources.find((s: any) => s.category === 'left') ||
+        otherSources.find((s: any) => s.category === 'right') ||
+        otherSources.find((s: any) => s.category === 'center-left') ||
+        otherSources.find((s: any) => s.category === 'center-right') ||
+        otherSources[0];
+
+      // Get framing info for primary and contrasting source
+      const framingPrimary = analysis.framing_comparison?.find((f: any) => 
+        f.source === primaryArticle.source
       );
-      const framingB = analysis.framing_comparison?.find((f: any) => 
-        f.source === sourceB?.name
+      const framingContrast = analysis.framing_comparison?.find((f: any) => 
+        f.source === contrastingSource?.name
       );
 
       // Build comparison data
+      // LEFT = Primary article (what user is reading)
+      // RIGHT = Contrasting source (different political lean)
       const comparisonData: ComparisonData = {
         sourceA: {
-          name: sourceA?.name || 'Source A',
-          category: sourceA?.category || 'left',
-          headline: sourceA?.title || '',
-          url: sourceA?.url,
-          keySpins: framingA ? [
-            framingA.emphasis && `Emphasizes: ${framingA.emphasis}`,
-            framingA.downplayed && `Downplays: ${framingA.downplayed}`,
-            framingA.unique_angle && `Unique angle: ${framingA.unique_angle}`
-          ].filter(Boolean) : [],
+          name: primaryArticle.source || 'Current Article',
+          category: 'center', // Assume center for the article user is reading
+          headline: primaryArticle.title || '',
+          url: primaryArticle.url,
+          keySpins: framingPrimary ? [
+            framingPrimary.emphasis && `Emphasizes: ${framingPrimary.emphasis}`,
+            framingPrimary.downplayed && `Downplays: ${framingPrimary.downplayed}`,
+            framingPrimary.unique_angle && `Unique angle: ${framingPrimary.unique_angle}`
+          ].filter(Boolean) : ['This is the article you are currently reading'],
           loadedWords: [],
-          framing: framingA?.headline_framing || ''
+          framing: framingPrimary?.headline_framing || 'Your current article'
         },
         sourceB: {
-          name: sourceB?.name || 'Source B',
-          category: sourceB?.category || 'right',
-          headline: sourceB?.title || '',
-          url: sourceB?.url,
-          keySpins: framingB ? [
-            framingB.emphasis && `Emphasizes: ${framingB.emphasis}`,
-            framingB.downplayed && `Downplays: ${framingB.downplayed}`,
-            framingB.unique_angle && `Unique angle: ${framingB.unique_angle}`
+          name: contrastingSource?.name || 'Contrasting Source',
+          category: contrastingSource?.category || 'unknown',
+          headline: contrastingSource?.title || '',
+          url: contrastingSource?.url,
+          keySpins: framingContrast ? [
+            framingContrast.emphasis && `Emphasizes: ${framingContrast.emphasis}`,
+            framingContrast.downplayed && `Downplays: ${framingContrast.downplayed}`,
+            framingContrast.unique_angle && `Unique angle: ${framingContrast.unique_angle}`
           ].filter(Boolean) : [],
           loadedWords: [],
-          framing: framingB?.headline_framing || ''
+          framing: framingContrast?.headline_framing || ''
         },
         neutralFacts: {
           coreFacts: analysis.story_core?.common_facts || [
@@ -213,11 +219,11 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
       </header>
 
       <div className="comparison-grid">
-        {/* LEFT COLUMN - Source A */}
+        {/* LEFT COLUMN - Your Article */}
         <div className="source-column source-a">
           <div className="column-header">
             <span className="source-name">{comparison.sourceA.name}</span>
-            <span className="source-lean">[{getCategoryLabel(comparison.sourceA.category)}]</span>
+            <span className="source-lean">[YOUR ARTICLE]</span>
           </div>
           
           <div className="column-content">
@@ -291,11 +297,11 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
           </div>
         </div>
 
-        {/* RIGHT COLUMN - Source B */}
+        {/* RIGHT COLUMN - Contrasting Source */}
         <div className="source-column source-b">
           <div className="column-header">
             <span className="source-name">{comparison.sourceB.name}</span>
-            <span className="source-lean">[{getCategoryLabel(comparison.sourceB.category)}]</span>
+            <span className="source-lean">[{getCategoryLabel(comparison.sourceB.category)} CONTRAST]</span>
           </div>
           
           <div className="column-content">
