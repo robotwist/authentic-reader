@@ -1162,11 +1162,11 @@
   flex: 1;
   height: 8px;
   background: linear-gradient(to right, 
-    #2563eb 0%, 
-    #60a5fa 25%, 
-    #9ca3af 50%, 
-    #f87171 75%, 
-    #dc2626 100%
+    #9ca3af 0%, 
+    #d1d5db 25%, 
+    #e5e7eb 50%, 
+    #d1d5db 75%, 
+    #9ca3af 100%
   );
   position: relative;
   border: 1px solid var(--text-ink, #1A1A1A);
@@ -1174,13 +1174,13 @@
 
 .bias-indicator {
   position: absolute;
-  top: -4px;
-  width: 16px;
-  height: 16px;
-  background: var(--text-ink, #1A1A1A);
-  border: 2px solid var(--bg-white, #FFFFFF);
+  top: -6px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 8px solid var(--text-ink, #1A1A1A);
   transform: translateX(-50%);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .bias-confidence {

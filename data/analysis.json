@@ -6696,5 +6696,101 @@
       "networkDensity": 2.2857142857142856
     },
     "timestamp": "2025-08-22T22:37:06.771Z"
+  },
+  "analysis_https://www.bbc.com/news/articles/clye3xz52e5o?at_medium=RSS&at_campaign=rss": {
+    "summary": "Sydney marks New Year's with increased security after the Bondi Beach mass shooting, with over 2,500 police officers on duty and a minute's silence to commemorate the victims.",
+    "bias": {
+      "overall": "center",
+      "rating": "center"
+    },
+    "sentiment": {
+      "label": "Objective",
+      "score": 0.9
+    },
+    "credibility": {
+      "overall": "medium",
+      "score": 0.9
+    },
+    "fallacies": [
+      {
+        "type": "Emotional Appeal",
+        "quote": "Crowds turned on their mobile phone flashlights as they observed the minute's silence",
+        "subtext": "The author is trying to evoke a sense of solidarity and emotional connection with the victims of the attack.",
+        "better_alternative": "A minute's silence was observed by the crowd to commemorate the victims of the Bondi Beach attack."
+      },
+      {
+        "type": "Bandwagon Fallacy",
+        "quote": "This sentiment was shared by some of the spectators.",
+        "subtext": "The author is implying that because some people share a particular sentiment, it must be the correct or popular opinion.",
+        "better_alternative": "Some spectators expressed their determination to not let the attack change their way of life, while others may have had different reactions."
+      }
+    ],
+    "confidence": 0.9,
+    "service": "groq",
+    "timestamp": "2025-12-31T15:25:17.545Z",
+    "educational_insight": "When reading news articles about tragic events, consider the potential impact of increased security measures on the community and the importance of balancing safety with individual freedoms.",
+    "missing_context": "The article does not provide detailed information about the investigation into the Bondi Beach attack or the motivations behind it, which could help readers better understand the context of the event."
+  },
+  "analysis_https://www.theguardian.com/world/2025/dec/31/guinea-junta-chief-mamady-doumbouya-elected-president-after-opposition-boycott": {
+    "summary": "Mamady Doumbouya, Guinea's junta chief, has been elected president after a boycott by opposition leaders, despite having previously pledged not to run for office.",
+    "bias": {
+      "overall": "center-left",
+      "rating": "center-left"
+    },
+    "sentiment": {
+      "label": "Objective",
+      "score": 0.85
+    },
+    "credibility": {
+      "overall": "medium",
+      "score": 0.85
+    },
+    "fallacies": [
+      {
+        "type": "Bandwagon Fallacy",
+        "quote": "He secured 86.72% of the first-round vote, the country’s election commission said late on Tuesday, well over the threshold that would trigger a runoff vote.",
+        "subtext": "The author may be implying that the high percentage of votes for Doumbouya is a sign of his popularity, without considering the context of the opposition boycott.",
+        "better_alternative": "Doumbouya received 86.72% of the vote, although the opposition had boycotted the election, which may have affected the outcome."
+      },
+      {
+        "type": "Appeal to Emotion",
+        "quote": "Opposition anger as Guinea’s junta leader is frontrunner to be elected president",
+        "subtext": "The use of the word 'anger' may evoke emotions in the reader and create a negative impression of Doumbouya, rather than providing a neutral report of the facts.",
+        "better_alternative": "The opposition has expressed concerns about the election, citing irregularities and the exclusion of opposition leaders."
+      }
+    ],
+    "confidence": 0.85,
+    "service": "groq",
+    "timestamp": "2025-12-31T15:25:20.868Z",
+    "educational_insight": "When evaluating election results, consider the context of the election, including any boycotts, irregularities, or restrictions on opposition candidates, to form a complete understanding of the outcome.",
+    "missing_context": "The article does not provide detailed information on the international community's response to the election or the potential consequences of Doumbouya's presidency for Guinea's relationships with other countries."
+  },
+  "analysis_https://www.nytimes.com/2025/12/31/nyregion/ny-prison-deaths-beatings-brooks-nantwi.html": {
+    "summary": "Two inmates died after beatings by New York prison guards, raising concerns about potential similar incidents",
+    "bias": {
+      "overall": "center-left",
+      "rating": "center-left"
+    },
+    "sentiment": {
+      "label": "Objective",
+      "score": 0.8
+    },
+    "credibility": {
+      "overall": "medium",
+      "score": 0.8
+    },
+    "fallacies": [
+      {
+        "type": "Emotional Appeal",
+        "quote": "Two brutal killings, less than three months apart, in New York State’s prison system raised troubling questions",
+        "subtext": "The author is trying to evoke a sense of outrage and concern in the reader",
+        "better_alternative": "Two inmate deaths occurred in New York State's prison system within a three-month period, prompting an investigation into the circumstances surrounding these incidents"
+      }
+    ],
+    "confidence": 0.8,
+    "service": "groq",
+    "timestamp": "2025-12-31T15:25:23.837Z",
+    "educational_insight": "When reading about incidents involving authority figures, consider the potential for underreporting or cover-ups and look for multiple sources to verify information",
+    "missing_context": "The article does not provide information on the specific actions being taken by the prison system or government to address these incidents and prevent future occurrences"
   }
 }

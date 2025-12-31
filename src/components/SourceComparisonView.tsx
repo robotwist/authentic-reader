@@ -13,6 +13,59 @@ import React, { useState, useEffect } from 'react';
 import { API_CONFIG } from '../config/api.config';
 import './SourceComparisonView.css';
 
+/**
+ * Format article content for display
+ * Handles both plain text and HTML content
+ */
+const formatArticleContent = (content: string): React.ReactNode[] => {
+  if (!content) return [];
+  
+  // Check if content contains HTML tags
+  const hasHtml = /<[a-z][\s\S]*>/i.test(content);
+  
+  if (hasHtml) {
+    // Strip HTML tags and convert to plain text paragraphs
+    const textContent = content
+      .replace(/<[^>]*>/g, ' ') // Remove HTML tags
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\s+/g, ' ')
+      .trim();
+    
+    // Split into paragraphs (double newlines or sentence boundaries)
+    const paragraphs = textContent
+      .split(/\n\n+/)
+      .map(p => p.trim())
+      .filter(p => p.length > 0);
+    
+    if (paragraphs.length === 0) {
+      return [<p key="0">{textContent}</p>];
+    }
+    
+    return paragraphs.map((para, i) => (
+      <p key={i}>{para}</p>
+    ));
+  } else {
+    // Plain text - split by newlines
+    const paragraphs = content
+      .split(/\n\n+/)
+      .map(p => p.trim())
+      .filter(p => p.length > 0);
+    
+    if (paragraphs.length === 0) {
+      return [<p key="0">{content}</p>];
+    }
+    
+    return paragraphs.map((para, i) => (
+      <p key={i}>{para}</p>
+    ));
+  }
+};
+
 interface SourceData {
   name: string;
   category: string;
@@ -292,9 +345,7 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
               <div className="info-block article-content">
                 <span className="block-label">[FULL ARTICLE]</span>
                 <div className="article-text">
-                  {comparison.sourceA.content.split('\n').map((paragraph, i) => 
-                    paragraph.trim() ? <p key={i}>{paragraph.trim()}</p> : null
-                  )}
+                  {formatArticleContent(comparison.sourceA.content)}
                 </div>
               </div>
             )}
@@ -387,9 +438,7 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
               <div className="info-block article-content">
                 <span className="block-label">[FULL ARTICLE]</span>
                 <div className="article-text">
-                  {comparison.sourceB.content.split('\n').map((paragraph, i) => 
-                    paragraph.trim() ? <p key={i}>{paragraph.trim()}</p> : null
-                  )}
+                  {formatArticleContent(comparison.sourceB.content)}
                 </div>
               </div>
             )}
