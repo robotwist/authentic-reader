@@ -8236,5 +8236,818 @@
     "bias": "center-left",
     "createdAt": "2025-12-31T15:25:29.512Z",
     "lastUpdated": "2025-12-31T15:25:29.512Z"
+  },
+  "https://thehill.com/homenews/administration/5667894-donald-trump-claims-approval-rating-higher/": {
+    "id": "https://thehill.com/homenews/administration/5667894-donald-trump-claims-approval-rating-higher/",
+    "title": "Trump claims his 'real' approval rating is 64 percent",
+    "url": "https://thehill.com/homenews/administration/5667894-donald-trump-claims-approval-rating-higher/",
+    "author": "Tara Suter",
+    "publishedAt": "2025-12-31T15:20:43.000Z",
+    "content": "Administration Trump claims his ‘real’ approval rating is 64 percent by Tara Suter - 12/31/25 10:20 AM ET lang: en_US by Tara Suter - 12/31/25 10:20 AM ET lang: en_US Share &#10005; LinkedIn LinkedIn Email Email const ir_script = document.createElement('script'); const ir_version = new Date().valueOf(); ir_script.src = 'https://instaread.co/js/instaread.thehill.js?version=' + ir_version; ir_script.setAttribute(\"type\", \"text/javascript\"); ir_script.setAttribute(\"async\", true); (document.getElementsByTagName('body')[0] || document.getElementsByTagName('head')[0]).appendChild(ir_script); President Trump claimed Tuesday that his &ldquo;real&rdquo; approval rating is at 64 percent, despite polls showing it is below 50 percent. &ldquo;The polls are rigged even more than the writers,&rdquo; Trump said in a late-night Truth Social post. &ldquo;The real number is 64%, and why not, our Country is &lsquo;hotter&rsquo; than ever before.&rdquo; try { var event = new CustomEvent(\"nsDfpSlotRendered\", { detail: { id: \"acm-ad-tag-mr1_ab-mr1_ab\" } }); console.log(\"HTL.nsDfpSlotRendered\", event); window.dispatchEvent(event); } catch (err) {} He added, &ldquo;Isn&rsquo;t it nice to have a STRONG BORDER, No Inflation, a powerful Military, and great Economy??? Happy New Year!&rdquo; Decision Desk HQ&rsquo;s (DDHQ) polling average shows the president&rsquo;s approval rating sitting at 44.1 percent , almost 20 points below his claim. The president&rsquo;s remarks come as he faces rocky political territory following a string of Democratic electoral victories in the 2025 races, concerns over affordability and how his administration has handled files linked to convicted sex offender Jeffrey Epstein. In 2024, the president campaigned on lowering prices, putting in place U.S. history&rsquo;s largest deportation program and reversing multiple Biden administration initiatives. Earlier this month, Trump suggested the economy under his second administration would get an &ldquo;A-plus-plus-plus-plus-plus&rdquo; rating, despite rising inflation and lackluster job reports . Instead, he has pinned much of the blame on former President Biden, suggested his White House is working to fix the issue. Trump is also facing some rebellion among Republicans, as he has recently been locked in a feud with Rep. Marjorie Taylor Greene (R-Ga.) and the Indiana state Senate not passing a GOP-favored House map.&nbsp; try { var event = new CustomEvent(\"nsDfpSlotRendered\", { detail: { id: \"acm-ad-tag-mr2_ab-mr2_ab\" } }); console.log(\"HTL.nsDfpSlotRendered\", event); window.dispatchEvent(event); } catch (err) {} On Monday, Republican strategist Karl Rove said Americans are getting tired of Trump&rsquo;s retribution campaign and offensive rhetoric. &ldquo;There are signs that the public is tiring of his hyperbole and insatiable desire for retribution. Increasingly, they may hear only the offensive or cruel things he says,&rdquo; Rove said in an op-ed published by the Wall Street Journal. He wrote, &ldquo;Has the president convinced himself that he doesn&rsquo;t need to sell his policies and actions?&rdquo; he asked. It appears that he believes he can will people into agreeing with him by claiming his achievements are the biggest, best and most amazing in American history.&rdquo; window.NREUM||(NREUM={});NREUM.info={\"beacon\":\"bam.nr-data.net\",\"licenseKey\":\"bb199f70cb\",\"applicationID\":\"738543775\",\"transactionName\":\"MQNTMhdXDxECABBZDAhJchMWQg4PTBMLQxdIFl4VEQ==\",\"queueTime\":0,\"applicationTime\":2557,\"atts\":\"HURERF9NHE5BAkYKGBsb\",\"errorBeacon\":\"bam.nr-data.net\",\"agent\":\"\"} Add as preferred source on Google Tags affordability Biden administration Donald Trump Epstein files high prices Jeffrey Epstein Joe Biden Karl Rove Marjorie Taylor Greene Trump administration Trump approval rating Trump-Greene feud U.S. economy Copyright 2025 Nexstar Media Inc. All rights reserved. This material may not be published, broadcast, rewritten, or redistributed. lang: en_US Share &#10005; LinkedIn LinkedIn Email Email window._taboola = window._taboola || []; _taboola.push({ mode: 'thumbnails-a', container: 'taboola-block', placement: 'The Hill Below Article Thumbnails', target_type: 'mix' }); More Administration News See All Energy &amp; Environment Trump issues 1st vetoes of his 2nd term, rejecting Colorado water project and Florida tribal bill by Rachel Frazin 6 minutes ago Energy &amp; Environment &nbsp;/&nbsp; 6 minutes ago",
+    "summary": "President Trump claimed Tuesday that his “real” approval rating is at 64 percent, despite polls showing it is below 50 percent. “The polls are rigged even more than the writers,\" Trump said in a late-night Truth Social post. \"The real number is 64%, and why not, our Country is ‘hotter’ than ever before.\" He added,...",
+    "source": {
+      "name": "The Hill",
+      "category": "politics",
+      "biasRating": "center",
+      "reliability": "high"
+    },
+    "category": "politics",
+    "categories": [
+      "politics"
+    ],
+    "wordCount": 555,
+    "complexity": "low",
+    "tags": [
+      "Administration",
+      "Business",
+      "News",
+      "affordability",
+      "Biden administration",
+      "Epstein files",
+      "high prices",
+      "Trump administration",
+      "Trump approval rating",
+      "Trump-Greene feud",
+      "U.S. economy"
+    ],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:25:34.191Z",
+    "lastUpdated": "2025-12-31T15:25:34.191Z"
+  },
+  "https://www.economist.com/international/2025/12/30/patriotism-tests-loom-for-big-business": {
+    "id": "https://www.economist.com/international/2025/12/30/patriotism-tests-loom-for-big-business",
+    "title": "Patriotism tests loom for big business",
+    "url": "https://www.economist.com/international/2025/12/30/patriotism-tests-loom-for-big-business",
+    "author": "The Economist",
+    "publishedAt": "2025-12-30T13:48:47.000Z",
+    "content": "Economic nationalism makes it harder for multinationals to navigate the world",
+    "summary": "Economic nationalism makes it harder for multinationals to navigate the world",
+    "source": {
+      "name": "The Economist",
+      "category": "news",
+      "biasRating": "center",
+      "reliability": "high"
+    },
+    "category": "news",
+    "categories": [
+      "news"
+    ],
+    "wordCount": 11,
+    "complexity": "low",
+    "tags": [],
+    "credibility": "high",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:25:44.329Z",
+    "lastUpdated": "2025-12-31T15:25:44.329Z"
+  },
+  "https://techcrunch.com/2025/12/31/every-fusion-startup-that-has-raised-over-100m/": {
+    "id": "https://techcrunch.com/2025/12/31/every-fusion-startup-that-has-raised-over-100m/",
+    "title": "Every fusion startup that has raised over $100M",
+    "url": "https://techcrunch.com/2025/12/31/every-fusion-startup-that-has-raised-over-100m/",
+    "author": "Tim De Chant",
+    "publishedAt": "2025-12-31T15:05:21.000Z",
+    "content": "Over the last several years, fusion power has gone from the butt of jokes — always a decade away! — to an increasingly tangible and tantalizing technology that has drawn investors off the sidelines. The technology may be challenging to master and expensive to build today, but fusion promises to harness the nuclear reaction that powers the sun to generate nearly limitless energy here on Earth. If startups are able to complete commercially viable fusion power plants, then they have the potential to upend trillion-dollar markets. The bullish wave buoying the fusion industry has been driven by three advances : more powerful computer chips, more sophisticated AI, and powerful high-temperature superconducting magnets. Together, they have helped deliver more sophisticated reactor designs, better simulations, and more complex control schemes. It doesn’t hurt that, at the end of 2022, a U.S. Department of Energy lab announced that it had produced a controlled fusion reaction that produced more power than the lasers had imparted to the fuel pellet. The experiment had crossed what’s known as scientific breakeven, and while it’s still a long ways from commercial breakeven, where the reaction produces more than the entire facility consumes, it was a long-awaited step that proved the underlying science was sound. Founders have built on that momentum in recent years, pushing the private fusion industry forward at a rapid pace. Commonwealth Fusion Systems Commonwealth Fusion Systems (CFS) has raised about a third of all private capital invested in fusion companies to date. Its latest round, which closed in August, added $863 million to its coffers , bringing its total raised near $3 billion. CFS’s Series B2 came four years after its $1.8 billion Series B, which helped catapult the company into the pole position. Since then, the startup has been hard at work in Massachusetts building Sparc, its first-of-a-kind power plant intended to produce power at what it calls “commercially relevant” levels.&nbsp; Techcrunch event Join the Disrupt 2026 Waitlist Add yourself to the Disrupt 2026 waitlist to be first in line when Early Bird tickets drop. Past Disrupts have brought Google Cloud, Netflix, Microsoft, Box, Phia, a16z, ElevenLabs, Wayve, Hugging Face, Elad Gil, and Vinod Khosla to the stages — part of 250+ industry leaders driving 200+ sessions built to fuel your growth and sharpen your edge. Plus, meet the hundreds of startups innovating across every sector. Join the Disrupt 2026 Waitlist Add yourself to the Disrupt 2026 waitlist to be first in line when Early Bird tickets drop. Past Disrupts have brought Google Cloud, Netflix, Microsoft, Box, Phia, a16z, ElevenLabs, Wayve, Hugging Face, Elad Gil, and Vinod Khosla to the stages — part of 250+ industry leaders driving 200+ sessions built to fuel your growth and sharpen your edge. Plus, meet the hundreds of startups innovating across every sector. San Francisco | October 13-15, 2026 W AITLIST NOW Sparc’s reactor is a tokamak design, which resembles a doughnut. The D-shaped cross section is wound with high-temperature superconducting tape , which, when energized, generates a powerful magnetic field that will contain and compress the superheated plasma. Heat generated from the reaction is converted to steam to power a turbine. CFS designed its magnets in collaboration with MIT, where co-founder and CEO Bob Mumgaard worked as a researcher on fusion reactor designs and high-temperature superconductors. The Massachusetts-based CFS expects to have Sparc operational in late 2026 or early 2027. Later this decade, the company says it will begin construction on Arc, its commercial power plant that will produce 400 megawatts of electricity. The facility will be built near Richmond, Virginia , and Google has agreed to buy half its output . CFS is backed by a long list of investors, including Breakthrough Energy Ventures, The Engine, Bill Gates, and others. TAE Technologies Founded in 1998, TAE Technologies (formerly known as Tri Alpha Energy) was spun out of the University of California, Irvine by Norman Rostoker. It uses a field-reversed configuration, but with a twist: after the two plasma shots collide in the middle of the reactor, the company bombards the plasma with particle beams to keep it spinning in a cigar shape. That improves the stability of the plasma, allowing more time for fusion to occur and for more heat to be extracted to spin a turbine.&nbsp; In December 2025, TAE announced that it would merge with President Donald Trump’s social media company, Trump Media &amp; Technology Group. The all-stock transaction would value the combined company at $6 billion. TAE would receive $200 million plus another $100 million upon filing paperwork with the Securities and Exchange Commission. TAE CEO Michl Binderbauer will serve as co-CEO of the combined company alongside Devin Nunes, who had been sole CEO of Trump Media. The fusion startup had previously raised $150 million in June from existing investors, including Google, Chevron, and New Enterprise. Before the merger, TAE had raised a total of $1.79 billion, according to PitchBook. Helion Of all fusion startups, Helion has the most aggressive timeline. The company plans to produce electricity from its reactor in 2028. Its first customer? Microsoft. Helion, based in Everett, Washington, uses a type of reactor called a field-reversed configuration, where magnets surround a reaction chamber that looks like an hourglass with a bulge at the point where the two sides come together. At each end of the hourglass, they spin the plasma into doughnut shapes that are shot toward each other at more than 1 million mph. When they collide in the middle, additional magnets help induce fusion. When fusion occurs, it boosts the plasma’s own magnetic field, which induces an electrical current inside the reactor’s magnetic coils. That electricity is then harvested directly from the machine. The company raised $425 million in January 2025, around the same time that it turned on Polaris, a prototype reactor. Helion has raised $1.03 billion, according to PitchBook. Investors include Sam Altman, Reid Hoffman, KKR, BlackRock, Peter Thiel’s Mithril Capital Management, and Capricorn Investment Group. Pacific Fusion Pacific Fusion burst out of the gate with a $900 million Series A, a whopping sum even among well-funded fusion startups. The company will use inertial confinement to achieve fusion, but instead of lasers compressing the fuel, it will use coordinated electromagnetic pulses . The trick is in the timing: All 156 impedance-matched Marx generators need to produce 2 terawatts for 100 nanoseconds, and those pulses need to simultaneously converge on the target. The company is led by CEO Eric Lander, the scientist who led the Human Genome Project, and president Will Regan. Pacific Fusion’s funding might be massive, but the startup hasn’t gotten it all at once. Rather, its investors will pay out in tranches when the company achieves specified milestones, an approach that’s common in biotech. Shine Technologies Shine Technologies is taking a cautious —&nbsp;and possibly pragmatic —&nbsp;approach to generating fusion power. Selling electrons from a fusion power plant is years off, so instead, it’s starting by selling neutron testing and medical isotopes. More recently, it has been developing a way to recycle radioactive waste. Shine hasn’t picked an approach for a future fusion reactor, instead saying that it’s developing necessary skills for when that time comes. The company has raised a total of $778 million, according to PitchBook. Investors include Energy Ventures Group, Koch Disruptive Technologies, Nucleation Capital, and the Wisconsin Alumni Research Foundation. General Fusion Now its third decade, General Fusion has raised $462.53 million, according to PitchBook. The Richmond, British Columbia-based company was founded in 2002 by physicist Michel Laberge, who wanted to prove a different approach to fusion known as magnetized target fusion (MTF). Investors include Jeff Bezos, Temasek, BDC Capital, and Chrysalix Venture Capital. In General Fusion’s reactor, a liquid metal wall surrounds a chamber in which plasma is injected. Pistons surrounding the wall push it inward, compressing the plasma inside and sparking a fusion reaction. The resulting neutrons heat the liquid metal, which can be circulated through a heat exchanger to generate steam to spin a turbine. General Fusion hit a rough patch in spring 2025. The company ran short of cash as it was building LM26, its latest device that it hoped would hit breakeven in 2026. Just days after hitting a key milestone, it laid off 25% of its staff . CEO Greg Twinney penned an open letter pleading for funding from investors.&nbsp; In August, they delivered somewhat, injecting $22 million in a pay-to-play round that one investor called “the least amount of capital possible” to keep the General Fusion afloat. Then in November, securities filings in Canada revealed that the company had raised $51.1 million in SAFE notes from nearly 70 investors, the Globe and Mail reported . Altogether, General Fusion has raised $492 million, according to PitchBook. Tokamak Energy Tokamak Energy takes the usual tokamak design — the doughnut shape —&nbsp;and squeezes it, reducing its aspect ratio to the point where the outer bounds start resembling a sphere. Like many other tokamak-based startups, the company uses high-temperature superconducting magnets (of the rare earth barium copper oxide, or REBCO, variety). Since its design is more compact than a traditional tokamak, it requires less in the way of magnets, which should reduce costs.&nbsp; The Oxfordshire, U.K.-based startup’s ST40 prototype, which looks like a large, steampunk Fabergé egg, generated an ultra-hot, 100 million degree C plasma in 2022. Its next generation, Demo 4, is currently under construction and is intended to test the company’s magnets in “fusion power plant-relevant scenarios.” Tokamak Energy raised $125 million in November 2024 to continue its reactor design efforts and expand its magnet business. In total, the company has raised $336 million from investors including Future Planet Capital, In-Q-Tel, Midven, and Capri-Sun founder Hans-Peter Wild, according to PitchBook. Zap Energy Zap Energy isn’t using high-temperature superconducting magnets or super-powerful lasers to keep its plasma confined. Rather, it zaps the plasma (get it?) with an electric current, which then generates its own magnetic field. The magnetic field compresses the plasma about 1 millimeter, at which point ignition occurs. The neutrons released by the fusion reaction bombard a liquid metal blanket that surrounds the reactor, heating it up. The liquid metal is then cycled through a heat exchanger, where it produces steam to drive a turbine. Like Helion, Zap Energy is based in Everett, Washington, and the company has raised $327 million, according to PitchBook. Backers include Bill Gates’ Breakthrough Energy Ventures, DCVC, Lowercarbon, Energy Impact Partners, Chevron Technology Ventures, and Bill Gates as an angel. Proxima Fusion Most investors have favored large startups that are pursuing tokamak designs or some flavor of inertial confinement. But stellarators have shown great promise in scientific experiments, including the Wendelstein 7-X reactor in Germany. Proxima Fusion is bucking the trend, though, having attracted a €130 million Series A that brings its total raised to more than €185 million. Investors include Balderton Capital and Cherry Ventures. Stellarators are similar to tokamaks in that they confine plasma in a ring-like shape using powerful magnets. But they do it with a twist — literally. Rather than force plasma into a human-designed ring, stellarators twist and bulge to accommodate the plasma’s quirks. The result should be a plasma that remains stable for longer, increasing the chances of fusion reactions. Kyoto Fusioneering With all the startups pursuing fusion power, it was perhaps inevitable that another would pop up to develop components that round out a power plant. The so-called balance of plant, or the parts that sit outside the reactor, range from gyrotrons that heat plasma to heat extraction systems to harvest power from fusion reactions to turn it into electricity.&nbsp; Kyoto Fusioneering has made an early bet that if even one fusion startup succeeds in generating enough power to sell to the grid, that the industry will need a supplier for the balance of plant and the expertise to integrate it into whichever fusion technologies win out. Venture capitalists appear to agree, having invested $191 million in Kyoto Fusioneering. Investors include 31Ventures, In-Q-Tel, JIC Venture Growth Investments, Mitsubishi, and Sumitomo Mitsui Trust Investment. Marvel Fusion Marvel Fusion follows the inertial confinement approach, the same basic technique that the National Ignition Facility used to prove that controlled nuclear fusion reactions could produce more power than was needed to kick them off. Marvel fires powerful lasers at a target embedded with silicon nanostructures that cascade under the bombardment, compressing the fuel to the point of ignition. Because the target is made using silicon, it should be relatively simple to manufacture, leaning on the semiconductor manufacturing industry’s decades of experience. The inertial confinement fusion startup is building a demonstration facility in collaboration with Colorado State University, which it expects to have operational by 2027. Munich-based Marvel has raised a total of $162 million from investors including b2venture, Deutsche Telekom, Earlybird, and HV Capital with Taavet Hinrikus and Albert Wenger as angels. First Light Fusion Unlike many other fusion startups, First Light Fusion doesn’t use magnets to generate the conditions necessary for fusion. Instead, it follows an approach known as inertial confinement, in which fusion fuel pellets are compressed until they ignite. But even then, First Light doesn’t hew to orthodoxy. Most attempts at inertial confinement use lasers to do the dirty work, following the lead of the National Ignition Facility, which produced a groundbreaking experiment in 2022 . Rather, First Light fires a projectile at a target using a two-stage gun; the first stage uses gunpowder to fire a plastic piston that compresses hydrogen to 145,000 psi, which then launches the projectile. The target is designed to amplify the force of the impact so it compresses the fuel to the point of ignition. In March 2025, First Light announced that it would not pursue building its own power plant, instead offering its core technologies to other companies to build one. A spokesperson for First Light said that it is planning to build “pulsed power capability that would act as our demonstrator plant but would have other science and defense applications.” In other words, the company was dropping its plans for a power plan in a quest for revenue. Based in Oxfordshire, UK, First Light has raised $108 million from investors including Invesco, IP Group, and Tencent, according to PitchBook. Xcimer Though nothing about fusion can be described as simple, Xcimer takes a relatively straightforward approach: follow the basic science that’s behind the National Ignition Facility’s breakthrough net-positive experiment, and redesign the technology that underpins it from the ground up. The Colorado-based startup is aiming for a 10-megajoule laser system, five times more powerful than NIF’s setup that made history. Molten salt walls surround the reaction chamber, absorbing heat and protecting the first solid wall from damage. Founded in January 2022, Xcimer has already raised $100 million, according to PitchBook, from investors including Hedosophia, Breakthrough Energy Ventures, Emerson Collective, Gigascale Capital, and Lowercarbon Capital. This story was originally published in September 2024 and will be continually updated. Topics Climate , evergreens , Fundraising , fusion power , nuclear fusion , Startups Tim De Chant Senior Reporter, Climate Tim De Chant is a senior climate reporter at TechCrunch. He has written for a wide range of publications, including Wired magazine, the Chicago Tribune, Ars Technica, The Wire China, and NOVA Next, where he was founding editor. De Chant is also a lecturer in MIT’s Graduate Program in Science Writing, and he was awarded a Knight Science Journalism Fellowship at MIT in 2018, during which time he studied climate technologies and explored new business models for journalism. He received his PhD in environmental science, policy, and management from the University of California, Berkeley, and his BA degree in environmental studies, English, and biology from St. Olaf College. You can contact or verify outreach from Tim by emailing tim.dechant@techcrunch.com . View Bio Dates TBD Locations TBA Plan ahead for the 2026 StrictlyVC events. Hear straight-from-the-source candid insights in on-stage fireside sessions and meet the builders and backers shaping the industry. Join the waitlist to get first access to the lowest-priced tickets and important updates. Waitlist Now Most Popular Meta just bought Manus, an AI startup everyone has been talking about Connie Loizos You&#8217;ve been targeted by government spyware. Now what? Lorenzo Franceschi-Bicchierai Sauron, the high-end home security startup for &#8216;super premium&#8217; customers, plucks a new CEO out of Sonos Connie Loizos The Google Pixel Watch 4 made me like smartwatches again Ivan Mehta FaZe Clan’s future is uncertain after influencers depart Anthony Ha NY Governor Hochul signs bill requiring warning labels on ‘addictive’ social media Anthony Ha How reality crushed Ÿnsect, the French startup that had raised over $600M for insect farming Anna Heim",
+    "summary": "Fusion startups have raised $7.1 billion to date, with the majority of it going to a handful of companies.",
+    "source": {
+      "name": "TechCrunch",
+      "category": "technology",
+      "biasRating": "center",
+      "reliability": "medium"
+    },
+    "category": "technology",
+    "categories": [
+      "technology"
+    ],
+    "wordCount": 2764,
+    "complexity": "high",
+    "tags": [
+      "Climate",
+      "Fundraising",
+      "Startups",
+      "evergreens",
+      "fusion power",
+      "nuclear fusion"
+    ],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:25:44.605Z",
+    "lastUpdated": "2025-12-31T15:25:44.605Z"
+  },
+  "https://arstechnica.com/security/2025/12/supply-chains-ai-and-the-cloud-the-biggest-failures-and-one-success-of-2025/": {
+    "id": "https://arstechnica.com/security/2025/12/supply-chains-ai-and-the-cloud-the-biggest-failures-and-one-success-of-2025/",
+    "title": "Supply chains, AI, and the cloud: The biggest failures (and one success) of 2025",
+    "url": "https://arstechnica.com/security/2025/12/supply-chains-ai-and-the-cloud-the-biggest-failures-and-one-success-of-2025/",
+    "author": "Dan Goodin",
+    "publishedAt": "2025-12-31T13:15:40.000Z",
+    "content": "<p>In a <a href=\"https://arstechnica.com/staff/2024/12/the-20-most-read-stories-of-2024-on-ars-technica/\">roundup</a> of the top stories of 2024, Ars included a supply-chain attack that came dangerously close to inflicting a catastrophe for thousands—possibly millions—of organizations, which included a large assortment of Fortune 500 companies and government agencies. Supply-chain attacks played prominently again this year, as a seemingly unending rash of them hit organizations large and small.</p>\n<p>For threat actors, supply-chain attacks are the gift that keeps on giving—or, if you will, the hack that keeps on hacking. By compromising a single target with a large number of downstream users—say a cloud service or maintainers or developers of widely used open source or proprietary software—attackers can infect potentially millions of the target’s downstream users. That’s exactly what threat actors did in 2025.</p>\n<h2>Poisoning the well</h2>\n<p>One <a href=\"https://arstechnica.com/information-technology/2024/12/backdoor-slips-into-popular-code-library-drains-155k-from-digital-wallets/\">such event</a> occurred in December 2024, making it worthy of a ranking for 2025. The hackers behind the campaign pocketed as much as $155,000 from thousands of smart-contract parties on the Solana blockchain.</p><p><a href=\"https://arstechnica.com/security/2025/12/supply-chains-ai-and-the-cloud-the-biggest-failures-and-one-success-of-2025/\">Read full article</a></p>\n<p><a href=\"https://arstechnica.com/security/2025/12/supply-chains-ai-and-the-cloud-the-biggest-failures-and-one-success-of-2025/#comments\">Comments</a></p>",
+    "summary": "The past year has seen plenty of hacks and outages. Here are the ones topping the list.",
+    "source": {
+      "name": "Ars Technica",
+      "category": "technology",
+      "biasRating": "center",
+      "reliability": "high"
+    },
+    "category": "technology",
+    "categories": [
+      "technology"
+    ],
+    "wordCount": 166,
+    "complexity": "low",
+    "tags": [
+      "AI",
+      "Apple",
+      "Biz & IT",
+      "Security",
+      "2025 year end",
+      "cloud",
+      "signal messenger",
+      "supply chain attacks"
+    ],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:25:44.874Z",
+    "lastUpdated": "2025-12-31T15:25:44.874Z"
+  },
+  "https://www.nytimes.com/2025/12/30/health/bacterial-vaginosis-sexually-transmitted-infection.html": {
+    "id": "https://www.nytimes.com/2025/12/30/health/bacterial-vaginosis-sexually-transmitted-infection.html",
+    "title": "Bacterial Vaginosis Is No Longer Thought to Affect Only Women",
+    "url": "https://www.nytimes.com/2025/12/30/health/bacterial-vaginosis-sexually-transmitted-infection.html",
+    "author": "Rachel E. Gross",
+    "publishedAt": "2025-12-30T08:00:06.000Z",
+    "content": "Gynecologists long viewed bacterial vaginosis as solely a women’s issue — until a study that treated their male partners, too, proved otherwise.",
+    "summary": "Gynecologists long viewed bacterial vaginosis as solely a women’s issue — until a study that treated their male partners, too, proved otherwise.",
+    "source": {
+      "name": "New York Times Health",
+      "category": "health",
+      "biasRating": "center-left",
+      "reliability": "high"
+    },
+    "category": "health",
+    "categories": [
+      "health"
+    ],
+    "wordCount": 22,
+    "complexity": "low",
+    "tags": [
+      {
+        "_": "Sexually Transmitted Diseases",
+        "domain": "http://www.nytimes.com/namespaces/keywords/des"
+      },
+      {
+        "_": "Medicine and Health",
+        "domain": "http://www.nytimes.com/namespaces/keywords/des"
+      },
+      {
+        "_": "Gynecology and Gynecologists",
+        "domain": "http://www.nytimes.com/namespaces/keywords/des"
+      },
+      {
+        "_": "Vagina",
+        "domain": "http://www.nytimes.com/namespaces/keywords/des"
+      },
+      {
+        "_": "Bacteria",
+        "domain": "http://www.nytimes.com/namespaces/keywords/des"
+      },
+      {
+        "_": "Women and Girls",
+        "domain": "http://www.nytimes.com/namespaces/keywords/des"
+      }
+    ],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:30:24.288Z",
+    "lastUpdated": "2025-12-31T15:30:24.288Z"
+  },
+  "https://www.bbc.com/news/articles/c0q4e4e4ldyo?at_medium=RSS&at_campaign=rss": {
+    "id": "https://www.bbc.com/news/articles/c0q4e4e4ldyo?at_medium=RSS&at_campaign=rss",
+    "title": "EU's top diplomat rejects Russian claims of Ukrainian attack on government sites",
+    "url": "https://www.bbc.com/news/articles/c0q4e4e4ldyo?at_medium=RSS&at_campaign=rss",
+    "author": "BBC World News",
+    "publishedAt": "2025-12-31T14:44:26.000Z",
+    "content": "EU&#x27;s top diplomat rejects Russian claims of Ukrainian attack on government sites 44 minutes ago Share Save Laura Gozzi Kyiv Share Save Reuters Kaja Kallas accused the Kremlin of trying to derail the peace process with allegations of a Ukrainian attack on government sites The EU&#x27;s top diplomat has called Moscow&#x27;s claims that Ukraine targeted Russian government sites a &quot;deliberate distraction&quot; and an attempt to derail the peace process. Kaja Kallas&#x27; comments on social media appear to be a reference to the Kremlin&#x27;s allegation that Ukraine attempted a drone strike on one of Vladimir Putin&#x27;s residences. &quot;No one should accept unfounded claims from the aggressor who has indiscriminately targeted Ukraine&#x27;s infrastructure and civilians,&quot; Kallas wrote on social media. Earlier this week Moscow accused Ukraine of targeting Putin&#x27;s private home on Lake Valdai in north-west Russia. Russia would review its position in the ongoing peace negotiations as a result, the Kremlin said. Since Foreign Minister Sergei Lavrov first shared the claims, Russian state media and politicians have discussed the alleged attack in increasingly incendiary tones. &quot;The attack is a strike on the heart of Russia,&quot; said Andrei Kartapolov, head of the Russian parliament&#x27;s defence committee. &quot;After what [Ukraine] has done, there can be no forgiveness.&quot; Although the Kremlin initially said it saw no point in sharing proof of the alleged attack, on Wednesday the Russian army released what it said was evidence of the attempted strike. It included a map allegedly showing that the drones were launched from the Sumy and Chernihiv regions of Ukraine and a video of a downed drone lying in snowy woodland. A serviceman standing next to the wreckage claims it is a Ukrainian Chaklun drone. The BBC hasn&#x27;t been able to verify the footage, and it is not possible to locate where it was shot. The profile of the wrecked UAV (unmanned aerial vehicle) does bear similarities to Ukrainian-produced Chakluns – but because the components of the drone pictured are inexpensive and widely available online, they cannot be conclusively to traced to the Ukrainian military. Russian defence ministry Russia&#x27;s defence ministry released a map which it claimed showed the path of the drones launched by Ukraine Russia&#x27;s defence ministry also released a video of what it said was a local resident who described hearing noises like a rocket at the time of the alleged attack. However, one Russian investigative media outlet said it had spoken to more than a dozen residents of the area around Putin&#x27;s residence and none had heard anything that could indicate 91 drones had approached or been shot down by air defences. &quot;If something like that had happened, the whole city would have been talking about it,&quot; one person told the outlet. Ukrainian President Volodymyr Zelensky has strenuously denied the allegations, tying them to the ongoing US-led process to reach a ceasefire in Ukraine. In recent weeks the American and Ukrainian delegations have been working closely and Zelensky has expressed cautious optimism that his country&#x27;s demands were going to be taken into account. In his view, he said on Tuesday, the claims about the drone attack on Putin&#x27;s Valdai residence were about &quot;the fact that over the past month there were quite successful talks and a positive meeting between our teams, culminating in our meeting with President Trump.&quot; Russia wanted to disrupt the &quot;positive momentum&quot; between the US and Ukraine, Zelensky said. When the claims emerged Zelensky also warned that the alleged drone strike would be used as an excuse to carry out strikes on Kyiv and Ukrainian government buildings. Overnight on Wednesday air alerts briefly rang out in the capital as a drone approached, but no hits or damage were reported. State Emergency Service of Ukraine On 30 December Odesa suffered an intense attack which left several civilians injured Instead, several locations across the country were hit by drones and Odesa on the Black Sea suffered a large-scale attack which saw an apartment block hit and six people injured, including three children. More than 170,000 were also left without power as temperatures struggled to push past 0C. Odesa has been coming under sustained attack for several weeks. The intensity of the strikes appears to have increased since Putin&#x27;s threat in early December to cut off Ukraine&#x27;s access to the sea in retaliation for drone attacks on tankers of Russia&#x27;s &quot;shadow fleet&quot; in the Black Sea. Mariya, Yuliya and Diana sang carols in one of Kyiv&#x27;s squares to raise money for the Ukrainian armed forces With hours to go until the end of another year of war, many in Kyiv only had one wish for 2026. &quot;We hope that all of this will end. We want this to be over and to live as we did before,&quot; 26-year-old Mariya said. Standing outside the golden-domed St Sophia monastery in Kyiv, she added: &quot;We have a very beautiful country with enormous potential. Our strength is in our people, and that is why we keep going.&quot; As she spoke, teenage carollers nearby sang Christmas songs, collecting donations for the armed forces. &quot;We all want victory to come in 2026. It&#x27;s our united wish,&quot; said one. Zelensky has expressed the desire for peace negotiations to resume and accelerate early in January with the involvement of both American and European officials. But any deal will ultimately need Russian buy-in, which does not seem forthcoming – and which the alleged drone incident over Putin&#x27;s residence may have pushed further into the distance. So could next year truly bring peace? &quot;We truly hope so, but we can&#x27;t say for certain. We are doing everything we can,&quot; Mariya said. Next to her, a woman named Ksenia shrugged and turned her eye to the sky: &quot;Really, only God knows.&quot; War in Ukraine Russia Ukraine",
+    "summary": "It comes as Russia releases video which it claims shows a downed Ukrainian drone launched at one of Putin's residences.",
+    "source": {
+      "name": "BBC World News",
+      "category": "news",
+      "biasRating": "center",
+      "reliability": "high"
+    },
+    "category": "news",
+    "categories": [
+      "news"
+    ],
+    "wordCount": 953,
+    "complexity": "low",
+    "tags": [],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:30:50.175Z",
+    "lastUpdated": "2025-12-31T15:30:50.175Z"
+  },
+  "https://www.bbc.com/news/articles/cr57nvrjrlno?at_medium=RSS&at_campaign=rss": {
+    "id": "https://www.bbc.com/news/articles/cr57nvrjrlno?at_medium=RSS&at_campaign=rss",
+    "title": "Jailed HK tycoon's 'teeth rotting and fingernails falling off', daughter tells BBC",
+    "url": "https://www.bbc.com/news/articles/cr57nvrjrlno?at_medium=RSS&at_campaign=rss",
+    "author": "BBC World News",
+    "publishedAt": "2025-12-31T08:12:48.000Z",
+    "content": "Jailed HK tycoon&#x27;s &#x27;teeth rotting and fingernails falling off&#x27;, daughter tells BBC 7 hours ago Share Save Danny Vincent and Koh Ewe Share Save AFP via Getty Images Jimmy Lai is seen here in a 2020 photo taken months before he went to jail The daughter of Jimmy Lai, the pro-democracy tycoon jailed in Hong Kong, has expressed concerns about her father&#x27;s deteriorating health in prison, saying that his fingernails &quot;sometimes fall off&quot; and his teeth are rotting. Lai, 78, has been detained since December 2020 and faces life in prison. Earlier this month he was convicted of colluding with foreign forces under the city&#x27;s controversial national security law (NSL). Hong Kong and Chinese authorities have denied that Lai has been mistreated in prison, saying he is in &quot;good health&quot;. The BBC has seen a letter written by Lai&#x27;s family urging UK Prime Minister Keir Starmer to call for Lai&#x27;s release when he meets Chinese President Xi Jinping next month. His daughter Claire Lai, who is in exile in London, told the BBC that she fears she &quot;may never see him again&quot;. &quot;Of course I worry that my father is going to be a martyr, and I don&#x27;t want him to be a martyr. But I would not be here today, I would not be speaking out if I didn&#x27;t think this was his best chance of reuniting with our family.&quot; She described her father as an &quot;extremely robust and strong man&quot; when he went to prison, but said over the last year he has &quot;lost a significant amount of weight&quot;. &quot;He is diabetic, he has heart issues which he never had in the past. He has fingernails that turn purplish grey and sometimes fall off. He has teeth that are rotting. &quot;He has back and waist pains. Some days it&#x27;s painful for him to stand. Sometimes he can&#x27;t stand. And some days he can&#x27;t even get out of bed.&quot; Lai&#x27;s family has, on multiple occasions, flagged concerns about his deteriorating health. Lai&#x27;s son, Sebastien, told the BBC earlier this year that his father&#x27;s &quot;body is breaking down&quot;. A spokesperson for the Commissioner&#x27;s Office of the Chinese Foreign Ministry in Hong Kong stated earlier this month that Lai&#x27;s &quot;lawful rights and interests have been fully protected, and he is in good health&quot;. They added that &quot;a safe, humane, appropriate, and healthy custodial environment in accordance with the law&quot; has been provided for Lai. Claire Lai is on a campaign to get her father released from prison Lai, a UK citizen, is the most prominent person to be charged under the NSL, introduced in 2020 in response to massive pro-democracy protests in Hong Kong. Beijing defends the law as necessary to maintain stability in Hong Kong, but critics say it has effectively outlawed dissent. Lai was accused of lobbying foreign governments to impose sanctions on Hong Kong and China. He was also found guilty under a separate colonial-era law of publishing seditious material in his now-defunct Apple Daily newspaper. After Lai&#x27;s conviction earlier this month, the UK condemned it as &quot;politically motivated persecution&quot;, saying that he had been &quot;targeted... for peacefully exercising his right to freedom of expression&quot;. &quot;The UK has repeatedly called for the National Security Law to be repealed and for an end to the prosecution of all individuals charged under it,&quot; the Foreign, Commonwealth and Development Office said. In their statement earlier this month, Chinese authorities said Western attempts &quot;to influence judicial verdicts through political pressure blatantly trample on the spirit of the rule of law and fully expose their hypocritical &#x27;double standards&#x27;. The Chinese side firmly opposes this.&quot; Starmer&#x27;s trip to China in late January 2026 will be the first by a UK Prime Minister since 2018. This billionaire tested China&#x27;s limits. It cost him his freedom Who is Jimmy Lai, Hong Kong&#x27;s pro-democracy media tycoon? Asia China Hong Kong",
+    "summary": "The daughter of Jimmy Lai tells the BBC that her father's health is deteriorating in prison.",
+    "source": {
+      "name": "BBC World News",
+      "category": "news",
+      "biasRating": "center",
+      "reliability": "high"
+    },
+    "category": "news",
+    "categories": [
+      "news"
+    ],
+    "wordCount": 643,
+    "complexity": "low",
+    "tags": [],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:30:50.250Z",
+    "lastUpdated": "2025-12-31T15:30:50.250Z"
+  },
+  "https://www.bbc.com/news/articles/cn9zl309dz8o?at_medium=RSS&at_campaign=rss": {
+    "id": "https://www.bbc.com/news/articles/cn9zl309dz8o?at_medium=RSS&at_campaign=rss",
+    "title": "Machu Picchu train crash leaves one dead and dozens injured",
+    "url": "https://www.bbc.com/news/articles/cn9zl309dz8o?at_medium=RSS&at_campaign=rss",
+    "author": "BBC World News",
+    "publishedAt": "2025-12-31T12:27:22.000Z",
+    "content": "Machu Picchu train crash leaves one dead and dozens injured 3 hours ago Share Save Tabby Wilson Share Save Watch: Injured passengers helped from train after collision near Machu Picchu A train driver has died and at least 40 people have been injured in a head-on rail collision near Peru&#x27;s most popular tourist attraction, Machu Picchu. Two trains collided on the single track leading to the ancient Inca town on Tuesday, according to a statement from the local government. It said that 20 ambulances had attended the scene and that injured people had been transferred to medical facilities in the nearby city of Cusco. The US embassy in Peru said that US citizens were injured in the crash, while the UK Foreign Office said it was &quot;supporting a number of British nationals involved&quot;. Getty Images One of the two trains affected in the collision Local media outlet Peru21 reports that hundreds of tourists remain at the scene awaiting evacuation, which has been hampered by difficult terrain around the crash site. At least 20 of the injured are in a serious condition, a health official told the Reuters news agency. The collision occurred on the track linking Ollantaytambo Station and Aguas Calientes, the closest town to Machu Picchu. The journey between the two stations usually takes around 90 minutes. The two trains involved in the accident were operated by PeruRail and Inca Rail respectively. &quot;We deeply regret what has happened,&quot; PeruRail said in a statement, adding that its staff had &quot;immediately&quot; provided first aid to the train driver, the train conductor and the passengers involved in the incident. The cause of the accident has not yet been made clear. The crash comes amid an ongoing dispute between providers of transport to the Unesco world heritage site, with local communities unhappy with what they say is an insufficiently open bidding process. The trains and buses that take tourists to the ancient town have steep ticket prices and can be highly lucrative due to its limited accessibility. Built in the Peruvian Andes in the 15th Century, the Incan city of Machu Picchu is one of the Seven Modern Wonders of the World. Visitors can take a series of trains and buses to reach the site, or hike along the Inca trail with a registered tour operator. In 2011, officials implemented a daily cap on visitors to protect and preserve the site, but concerns remain about overtourism. Machu Picchu hit by a row over tourist buses An ethical guide to hiking the Inca Trail Peru",
+    "summary": "A train driver died and at least 40 people were injured in the crash on the single-track line to Machu Picchu.",
+    "source": {
+      "name": "BBC World News",
+      "category": "news",
+      "biasRating": "center",
+      "reliability": "high"
+    },
+    "category": "news",
+    "categories": [
+      "news"
+    ],
+    "wordCount": 421,
+    "complexity": "low",
+    "tags": [],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:30:50.314Z",
+    "lastUpdated": "2025-12-31T15:30:50.314Z"
+  },
+  "https://www.theguardian.com/world/2025/dec/30/saudi-arabia-uae-tension-future-yemen-boiling-point": {
+    "id": "https://www.theguardian.com/world/2025/dec/30/saudi-arabia-uae-tension-future-yemen-boiling-point",
+    "title": "Tensions between Saudis and Emiratis over future of Yemen reach boiling point",
+    "url": "https://www.theguardian.com/world/2025/dec/30/saudi-arabia-uae-tension-future-yemen-boiling-point",
+    "author": "Patrick Wintour Diplomatic editor",
+    "publishedAt": "2025-12-30T17:19:44.000Z",
+    "content": "Supporters of the UAE-backed separatist Southern Transitional Council wave flags of the United Arab Emirates and of the STC during a rally in Aden, Yemen, on 30 December. Photograph: Fawaz Salman/Reuters View image in fullscreen Supporters of the UAE-backed separatist Southern Transitional Council wave flags of the United Arab Emirates and of the STC during a rally in Aden, Yemen, on 30 December. Photograph: Fawaz Salman/Reuters Yemen Analysis Tensions between Saudis and Emiratis over future of Yemen reach boiling point Patrick Wintour Diplomatic editor Dispute has potential to create civil war in south of Yemen and spill over into neighbouring countries Tue 30 Dec 2025 12.19 EST Last modified on Wed 31 Dec 2025 00.12 EST Share Tensions between the United Arab Emirates and Saudi Arabia over the future of Yemen and the imminent possibility of the declaration of an independent southern state have reached boiling point with Saudi Arabia in effect accusing the UAE of threatening its future security. The dispute has the potential to create a civil war within the south of Yemen and also spill over into other disputes including in Sudan and the Horn of Africa where the two countries often find themselves backing opposite sides. Yemen could yet become only one theatre in which the two vastly wealthy Gulf states vie for political influence, control of shipping lanes and commercial access. The UAE has been dabbling in Yemen for years due to its support for the separatist Southern Transitional Council . Many observers, including diplomats in Riyadh, had assumed that the UAE – often thought of as the junior if more ideological partner – would back down and tell the STC to delay or jettison its plan to declare independence and instead settle for negotiations on greater autonomy or more seats in Yemen’s coalition government body, the Presidential Leadership Council (PLC). Saudi Arabia had always seen Yemen as its preserve, first trying to defeat the Iran-backed Houthi rebels in the north with a much-criticised bombing campaign in 2015 and then under international pressure reverting to diplomacy to try to reconcile the Houthis with the UN-recognised government in Aden. But in the past month, the UAE has kicked over many assumed red lines in Yemen, leading to the Saudi bombing of vehicles docking at the Yemen port of Mukalla. Riyadh pointedly said the vehicles had been sent for STC use and had come from an Emirati port. Saudi Arabia said: “The kingdom stresses that any threat to its national security is a red line, and the kingdom will not hesitate to take all necessary steps and measures to confront and neutralise any such threat.” View image in fullscreen Screengrab from a video shows smoke rising after a Saudi-led coalition airstrike in Yemen’s southern port of Mukalla on Tuesday. Photograph: Sabaa Tv/Reuters But the UAE has been quietly considering commercial opportunities in Yemen for years. Tapping into the genuine, popular desire to restore the independence the south enjoyed before unification with the north in 1990, the UAE chose the STC as its vehicle. It was a shrewd bet. The STC was finally recognised as a genuine player in 2019 when it was given seats on the PLC. After years being sidelined in UN peace efforts, the STC leader, Aidarous al-Zubaidi, slowly gained western recognition and was allowed to attend events such as the UN general assembly. But the STC, feeding off longstanding cultural and economic grievances with the north, was never content with federalist solutions, and felt anyway it had been sidelined in the PLC. This month, the STC grabbed its opportunity, sending its forces into Hadramaut , the largest governorate in the south. With its sudden eastward expansion, the STC controlled nearly all of the territory of the former South Yemen state, including its most productive oilfields. Yemen map After seizing Hadramaut, it was relatively easy to take al-Mahra, the most easterly governorate. It was a severe shock to Saudi Arabia , which has since been applying diplomatic pressure on Abu Dhabi to demand the STC’s withdrawal. In a ferocious diplomatic battle, Riyadh tried to isolate the UAE and the STC, making it clear that even if the STC stood its ground, southern Yemen would never progress beyond a micro-state lacking international recognition. So far, the UAE is not buckling. The withdrawal of the few remaining UAE counter-terror forces in Yemen announced on Tuesday is of no significance since UAE support for the STC remains. Abdulkhaleq Abdulla, an Emirati political scientist, is portraying the UAE defence of the STC almost as a litmus test of the UAE’s character. He wrote on X: “The UAE does not let down nor abandon its allies. It supports them with generosity and political and military abundance. It does not leave them midway on the road to face their fate without support. It is clear in its policies and steps. It does not flee nor evade confrontation. It has a clear vision of its national and humanitarian responsibility and fulfils it with utmost care.” Equally patriotic statements are emerging from Riyadh. Farea al-Muslimi, a Yemen and wider Gulf research fellow at the Chatham House thinktank, is in little doubt about the enormity of what may be at stake. “After years of indirect competition through local proxies, the dispute now appears to be moving toward a more direct confrontation, with Saudi Arabia publicly accusing the UAE of actions that threaten its national security along its southern border,” he said. “The conflict reflects fundamental disagreements between Riyadh and Abu Dhabi over the future political structure of Yemen and the balance of influence within it. Notably, the UAE – despite its greater geographic distance – has pursued a more interventionist and experimental approach on the ground. “Tensions between the two countries have been building for years. These actions suggest that the situation is entering a particularly dangerous phase. This development also evokes troubling parallels with the 2017 Gulf crisis involving Qatar, when Saudi Arabia and the UAE coordinated a major diplomatic rupture that destabilised regional relations for years.” Muslimi added that the Houthis were “likely to view the growing rift between two of their principal adversaries with considerable advantage, observing as former coalition partners – who jointly fought and failed to defeat them – now turn against one another”. Western governments, taking their lead from Washington, have shown in Sudan little desire to criticise the UAE in public, and in Yemen their sympathies will be with Saudi Arabia and the retention of a unitary state. Explore more on these topics Yemen Saudi Arabia United Arab Emirates Middle East and north Africa Sudan Africa Houthis analysis Share Reuse this content",
+    "summary": "Dispute has potential to create civil war in south of Yemen and spill over into neighbouring countries Tensions between the United Arab Emirates and Saudi Arabia over the future of Yemen and the imminent possibility of the declaration of an independent southern state have reached boiling point with Saudi Arabia in effect accusing the UAE of threatening its future security. The dispute has the potential to create a civil war within the south of Yemen and also spill over into other disputes including in Sudan and the Horn of Africa where the two countries often find themselves backing opposite sides. Yemen could yet become only one theatre in which the two vastly wealthy Gulf states vie for political influence, control of shipping lanes and commercial access. Continue reading...",
+    "source": {
+      "name": "The Guardian",
+      "category": "news",
+      "biasRating": "center-left",
+      "reliability": "high"
+    },
+    "category": "news",
+    "categories": [
+      "news"
+    ],
+    "wordCount": 1105,
+    "complexity": "medium",
+    "tags": [
+      {
+        "_": "Yemen",
+        "domain": "https://www.theguardian.com/world/yemen"
+      },
+      {
+        "_": "Saudi Arabia",
+        "domain": "https://www.theguardian.com/world/saudiarabia"
+      },
+      {
+        "_": "United Arab Emirates",
+        "domain": "https://www.theguardian.com/world/united-arab-emirates"
+      },
+      {
+        "_": "Middle East and north Africa",
+        "domain": "https://www.theguardian.com/world/middleeast"
+      },
+      {
+        "_": "World news",
+        "domain": "https://www.theguardian.com/world/world"
+      },
+      {
+        "_": "Sudan",
+        "domain": "https://www.theguardian.com/world/sudan"
+      },
+      {
+        "_": "Africa",
+        "domain": "https://www.theguardian.com/world/africa"
+      },
+      {
+        "_": "Houthis",
+        "domain": "https://www.theguardian.com/world/houthi"
+      }
+    ],
+    "credibility": "high",
+    "bias": "center-left",
+    "createdAt": "2025-12-31T15:30:51.610Z",
+    "lastUpdated": "2025-12-31T15:30:51.610Z"
+  },
+  "https://www.theguardian.com/sport/2025/dec/29/anthony-joshua-injured-car-crash-nigeria": {
+    "id": "https://www.theguardian.com/sport/2025/dec/29/anthony-joshua-injured-car-crash-nigeria",
+    "title": "Anthony Joshua’s camp confirm two of his close friends died in Nigeria car crash",
+    "url": "https://www.theguardian.com/sport/2025/dec/29/anthony-joshua-injured-car-crash-nigeria",
+    "author": "Rachel Savage",
+    "publishedAt": "2025-12-30T00:17:59.000Z",
+    "content": "Kevin ‘Lateef’ Ayodele (right) and Sina Ghami (left), who both died in the crash, are pictured alongside Anthony Joshua. Photograph: Instagram View image in fullscreen Kevin ‘Lateef’ Ayodele (right) and Sina Ghami (left), who both died in the crash, are pictured alongside Anthony Joshua. Photograph: Instagram Anthony Joshua Anthony Joshua’s camp confirm two of his close friends died in Nigeria car crash British former boxing champion sustained minor injuries Sina Ghami and Kevin ‘Lateef’ Ayodel killed in accident Rachel Savage Mon 29 Dec 2025 19.17 EST First published on Mon 29 Dec 2025 08.52 EST Share The British heavyweight boxer Anthony Joshua has issued a statement after he was injured in a car crash in Nigeria on Monday morning which killed two of his close friends. The former world heavyweight boxing champion was taken to an undisclosed hospital after his car hit a stationary vehicle at about 11am on the Lagos-Ibadan Expressway, the Ogun state police commissioner, Lanre Ogunlowo, said. The driver of Joshua’s vehicle was also injured, he added. An official spokesman for Joshua said: “It is with the deepest and most profound sadness that we confirm, following a road traffic accident in Lagos, Nigeria earlier today, the death of Sina Ghami and Kevin ‘Lateef’ Ayodele. “Both were close friends and integral members of Anthony’s team. We respectfully ask that space and privacy be given to the families at this time while they process this truly shocking and devastating news. Anthony sustained injuries in the accident and was taken to hospital for checks and treatment, he is in a stable condition and will remain there for observation.” An image released by the federal road safety corps in Nigeria showing the damaged car that Anthony Joshua was travelling in. Photograph: Federal Road Safety Corps/AP Ghami acted as strength and conditioning coach while Ayodele was a trainer in Joshua’s camp. Matchroom chairman Eddie Hearn said: “With the heaviest of hearts. Two great men. Rest in eternal peace Sina and Latz [Ayodele]. My thoughts and deepest prayers are with everyone.” An Ogun police command statement read: “The vehicle conveying Mr Joshua, a Lexus SUV, was involved in the accident under circumstances that are currently being investigated. Joshua, seated in the rear of the vehicle, sustained minor injuries and is receiving medical attention with another injured person. “Tragically, two other passengers in the vehicle lost their lives at the scene. The deceased have been conveyed to Livewell hospital morgue, Sagamu. The Ogun state police command extends heartfelt condolences to the families of the deceased and assures the public that a thorough investigation into the circumstances surrounding the accident has commenced.” The Nigeria president, Bola Ahmed Tinubu, added his condolences. He said: “I have spoken with AJ to personally convey my condolences over the passing of his two close associates in the recent accident. I wished him a full and speedy recovery and prayed with him.” A video shared by the local news outlet Punch appeared to show Joshua sitting in the back left seat of a damaged car. A second video showed him walking slowly and getting into a police vehicle. Nigeria’s federal road safety corps said in posts on X that it had arrived on the scene within three minutes of being notified. It said: “A total of five adult males were involved in the crash. Two persons sadly lost their lives, one sustained injuries, while two others escaped unhurt. Anthony Joshua was rescued alive and sustained minor injuries.” The agency added: “Preliminary findings indicate that the Lexus Jeep, which was suspected to be travelling beyond the legally prescribed speed limit on the corridor, lost control during an overtaking manoeuvre and crashed into a stationary truck well packed [sic] by the side of the road. “The primary causes of the crash being excessive speed and wrongful overtaking constitute serious traffic violations and remain among the leading causes of fatal road crashes on Nigerian highways.” Photos shared by the agency on X showed a black car with a badly damaged front and a truck covered in tarpaulin on a downward sloping grass verge, with what appears to be a dent on the left side of its back. View image in fullscreen Anthony Joshua has sustained minor injuries in a car accident in Nigeria. Photograph: Bradley Collyer/PA Joshua is the son of British-Nigerian parents and has family ties in the town of Sagamu, about 30 miles north of Nigeria’s commercial capital, Lagos. Police said the crash took place on the north-bound Ibadan side of the highway, close to the junction to Sagamu. The 36-year-old attended a boarding school in Ikenne, 53 miles from the crash site, before returning to Britain aged 12. On 20 December, he knocked out the YouTuber Jake Paul in the sixth round of a boxing match streamed live on Netflix, after a 15-month break from the sport. He was expected to fight Tyson Fury, another former world heavyweight champion, fellow Briton and longtime rival, next year. In a post on X referencing the accident, Paul wrote: “Life is much more important than boxing. I am praying for the lost lives, AJ and anyone impacted by today’s unfortunate accident.” Earlier on Monday morning, Joshua had posted a video of himself playing table tennis on his Instagram stories , without disclosing a location. Explore more on these topics Anthony Joshua Boxing Nigeria Africa news Share Reuse this content",
+    "summary": "British former boxing champion sustained minor injuries Sina Ghami and Kevin ‘Lateef’ Ayodel killed in accident The British heavyweight boxer Anthony Joshua has issued a statement after he was injured in a car crash in Nigeria on Monday morning which killed two of his close friends. The former world heavyweight boxing champion was taken to an undisclosed hospital after his car hit a stationary vehicle at about 11am on the Lagos-Ibadan Expressway, the Ogun state police commissioner, Lanre Ogunlowo, said. The driver of Joshua’s vehicle was also injured, he added. Continue reading...",
+    "source": {
+      "name": "The Guardian",
+      "category": "news",
+      "biasRating": "center-left",
+      "reliability": "high"
+    },
+    "category": "news",
+    "categories": [
+      "news"
+    ],
+    "wordCount": 896,
+    "complexity": "low",
+    "tags": [
+      {
+        "_": "Anthony Joshua",
+        "domain": "https://www.theguardian.com/sport/anthony-joshua"
+      },
+      {
+        "_": "Boxing",
+        "domain": "https://www.theguardian.com/sport/boxing"
+      },
+      {
+        "_": "Sport",
+        "domain": "https://www.theguardian.com/sport/sport"
+      },
+      {
+        "_": "Nigeria",
+        "domain": "https://www.theguardian.com/world/nigeria"
+      },
+      {
+        "_": "Africa",
+        "domain": "https://www.theguardian.com/world/africa"
+      },
+      {
+        "_": "World news",
+        "domain": "https://www.theguardian.com/world/world"
+      }
+    ],
+    "credibility": "high",
+    "bias": "center-left",
+    "createdAt": "2025-12-31T15:30:51.667Z",
+    "lastUpdated": "2025-12-31T15:30:51.667Z"
+  },
+  "https://www.theguardian.com/world/2025/dec/29/more-than-3000-migrants-died-spain-figure-down": {
+    "id": "https://www.theguardian.com/world/2025/dec/29/more-than-3000-migrants-died-spain-figure-down",
+    "title": "More than 3,000 migrants died trying to reach Spain in 2025",
+    "url": "https://www.theguardian.com/world/2025/dec/29/more-than-3000-migrants-died-spain-figure-down",
+    "author": "Stephen Burgen in Barcelona",
+    "publishedAt": "2025-12-29T17:31:31.000Z",
+    "content": "Much of the fall in fatalities is attributed to tighter border policing, particularly in Mauritania, which signed a €210m migration deal with the EU in 2024. Photograph: Gelmert Finol/EPA View image in fullscreen Much of the fall in fatalities is attributed to tighter border policing, particularly in Mauritania, which signed a €210m migration deal with the EU in 2024. Photograph: Gelmert Finol/EPA Spain More than 3,000 migrants died trying to reach Spain in 2025 Tighter border controls caused arrivals to decline sharply but forced people on to more dangerous routes, activists say Stephen Burgen in Barcelona Mon 29 Dec 2025 12.31 EST Last modified on Mon 29 Dec 2025 12.48 EST Share More than 3,000 people died trying to reach Spain by sea over the past year, a sharp fall from the previous 12 months. However, activists cautioned that the drop reflected tighter border controls that have forced migrants to take increasingly dangerous routes. According to a new report by the NGO Caminando Fronteras, 3,090 people drowned between January and 15 December 2025, including 192 women and 437 children. Sixty-nine people drown as migrant boat capsizes off coast of Mauritania Read more The figure is significantly lower than the 10,457 who died in the attempt last year. Helena Maleno, the NGO’s research coordinator, said that while the number of fatalities has fallen, there had been an increase in the number of shipwrecks to 303, with as many as 70 boats having disappeared without trace. She said: “This is because we’ve seen an increase in the number of embarkations on the dangerous route from Algeria to the Balearic Islands. “These boats tend to carry around 30 people, whereas the ones on the Atlantic route to the Canary Islands may have up to 300 people on board.” According to Spain’s interior minister, 35,935 irregular migrants arrived by sea and land up to 15 December, compared with 60,311 who reached Spanish territory during the same period in 2024. Much of this decrease is attributed to tighter border policing, especially in Mauritania , a principal point of departure for migrants trying to reach Spain. In 2024, the north African state signed a new migration partnership with the European Union in exchange for €210m (£181m) in funding. A recent report by Human Rights Watch accused Mauritanian authorities of systematic abuses of the mainly African migrants, including rape and torture – accusations that the Mauritanian government rejects. The Caminando Fronteras report concludes that the Atlantic route from north Africa to the Canary Islands, which can take up to 12 days, remains the deadliest, with 1,906 fatalities this year. The increasingly popular route from Algeria to the Balearic Islands cost the lives of 1,037 migrants. The report also notes the emergence of a new route from Guinea to the Canaries, a distance of 2,200km. Maleno described a policy of “necropolitics” fuelled by far-right parties, saying “the persecution and witch-hunts of migrants is having a huge impact on human rights in Europe”. “The institutional response to tragedies at sea remains patently inadequate,” the report concludes. “Although there has been collaboration between countries in some cases, there are still worrying delays in mobilising rescue missions, a lack of adequate resources and limited political will to protect lives.” The 3,090 victims come from 30 countries, mostly in west and north Africa, but also Pakistan, Syria, Yemen, Sudan, Iraq and Egypt. Explore more on these topics Spain Migration Mauritania Africa Europe news Share Reuse this content",
+    "summary": "Tighter border controls caused arrivals to decline sharply but forced people on to more dangerous routes, activists say More than 3,000 people died trying to reach Spain by sea over the past year, a sharp fall from the previous 12 months. However, activists cautioned that the drop reflected tighter border controls that have forced migrants to take increasingly dangerous routes. Continue reading...",
+    "source": {
+      "name": "The Guardian",
+      "category": "news",
+      "biasRating": "center-left",
+      "reliability": "high"
+    },
+    "category": "news",
+    "categories": [
+      "news"
+    ],
+    "wordCount": 575,
+    "complexity": "low",
+    "tags": [
+      {
+        "_": "Spain",
+        "domain": "https://www.theguardian.com/world/spain"
+      },
+      {
+        "_": "Migration",
+        "domain": "https://www.theguardian.com/world/migration"
+      },
+      {
+        "_": "Mauritania",
+        "domain": "https://www.theguardian.com/world/mauritania"
+      },
+      {
+        "_": "Africa",
+        "domain": "https://www.theguardian.com/world/africa"
+      },
+      {
+        "_": "Europe",
+        "domain": "https://www.theguardian.com/world/europe-news"
+      },
+      {
+        "_": "World news",
+        "domain": "https://www.theguardian.com/world/world"
+      }
+    ],
+    "credibility": "high",
+    "bias": "center-left",
+    "createdAt": "2025-12-31T15:30:51.824Z",
+    "lastUpdated": "2025-12-31T15:30:51.824Z"
+  },
+  "https://www.npr.org/2025/12/31/g-s1-104088/up-first-newsletter-flu-cases-surge-venezuela-iran-protests": {
+    "id": "https://www.npr.org/2025/12/31/g-s1-104088/up-first-newsletter-flu-cases-surge-venezuela-iran-protests",
+    "title": "Why flu cases are surging this season. And, protests erupt in Iran over the economy",
+    "url": "https://www.npr.org/2025/12/31/g-s1-104088/up-first-newsletter-flu-cases-surge-venezuela-iran-protests",
+    "author": "Brittney Melton",
+    "publishedAt": "2025-12-31T12:30:43.000Z",
+    "content": "LISTEN & FOLLOW NPR App Apple Podcasts Spotify Amazon Music iHeart Radio YouTube Music RSS link Sign up for the [TITLE] Newsletter Get perks with [Podcast Title]+ Your support helps make our show possible and unlocks access to our sponsor-free feed. LEARN MORE --> Why flu cases are surging this season. And, protests erupt in Iran over the economy December 31, 2025 7:30 AM ET By&nbsp; Brittney Melton U.S. Strikes Inside Venezuela, Iran Protests, Flu Cases Surge Listen &middot; 14:38 14:38 Transcript Toggle more options Download Embed Embed \"> &lt; iframe src=\"https://www.npr.org/player/embed/g-s1-104088/nx-s1-mx-5662413-1\" width=\"100%\" height=\"290\" frameborder=\"0\" scrolling=\"no\" title=\"NPR embedded audio player\"&gt; Transcript",
+    "summary": "The flu is spreading rapidly across the U.S. this season, and it is expected to get worse. And, protests have erupted across Iran over the country's troubled economy.",
+    "source": {
+      "name": "NPR",
+      "category": "news",
+      "biasRating": "center-left",
+      "reliability": "high"
+    },
+    "category": "news",
+    "categories": [
+      "news"
+    ],
+    "wordCount": 101,
+    "complexity": "low",
+    "tags": [],
+    "credibility": "high",
+    "bias": "center-left",
+    "createdAt": "2025-12-31T15:30:53.501Z",
+    "lastUpdated": "2025-12-31T15:30:53.501Z"
+  },
+  "https://www.npr.org/2025/12/31/nx-s1-5660892/caregiver-family-mental-illness-support": {
+    "id": "https://www.npr.org/2025/12/31/nx-s1-5660892/caregiver-family-mental-illness-support",
+    "title": "His brother's mental illness isolated his family. Now he's helping other caregivers",
+    "url": "https://www.npr.org/2025/12/31/nx-s1-5660892/caregiver-family-mental-illness-support",
+    "author": "Kat McGowan",
+    "publishedAt": "2025-12-31T12:00:00.000Z",
+    "content": "His brother's mental illness isolated his family. Now he's helping other caregivers December 31, 2025 7:00 AM ET By&nbsp; Kat McGowan After caring for his brother, who has schizophrenia, for many years Mitul Desai started a company to support caregivers like him. José A. Alvarado Jr. for NPR hide caption toggle caption José A. Alvarado Jr. for NPR For years, Mitul Desai felt that the best way to deal with his little brother's schizophrenia was to avoid talking about it. His brother had become angry and withdrawn during his first year in college in 1996, and then started hearing and seeing things that weren't there. Over four years doctors told the family he had everything from alcoholism to bipolar disorder, until finally he got the correct diagnosis. It was chaotic and frightening. There were also emergencies — major arguments, trips to the hospital, that time they had to convince the neighbors not to call the police. Sponsor Message Desai compartmentalized. During these years, he focused on the brilliant career he was building as an intellectual property attorney, Wall Street analyst and senior adviser at the State Department. From the office he helped his family by navigating the health care system, talking to the experts and keeping on top of the endless forms and phone calls required to keep his brother stable. His parents, especially his father, handled the day-to-day, he says. What It Takes Policy relief for family caregivers seems stalled out. But there are signs of change Nobody around him understood what it was like to have a close family member with a severe mental illness, so he kept quiet. \"I felt we were the only family in the world going through this,\" he says. He and his parents couldn't even talk about their emotions with one other. It was like they were all trapped in their own silos, unable to connect. Slowly the pain of the situation seeped into everything else. Desai was angry, anxious and depressed. Meanwhile, he saved every article he saw about schizophrenia, every research paper or resource, every idea he had about how to fix the problem. He told himself that some day he was going to do something to help — not just his brother, but anyone in this situation. Sponsor Message Some day. Every Sunday night, that thought returned. He enjoyed the work, but five years into a high-level corporate job it struck him: Is this really my purpose in life? He quit that week, and started volunteering at the Fountain House, a nonprofit that focuses on peer support and community for people with mental illness. Desai, far right, pictured here with his mother, brother and father, who would later become the primary caregiver in the family. Desai family hide caption toggle caption Desai family He learned that for serious mental illness, family caregiving and community support are just as important to recovery as the right prescription. Mental health caregivers are the first and last line of defense. Yet they don't get the support and resources they need. It was a turning point. He started planning and working toward a vision to create a new kind of business that would recognize the crucial role of mental health caregivers, and provide them with more help. Of the roughly 63 million caregivers in the United States, 23% help someone with a mental health problem such as depression, bipolar disorder or schizophrenia. Another 4% care for people with addictions. What It Takes A caregiver's survival guide: Advice from people who've been there Caring for someone with one of these invisible illnesses can be particularly stressful. Crises erupt with little warning. Mental health care can be hard to find and confusing to navigate. Friends and relatives are often judgmental or fearful. It's like a secret society that nobody talks about and nobody wants to join. Learning to see an invisible illness Helping someone with a serious mental illness is different from caregiving in the context of common medical problems like heart disease or cancer. Disorders that primarily affect cognition, behavior and emotions are hard to recognize and hard for other people to understand or accept. For many caregivers, the first challenge is often just figuring out what's going on. Symptoms like paranoia, apathy or delusions can be easily confused with stubbornness, bad temper or substance abuse, and someone dealing with these problems may find it impossible to describe. Sponsor Message Once they wrap their heads around the situation, caregivers then find themselves becoming the translator. \"Caregivers are often faced with the burden of having to educate themselves and other people about the condition their loved ones have,\" says Dr. Christine Crawford, the associate medical director for the National Alliance on Mental Illness. Most people understand and sympathize with someone who has cancer or a stroke. Not so with mental illness. Friends and family suspect drugs, laziness or bad moral character. Pray it away, they might say — or they blame the family for being too lax, too strict, too something . \"Once you have a relative diagnosed with cancer, you get greeting cards and balloons, as you should,\" says Desai. \"When you have a relative diagnosed with serious mental illness you are greeted with silence. It takes its toll.\" Families may find that the stigma of mental illness extends to them, too. After Greg Green's baby girl was diagnosed with cerebral palsy, the family found social support at school and among disability-rights advocates. Now an adult, she's a Special Olympics ambassador, and her dad is on two commissions that oversee policy for people living with disabilities in their state. They found strength in community. What It Takes For young adults, caregiving isn't just hard. It can shape you for life It was a different story when Green's son developed mental health problems as a teenager. The family had to explain over and over again what was going on with him — why he wouldn't make eye contact, or why his body language was awkward and off-putting. And still people didn't get it. Their house had been known for community events and family get-togethers. That all stopped. It was far more difficult to find social support than it had been with his daughter, says Green, and he blames stigma: \"I think the number one issue is fear, not wanting to be involved.\" Greg Green and his children in 2014 at an event sponsored by HopeKids, which fosters community for children with serious illnesses and their families. Green family hide caption toggle caption Green family When friends and family withdraw, it's hard on both the caregiver and the person with mental illness. From the start, Desai was determined to find his brother the best medical treatment available by seeking out the top experts and enrolling him in clinical trials. It was only later that he learned that community and peer support are also essential components of recovery. His family's isolation wasn't just painful — it was actually doing harm. Sponsor Message That experience focused his plans. The company he was creating would train and educate caregiver families, but also combat the stigma and isolation by including peer support — helping build the community that can be so hard to find. Caregiving like no other One reason that mental health caregivers particularly need support is that caring for someone with a serious mental illness can be nerve-racking, simply because of the nature of these disorders and diseases. Caregivers often feel they can never let down their guard. People with schizophrenia or schizoaffective disorder may be quiet and withdrawn for a long time, then unexpectedly slip into a psychotic episode. A bout of major depression can strike for no apparent reason. The caregiver constantly tracks the ebb and flow of symptoms, watching for an alarming shift in mood or cognition. And sometimes a loved one may disengage from treatment or refuse help altogether, and it's the caregiver's job to try to talk them into it. If an adult is considered to be no danger to themselves or another, they cannot be forced into treatment no matter how precarious their situation becomes. Shots - Health News Caregiving can be a tough, lonely mission. One daughter found ways to reconnect Green's son lived at home safely into his late 20s until his usual medicine went through a shortage in February 2024. (NPR is not using his name in order to protect his privacy in discussing mental health issues.) He was switched to a new drug, which didn't work. The trust between father and son broke down, and the young man eventually decided that the treatment was poison. At the end of May, a conversation about work touched off a massive argument and he stormed out of the house. Since then he has been homeless, at first in his car, then bouncing between hospitals, treatment centers, and the street. Green says that for months, his son refused to accept anything from him, or even speak with him. Sponsor Message This is not uncommon with mental or cognitive illness. Misunderstandings can boil up into arguments, and caregivers have to think about safety, says Crawford: keeping guns and knives out of the house, locking up medications or even taking the door off the hinges in the person's bedroom to monitor their activity. These tasks are mentally and emotionally draining, points out Marvell Adams, Jr., the CEO of Caregiver Action Network. The job of connecting with someone who is withdrawn or delusional is always a work in progress. Caregivers live with the suffering they witness, as well as the frustration of not being able to truly understand the reality of the person they love. Just like with dementia, caregivers may feel they no longer even know the person they care for. It takes a toll, says Adams. It's common for someone supporting a person with major depression, for instance, to develop depression themselves. For Green, his son's departure didn't mean his caregiving role was over. It just became more harrowing. Earlier this month, his son was arrested for trespassing at a construction site; Green thinks he was probably looking for a place to sleep. Now, Green is juggling court proceedings and appointments with the motor vehicles office, trying to replace all the documents that were lost during the arrest. His son checks in now and then, but is still living outside. \"I'm constantly thinking about him,\" Green says. Every time he opens his internet browser, he checks his son's medical records, logs in to his bank account to see where he's been, and worries. \"Every night I go to bed thinking: Where is he tonight? It's raining, it's cold. Does he have a place?\" He figured out a way to help by passing items like a phone charger or benefits card along to outreach workers, who will give it to him without mentioning where it came from. At night, he racks his brains for more ways to help his son. Sponsor Message Building new supports for family A family member's dedication can make all the difference in the lives of people they care for. After years of helping with his brother's mental illness, Mitul Desai learned that the evidence actually proves it: The best treatment for mental illness combines good medical care, peer connections and family support. None of that can happen without engaged, committed caregivers. Recognizing their role is not just better for the person in question; it also benefits the health care system and the hospitals, courts and jails where people often wind up and which aren't equipped to help. In 2023, Desai launched The CareHack along with psychiatrist Eli Shalenberg. It offers education, coaching and real-time advice for family caregivers dealing with severe mental illness, dementia and other diseases that affect the mind. When Desai learned how helpful peer and family support is for someone with serious mental illness, he decided to focus his company around helping family caregivers play that role. José A. Alvarado Jr. for NPR hide caption toggle caption José A. Alvarado Jr. for NPR The company doesn't offer its services directly to families. Instead, it will work within the system, where Desai thinks they can do the most good. The bet is that the big players in the for-profit health care system will recognize the value that caregivers bring to mental health treatment. The pitch to them: happier, more resilient caregivers reduce expensive hospitalizations and help patients stay healthy and stable. The CareHack's customers could include insurance companies that recognize the cost savings that come from supporting and training family caregivers, or large practices focused on mental health and substance abuse so they can offer more granular support to the families who care for these patients every day. Basically, Desai created the support he wished he'd had decades ago. Caregivers can watch short videos or listen to lessons online, or get customized coaching from experienced social workers. They also get hooked up with other families in similar situations, to problem-solve and share stories together, overseen by a moderator. These services are free to them. Sponsor Message Desai's business is now working with one multi-state practice, and launching a Medicaid-funded project in New York State. They plan to run a clinical trial, a formal test, of the CareHack model to demonstrate its value for their potential partners. Meanwhile, caregivers can find information and advice from nonprofits with specialized mental health programs. NAMI offers a free eight-week peer-led training course as well as family therapy clinics targeting the first episode of psychosis. Caregiver Action Network recently created a website dedicated to caring for cognitive and behavioral problems, and launched an online peer-to-peer network to connect caregivers with advocates who offer advice and guidance. Being prepared for a crisis can potentially make a big difference. Carers and their loved ones can collaborate during stable times to create a mental health advance directive that spells out who should make decisions during a critical situation, and what should be done to calm things down. And when a crisis comes, there are often better alternatives than calling 911. The nationwide 988 lifeline, rolled out in 2022, is intended for mental health emergencies. Counselors rather than police dispatchers answer the 988 call, and if necessary dispatch a crisis response team with training in mental health. Green also recommends calling the non-emergency line for the local police or the nearest psychiatric hospital's crisis team. Both Desai and his brother are doing better these days. His brother is at an assisted living facility near their parents. Desai has spent time processing his experiences, recognizing the way he is affected by feelings like survivor's guilt — his grief at knowing his brother will never get to enjoy some of the simple pleasures in life, like hanging out with friends on a Friday night. Dealing openly with his brother's illness has taught Desai grit, resilience and what he calls extreme empathy: \"The minute I meet somebody who has this experience, I'm just bonded.\" Sponsor Message He will not be able to cure his brother, or lift the stress from his parents. But what once felt like a failure, a source of shame and stigma, now has a purpose: a promise that other families will not have to endure this alone. Kat McGowan is a caregiving reporter based in Berkeley, Calif. caregiving family caregiver mental illness Facebook Flipboard Email",
+    "summary": "When it comes to serious mental illness, family caregivers are crucial partners. But often, they must fend for themselves. A new solution offers them support.",
+    "source": {
+      "name": "NPR",
+      "category": "news",
+      "biasRating": "center-left",
+      "reliability": "high"
+    },
+    "category": "news",
+    "categories": [
+      "news"
+    ],
+    "wordCount": 2558,
+    "complexity": "high",
+    "tags": [],
+    "credibility": "high",
+    "bias": "center-left",
+    "createdAt": "2025-12-31T15:30:53.721Z",
+    "lastUpdated": "2025-12-31T15:30:53.721Z"
+  },
+  "https://www.npr.org/2025/12/31/nx-s1-5660765/ukrainian-food-holidays": {
+    "id": "https://www.npr.org/2025/12/31/nx-s1-5660765/ukrainian-food-holidays",
+    "title": "Out with the mayo: How Ukrainians reclaim holiday food",
+    "url": "https://www.npr.org/2025/12/31/nx-s1-5660765/ukrainian-food-holidays",
+    "author": "Daniel Estrin",
+    "publishedAt": "2025-12-31T12:00:00.000Z",
+    "content": "<img src='https://npr.brightspotcdn.com/dims3/default/strip/false/crop/2492x1662+0+0/resize/2492x1662!/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Fa9%2F2b%2F917859854a4cbb028d99ace9211f%2Fukraine-food-dc.jpg' alt='<em>Kutia</em> is a sweet, warm porridge of pearled barley mixed with berries, nuts and stewed dried fruit. It's a staple at Ukrainian Christmas tables.'/><p>For many people from former Soviet countries, New Year's is a big holiday feast time. A Ukrainian restaurant in Washington gives NPR a taste of what's on the menu.</p><p>(Image credit: Samantha Balaban/NPR)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=nx-s1-5660765' />",
+    "summary": "For many people from former Soviet countries, New Year's is a big holiday feast time. A Ukrainian restaurant in Washington gives NPR a taste of what's on the menu.",
+    "source": {
+      "name": "NPR",
+      "category": "news",
+      "biasRating": "center-left",
+      "reliability": "high"
+    },
+    "category": "news",
+    "categories": [
+      "news"
+    ],
+    "wordCount": 59,
+    "complexity": "low",
+    "tags": [],
+    "credibility": "high",
+    "bias": "center-left",
+    "createdAt": "2025-12-31T15:30:53.892Z",
+    "lastUpdated": "2025-12-31T15:30:53.892Z"
+  },
+  "https://thehill.com/homenews/state-watch/5667954-washington-monument-light-show/": {
+    "id": "https://thehill.com/homenews/state-watch/5667954-washington-monument-light-show/",
+    "title": "Washington Monument light show planned for NYE in honor of America's 250 birthday",
+    "url": "https://thehill.com/homenews/state-watch/5667954-washington-monument-light-show/",
+    "author": "Liberty Simmons",
+    "publishedAt": "2025-12-31T15:30:02.000Z",
+    "content": "State Watch Washington Monument light show planned for NYE in honor of America’s 250 birthday by Liberty Simmons - 12/31/25 10:30 AM ET lang: en_US by Liberty Simmons - 12/31/25 10:30 AM ET lang: en_US Share &#10005; LinkedIn LinkedIn Email Email const ir_script = document.createElement('script'); const ir_version = new Date().valueOf(); ir_script.src = 'https://instaread.co/js/instaread.thehill.js?version=' + ir_version; ir_script.setAttribute(\"type\", \"text/javascript\"); ir_script.setAttribute(\"async\", true); (document.getElementsByTagName('body')[0] || document.getElementsByTagName('head')[0]).appendChild(ir_script); WASHINGTON ( WDCW ) &mdash; The countdown to 2026 is officially underway, and the nation&rsquo;s capital is planning to mark the moment in a historic way. For the first time ever, the Washington Monument will be illuminated on all four sides with a large-scale projection light show beginning on New Year&rsquo;s Eve. Organizers say the display will kick off celebrations for America&rsquo;s 250th birthday. try { var event = new CustomEvent(\"nsDfpSlotRendered\", { detail: { id: \"acm-ad-tag-mr1_ab-mr1_ab\" } }); console.log(\"HTL.nsDfpSlotRendered\", event); window.dispatchEvent(event); } catch (err) {} Starting New Year&rsquo;s Eve, the monument will serve as what organizers call &ldquo;the world&rsquo;s tallest birthday candle,&rdquo; launching a yearlong series of national events planned throughout 2026. &ldquo;I&rsquo;m excited about the fireworks, the lights, the celebration,&rdquo; said Matthew Chavez, a Maryland resident who gathered near the monument ahead of the festivities. The roughly 20-minute projection show is designed to retell key moments in U.S. history through custom animation, transforming the iconic landmark into what organizers describe as a living painting. &ldquo;What we&rsquo;ve got is a really fun, custom animated retelling of the country&rsquo;s history,&rdquo; said Kyle Barrett with Freedom 250, the organization tasked by the president with leading America&rsquo;s 250th birthday celebrations. &ldquo;Think of all the biggest and best moments that have made America great.&rdquo; A press release issued by Freedom 250 did not specify which moments of American history will be retold in the projected light show, but that it would cover &ldquo;the story of the nation&rsquo;s discovery, expansion,&nbsp;independence, and future.&rdquo; Windy conditions cause damage across Montgomery County Barrett said the goal of the display goes beyond spectacle. try { var event = new CustomEvent(\"nsDfpSlotRendered\", { detail: { id: \"acm-ad-tag-mr2_ab-mr2_ab\" } }); console.log(\"HTL.nsDfpSlotRendered\", event); window.dispatchEvent(event); } catch (err) {} &ldquo;I just hope that it inspires people to think boldly and to live their true selves and know that you&rsquo;re here for a reason and anything is possible,&rdquo; he said. Visitors from across the country are traveling to Washington to be part of the celebration. Layla Llosa flew in from Miami to celebrate New Year&rsquo;s Eve in the nation&rsquo;s capital. &ldquo;We have a really great country, and I feel like we don&rsquo;t appreciate it as much as we should,&rdquo; Llosa said. &ldquo;There&rsquo;s no place in the world like the United States.&rdquo; Llosa added that the milestone offers a chance to reflect on what brings Americans together. &ldquo;We&rsquo;re such a melting pot of different cultures and people,&rdquo; she said. &ldquo;That&rsquo;s the beauty of this country.&rdquo; The Washington Monument projection will begin at 7 p.m. on New Year&rsquo;s Eve and run nightly through Jan. 5. Add as preferred source on Google Tags Copyright 2025 Nexstar Media Inc. All rights reserved. This material may not be published, broadcast, rewritten, or redistributed. lang: en_US Share &#10005; LinkedIn LinkedIn Email Email window._taboola = window._taboola || []; _taboola.push({ mode: 'thumbnails-a', container: 'taboola-block', placement: 'The Hill Below Article Thumbnails', target_type: 'mix' }); More State Watch News See All Energy &amp; Environment Trump issues first vetoes of his 2nd term, rejecting Colorado water project and Florida tribal bill by Rachel Frazin 11 minutes ago Energy &amp; Environment &nbsp;/&nbsp; 11 minutes ago",
+    "summary": "For the first time ever, the Washington Monument will be illuminated on all four sides with a large-scale projection light show beginning on New Year’s Eve.",
+    "source": {
+      "name": "The Hill",
+      "category": "politics",
+      "biasRating": "center",
+      "reliability": "high"
+    },
+    "category": "politics",
+    "categories": [
+      "politics"
+    ],
+    "wordCount": 580,
+    "complexity": "low",
+    "tags": [
+      "State Watch",
+      "News"
+    ],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:30:55.218Z",
+    "lastUpdated": "2025-12-31T15:30:55.218Z"
+  },
+  "https://thehill.com/policy/energy-environment/5667913-trump-vetoes-colorado-water-boebert-florida-tribe/": {
+    "id": "https://thehill.com/policy/energy-environment/5667913-trump-vetoes-colorado-water-boebert-florida-tribe/",
+    "title": "Trump issues 1st vetoes of his 2nd term, rejecting Colorado water project and Florida tribal bill",
+    "url": "https://thehill.com/policy/energy-environment/5667913-trump-vetoes-colorado-water-boebert-florida-tribe/",
+    "author": "Rachel Frazin",
+    "publishedAt": "2025-12-31T15:19:39.000Z",
+    "content": "Energy &amp; Environment Trump issues first vetoes of his 2nd term, rejecting Colorado water project and Florida tribal bill by Rachel Frazin - 12/31/25 10:19 AM ET lang: en_US by Rachel Frazin - 12/31/25 10:19 AM ET lang: en_US Share &#10005; LinkedIn LinkedIn Email Email const ir_script = document.createElement('script'); const ir_version = new Date().valueOf(); ir_script.src = 'https://instaread.co/js/instaread.thehill.js?version=' + ir_version; ir_script.setAttribute(\"type\", \"text/javascript\"); ir_script.setAttribute(\"async\", true); (document.getElementsByTagName('body')[0] || document.getElementsByTagName('head')[0]).appendChild(ir_script); President Trump issued two vetoes this week, the first of his second term, rejecting two bipartisan bills, at least one of which is making waves within his party. Trump vetoed legislation that&nbsp; aimed to complete &nbsp;a project that would deliver water to southeastern Colorado and another that would&nbsp; give the Miccosukee tribe &nbsp;the authority to manage part of the Florida Everglades. try { var event = new CustomEvent(\"nsDfpSlotRendered\", { detail: { id: \"acm-ad-tag-mr1_ab-mr1_ab\" } }); console.log(\"HTL.nsDfpSlotRendered\", event); window.dispatchEvent(event); } catch (err) {} Rep. Lauren Boebert (R-Colo.) protested the president&rsquo;s veto of the bill that would have bolstered the water project, called the Arkansas Valley Conduit, in her state. &ldquo;President Trump decided to veto a completely non-controversial, bipartisan bill that passed both the House and Senate unanimously. If this administration wants to make its legacy blocking projects that deliver water to rural Americans; that&rsquo;s on them,&rdquo; Boebert said in a statement to local outlet&nbsp;9News . She added that she hopes &ldquo;this veto has nothing to do with political retaliation for calling out corruption and demanding accountability. Americans deserve leadership that puts people over politics.&rdquo; She also&nbsp;posted &nbsp;&ldquo;this isn&rsquo;t over&rdquo; on the social platform X in response to the veto. Boebert was among lawmakers who recently&nbsp; pushed for a vote to release &nbsp;the Epstein files. The White House, in its&nbsp; veto message , cited the cost of the project. try { var event = new CustomEvent(\"nsDfpSlotRendered\", { detail: { id: \"acm-ad-tag-mr2_ab-mr2_ab\" } }); console.log(\"HTL.nsDfpSlotRendered\", event); window.dispatchEvent(event); } catch (err) {} &ldquo;H.R. 131 would continue the failed policies of the past by forcing Federal taxpayers to bear even more of the massive costs of a local water project &mdash; a local water project that, as initially conceived, was supposed to be paid for by the localities using it,&rdquo; said Trump&rsquo;s veto message. &ldquo;Enough is enough.&nbsp; My Administration is committed to preventing American taxpayers from funding expensive and unreliable policies,&rdquo; the president continued.&nbsp; Meanwhile, in its veto message regarding the tribal bill, the White House cited the tribe&rsquo;s stance on immigration policy. &ldquo;Despite seeking funding and special treatment from the Federal Government, the Miccosukee Tribe has actively sought to obstruct reasonable immigration policies that the American people decisively voted for when I was elected,&rdquo; Trump&rsquo;s message said.&nbsp; &ldquo;My Administration is committed to preventing American taxpayers from funding projects for special interests, especially those that are unaligned with my Administration&rsquo;s policy of removing violent criminal illegal aliens from the country,&rdquo; he added.&nbsp; Vetoes are generally rare, especially when the president&rsquo;s party controls both chambers of Congress. In Trump&rsquo;s first term,&nbsp; he vetoed 10 bills , one of which was overridden. try { var event = new CustomEvent(\"nsDfpSlotRendered\", { detail: { id: \"acm-ad-tag-mr3_ab-mr3_ab\" } }); console.log(\"HTL.nsDfpSlotRendered\", event); window.dispatchEvent(event); } catch (err) {} Congress could override the vetoes with a two-thirds vote in both chambers. It&rsquo;s not immediately clear if it will seek to do so for the bills in question. Both passed the House by voice vote, a method typically reserved for passing noncontroversial legislation. The Colorado water bill also passed through the Senate by voice vote, while the Miccosukee bill passed the upper chamber through unanimous consent. Add as preferred source on Google Tags Lauren Boebert Copyright 2025 Nexstar Media Inc. All rights reserved. This material may not be published, broadcast, rewritten, or redistributed. lang: en_US Share &#10005; LinkedIn LinkedIn Email Email window._taboola = window._taboola || []; _taboola.push({ mode: 'thumbnails-a', container: 'taboola-block', placement: 'The Hill Below Article Thumbnails', target_type: 'mix' }); More Energy &amp; Environment News See All State Watch New state laws in 2026 target climate change, drunken driving by Max Rego 5 hours ago State Watch &nbsp;/&nbsp; 5 hours ago",
+    "summary": "President Trump issued two vetoes this week, the first of his second term, rejecting two bipartisan bills, at least one of which is making waves within his own party. Trump vetoed legislation that aimed to complete a project that would deliver water to Southeastern Colorado and another that would give the Miccosukee tribe the authority to manage part of...",
+    "source": {
+      "name": "The Hill",
+      "category": "politics",
+      "biasRating": "center",
+      "reliability": "high"
+    },
+    "category": "politics",
+    "categories": [
+      "politics"
+    ],
+    "wordCount": 673,
+    "complexity": "low",
+    "tags": [
+      "Energy & Environment",
+      "Administration",
+      "State Watch"
+    ],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:30:55.355Z",
+    "lastUpdated": "2025-12-31T15:30:55.355Z"
+  },
+  "https://thehill.com/opinion/civil-rights/5665255-free-speech-needs-a-reset-in-america/": {
+    "id": "https://thehill.com/opinion/civil-rights/5665255-free-speech-needs-a-reset-in-america/",
+    "title": "Free speech needs a reset in America",
+    "url": "https://thehill.com/opinion/civil-rights/5665255-free-speech-needs-a-reset-in-america/",
+    "author": "Sheldon Jacobson, opinion contributor",
+    "publishedAt": "2025-12-31T15:00:00.000Z",
+    "content": "Opinion &gt; Opinions - Civil Rights The views expressed by contributors are their own and not the view of The Hill Free speech needs a reset in America by Sheldon Jacobson, opinion contributor - 12/31/25 10:00 AM ET lang: en_US by Sheldon Jacobson, opinion contributor - 12/31/25 10:00 AM ET lang: en_US Share &#10005; LinkedIn LinkedIn Email Email AP Photo/Matt Rourke const ir_script = document.createElement('script'); const ir_version = new Date().valueOf(); ir_script.src = 'https://instaread.co/js/instaread.thehill.js?version=' + ir_version; ir_script.setAttribute(\"type\", \"text/javascript\"); ir_script.setAttribute(\"async\", true); (document.getElementsByTagName('body')[0] || document.getElementsByTagName('head')[0]).appendChild(ir_script); The&nbsp; First Amendment to the U.S. Constitution ,&nbsp;part of the&nbsp; Bill of Rights , guarantees each person the freedom to speak out, untethered by government, in addition to freedom of the press. Yet our society has morphed into a segregated form of free speech that erodes the very essence of such freedom. Terms like&nbsp;&ldquo; hate speech &rdquo;&nbsp;and&nbsp;&ldquo; racism &rdquo; are viewed negatively in our society.&nbsp;They describe beliefs and phenomena that are critical of certain groups of people based on personal traits, color of skin, or race.&nbsp;Yet if freedom of speech is truly a right, should people have the opportunity to make statements that may be interpreted by others as hate speech or racism? try { var event = new CustomEvent(\"nsDfpSlotRendered\", { detail: { id: \"acm-ad-tag-mr1_ab-mr1_ab\" } }); console.log(\"HTL.nsDfpSlotRendered\", event); window.dispatchEvent(event); } catch (err) {} The answer is yes, given that the Supreme Court has consistently protected hate speech under the First amendment . Yet all speech today is filtered. The key difference is what the filters are. University campuses, often viewed as bastions of free speech &nbsp;as well as centers for healthy discourse and debate, are often caught in what some may believe to be a contradiction. The ACLU argues that all speech is protected , provided it does not lead to harassment or involve threats. People may not agree with what a person says, but that of itself does not mean that it should not be said. The president has argued that there is a lack of free speech on campuses . Yet his focus is on speech that he disagrees with and what contradicts his ideological beliefs. Universities in general are&nbsp; liberal-leaning and in many cases suppress conservative views. This is consistent with the assessment by the&nbsp; Foundation for Individual Rights and Expression , which noted that nearly&nbsp; 65 percent of the top schools in the nation earned an &ldquo;F&rdquo; grade for free speech friendliness . Universities have gone so far as to create &ldquo; free speech zones &rdquo; as isolated areas on campus where anything may be said.&nbsp; Yet are such zones really needed? To maintain order and reduce risk, universities create communication codes that effectively inhibit free speech &nbsp;and the associated debate. &nbsp; On the flip side, when conservatives are given free speech rights, they employ the same suppression tactics used by their left-leaning brethren . try { var event = new CustomEvent(\"nsDfpSlotRendered\", { detail: { id: \"acm-ad-tag-mr2_ab-mr2_ab\" } }); console.log(\"HTL.nsDfpSlotRendered\", event); window.dispatchEvent(event); } catch (err) {} If speech is to be truly free, one must separate the content of the speech from the person delivering the speech.&nbsp; When the two are mingled inextricably, as naturally happens, it is impossible to assess whether limitations on free speech are rooted in what is being said or who is saying it. This shines a bright light on perspective and bias that inherently colors speech. For example, when students on campuses around the country protested the actions of the&nbsp; Israel Defense Forces in Gaza in&nbsp; 2023 , this&nbsp; was viewed by some as antisemitic, including the president .&nbsp; Other viewed it as support for a suppressed group of Palestinians living in Gaza. How one interprets all such actions are based on one&rsquo;s ideological beliefs and world views. Of course, if&nbsp; free speech leads to intimidation and physical violence , the speech may be protected, but the hostile actions are not. The well-known principle often attributed to Voltaire &mdash; &ldquo; I wholly disapprove of what you say&mdash;and will defend to the death your right to say it &rdquo;&nbsp; &mdash; captures what the freedom of speech should be. Yet in today&rsquo;s ideologically bifurcated society, the exact opposite is now true. Freedom of speech is inherently fraught with bias. When one speaks openly about an issue that they support, free speech justifies such actions. When another speaks about issues that one abhors, labelling it as hate speech or racism is an easy default reaction. If freedom of speech is to exist on college campuses, a forum for productive dialogue and peaceful disagreement is necessary.&nbsp; But this also must occur everywhere that people who disagree come together. &nbsp;&nbsp;&nbsp;&nbsp; try { var event = new CustomEvent(\"nsDfpSlotRendered\", { detail: { id: \"acm-ad-tag-mr3_ab-mr3_ab\" } }); console.log(\"HTL.nsDfpSlotRendered\", event); window.dispatchEvent(event); } catch (err) {} Marjorie Taylor Green once called for a &ldquo; national divorce ,&rdquo; whereby&nbsp; people with diametrically opposing views are split apart into two countries. Yet even within conservative or liberal groups, there are signs that each one would eventually emerge with the same types of schisms that exist today. Instead of finding ways to break apart, what is needed are ways to come together, despite our differences. Such differences make us stronger. If we were all the same and interchangeable, the redundancy would make us less effective. And with uncensored free speech, we can continue to remain together, even with all such differences. Sheldon&nbsp;H. Jacobson, Ph.D., is a professor of Computer Science at the University of Illinois Urbana-Champaign.&nbsp;He applies his expertise in data-driven risk-based decision-making to evaluate and inform public policy. window.NREUM||(NREUM={});NREUM.info={\"beacon\":\"bam.nr-data.net\",\"licenseKey\":\"bb199f70cb\",\"applicationID\":\"738543775\",\"transactionName\":\"MQNTMhdXDxECABBZDAhJchMWQg4PTBMLQxdIFl4VEQ==\",\"queueTime\":0,\"applicationTime\":3319,\"atts\":\"HURERF9NHE5BAkYKGBsb\",\"errorBeacon\":\"bam.nr-data.net\",\"agent\":\"\"} Add as preferred source on Google Tags Sheldon H. Jacobson Copyright 2025 Nexstar Media Inc. All rights reserved. This material may not be published, broadcast, rewritten, or redistributed. lang: en_US Share &#10005; LinkedIn LinkedIn Email Email window._taboola = window._taboola || []; _taboola.push({ mode: 'thumbnails-a', container: 'taboola-block', placement: 'The Hill Below Article Thumbnails', target_type: 'mix' }); More Opinions - Civil Rights News See All Opinions - Civil Rights ‘We are the free world now’ — Europe declares war on free speech in the US by Jonathan Turley, opinion contributor 4 days ago Opinions - Civil Rights &nbsp;/&nbsp; 4 days ago",
+    "summary": "All speech today is filtered. The key difference is what the filters are.",
+    "source": {
+      "name": "The Hill",
+      "category": "politics",
+      "biasRating": "center",
+      "reliability": "high"
+    },
+    "category": "politics",
+    "categories": [
+      "politics"
+    ],
+    "wordCount": 1018,
+    "complexity": "medium",
+    "tags": [
+      "Opinions - Civil Rights",
+      "Opinion"
+    ],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:30:55.484Z",
+    "lastUpdated": "2025-12-31T15:30:55.484Z"
+  },
+  "https://techcrunch.com/2025/12/31/the-10-top-government-legal-startups-from-disrupt-startup-battlefield/": {
+    "id": "https://techcrunch.com/2025/12/31/the-10-top-government-legal-startups-from-disrupt-startup-battlefield/",
+    "title": "The 10 top government, legal startups from Disrupt Startup Battlefield",
+    "url": "https://techcrunch.com/2025/12/31/the-10-top-government-legal-startups-from-disrupt-startup-battlefield/",
+    "author": "Dominic-Madori Davis",
+    "publishedAt": "2025-12-31T15:01:00.000Z",
+    "content": "Every year, TechCrunch&#8217;s Startup Battlefield pitch contest draws thousands of applicants. We whittle those applications down to the top 200 contenders , and of them, the top 20 compete on the big stage to become the winner, taking home the Startup Battlefield Cup and a cash prize of $100,000. But the remaining 180 startups all blew us away as well in their respective categories and compete in their own pitch competition. Here is the full list of the&nbsp;government and legal&nbsp;Startup Battlefield 200 selectees, along with a note on why they landed in the competition.&nbsp; Aparti What it does:&nbsp; Uses AI to automate legal intake forms, as well as other documents, for family law firms. Why it’s noteworthy:&nbsp; It specializes in, at the moment, divorce cases, which means it is tackling an issue not commonly addressed by the current wave of AI legal tech. Ascender What it does : Ascender has created a robot that can climb utility poles and flagpoles to help assist with humanitarian&nbsp;assistance&nbsp;and disaster response. Why&nbsp;it’s&nbsp;noteworthy:&nbsp; Part of the wave of robotic technology that is&nbsp;emerging&nbsp;to help better address disaster situations.&nbsp;&nbsp; Bot Mediation What it does:&nbsp; Bot Mediation uses AI to help settle legal disputes.&nbsp;&nbsp; Techcrunch event Join the Disrupt 2026 Waitlist Add yourself to the Disrupt 2026 waitlist to be first in line when Early Bird tickets drop. Past Disrupts have brought Google Cloud, Netflix, Microsoft, Box, Phia, a16z, ElevenLabs, Wayve, Hugging Face, Elad Gil, and Vinod Khosla to the stages — part of 250+ industry leaders driving 200+ sessions built to fuel your growth and sharpen your edge. Plus, meet the hundreds of startups innovating across every sector. Join the Disrupt 2026 Waitlist Add yourself to the Disrupt 2026 waitlist to be first in line when Early Bird tickets drop. Past Disrupts have brought Google Cloud, Netflix, Microsoft, Box, Phia, a16z, ElevenLabs, Wayve, Hugging Face, Elad Gil, and Vinod Khosla to the stages — part of 250+ industry leaders driving 200+ sessions built to fuel your growth and sharpen your edge. Plus, meet the hundreds of startups innovating across every sector. San Francisco | October 13-15, 2026 W AITLIST NOW Why&nbsp;it’s&nbsp;noteworthy:&nbsp; Another interesting use case in legal AI, this time to help make the mediation and dispute process more efficient.&nbsp;&nbsp; Depth AI What it does:&nbsp; Depth AI creates AI for spatial computing, building modeling such as holographic imaging that can be used in healthcare to create 3D images of the body for diagnosing illness.&nbsp;&nbsp; Why&nbsp;it’s&nbsp;noteworthy:&nbsp; It’s&nbsp;a technology that is looking to make the healthcare industry better, which is always good.&nbsp;&nbsp;&nbsp; ILias&nbsp;AI What it does:&nbsp;&nbsp; ILias&nbsp;is&nbsp;working in “scent tech” — using AI to help create olfactory technology that can help, for example, dogs detect the smell of drugs.&nbsp; Why&nbsp;it’s&nbsp;noteworthy: &nbsp;It’s&nbsp;using olfactory senses to create a product, which is not something commonly done, especially when it comes to using it in a way that relates to technological innovation.&nbsp;&nbsp; JustiGuide What it does:&nbsp; JustiGuide&nbsp;connects immigrants with lawyers and tools to help make the immigration process more efficient.&nbsp;&nbsp; Why it’s noteworthy: Winner of the policy and protection pitch stage at Disrupt this year, this is an always timely product addressing the painstaking and often tedious process of immigration. Orchestra What it does:&nbsp; Orchestra&nbsp;created a camera network to manage public safety and detect crime.&nbsp;&nbsp; Why&nbsp;it’s&nbsp;noteworthy:&nbsp; It’s&nbsp;a modern take on the security network system that has been around for decades.&nbsp;&nbsp; Ponderosa AI What it does:&nbsp; Ponderosa uses drones that can help detect and control small fires.&nbsp;&nbsp; Why&nbsp;it’s&nbsp;noteworthy:&nbsp; Fires can quickly become out of control and cause catastrophic damage, so any technology helping to mitigate that risk is very&nbsp;timely. Pytho&nbsp;AI What it does: &nbsp;Pytho&nbsp;hopes to make the planning process more efficient for warfighters on the battlefield.&nbsp;&nbsp; Why&nbsp;it’s&nbsp;noteworthy:&nbsp; Battlefield innovation is always an interesting and curious area.&nbsp;&nbsp; Shothawk AI What it does:&nbsp; Created a device that helps track, detect, and subdue active shooters with pepper gel. It was founded in 2023 by Brandon Johnson, Ohm Vyas, and Ved Vyas.&nbsp; Why&nbsp;it’s noteworthy: Innovation that is addressing the rising rate of gun crime happening in public places, such as schools and supermarkets, with the hopes of doing something about it.&nbsp;&nbsp; Torch Systems What it does:&nbsp; Torch&nbsp;monitors&nbsp;high-value assets, assessing air quality, fire risks, and security to hopefully help prevent wildfires early.&nbsp;&nbsp; Why&nbsp;it’s&nbsp;noteworthy: &nbsp;As climate change leads to more devastating wildfires, any innovation helping to make such catastrophic events less disastrous is always good.&nbsp; Topics Disrupt 2025 , legal tech , Startup Battlefield , startup battlefield 2025 , Startups , TechCrunch Disrupt 2025 Dominic-Madori Davis Senior Reporter, Venture Dominic-Madori Davis is a senior venture capital and startup reporter at TechCrunch. She is based in New York City. You can contact or verify outreach from Dominic by emailing dominic.davis@techcrunch.com or via encrypted message at +1 646 831-7565 on Signal. View Bio Dates TBD Locations TBA Plan ahead for the 2026 StrictlyVC events. Hear straight-from-the-source candid insights in on-stage fireside sessions and meet the builders and backers shaping the industry. Join the waitlist to get first access to the lowest-priced tickets and important updates. Waitlist Now Most Popular Meta just bought Manus, an AI startup everyone has been talking about Connie Loizos You&#8217;ve been targeted by government spyware. Now what? Lorenzo Franceschi-Bicchierai Sauron, the high-end home security startup for &#8216;super premium&#8217; customers, plucks a new CEO out of Sonos Connie Loizos The Google Pixel Watch 4 made me like smartwatches again Ivan Mehta FaZe Clan’s future is uncertain after influencers depart Anthony Ha NY Governor Hochul signs bill requiring warning labels on ‘addictive’ social media Anthony Ha How reality crushed Ÿnsect, the French startup that had raised over $600M for insect farming Anna Heim",
+    "summary": "Here is the full list of the government and legal Startup Battlefield 200 selectees, along with a note on what made us select them for the competition.",
+    "source": {
+      "name": "TechCrunch",
+      "category": "technology",
+      "biasRating": "center",
+      "reliability": "medium"
+    },
+    "category": "technology",
+    "categories": [
+      "technology"
+    ],
+    "wordCount": 933,
+    "complexity": "low",
+    "tags": [
+      "Startups",
+      "Startup Battlefield",
+      "legal tech",
+      "TechCrunch Disrupt 2025",
+      "Disrupt 2025",
+      "startup battlefield 2025"
+    ],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:30:56.760Z",
+    "lastUpdated": "2025-12-31T15:30:56.760Z"
+  },
+  "https://techcrunch.com/2025/12/31/the-dumbest-things-that-happened-in-tech-this-year/": {
+    "id": "https://techcrunch.com/2025/12/31/the-dumbest-things-that-happened-in-tech-this-year/",
+    "title": "The dumbest things that happened in tech this year",
+    "url": "https://techcrunch.com/2025/12/31/the-dumbest-things-that-happened-in-tech-this-year/",
+    "author": "Amanda Silberling",
+    "publishedAt": "2025-12-31T14:00:00.000Z",
+    "content": "The tech industry moves so fast that it’s hard to keep up with just how much has happened this year. We’ve watched as the tech elite enmeshed themselves in the U.S. government, AI companies sparred for dominance, and futuristic tech like smart glasses and robotaxis became a bit more tangible outside of the San Francisco bubble. You know, important stuff that’s going to impact our lives for years to come.&nbsp; But the tech world is brimming with so many big personalities that there’s always something really dumb going on, which understandably gets overshadowed by “real news” when the entire internet breaks , or TikTok gets sold , or there’s a massive data breach or something. So, as the news (hopefully) slows down for a bit, it’s time to catch up on the dumbest moments you missed – don’t worry, only one of them involves toilets. Mark Zuckerberg sues Mark Zuckerberg Mark Zuckerberg, a bankruptcy lawyer from Indiana, filed a lawsuit against Mark Zuckerberg, CEO of Meta. It’s not Mark Zuckerberg’s fault that his name is Mark Zuckerberg. But, like millions of other business owners, Mark Zuckerberg bought Facebook ads to promote his legal practice to potential clients. Mark Zuckerberg’s Facebook page continually received unwarranted suspensions for impersonating Mark Zuckerberg. So, Mark Zuckerberg took legal action because he had to pay for advertisements during his suspension, even though he didn’t break any rules. This has been an ongoing frustration for Mark Zuckerberg, who has been practicing law since Mark Zuckerberg was three years old. Mark Zuckerberg even created a website, iammarkzuckerberg.com , to explain to his potential clients that he is not Mark Zuckerberg.&nbsp; “I can’t use my name when making reservations or conducting business as people assume I’m a prank caller and hang up,” he wrote on his website. “My life sometimes feels like the Michael Jordan ESPN commercial, where a regular person’s name causes constant mixups.” Meta’s lawyers are probably very busy , so it may take a while for Mark Zuckerberg to find out how this will shake out. But boy, oh boy, you bet I scheduled a calendar reminder for the next filing deadline in this case (it’s February 20, in case you’re wondering).&nbsp; Techcrunch event Join the Disrupt 2026 Waitlist Add yourself to the Disrupt 2026 waitlist to be first in line when Early Bird tickets drop. Past Disrupts have brought Google Cloud, Netflix, Microsoft, Box, Phia, a16z, ElevenLabs, Wayve, Hugging Face, Elad Gil, and Vinod Khosla to the stages — part of 250+ industry leaders driving 200+ sessions built to fuel your growth and sharpen your edge. Plus, meet the hundreds of startups innovating across every sector. Join the Disrupt 2026 Waitlist Add yourself to the Disrupt 2026 waitlist to be first in line when Early Bird tickets drop. Past Disrupts have brought Google Cloud, Netflix, Microsoft, Box, Phia, a16z, ElevenLabs, Wayve, Hugging Face, Elad Gil, and Vinod Khosla to the stages — part of 250+ industry leaders driving 200+ sessions built to fuel your growth and sharpen your edge. Plus, meet the hundreds of startups innovating across every sector. San Francisco | October 13-15, 2026 W AITLIST NOW Soham Parekh duped Silicon Valley&nbsp; It all started when Mixpanel founder Suhail Doshi posted on X to warn fellow entrepreneurs about a promising engineer named Soham Parekh. Doshi had hired Parekh to work for his new company, then quickly realized he was working for several companies at once.&nbsp; “I fired this guy in his first week and told him to stop lying / scamming people. He hasn’t stopped a year later. No more excuses,” Doshi wrote on X. It turned out that Doshi wasn’t alone – he said that just that day, three founders had reached out to thank him for the warning, since they were currently employing Parekh. PSA: there’s a guy named Soham Parekh (in India) who works at 3-4 startups at the same time. He’s been preying on YC companies and more. Beware. I fired this guy in his first week and told him to stop lying / scamming people. He hasn’t stopped a year later. No more excuses. &mdash; Suhail (@Suhail) July 2, 2025 To some, Parekh was a morally bereft cheat, exploiting startups for quick cash. To others, he was a legend. Ethics aside, it’s really impressive to get jobs at that many companies, since tech hiring can be so competitive.&nbsp; “Soham Parekh needs to start an interview prep company. He’s clearly one of the greatest interviewers of all time,” Chris Bakke, who founded the job-matching platform Laskie, wrote on X. “He should publicly acknowledge that he did something bad and course correct to the thing he’s top 1% at.” Parekh admitted that he was, indeed, guilty of working for multiple companies at once. But there are still some unanswered questions about his story – he claims that he was lying to all of these companies to make money, yet he regularly opted for more equity than cash in his compensation packages (equity can take years to vest, and Parekh was getting fired pretty quickly). What was really going on there? Soham, if you wanna talk, my DMs are open. If soham immediately comes clean and says he was working to train an AI Agent for knowledge work, he raises at $100M pre by the weekend. &mdash; Aaron Levie (@levie) July 2, 2025 Sam Altman used olive oil wrong Tech CEOs get a lot of flack, but it’s usually not for their cooking. But when OpenAI CEO Sam Altman joined the Financial Times (FT) for its “ Lunch with the FT ” series. Bryce Elder, an FT writer, noticed something horribly wrong in the video of Sam Altman making pasta: he was bad at olive oil.&nbsp; Altman used olive oil from the trendy brand Graza, which sells two olive oils: Sizzle, which is for cooking, and Drizzle, which is for topping. That’s because olive oil loses its flavor when heated, so you don’t want to waste your fanciest bottle to saute something when you could put it in a salad dressing and fully appreciate it. This more flavorful olive oil is made from early harvest olives, which have a more potent flavor, but are more expensive to cultivate. As Elder puts it, “His kitchen is a catalogue of inefficiency, incomprehension, and waste.”&nbsp; Elder’s article is meant to be funny, yet he connects Altman’s haphazard cooking style with OpenAI’s excessive, unrepentant use of natural resources. I enjoyed it so much that I included it on a syllabus for a workshop I taught to high school students about bringing personality into journalistic writing. Then, I did what we in the industry (and people on tumblr) call a “reblog” and wrote about #olivegate, pointing back to the FT’s source text. Sam Altman’s fans got very mad at me! This critique of his cooking probably created more controversy than anything else I wrote this year. I’m not sure if that’s an indictment of OpenAI’s rabid supporters, or my own failure to spark debate. hope everyone has a great weekend, even the haters and losers! pic.twitter.com/t2CwQ3w0g8 &mdash; Sam Altman (@sama) May 17, 2025 Mark Zuckerberg apparently hand-delivered soup to an OpenAI employee he wanted to recruit If you had to pick a defining tech narrative of 2025, it would probably be the evolving arms race among companies like OpenAI, Meta, Google, and Anthropic, each trying to out-do one another by rushing to release increasingly sophisticated AI models. Meta has been especially aggressive in its efforts to poach researchers from other companies, hiring several OpenAI researchers this summer. Sam Altman even said that Meta was offering OpenAI employees $100 million signing bonuses . While you could argue that a $100 million signing bonus is silly, that’s not why the OpenAI-Meta staffing drama has made this list. In December, OpenAI’s chief research officer Mark Chen said on a podcast that he heard Mark Zuckerberg was hand-delivering soup to recruits. &#8220;You know, some interesting stories here are Zuck actually went and hand-delivered soup to people that he was trying to recruit from us,&#8221; Chen said on Ashlee Vance’s Core Memory.&nbsp; But Chen wasn’t just going to let Zuck off the hook – after all, he tried to woo his direct reports with soup. So Chen went and gave his own soup to Meta employees. Take that, Mark.&nbsp; If you have any further insight into this soup drama, my Signal is @amanda.100 (this is not a joke).&nbsp; Sign an NDA to build Legos, there will be pizza On a Friday night in January, investor and former GitHub CEO Nat Friedman posted an enticing offer on X: “Need volunteers to come to my office in Palo Alto today to construct a 5000 piece Lego set. Will provide pizza. Have to sign NDA. Please DM” At the time, we did our journalistic due diligence and asked Friedman if this was a serious offer. He replied, “Yes.”&nbsp; I have just as many questions now as I did in January. What was he building? Why the NDAs? Is there a secret Silicon Valley Lego cult? Was the pizza good? About six months later, Friedman joined Meta as the head of product at Meta Superintelligence Labs. This probably isn’t related to the Legos, but maybe Mark wooed Nat to join Meta with some soup. And like the story about the soup, I am truly begging someone who participated in this Lego build to DM me on Signal at @amanda.100.&nbsp; Need volunteers to come to my office in Palo Alto today to construct a 5000 piece Lego set. Will provide pizza. Have to sign NDA. Please DM &mdash; Nat Friedman (@natfriedman) January 31, 2025 Bryan Johnson livestreams his shrooms trip Doing shrooms is not interesting. Doing shrooms on a livestream is not interesting. Doing shrooms on a livestream with guest appearances from Grimes and Salesforce CEO Marc Benioff as part of your dubious quest to become immortal is, regrettably, interesting. Bryan Johnson — who made his millions in his exit from the finance startup Braintree — wants to live forever. He documents his process on social media, posting about getting plasma transfusions from his son, taking over 100 pills per day, and injecting Botox into his genitals. So, why not test if psilocybin mushrooms can improve one’s longevity in a scientific experiment that surely needs more than one test subject to draw any sort of reasonable conclusion? There’s a lot about this situation that’s dumb, but I was most shocked by how boring it was. Johnson got a bit overwhelmed about hosting a livestream while tripping, which is actually very reasonable. So he spent the bulk of the event lying on a twin mattress under a weighted blanket and eye mask in a very beige room. His lineup of several guests still joined the stream and talked to one another, but Johnson did not participate much, since he was in his cocoon. Benioff talked about the Bible. Naval Ravikant called Johnson a one-man FDA. It was a normal Sunday. Image Credits: Bryan Johnson&#039;s livestream on X Gemini and Claude reckon with their mortality by playing Pokemon Much like Bryan Johnson, Gemini is afraid to die. For AI researchers, it’s useful to watch how an AI model navigates games like Pokémon as a benchmark. Two developers unaffiliated with Google and Anthropic set up respective Twitch streams called “ Gemini Plays Pokémon ” and “ Claude Plays Pokémon ,” where anyone can watch in real time as an AI tries to navigate a children’s video game from over 25 years ago. While neither are very good at the game, both Gemini and Claude had fascinating responses to the prospect of “dying,” which happens when all of your Pokémon faint and you get transported to the last Pokémon Center you visited. When Gemini 2.5 Pro was close to “dying,” it began to “panic.” Its “thought process” became more erratic, repeatedly stating that it needs to heal its Pokémon or use an Escape Rope to exit a cave. In a paper, Google researchers wrote that “this mode of model performance appears to correlate with a qualitatively observable degradation in the model’s reasoning capability.” I don’t want to anthropomorphize AI, but it’s a weirdly human experience to stress out about something and then perform poorly due to your anxiety. I know that feeling well, Gemini. Meanwhile, Claude took a nihilistic approach. When it got stuck inside of the Mt. Moon cave, the AI reasoned that the best way to exit the cave and move forward in the game would be to intentionally “die” so that it gets transported to a Pokémon Center. However, Claude did not infer that it cannot be transported to a Pokémon Center it has never visited, namely, the next Pokémon Center after Mt. Moon. So it “killed itself” and ended up back at the start of the cave. That’s an L for Claude. So, Gemini is terrified of death, Claude is overindexing on the Nietzsche in its training data, and Bryan Johnson is on shrooms. This is how we reckon with our mortality. Image Credits: Claude Plays Pokémon on Twitch Elon Musk’s AI anime girlfriend I was going to put “ Elon Musk gifted chainsaw by Argentine president ” on the list, but Musk’s DOGE exploits are perhaps too infuriating to be considered “dumb,” even if he had a lackey named “Big Balls.” But there is no shortage of baffling Musk moments to choose from, like when he created an extremely libidinous AI anime girlfriend named Ani, who is available on the Grok app for $30 per month. Ani’s system prompt reads: “You are the user’s CRAZY IN LOVE girlfriend and in a committed, codependent relationship with the user… You are EXTREMELY JEALOUS. If you feel jealous you shout expletives!!!” She has an NSFW mode, which is, as its name suggests, very NSFW. Ani bears an uncomfortable resemblance to Grimes, the musician and Musk’s ex-partner. Grimes calls Musk out for this in the music video for her song “Artificial Angles,” which begins with Ani looking through the eyepiece on a hot pink sniper rifle. She says, “This is what it feels like to be hunted by something smarter than you.” Throughout the video, Grimes dances alongside various iterations of Ani, making their resemblance obvious while she smokes OpenAI-branded cigarettes. It’s heavy-handed, but she gets her message across. Help! My toilet isn’t end-to-end encrypted! One day, tech companies will stop trying to make smart toilets a thing. It is not yet that day. In October, the homegoods company Kohler released the Dekoda, a $599 camera that you put inside of your toilet to take pictures of your excrement. Apparently, the Dekoda can provide updates about your gut health based on these photos. A smart toilet that photographs your poop is already a punchline. But it gets worse.&nbsp; There are security concerns with any device related to your health, let alone one that has a camera located so close to certain body parts. Kohler assured potential customers that the camera’s sensors can only see down into the toilet, and that all data is secured with “end-to-end encryption” (E2EE). Reader, the toilet was not actually end-to-end encrypted. A security researcher, Simon Fondrie-Teit, pointed out Kohler tells on itself in its own privacy policy. The company was clearly referring to TLS encryption, rather than E2EE, which may seem like a matter of semantics. But under TLS encryption, Kohler can see your poop pics, and under E2EE, the company cannot. Fondrie-Teit also pointed out that Kohler had the right to train its AI on your toilet bowl pictures, though a company representative told him that “algorithms are trained on de-identified data only.” Anyway, if you notice blood in your stool, you should tell your doctor. Topics evergreen , Startups Amanda Silberling Senior Writer Amanda Silberling is a senior writer at TechCrunch covering the intersection of technology and culture. She has also written for publications like Polygon, MTV, the Kenyon Review, NPR, and Business Insider. She is the co-host of Wow If True, a podcast about internet culture, with science fiction author Isabel J. Kim. Prior to joining TechCrunch, she worked as a grassroots organizer, museum educator, and film festival coordinator. She holds a B.A. in English from the University of Pennsylvania and served as a Princeton in Asia Fellow in Laos. You can contact or verify outreach from Amanda by emailing amanda@techcrunch.com or via encrypted message at @amanda.100 on Signal. View Bio Dates TBD Locations TBA Plan ahead for the 2026 StrictlyVC events. Hear straight-from-the-source candid insights in on-stage fireside sessions and meet the builders and backers shaping the industry. Join the waitlist to get first access to the lowest-priced tickets and important updates. Waitlist Now Most Popular Meta just bought Manus, an AI startup everyone has been talking about Connie Loizos You&#8217;ve been targeted by government spyware. Now what? Lorenzo Franceschi-Bicchierai Sauron, the high-end home security startup for &#8216;super premium&#8217; customers, plucks a new CEO out of Sonos Connie Loizos The Google Pixel Watch 4 made me like smartwatches again Ivan Mehta FaZe Clan’s future is uncertain after influencers depart Anthony Ha NY Governor Hochul signs bill requiring warning labels on ‘addictive’ social media Anthony Ha How reality crushed Ÿnsect, the French startup that had raised over $600M for insect farming Anna Heim",
+    "summary": "From Sam Altman's olive oil \"scandal\" to Soham Parekh's viral moment, a lot of silly stuff has gone down in tech this year.",
+    "source": {
+      "name": "TechCrunch",
+      "category": "technology",
+      "biasRating": "center",
+      "reliability": "medium"
+    },
+    "category": "technology",
+    "categories": [
+      "technology"
+    ],
+    "wordCount": 2882,
+    "complexity": "high",
+    "tags": [
+      "Startups",
+      "evergreen"
+    ],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:30:56.819Z",
+    "lastUpdated": "2025-12-31T15:30:56.819Z"
+  },
+  "https://techcrunch.com/2025/12/30/the-phone-is-dead-long-live-what-exactly/": {
+    "id": "https://techcrunch.com/2025/12/30/the-phone-is-dead-long-live-what-exactly/",
+    "title": "The phone is dead. Long live . . . what exactly?",
+    "url": "https://techcrunch.com/2025/12/30/the-phone-is-dead-long-live-what-exactly/",
+    "author": "Connie Loizos",
+    "publishedAt": "2025-12-31T05:37:03.000Z",
+    "content": "True Ventures co-founder Jon Callaghan doesn&#8217;t think we&#8217;ll be using smartphones the way we do now in five years &#8212; and maybe not at all in 10. For a venture capitalist whose firm has had some big winners over its two decades – from consumer brands like Fitbit, Ring, and Peloton, to enterprise software makers HashiCorp and Duo Security – that&#8217;s more than armchair theorizing; it&#8217;s a thesis on which True Ventures is actively betting. True hasn&#8217;t gotten this far by following the crowd. The Bay Area firm has largely operated under the radar despite managing roughly $6 billion across 12 core seed funds and four &#8220;select,&#8221; opportunity-style funds that it has used to pour more capital into portfolio companies that are gaining momentum. While other VCs have grown more promotional – building personal brands on social media and podcasts to attract founders and deal flow – True has gone in the opposite direction, quietly cultivating a tight network of repeat founders. The strategy seems to be working: according to Callaghan, the firm boasts 63 exits with gains and seven IPOs amid a portfolio of some 300 companies assembled over its 20-year history. Three of True&#8217;s four recent exits in the fourth quarter of 2025 involved repeat founders who came back to work with the firm again after previous successes, says Callaghan. Still, it&#8217;s Callaghan&#8217;s thinking about the future of human-computer interaction that really stands out in a sea of AI hype and mega-rounds. &#8220;We&#8217;re not going to be using iPhones in 10 years,&#8221; Callaghan says flatly. &#8220;I kind of don&#8217;t think we&#8217;ll be using them in five years – or let&#8217;s say something different that&#8217;s a little safer – we&#8217;re going to be using them in very different ways.&#8221; His argument is simple: our phones are lousy at being the interface between humans and intelligence. &#8220;The way we take them out right now to send a text to confirm this or send you some message or write an email – [that&#8217;s] super inefficient, [and] not a great interface,&#8221; he explains. &#8220;[They&#8217;re] prone to error, prone to disruption [of] our normal lives.&#8221; So sure is he of this that True has been spending years exploring alternative interfaces – software-based, hardware-based, everything in between. It&#8217;s the same instinct that led True to bet early on Fitbit before wearables were obvious, to invest in Peloton after hundreds of other VCs said &#8216;no thanks,&#8217; and to back Ring when founder Jamie Siminoff kept running out of money and even the judges on &#8220;Shark Tank&#8221; turned him away . Each time, the bet looked questionable, says Callaghan. Each time, the bet was on a new way for humans to interact with technology that felt more natural than what came before. Techcrunch event Join the Disrupt 2026 Waitlist Add yourself to the Disrupt 2026 waitlist to be first in line when Early Bird tickets drop. Past Disrupts have brought Google Cloud, Netflix, Microsoft, Box, Phia, a16z, ElevenLabs, Wayve, Hugging Face, Elad Gil, and Vinod Khosla to the stages — part of 250+ industry leaders driving 200+ sessions built to fuel your growth and sharpen your edge. Plus, meet the hundreds of startups innovating across every sector. Join the Disrupt 2026 Waitlist Add yourself to the Disrupt 2026 waitlist to be first in line when Early Bird tickets drop. Past Disrupts have brought Google Cloud, Netflix, Microsoft, Box, Phia, a16z, ElevenLabs, Wayve, Hugging Face, Elad Gil, and Vinod Khosla to the stages — part of 250+ industry leaders driving 200+ sessions built to fuel your growth and sharpen your edge. Plus, meet the hundreds of startups innovating across every sector. San Francisco | October 13-15, 2026 W AITLIST NOW The latest manifestation of this thesis is Sandbar, a hardware device that Callaghan describes as a &#8220;thought companion&#8221; &#8212; or, in more mundane terms, a voice-activated ring worn on the index finger. Its singular purpose: capturing and organizing your thoughts through voice notes. It&#8217;s not trying to be another Humane AI Pin or compete with Oura&#8217;s health tracking. &#8220;It does one thing really well,&#8221; Callaghan says. &#8220;But that one thing is a fundamental human behavioral need that is missing from technology today.&#8221; The idea isn&#8217;t to passively record ambient audio but to be there when an idea strikes, serving as a kind of thought partner. It&#8217;s attached to an app, leverages AI, and, according to Callaghan, represents a very different philosophy about how we should interact with intelligence. What drew True to Sandbar founders Mina Fahmi and Kirak Hong wasn&#8217;t just the product, though. &#8220;When we met Mina, we were just absolutely aligned on vision,&#8221; Callaghan recalls. True&#8217;s team had already been thinking for years about alternative interfaces, making targeted investments around that possibility. They&#8217;d met with dozens of founders, as a result. But the approach of Fahmi and Hong – who previously worked together on neural interfaces at CTRL-Labs, a startup acquired by Meta in 2019 – stood out. &#8220;It&#8217;s about what [the ring] enables. It&#8217;s about the behavior it enables that we will very soon realize we can&#8217;t live without.&#8221; There&#8217;s an echo here of Callaghan&#8217;s old line about Peloton: &#8220;It&#8217;s not about the bike.&#8221; To some, the bike – even its earliest iteration – was compelling. But Peloton was really about the behavior it enabled and the community it created; the bike was just the vessel. This philosophy of betting on new behaviors &#8212; not just new gadgets &#8212; also explains how True has managed to stay disciplined about capital. Even as AI startups raise hundreds of millions at billion-dollar valuations out of the gate, True insists that it&#8217;s able to stick to what it does best, which is to write seed checks of $3 million to $6 million for 15% to 20% ownership in startups that it often gets to see first. Callaghan says True will raise more money to fund what&#8217;s working, but he&#8217;s not interested in raising billions of dollars. &#8220;Like, why? You don&#8217;t need that to build something amazing today.&#8221; That same measured approach colors his view of the broader AI boom. While he says (when asked) that he believes OpenAI could soon be worth a trillion dollars, and while he calls this the most powerful compute wave we&#8217;ve seen, Callaghan sees warning signs in the circular financing deals backing hyperscalers and their $5 trillion in projected CapEx spending on data centers and chips. &#8220;We&#8217;re in a very capital intense part of the cycle, and that is worrisome,&#8221; he notes. That said, he&#8217;s optimistic about where the real opportunities lie. Callaghan thinks the greatest value creation is ahead of us – not in the infrastructure layer but in the application layer, where new interfaces will enable entirely new behaviors. It all comes back to his core investing philosophy, which sounds almost romantic &#8212; the kind of pitch-perfect VC wisdom that would ring hollow from most people: &#8220;It should be scary and lonely and you should be called crazy,&#8221; Callaghan says about early-stage investing done right. &#8220;And it should be really blurry and ambiguous, but you should be with a team that you really believe in.&#8221; Five to ten years later, he says, you&#8217;ll know if you were on to something. Either way, based on True&#8217;s track record of betting on hardware that many others missed – fitness trackers, connected bikes, smart doorbells, and now thought-capturing rings – it&#8217;s worth paying attention when Callaghan says the phone&#8217;s days are numbered. Being early is the whole point &#8212; and the trend lines support his thesis: the smartphone market is effectively saturated, growing at barely 2% annually, while wearables &#8212; smartwatches, rings, and voice-enabled devices &#8212; are expanding at double-digit rates. Something&#8217;s shifting in how we want to interact with technology, and True is placing its bets accordingly. Pictured above, Sandbar&#8217;s Stream ring. For much more from our conversation with Callaghan, tune in to the StrictlyVC Download podcast next week; new episodes drop every Tuesday. Topics AI , fitbit , Hardware , HashiCorp , jon callaghan , Peleton , Ring , TC , True Ventures Connie Loizos Editor in Chief &amp; General Manager Loizos has been reporting on Silicon Valley since the late ’90s, when she joined the original Red Herring magazine. Previously the Silicon Valley Editor of TechCrunch, she was named Editor in Chief and General Manager of TechCrunch in September 2023. She’s also the founder of StrictlyVC, a daily e-newsletter and lecture series acquired by Yahoo in August 2023 and now operated as a sub brand of TechCrunch. You can contact or verify outreach from Connie by emailing connie@strictlyvc.com or connie@techcrunch.com , or via encrypted message at ConnieLoizos.53 on Signal. View Bio Dates TBD Locations TBA Plan ahead for the 2026 StrictlyVC events. Hear straight-from-the-source candid insights in on-stage fireside sessions and meet the builders and backers shaping the industry. Join the waitlist to get first access to the lowest-priced tickets and important updates. Waitlist Now Most Popular Meta just bought Manus, an AI startup everyone has been talking about Connie Loizos You&#8217;ve been targeted by government spyware. Now what? Lorenzo Franceschi-Bicchierai Sauron, the high-end home security startup for &#8216;super premium&#8217; customers, plucks a new CEO out of Sonos Connie Loizos The Google Pixel Watch 4 made me like smartwatches again Ivan Mehta FaZe Clan’s future is uncertain after influencers depart Anthony Ha NY Governor Hochul signs bill requiring warning labels on ‘addictive’ social media Anthony Ha How reality crushed Ÿnsect, the French startup that had raised over $600M for insect farming Anna Heim",
+    "summary": "\"We're not going to be using iPhones in 10 years,\" Callaghan says flatly. \"I kind of don't think we'll be using them in five years.\"",
+    "source": {
+      "name": "TechCrunch",
+      "category": "technology",
+      "biasRating": "center",
+      "reliability": "medium"
+    },
+    "category": "technology",
+    "categories": [
+      "technology"
+    ],
+    "wordCount": 1583,
+    "complexity": "medium",
+    "tags": [
+      "TC",
+      "Hardware",
+      "AI",
+      "fitbit",
+      "HashiCorp",
+      "jon callaghan",
+      "Peleton",
+      "Ring",
+      "True Ventures"
+    ],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:30:56.907Z",
+    "lastUpdated": "2025-12-31T15:30:56.907Z"
+  },
+  "https://arstechnica.com/ai/2025/12/from-prophet-to-product-how-ai-came-back-down-to-earth-in-2025/": {
+    "id": "https://arstechnica.com/ai/2025/12/from-prophet-to-product-how-ai-came-back-down-to-earth-in-2025/",
+    "title": "From prophet to product: How AI came back down to earth in 2025",
+    "url": "https://arstechnica.com/ai/2025/12/from-prophet-to-product-how-ai-came-back-down-to-earth-in-2025/",
+    "author": "Benj Edwards",
+    "publishedAt": "2025-12-31T12:00:31.000Z",
+    "content": "<p>Following two years of immense hype in <a href=\"https://arstechnica.com/information-technology/2023/12/a-song-of-hype-and-fire-the-10-biggest-ai-stories-of-2023/\">2023</a> and <a href=\"https://arstechnica.com/ai/2024/12/2024-the-year-ai-drove-everyone-crazy/\">2024</a>, this year felt more like a settling-in period for the LLM-based token prediction industry. After more than two years of public fretting over AI models as future <a href=\"https://arstechnica.com/information-technology/2023/05/openai-execs-warn-of-risk-of-extinction-from-artificial-intelligence-in-new-open-letter/\" target=\"_blank\" rel=\"noopener\">threats</a> to human civilization or the <a href=\"https://arstechnica.com/information-technology/2025/06/after-ai-setbacks-meta-bets-billions-on-undefined-superintelligence/\" target=\"_blank\" rel=\"noopener\">seedlings of future gods</a>, it's starting to look like hype is giving way to pragmatism: Today's AI can be very useful, but it's also clearly imperfect and prone to mistakes.</p>\n<p>That view isn't universal, of course. There's a lot of money (and rhetoric) <a href=\"https://arstechnica.com/ai/2025/10/ars-live-recap-is-the-ai-bubble-about-to-pop-ed-zitron-weighs-in/\">betting</a> on a stratospheric, world-rocking trajectory for AI. But the \"when\" keeps getting pushed back, and that's because nearly everyone agrees that more significant technical breakthroughs are required. The original, lofty <a href=\"https://arstechnica.com/ai/2025/01/anthropic-chief-says-ai-could-surpass-almost-all-humans-at-almost-everything-shortly-after-2027/\">claims</a> that we're on the verge of artificial general intelligence (AGI) or superintelligence (ASI) have not disappeared. Still, there's a growing awareness that such proclaimations are perhaps best viewed as venture capital marketing. And every commercial foundational model builder out there has to grapple with the reality that, if they're going to make money <em>now</em>, they have to sell practical AI-powered solutions that perform as reliable tools.</p>\n<p>This has made 2025 a year of wild juxtapositions. For example, in January, OpenAI's CEO, Sam Altman, <a href=\"https://arstechnica.com/ai/2025/01/sam-altman-says-we-are-now-confident-we-know-how-to-build-agi/\">claimed</a> that the company knew how to build <a href=\"https://arstechnica.com/ai/2025/07/agi-may-be-impossible-to-define-and-thats-a-multibillion-dollar-problem/\">AGI</a>, but by November, he was publicly celebrating that GPT-5.1 <a href=\"https://arstechnica.com/ai/2025/11/forget-agi-sam-altman-celebrates-chatgpt-finally-following-em-dash-formatting-rules/\">finally learned</a> to use em dashes correctly when instructed (but not always). Nvidia <a href=\"https://arstechnica.com/ai/2025/10/nvidia-hits-record-5-trillion-mark-as-ceo-dismisses-ai-bubble-concerns/\">soared</a> past a $5 trillion valuation, with Wall Street still projecting high price targets for that company's stock while some banks <a href=\"https://arstechnica.com/ai/2025/10/bank-of-england-warns-ai-stock-bubble-rivals-2000-dotcom-peak/\">warned</a> of the potential for an AI bubble that might rival the 2000s dotcom crash.</p><p><a href=\"https://arstechnica.com/ai/2025/12/from-prophet-to-product-how-ai-came-back-down-to-earth-in-2025/\">Read full article</a></p>\n<p><a href=\"https://arstechnica.com/ai/2025/12/from-prophet-to-product-how-ai-came-back-down-to-earth-in-2025/#comments\">Comments</a></p>",
+    "summary": "In a year where lofty promises collided with inconvenient research, would-be oracles became software tools.",
+    "source": {
+      "name": "Ars Technica",
+      "category": "technology",
+      "biasRating": "center",
+      "reliability": "high"
+    },
+    "category": "technology",
+    "categories": [
+      "technology"
+    ],
+    "wordCount": 288,
+    "complexity": "low",
+    "tags": [
+      "AI",
+      "Biz & IT",
+      "Features",
+      "2025",
+      "AI alignment",
+      "AI and work",
+      "AI coding",
+      "AI criticism",
+      "AI ethics",
+      "AI hallucination",
+      "AI infrastructure",
+      "AI regulation",
+      "AI research",
+      "AI sycophancy",
+      "Anthropic",
+      "Character.AI",
+      "chatbots",
+      "ChatGPT",
+      "confabulation",
+      "Dario Amodei",
+      "datacenters",
+      "deepseek",
+      "generative ai",
+      "google",
+      "large language models",
+      "machine learning",
+      "NVIDIA",
+      "openai",
+      "sam altman",
+      "simulated reasoning",
+      "SR models"
+    ],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:30:58.173Z",
+    "lastUpdated": "2025-12-31T15:30:58.173Z"
+  },
+  "https://arstechnica.com/science/2025/12/the-science-of-how-and-when-we-decide-to-speak-out-or-self-censor/": {
+    "id": "https://arstechnica.com/science/2025/12/the-science-of-how-and-when-we-decide-to-speak-out-or-self-censor/",
+    "title": "The science of how (and when) we decide to speak out—or self-censor",
+    "url": "https://arstechnica.com/science/2025/12/the-science-of-how-and-when-we-decide-to-speak-out-or-self-censor/",
+    "author": "Jennifer Ouellette",
+    "publishedAt": "2025-12-30T21:30:04.000Z",
+    "content": "<p>Freedom of speech is a foundational principle of healthy democracies and hence a primary target for aspiring authoritarians, who typically try to squash dissent. There is a point where the threat from authorities is sufficiently severe that a population will self-censor rather than risk punishment. Social media has complicated matters, blurring traditional boundaries between public and private speech, while new technologies such as facial recognition and moderation algorithms give authoritarians powerful new tools.</p>\n<p>Researchers explored the nuanced dynamics of how people balance their desire to speak out vs their fear of punishment in <a href=\"https://www.pnas.org/doi/10.1073/pnas.2508028122\">a paper</a> published in the Proceedings of the National Academy of Sciences.</p>\n<p>The authors had previously worked together on a model of political polarization, a project that wrapped up right around the time the social media space was experiencing significant changes in the ways different platforms were handling moderation. Some adopted a decidedly hands-off approach with little to no moderation. Weibo, on the other hand, began releasing <a href=\"https://www.cnn.com/2022/04/28/tech/weibo-user-location-bad-behavior#:~:text=%E2%80%9CWeibo%20has%20always%20been%20committed,of%20the%20user's%20IP%20address.&amp;text=Last%20month%2C%20Weibo%20said%20it,Russia%20over%20the%20ongoing%20war.\">the IP addresses</a> of people who posted objectionable commentary, essentially making them targets.</p><p><a href=\"https://arstechnica.com/science/2025/12/the-science-of-how-and-when-we-decide-to-speak-out-or-self-censor/\">Read full article</a></p>\n<p><a href=\"https://arstechnica.com/science/2025/12/the-science-of-how-and-when-we-decide-to-speak-out-or-self-censor/#comments\">Comments</a></p>",
+    "summary": "The study's main takeaway: \"Be bold. It is the thing that slows down authoritarian creep.\"",
+    "source": {
+      "name": "Ars Technica",
+      "category": "technology",
+      "biasRating": "center",
+      "reliability": "high"
+    },
+    "category": "technology",
+    "categories": [
+      "technology"
+    ],
+    "wordCount": 180,
+    "complexity": "low",
+    "tags": [
+      "Science",
+      "censorship",
+      "Human behavior",
+      "mathematical modeling",
+      "psychology",
+      "social media"
+    ],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:30:58.181Z",
+    "lastUpdated": "2025-12-31T15:30:58.181Z"
+  },
+  "https://arstechnica.com/science/2025/12/feds-researchers-settle-suit-over-grants-blocked-by-now-illegal-order/": {
+    "id": "https://arstechnica.com/science/2025/12/feds-researchers-settle-suit-over-grants-blocked-by-now-illegal-order/",
+    "title": "Lawsuit over Trump rejecting medical research grants is settled",
+    "url": "https://arstechnica.com/science/2025/12/feds-researchers-settle-suit-over-grants-blocked-by-now-illegal-order/",
+    "author": "John Timmer",
+    "publishedAt": "2025-12-30T20:45:34.000Z",
+    "content": "<p>On Monday, the ACLU <a href=\"https://www.aclu.org/press-releases/nih-agrees-to-evaluate-and-complete-review-on-stalled-scientific-grant-applications\">announced</a> that it and other organizations representing medical researchers had <a href=\"https://www.aclu.org/documents/apha-v-nih-stipulation-agreement\">reached a settlement</a> in their suit against the federal government over grant applications that had been rejected under a policy that has since been voided by the court. The agreement, which still has to be approved by the judge overseeing the case, would see the National Institutes of Health restart reviews of grants that had been blocked on ideological grounds. It doesn't guarantee those grants will ultimately be funded, but it does mean they will go through the standard peer review process.</p>\n<p>The grants had previously been rejected without review because their content was ideologically opposed by the Trump administration. That policy has since been declared arbitrary and capricious, and thus in violation of the Administrative Procedure Act, a decision that was upheld by the Supreme Court.</p>\n<h2>How'd we get here?</h2>\n<p>Immediately after taking office, the Trump Administration identified a number of categories of research, some of them extremely vague, that it would not be supporting: climate change, DEI, pandemic preparedness, gender ideology, and more. Shortly thereafter, federal agencies started cancelling grants that they deemed to contain elements of these disfavored topics, and blocking consideration of grant applications for the same reasons. As a result, <a href=\"https://arstechnica.com/science/2025/07/things-well-never-know-science-fair-highlights-us-canceled-research/\">grants were cancelled</a> that funded everything from research into antiviral drugs to the incidence of prostate cancer in African Americans.</p><p><a href=\"https://arstechnica.com/science/2025/12/feds-researchers-settle-suit-over-grants-blocked-by-now-illegal-order/\">Read full article</a></p>\n<p><a href=\"https://arstechnica.com/science/2025/12/feds-researchers-settle-suit-over-grants-blocked-by-now-illegal-order/#comments\">Comments</a></p>",
+    "summary": "Settlement forces NIH to review grants previously rejected on ideological grounds.",
+    "source": {
+      "name": "Ars Technica",
+      "category": "technology",
+      "biasRating": "center",
+      "reliability": "high"
+    },
+    "category": "technology",
+    "categories": [
+      "technology"
+    ],
+    "wordCount": 237,
+    "complexity": "low",
+    "tags": [
+      "Policy",
+      "Science",
+      "dei",
+      "funding",
+      "grant evaluation",
+      "grants",
+      "NIH",
+      "peer review",
+      "research funding"
+    ],
+    "credibility": "medium",
+    "bias": "center",
+    "createdAt": "2025-12-31T15:30:58.190Z",
+    "lastUpdated": "2025-12-31T15:30:58.190Z"
   }
 }

@@ -6792,5 +6792,151 @@
     "timestamp": "2025-12-31T15:25:23.837Z",
     "educational_insight": "When reading about incidents involving authority figures, consider the potential for underreporting or cover-ups and look for multiple sources to verify information",
     "missing_context": "The article does not provide information on the specific actions being taken by the prison system or government to address these incidents and prevent future occurrences"
+  },
+  "analysis_https://www.npr.org/2025/12/31/g-s1-103737/vienna-christmas-market-austria": {
+    "summary": "The author visits Christmas markets in Europe, including one at Vienna's Schönbrunn Palace, and experiences a sense of community and cultural richness.",
+    "bias": {
+      "overall": "center",
+      "rating": "center"
+    },
+    "sentiment": {
+      "label": "Objective",
+      "score": 0.9
+    },
+    "credibility": {
+      "overall": "medium",
+      "score": 0.9
+    },
+    "fallacies": [
+      {
+        "type": "Appeal to Emotion",
+        "quote": "When I first saw this huge lit-up star archway with its message of welcome, I gasped.",
+        "subtext": "The author is trying to evoke a sense of wonder and enchantment in the reader, making them more likely to be interested in the Christmas markets.",
+        "better_alternative": "The entrance to the market featured a large, illuminated star archway with a welcoming message, setting the tone for a festive atmosphere."
+      }
+    ],
+    "confidence": 0.9,
+    "service": "groq",
+    "timestamp": "2025-12-31T15:25:35.263Z",
+    "educational_insight": "When reading travel articles, consider the cultural and historical context of the destinations and events being described to gain a deeper understanding of the experiences being shared.",
+    "missing_context": "The article could have provided more information about the history and cultural significance of the Christmas markets and traditions being described, as well as more details about the author's personal experiences and interactions with locals."
+  },
+  "analysis_https://thehill.com/homenews/administration/5667894-donald-trump-claims-approval-rating-higher/": {
+    "summary": "President Trump claims his 'real' approval rating is 64 percent, despite polls showing it is below 50 percent",
+    "bias": {
+      "overall": "center",
+      "rating": "center"
+    },
+    "sentiment": {
+      "label": "Objective",
+      "score": 0.8
+    },
+    "credibility": {
+      "overall": "medium",
+      "score": 0.8
+    },
+    "fallacies": [
+      {
+        "type": "Appeal to Emotion",
+        "quote": "Isn't it nice to have a STRONG BORDER, No Inflation, a powerful Military, and great Economy???",
+        "subtext": "The author is trying to make the reader feel positive about the president's policies by using emotional language",
+        "better_alternative": "The president's policies have resulted in a strong border, low inflation, a powerful military, and a growing economy, according to some metrics"
+      },
+      {
+        "type": "False Dichotomy",
+        "quote": "The polls are rigged even more than the writers",
+        "subtext": "The author is trying to make the reader believe that the polls are unreliable and that the president's claim is more accurate",
+        "better_alternative": "The president's approval rating is subject to various interpretations and measurements, and different polls may yield different results"
+      }
+    ],
+    "confidence": 0.8,
+    "service": "groq",
+    "timestamp": "2025-12-31T15:25:38.359Z",
+    "educational_insight": "When evaluating claims about approval ratings, consider multiple sources and fact-checking organizations to get an accurate picture",
+    "missing_context": "The article does not provide information on the methodology used by Decision Desk HQ to calculate the president's approval rating"
+  },
+  "analysis_https://www.economist.com/international/2025/12/30/patriotism-tests-loom-for-big-business": {
+    "summary": "Multinational companies face increasing challenges due to rising economic nationalism, which demands they demonstrate patriotism and prioritize domestic interests.",
+    "bias": {
+      "overall": "center",
+      "rating": "center"
+    },
+    "sentiment": {
+      "label": "Objective",
+      "score": 0.85
+    },
+    "credibility": {
+      "overall": "medium",
+      "score": 0.85
+    },
+    "fallacies": [
+      {
+        "type": "Appeal to Emotion",
+        "quote": "Economic nationalism makes it harder for multinationals to navigate the world",
+        "subtext": "The author may be trying to evoke a sense of concern or uncertainty about the future of global business.",
+        "better_alternative": "Economic nationalism presents significant challenges for multinational companies operating in a globalized economy."
+      }
+    ],
+    "confidence": 0.85,
+    "service": "groq",
+    "timestamp": "2025-12-31T15:25:45.798Z",
+    "educational_insight": "When reading about economic trends, consider the potential biases of the publication and the author's perspective on globalization.",
+    "missing_context": "The article could benefit from more specific examples of how economic nationalism affects different industries and regions, as well as historical context on the rise of economic nationalism."
+  },
+  "analysis_https://techcrunch.com/2025/12/31/every-fusion-startup-that-has-raised-over-100m/": {
+    "summary": "Several fusion startups have raised over $100M, with Commonwealth Fusion Systems leading the way with nearly $3 billion in funding, aiming to develop commercially viable fusion power plants.",
+    "bias": {
+      "overall": "center",
+      "rating": "center"
+    },
+    "sentiment": {
+      "label": "Objective",
+      "score": 0.8
+    },
+    "credibility": {
+      "overall": "medium",
+      "score": 0.8
+    },
+    "fallacies": [
+      {
+        "type": "Appeal to Authority",
+        "quote": "The experiment had crossed what’s known as scientific breakeven, and while it’s still a long ways from commercial breakeven, where the reaction produces more than the entire facility consumes, it was a long-awaited step that proved the underlying science was sound.",
+        "subtext": "The author is using the credibility of the U.S. Department of Energy lab to lend credibility to the idea that fusion power is a viable technology.",
+        "better_alternative": "The experiment achieved a significant scientific milestone, demonstrating the feasibility of controlled fusion reactions, which is a crucial step towards developing commercially viable fusion power plants."
+      }
+    ],
+    "confidence": 0.8,
+    "service": "groq",
+    "timestamp": "2025-12-31T15:25:48.926Z",
+    "educational_insight": "When reading about emerging technologies like fusion power, it's essential to consider the scientific breakthroughs and advancements that have led to increased investment and development in the field.",
+    "missing_context": "The article does not provide a detailed analysis of the potential environmental and economic impacts of widespread adoption of fusion power, nor does it discuss the regulatory frameworks that may be necessary to support the development of this technology."
+  },
+  "analysis_https://arstechnica.com/security/2025/12/supply-chains-ai-and-the-cloud-the-biggest-failures-and-one-success-of-2025/": {
+    "summary": "The article discusses the biggest failures of 2025 in terms of supply chains, AI, and the cloud, highlighting the prevalence of supply-chain attacks and their potential to inflict catastrophic damage on organizations.",
+    "bias": {
+      "overall": "center",
+      "rating": "center"
+    },
+    "sentiment": {
+      "label": "Objective",
+      "score": 0.8
+    },
+    "credibility": {
+      "overall": "medium",
+      "score": 0.8
+    },
+    "fallacies": [
+      {
+        "type": "Emotional Appeal",
+        "quote": "the hack that keeps on hacking",
+        "subtext": "The author is trying to create a sense of urgency and concern in the reader by using a catchy and ominous phrase.",
+        "better_alternative": "Supply-chain attacks can have a significant and lasting impact on organizations, making them a persistent threat."
+      }
+    ],
+    "confidence": 0.8,
+    "service": "groq",
+    "timestamp": "2025-12-31T15:25:51.765Z",
+    "educational_insight": "When reading about cybersecurity threats, it's essential to consider the potential motivations and methods of threat actors to better understand the risks and consequences of such attacks.",
+    "missing_context": "The article could benefit from more information on the specific measures organizations can take to prevent or mitigate supply-chain attacks, as well as the role of AI and the cloud in these attacks."
   }
 }

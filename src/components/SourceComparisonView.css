@@ -108,13 +108,17 @@
   padding: 0.5rem 0.75rem;
   background: transparent;
   color: var(--bg-paper, #F9F7F1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid var(--bg-paper, #F9F7F1); /* Hard border instead of rgba */
   cursor: pointer;
-  transition: all 0.1s ease;
+  transition: none; /* NO TRANSITIONS - Brutalist */
 }
 
 .close-button:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--bg-paper, #F9F7F1);
+  color: var(--text-ink, #1A1A1A);
+  border-width: 3px; /* Hard border increase */
+  box-shadow: 2px 2px 0px 0px var(--bg-paper, #F9F7F1); /* Hard shadow shift */
+  transform: translate(-1px, -1px); /* Hard offset */
 }
 
 /* Sections */
@@ -136,11 +140,14 @@
 
 .section-header.clickable {
   cursor: pointer;
-  transition: background 0.1s ease;
+  transition: none; /* NO TRANSITIONS - Brutalist */
 }
 
 .section-header.clickable:hover {
-  background: rgba(0, 0, 0, 0.03);
+  background: var(--bg-white, #FFFFFF);
+  border-left: 4px solid var(--text-ink, #1A1A1A); /* Hard border on hover */
+  margin-left: -4px; /* Compensate for border */
+  padding-left: calc(1.25rem - 4px);
 }
 
 .section-title {
@@ -308,14 +315,16 @@
   color: var(--text-ink, #1A1A1A);
   text-decoration: none;
   padding: 0.5rem 0.75rem;
-  border: 1px solid var(--text-ink, #1A1A1A);
+  border: 2px solid var(--text-ink, #1A1A1A);
   margin-top: 1rem;
-  transition: all 0.1s ease;
+  transition: none; /* NO TRANSITIONS - Brutalist */
 }
 
 .source-link:hover {
   background: var(--text-ink, #1A1A1A);
   color: var(--bg-paper, #F9F7F1);
+  box-shadow: var(--shadow-sm, 2px 2px 0px 0px #000000); /* Hard shadow shift */
+  transform: translate(-2px, -2px); /* Hard offset */
 }
 
 /* Section Subtitle */

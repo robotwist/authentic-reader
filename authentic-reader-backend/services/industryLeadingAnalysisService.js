@@ -186,8 +186,9 @@ CRITICAL RULES:
     const title = article.title || '';
     const sourceName = article.source?.name || article.source || 'Unknown';
 
-    // Use more content for thorough analysis (up to 6000 chars)
-    const maxContentLength = 6000;
+    // Use more content for DEEP analysis - increased for quality-focused approach
+    // Since we're processing fewer articles, we can afford deeper analysis
+    const maxContentLength = 8000; // Increased from 6000 for more comprehensive analysis
     const truncatedText = articleText.length > maxContentLength 
       ? articleText.substring(0, maxContentLength) + '...' 
       : articleText;
@@ -216,7 +217,7 @@ CRITICAL RULES:
             { role: 'user', content: userPrompt }
           ],
           temperature: 0.1,
-          max_tokens: 4000, // More tokens for comprehensive analysis
+          max_tokens: 6000, // Increased for DEEP analysis - quality over quantity approach
           response_format: { type: 'json_object' }
         },
         {

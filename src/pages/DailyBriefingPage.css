@@ -544,6 +544,40 @@
   border-bottom: 2px solid var(--text-ink, #1A1A1A);
 }
 
+/* Quick Scan Area: Header + Summary section */
+.quick-scan-area {
+  padding: 2rem;
+  background: var(--bg-white, #FFFFFF);
+  border-bottom: 1px solid var(--text-ink, #1A1A1A);
+}
+
+/* Deep Dive Area: Full article + full analysis */
+.deep-dive-area {
+  padding: 0;
+}
+
+/* Visual Separator: Thick border between Quick Scan and Deep Dive */
+.quick-scan-divider {
+  border-bottom: 4px solid var(--text-ink, #1A1A1A);
+  margin: 0;
+  position: relative;
+}
+
+.quick-scan-divider::after {
+  content: '[FULL ARTICLE FOLLOWS]';
+  position: absolute;
+  bottom: -0.75rem;
+  left: 2rem;
+  background: var(--bg-paper, #F9F7F1);
+  padding: 0 1rem;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-ink, #1A1A1A);
+}
+
 .topic-badge {
   display: inline-block;
   background: var(--bg-paper, #F9F7F1);
@@ -1199,11 +1233,20 @@
    ============================================ */
 
 .comparison-cta-section {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   padding: 1.5rem;
   background: var(--bg-paper, #F9F7F1);
   border: 2px solid var(--text-ink, #1A1A1A);
   position: relative;
+}
+
+/* PRIMARY ACTION: High-contrast, cannot be missed */
+.comparison-cta-section.primary-action {
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--text-ink, #1A1A1A);
+  border: 3px solid var(--text-ink, #1A1A1A);
+  box-shadow: 0 4px 0 0 var(--text-ink, #1A1A1A);
 }
 
 .comparison-help-link {
@@ -1230,6 +1273,15 @@
 
 .help-link:hover {
   color: var(--text-ink, #1A1A1A);
+}
+
+/* Help link in primary action section should be white */
+.comparison-cta-section.primary-action .help-link {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.comparison-cta-section.primary-action .help-link:hover {
+  color: var(--bg-white, #FFFFFF);
 }
 
 .help-link:focus-visible {
@@ -1263,6 +1315,15 @@
   font-size: 0.5625rem;
 }
 
+/* Stats in primary action section should be white */
+.comparison-cta-section.primary-action .comparison-count {
+  color: var(--bg-white, #FFFFFF);
+}
+
+.comparison-cta-section.primary-action .comparison-breakdown {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .comparison-cta-buttons {
   display: flex;
   flex-direction: column;
@@ -1280,13 +1341,39 @@
   background: var(--bg-paper, #F9F7F1);
   color: var(--text-ink, #1A1A1A);
   cursor: pointer;
-  transition: all 0.1s ease;
+  transition: none; /* NO TRANSITIONS - Brutalist */
   text-align: center;
 }
 
 .comparison-cta-button.primary {
   background: var(--text-ink, #1A1A1A);
-  color: var(--bg-paper, #F9F7F1);
+  color: var(--bg-white, #FFFFFF);
+  font-weight: 700;
+  border-width: 3px;
+}
+
+/* When inside primary-action section, button should be inverted for contrast */
+.comparison-cta-section.primary-action .comparison-cta-button.primary {
+  background: var(--bg-white, #FFFFFF);
+  color: var(--text-ink, #1A1A1A);
+  border-color: var(--bg-white, #FFFFFF);
+}
+
+.comparison-cta-section.primary-action .comparison-cta-button.primary:hover:not(:disabled) {
+  background: var(--bg-paper, #F9F7F1);
+  color: var(--text-ink, #1A1A1A);
+  border-color: var(--bg-paper, #F9F7F1);
+}
+
+.comparison-cta-section.primary-action .comparison-cta-button.secondary {
+  background: transparent;
+  color: var(--bg-white, #FFFFFF);
+  border-color: var(--bg-white, #FFFFFF);
+}
+
+.comparison-cta-section.primary-action .comparison-cta-button.secondary:hover:not(:disabled) {
+  background: var(--bg-white, #FFFFFF);
+  color: var(--text-ink, #1A1A1A);
 }
 
 .comparison-cta-button.primary:hover:not(:disabled) {
@@ -1330,26 +1417,41 @@
   }
 }
 
-/* Bias Direction Colors */
+/* Bias Direction Indicators - Brutalist: Weight & Border, Not Color */
 .bias-value.bias-left,
 .bias-indicator.bias-left {
-  color: #2563eb;
+  color: var(--text-ink, #1A1A1A);
+  font-weight: 700;
+  border-left: 4px solid var(--text-ink, #1A1A1A);
+  padding-left: 0.5rem;
 }
 
 .bias-value.bias-centerleft {
-  color: #60a5fa;
+  color: var(--text-ink, #1A1A1A);
+  font-weight: 600;
+  border-left: 3px solid var(--text-ink, #1A1A1A);
+  padding-left: 0.5rem;
 }
 
 .bias-value.bias-center {
-  color: #6b7280;
+  color: var(--text-muted, #4A4A4A);
+  font-weight: 400;
+  border-left: 2px solid var(--text-muted, #4A4A4A);
+  padding-left: 0.5rem;
 }
 
 .bias-value.bias-centerright {
-  color: #f87171;
+  color: var(--text-ink, #1A1A1A);
+  font-weight: 600;
+  border-left: 3px solid var(--text-ink, #1A1A1A);
+  padding-left: 0.5rem;
 }
 
 .bias-value.bias-right {
-  color: #dc2626;
+  color: var(--text-ink, #1A1A1A);
+  font-weight: 700;
+  border-left: 4px solid var(--text-ink, #1A1A1A);
+  padding-left: 0.5rem;
 }
 
 /* Manipulation Techniques */
@@ -1370,13 +1472,38 @@
   color: var(--bg-white, #FFFFFF);
 }
 
-/* Better Alternative Box */
+/* Better Alternative Box - Brutalist: Pattern Texture, Not Green */
 .better-alternative {
   margin-top: 0.75rem;
   padding: 0.75rem;
-  background: #f0fdf4;
-  border: 1px solid #16a34a;
-  border-left: 3px solid #16a34a;
+  background: var(--bg-white, #FFFFFF);
+  border: 3px solid var(--text-ink, #1A1A1A);
+  border-left: 6px solid var(--text-ink, #1A1A1A); /* Heavy left border */
+  position: relative;
+}
+
+/* Diagonal hash pattern for success indicator */
+.better-alternative::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 8px,
+    rgba(0, 0, 0, 0.08) 8px,
+    rgba(0, 0, 0, 0.08) 16px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.better-alternative > * {
+  position: relative;
+  z-index: 1;
 }
 
 .alternative-label {
@@ -1386,42 +1513,68 @@
   font-family: var(--font-tech, 'JetBrains Mono', monospace);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #16a34a;
+  color: var(--text-ink, #1A1A1A);
   margin-bottom: 0.375rem;
 }
 
 .alternative-text {
   font-family: var(--font-tech, 'JetBrains Mono', monospace);
   font-size: 0.75rem;
-  color: #166534;
+  color: var(--text-ink, #1A1A1A);
   margin: 0;
   line-height: 1.5;
 }
 
-/* No Fallacies Message */
+/* No Fallacies Message - Brutalist: Heavy Border & Pattern */
 .no-fallacies {
   font-family: var(--font-tech, 'JetBrains Mono', monospace);
   font-size: 0.75rem;
-  color: #16a34a;
+  color: var(--text-ink, #1A1A1A);
+  font-weight: 600; /* Weight to show importance */
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 1rem;
-  background: #f0fdf4;
-  border: 1px solid #16a34a;
+  background: var(--bg-white, #FFFFFF);
+  border: 4px solid var(--text-ink, #1A1A1A); /* Heavy border */
   text-align: center;
+  position: relative;
 }
 
-/* Analysis Loading State */
+/* Diagonal pattern overlay */
+.no-fallacies::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 8px,
+    rgba(0, 0, 0, 0.08) 8px,
+    rgba(0, 0, 0, 0.08) 16px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.no-fallacies > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Analysis Loading State - Brutalist: Hard Steps, Not Pulse */
 .analysis-loading {
   font-size: 0.625rem;
   color: var(--text-muted, #4A4A4A);
   font-weight: 400;
-  animation: pulse 1.5s infinite;
+  animation: blink-hard 0.8s steps(2) infinite; /* Hard steps */
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+@keyframes blink-hard {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; } /* Hard cut, no fade */
 }
 
 /* ============================================
@@ -1514,11 +1667,14 @@
   color: var(--text-ink, #1A1A1A);
   border: none;
   cursor: pointer;
-  transition: all 0.1s ease;
+  transition: none; /* NO TRANSITIONS - Brutalist */
 }
 
 .compare-button:hover {
-  background: #fff;
+  background: var(--bg-white, #FFFFFF);
+  border: 2px solid var(--text-ink, #1A1A1A); /* Hard border on hover */
+  box-shadow: var(--shadow-sm, 2px 2px 0px 0px #000000); /* Hard shadow shift */
+  transform: translate(-2px, -2px); /* Hard offset */
 }
 
 .compare-button:disabled {
@@ -1752,10 +1908,13 @@
   padding: 0.75rem 1rem;
   border: 2px solid var(--text-ink, #1A1A1A);
   display: inline-block;
-  transition: all 0.1s ease;
+  transition: none; /* NO TRANSITIONS - Brutalist */
 }
 
 .original-link:hover {
   background: var(--text-ink, #1A1A1A);
   color: var(--bg-paper, #F9F7F1);
+  box-shadow: var(--shadow-sm, 2px 2px 0px 0px #000000); /* Hard shadow shift */
+  transform: translate(-2px, -2px); /* Hard offset */
+}
 }

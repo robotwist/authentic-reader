@@ -574,32 +574,8 @@ const DailyBriefingPage: React.FC = () => {
                 )}
               </div>
               
-              {/* Enhanced Bias Meter */}
-              {enhancedAnalysis && (
-                <div className="bias-meter-container">
-                  <div className="bias-meter">
-                    <span className="bias-label-left">LEFT</span>
-                    <div className="bias-track">
-                      <div 
-                        className={`bias-indicator bias-${enhancedAnalysis.bias.replace('-', '')}`}
-                        style={{
-                          left: enhancedAnalysis.bias === 'left' ? '10%' :
-                                enhancedAnalysis.bias === 'center-left' ? '30%' :
-                                enhancedAnalysis.bias === 'center' ? '50%' :
-                                enhancedAnalysis.bias === 'center-right' ? '70%' : '90%'
-                        }}
-                      />
-                    </div>
-                    <span className="bias-label-right">RIGHT</span>
-                  </div>
-                  <span className="bias-confidence">
-                    {enhancedAnalysis.biasConfidence}% confidence
-                  </span>
-                </div>
-              )}
-
-              {/* Cross-Source Comparison - Prominent Placement */}
-              <div className="comparison-cta-section">
+              {/* Cross-Source Comparison - PRIMARY ACTION: Immediately visible below metadata */}
+              <div className="comparison-cta-section primary-action">
                 <div className="comparison-help-link">
                   <button
                     className="help-link"
@@ -664,20 +640,62 @@ const DailyBriefingPage: React.FC = () => {
                   </div>
                 )}
               </div>
+              
+              {/* Enhanced Bias Meter */}
+              {enhancedAnalysis && (
+                <div className="bias-meter-container">
+                  <div className="bias-meter">
+                    <span className="bias-label-left">LEFT</span>
+                    <div className="bias-track">
+                      <div 
+                        className={`bias-indicator bias-${enhancedAnalysis.bias.replace('-', '')}`}
+                        style={{
+                          left: enhancedAnalysis.bias === 'left' ? '10%' :
+                                enhancedAnalysis.bias === 'center-left' ? '30%' :
+                                enhancedAnalysis.bias === 'center' ? '50%' :
+                                enhancedAnalysis.bias === 'center-right' ? '70%' : '90%'
+                        }}
+                      />
+                    </div>
+                    <span className="bias-label-right">RIGHT</span>
+                  </div>
+                  <span className="bias-confidence">
+                    {enhancedAnalysis.biasConfidence}% confidence
+                  </span>
+                </div>
+              )}
             </header>
             
-            <ReaderView
-              articleContent={topicData.article.content}
-              fallacyData={fallacies}
-            />
-            
-            {/* DEEP ANALYSIS PANEL - Industry Leading */}
-            {(deepAnalysis || isLoadingDeep) && (
-              <DeepAnalysisPanel 
-                analysis={deepAnalysis} 
-                isLoading={isLoadingDeep}
-              />
+            {/* QUICK SCAN AREA: Executive Summary (if available) */}
+            {deepAnalysis?.executive_summary && (
+              <div className="quick-scan-area">
+                <DeepAnalysisPanel 
+                  analysis={deepAnalysis} 
+                  isLoading={false}
+                  showOnlySummary={true}
+                />
+              </div>
             )}
+            
+            {/* VISUAL SEPARATOR: Thick border between Quick Scan and Deep Dive */}
+            <div className="quick-scan-divider"></div>
+            
+            {/* DEEP DIVE AREA: Full Article Content */}
+            <div className="deep-dive-area">
+              <ReaderView
+                articleContent={topicData.article.content}
+                fallacyData={fallacies}
+              />
+              
+              {/* DEEP ANALYSIS PANEL - Industry Leading (Full Analysis) */}
+              {(deepAnalysis || isLoadingDeep) && (
+                <DeepAnalysisPanel 
+                  analysis={deepAnalysis} 
+                  isLoading={isLoadingDeep}
+                  showOnlySummary={false}
+                />
+              )}
+            </div>
             
             {/* Analysis Section: Enhanced with LLM data (fallback if no deep analysis) */}
             {!deepAnalysis && !isLoadingDeep && (
@@ -881,7 +899,6 @@ const DailyBriefingPage: React.FC = () => {
                     </div>
                   )}
                 </div>
-              )}
               
               {crossSourceComparison && !crossSourceComparison.found && (
                 <p className="no-comparison">[NO RELATED COVERAGE FOUND FROM OTHER SOURCES]</p>

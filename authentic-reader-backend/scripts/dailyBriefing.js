@@ -127,9 +127,9 @@ async function fetchArticlesForTopic(topic, seenUrls, allSources) {
     try {
       logger.info(`  Fetching from ${source.name} (${source.url})...`);
       
-      // Fetch RSS feed
+      // Fetch RSS feed - reduced to focus on quality over quantity
       const feedData = await rssService.fetchFeed(source.url, {
-        maxItems: 20,
+        maxItems: 10, // Reduced from 20 to focus on best articles
         timeout: 15000
       });
       
@@ -181,6 +181,76 @@ async function fetchArticlesForTopic(topic, seenUrls, allSources) {
   
   logger.info(`[Topic: ${topic.name}] Summary: ${totalItemsFetched} items fetched, ${totalItemsSkipped} already seen, ${totalItemsNoMatch} didn't match keywords, ${articles.length} new articles found`);
   return articles;
+}
+
+/**
+ * Check if content is a full article or just an excerpt/snippet
+ * @param {string} content - The article content to check
+ * @param {string} description - The article description/summary
+ * @param {number} minLength - Minimum required content length
+ * @returns {boolean} True if this appears to be a full article
+ */
+function isFullArticle(content, description, minLength = 2000) {
+  if (!content || content.length === 0) return false;
+  
+  const contentText = content.toLowerCase();
+  const descText = (description || '').toLowerCase();
+  const contentLength = content.length;
+  
+  // Check 1: Minimum length requirement
+  if (contentLength < minLength) {
+    return false;
+  }
+  
+  // Check 2: Excerpt indicators (common phrases in snippets)
+  const excerptIndicators = [
+    'read more',
+    'continue reading',
+    'subscribe to read',
+    'sign up to read',
+    'premium content',
+    'this is a summary',
+    'click here to read',
+    'view full article',
+    'read the full story',
+    'full article available',
+    'members only',
+    'paywall',
+    'to continue reading',
+    'unlock this article'
+  ];
+  
+  const hasExcerptIndicator = excerptIndicators.some(indicator => 
+    contentText.includes(indicator) || descText.includes(indicator)
+  );
+  
+  if (hasExcerptIndicator) {
+    return false;
+  }
+  
+  // Check 3: Content is mostly just the description (snippet)
+  const descLength = description ? description.length : 0;
+  if (descLength > 0 && contentLength < descLength * 1.5) {
+    return false; // Content is too similar to description (likely snippet)
+  }
+  
+  // Check 4: Content ends abruptly (common in excerpts)
+  const endsAbruptly = contentText.endsWith('...') || 
+                       contentText.endsWith('…') ||
+                       (contentText.includes('...') && contentLength < minLength * 1.5);
+  
+  if (endsAbruptly) {
+    return false;
+  }
+  
+  // Check 5: Very low word count (likely snippet)
+  const wordCount = contentText.split(/\s+/).length;
+  if (wordCount < 300) { // Less than 300 words is likely a snippet
+    return false;
+  }
+  
+  // All checks passed - this appears to be a full article
+  return true;
 }
 
 /**
@@ -503,13 +573,22 @@ export const generateDailyBriefing = async () => {
     
     logger.info(`📋 Found ${seenUrls.size} existing articles to skip\n`);
     
-    // Process each topic
+    // STRICT REQUIREMENTS: Exactly 1 full article per topic, no excerpts/snippets
+    const REQUIRED_ARTICLES_PER_TOPIC = 1; // Exactly 1 article per topic (no more, no less)
+    const MIN_CONTENT_LENGTH = 2000; // Increased: Require substantial full content (no snippets)
+    const MAX_ARTICLES_TO_TRY_PER_TOPIC = 15; // Try up to 15 articles to find one full article
+    
     let totalArticles = 0;
     let totalSaved = 0;
+    const topicResults = {};
     
     for (const topic of TOPICS) {
       logger.info(`\n📌 Processing topic: ${topic.name}`);
       logger.info(`   Keywords: ${topic.keywords.join(', ')}`);
+      logger.info(`   Goal: Find exactly ${REQUIRED_ARTICLES_PER_TOPIC} full article (no excerpts/snippets)`);
+      
+      let articleFound = false;
+      let articlesTried = 0;
       
       try {
         // Fetch articles for this topic
@@ -517,19 +596,51 @@ export const generateDailyBriefing = async () => {
         totalArticles += articles.length;
         
         if (articles.length === 0) {
-          logger.info(`   No articles found for ${topic.name}`);
+          logger.warn(`   ⚠️  No articles found for ${topic.name}`);
+          topicResults[topic.name] = { success: false, reason: 'No articles found' };
           continue;
         }
         
-        // Process each article: fetch full content, analyze and save
+        logger.info(`   📊 Found ${articles.length} potential articles. Searching for full article...`);
+        
+        // Try articles until we find one that meets full article criteria
         for (let article of articles) {
+          if (articleFound) break; // Already found one for this topic
+          if (articlesTried >= MAX_ARTICLES_TO_TRY_PER_TOPIC) {
+            logger.warn(`   ⚠️  Tried ${articlesTried} articles, none met full article criteria`);
+            break;
+          }
+          
+          articlesTried++;
+          
           try {
             // First, fetch full article content from source
-            logger.info(`   Fetching full content: ${article.title.substring(0, 50)}...`);
+            logger.info(`   [${articlesTried}] 📥 Fetching: ${article.title.substring(0, 50)}...`);
             article = await fetchFullArticleContent(article);
             
-            // Analyze article with full content
-            logger.info(`   Analyzing: ${article.title.substring(0, 60)}...`);
+            // STRICT FILTER: Check if this is a full article (not excerpt/snippet)
+            const content = article.content || '';
+            const description = article.description || '';
+            const contentLength = content.length;
+            
+            // Check 1: Minimum length requirement
+            if (contentLength < MIN_CONTENT_LENGTH) {
+              logger.warn(`      ❌ Rejected: Only ${contentLength} chars (minimum: ${MIN_CONTENT_LENGTH})`);
+              continue; // Try next article
+            }
+            
+            // Check 2: Is it actually a full article or just an excerpt?
+            if (!isFullArticle(content, description, MIN_CONTENT_LENGTH)) {
+              logger.warn(`      ❌ Rejected: Appears to be excerpt/snippet, not full article`);
+              logger.warn(`      Title: ${article.title.substring(0, 60)}...`);
+              continue; // Try next article
+            }
+            
+            logger.info(`      ✅ Full article verified: ${contentLength} characters`);
+            logger.info(`      ✅ No excerpt indicators found - this is a complete article`);
+            
+            // Deep analyze article with comprehensive LLM analysis
+            logger.info(`      🔬 Deep analyzing: ${article.title.substring(0, 60)}...`);
             const analysisPayload = await analyzeArticle(article);
             
             // Get or create source
@@ -557,31 +668,58 @@ export const generateDailyBriefing = async () => {
             // Save article (to both Article and DailyBriefingArticle tables)
             await saveArticle(article, analysisPayload, sourceId, topic.name);
             totalSaved++;
+            articleFound = true;
             
-            logger.info(`   ✅ Saved: ${article.title.substring(0, 60)}...`);
+            logger.info(`      ✅ SAVED: ${article.title.substring(0, 60)}...`);
+            logger.info(`      ✅ Topic "${topic.name}": 1 full article found and saved`);
+            topicResults[topic.name] = { success: true, article: article.title };
+            break; // Found one, move to next topic
+            
           } catch (error) {
-            logger.error(`   ❌ Error processing article:`, error.message);
-            if (error.errors) {
-              logger.error(`   Validation errors:`, JSON.stringify(error.errors, null, 2));
-            }
-            if (error.stack) {
-              logger.error(`   Stack trace:`, error.stack);
-            }
-            continue;
+            logger.error(`      ❌ Error processing article:`, error.message);
+            continue; // Try next article
           }
         }
         
-        logger.info(`   ✅ Topic ${topic.name}: ${articles.length} articles processed`);
+        if (!articleFound) {
+          logger.error(`   ❌ FAILED: Could not find a full article for topic "${topic.name}"`);
+          logger.error(`   Tried ${articlesTried} articles, none met full article criteria`);
+          topicResults[topic.name] = { success: false, reason: 'No full articles found', tried: articlesTried };
+        }
+        
       } catch (error) {
         logger.error(`   ❌ Error processing topic ${topic.name}:`, error.message);
+        topicResults[topic.name] = { success: false, reason: error.message };
         continue;
       }
     }
     
-    logger.info(`\n🎉 Daily Briefing Generation Complete!`);
-    logger.info(`   Total articles found: ${totalArticles}`);
-    logger.info(`   Total articles saved: ${totalSaved}`);
-    logger.info(`   Topics processed: ${TOPICS.length}`);
+    // Summary report
+    logger.info(`\n${'='.repeat(60)}`);
+    logger.info(`🎉 Daily Briefing Generation Complete!`);
+    logger.info(`${'='.repeat(60)}`);
+    logger.info(`   📰 Total articles found: ${totalArticles}`);
+    logger.info(`   ✅ Articles saved: ${totalSaved} (target: ${TOPICS.length})`);
+    logger.info(`   🎯 Requirement: Exactly 1 full article per topic (no excerpts/snippets)`);
+    logger.info(`   📏 Minimum content: ${MIN_CONTENT_LENGTH} characters`);
+    logger.info(`\n   Topic Results:`);
+    
+    const successful = Object.values(topicResults).filter(r => r.success).length;
+    const failed = Object.values(topicResults).filter(r => !r.success).length;
+    
+    for (const [topicName, result] of Object.entries(topicResults)) {
+      if (result.success) {
+        logger.info(`      ✅ ${topicName}: ${result.article?.substring(0, 50)}...`);
+      } else {
+        logger.warn(`      ❌ ${topicName}: ${result.reason}${result.tried ? ` (tried ${result.tried} articles)` : ''}`);
+      }
+    }
+    
+    logger.info(`\n   Summary: ${successful}/${TOPICS.length} topics have full articles`);
+    if (failed > 0) {
+      logger.warn(`   ⚠️  ${failed} topic(s) failed to find full articles`);
+    }
+    logger.info(`${'='.repeat(60)}\n`);
     
   } catch (error) {
     logger.error('❌ Fatal error in daily briefing generation:', error);

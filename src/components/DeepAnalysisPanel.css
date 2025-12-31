@@ -16,6 +16,38 @@
   margin: 2rem 0;
 }
 
+/* Quick Scan Summary: Simplified version for header area */
+.deep-analysis-panel.quick-scan-summary {
+  margin: 0;
+  border: none;
+  background: transparent;
+}
+
+.deep-analysis-panel.quick-scan-summary .analysis-section {
+  border: none;
+  padding: 0;
+}
+
+.deep-analysis-panel.quick-scan-summary .section-header {
+  padding: 0 0 0.75rem 0;
+  cursor: default;
+  background: transparent;
+}
+
+.deep-analysis-panel.quick-scan-summary .section-header:hover {
+  background: transparent;
+}
+
+.deep-analysis-panel.quick-scan-summary .section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.deep-analysis-panel.quick-scan-summary .section-content {
+  padding: 0;
+}
+
 .deep-analysis-panel.loading {
   display: flex;
   flex-direction: column;
@@ -89,11 +121,14 @@
   padding: 0.875rem 1.25rem;
   background: transparent;
   cursor: pointer;
-  transition: background 0.1s ease;
+  transition: none; /* NO TRANSITIONS - Brutalist */
 }
 
 .section-header:hover {
-  background: rgba(0, 0, 0, 0.03);
+  background: var(--bg-white, #FFFFFF);
+  border-left: 4px solid var(--text-ink, #1A1A1A); /* Hard border on hover */
+  margin-left: -4px; /* Compensate for border */
+  padding-left: calc(1.25rem - 4px);
 }
 
 .section-title {
@@ -226,7 +261,7 @@
 .breakdown-bar-fill {
   height: 100%;
   background: var(--text-ink, #1A1A1A);
-  transition: width 0.3s ease;
+  transition: none; /* NO TRANSITIONS - Brutalist (instant width changes) */
 }
 
 .breakdown-value {
@@ -358,7 +393,7 @@
 .meter-fill {
   height: 100%;
   background: var(--text-ink, #1A1A1A);
-  transition: width 0.3s ease;
+  transition: none; /* NO TRANSITIONS - Brutalist (instant width changes) */
 }
 
 .meter-labels {

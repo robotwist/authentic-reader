@@ -1348,7 +1348,7 @@ const startServer = async () => {
         // Initialize default data if needed
         await initializeDefaultData();
         
-        // Schedule Daily Briefing to run every day at 6:00 AM UTC
+        // Schedule Daily Briefing to run every day at 6:00 AM CST (America/Chicago)
         cron.schedule('0 6 * * *', async () => {
           console.log('⏰ Starting scheduled Daily Briefing...');
           try {
@@ -1357,9 +1357,12 @@ const startServer = async () => {
           } catch (error) {
             console.error('❌ Scheduled briefing failed:', error);
           }
+        }, {
+          scheduled: true,
+          timezone: "America/Chicago"
         });
         
-        console.log('⏰ Job Scheduler Active: Daily Briefing set for 06:00 UTC.');
+        console.log('⏰ Job Scheduler Active: Daily Briefing set for 06:00 CST (America/Chicago).');
         
         // Run briefing immediately on startup if RUN_BRIEFING_ON_STARTUP is set
         // This ensures articles are populated right after deployment

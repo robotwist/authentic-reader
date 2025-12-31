@@ -9,20 +9,15 @@ fi
 
 echo "Running pre-commit hooks..."
 
-# Lint server code
-cd server && npm run lint
-
-# Check server for route-controller consistency
-cd server && npm run check:routes
+# Lint server code and check route-controller consistency
+cd server || exit 1
+npm run lint || exit 1
+npm run check:routes || exit 1
+cd ..
 
 # Lint React code - uncomment if needed
-# cd ../
 # npm run lint
 
-# If any of the commands failed, exit with a non-zero status
-if [ $? -ne 0 ]; then
-  echo "❌ Pre-commit checks failed. Please fix the errors and try again."
-  exit 1
-fi
+echo "✅ Pre-commit checks passed!"
 
 echo "✅ Pre-commit checks passed!"

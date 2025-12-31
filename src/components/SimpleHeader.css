@@ -1,10 +1,16 @@
+/* ============================================
+   SIMPLE HEADER - Brutalist Black & White
+   Removed gradient and chromatic colors
+   ============================================ */
+
 .simple-header {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-white, #FFFFFF);
+  border-bottom: 4px solid var(--text-ink, #1A1A1A); /* Heavy border instead of gradient */
   padding: 1rem 2rem;
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: var(--shadow-sm, 2px 2px 0px 0px #000000); /* Hard shadow */
 }
 
 .simple-header-content {
@@ -19,14 +25,15 @@
   width: 48px;
   height: 48px;
   object-fit: contain;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+  filter: none; /* Remove drop-shadow */
+  border: 2px solid var(--text-ink, #1A1A1A); /* Hard border instead */
 }
 
 .simple-header-title {
   font-family: var(--font-display, 'Playfair Display', serif);
   font-size: 1.75rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text-ink, #1A1A1A); /* Black instead of white */
   margin: 0;
   letter-spacing: -0.02em;
   text-transform: uppercase;
@@ -35,6 +42,7 @@
 @media (max-width: 768px) {
   .simple-header {
     padding: 0.75rem 1rem;
+    border-bottom-width: 3px; /* Slightly thinner on mobile */
   }
   
   .simple-header-logo {
@@ -46,4 +54,3 @@
     font-size: 1.25rem;
   }
 }
-

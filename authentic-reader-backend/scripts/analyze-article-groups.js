@@ -346,7 +346,10 @@ class ArticleGroupAnalyzer {
         articlesWithMarkers.slice(0, 3).forEach(article => {
           logger.info(`      • "${article.article.title?.substring(0, 50)}..."`);
           if (article.markers.details.bias) {
-            logger.info(`        Bias: ${article.markers.details.bias}`);
+            const biasValue = typeof article.markers.details.bias === 'object' 
+              ? article.markers.details.bias.direction || JSON.stringify(article.markers.details.bias)
+              : article.markers.details.bias;
+            logger.info(`        Bias: ${biasValue}`);
           }
           if (article.markers.details.fallacies) {
             logger.info(`        Fallacies: ${article.markers.details.fallacies} detected`);

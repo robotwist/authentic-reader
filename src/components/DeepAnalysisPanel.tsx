@@ -113,9 +113,10 @@ interface DeepAnalysis {
 interface Props {
   analysis: DeepAnalysis;
   isLoading?: boolean;
+  showOnlySummary?: boolean; // If true, only show Executive Summary (for Quick Scan)
 }
 
-const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
+const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySummary = false }) => {
   // Expand Executive Summary by default - most important section for quick scan
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(['executive-summary'])
@@ -155,6 +156,42 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading }) => {
       default: return '[UNVERIFIED]';
     }
   };
+
+  // If showOnlySummary is true, only render Executive Summary
+  if (showOnlySummary) {
+    return (
+      <div className="deep-analysis-panel quick-scan-summary">
+        {analysis.executive_summary && (
+          <section className="analysis-section">
+            <header className="section-header">
+              <h3 className="section-title">[QUICK SCAN]</h3>
+            </header>
+            <div className="section-content">
+              <p className="summary-main">{analysis.executive_summary.one_sentence}</p>
+              
+              {analysis.executive_summary.key_claims && (
+                <div className="summary-block">
+                  <h4 className="block-title">[KEY CLAIMS]</h4>
+                  <ul className="claims-list">
+                    {analysis.executive_summary.key_claims.map((claim, i) => (
+                      <li key={i}>{claim}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              
+              {analysis.executive_summary.why_it_matters && (
+                <div className="summary-block">
+                  <h4 className="block-title">[SIGNIFICANCE]</h4>
+                  <p>{analysis.executive_summary.why_it_matters}</p>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="deep-analysis-panel">
