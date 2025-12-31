@@ -1,13 +1,12 @@
 /**
  * SourceComparisonView - Side-by-Side Source Comparison
  * 
- * Three-column layout:
- * - LEFT: Source A (e.g., left-leaning) with headline + key spin
+ * Three-column layout with collapsible sections:
+ * - LEFT: Your Article (what you're reading)
  * - CENTER: "The Facts" - AI synthesized neutral truth
- * - RIGHT: Source B (e.g., right-leaning) with headline + key spin
+ * - RIGHT: Contrasting Source (different political lean)
  * 
  * Visual Diff: Highlights specific words where spin differs
- * (e.g., "Protest" vs "Riot", "Activist" vs "Agitator")
  */
 
 import React, { useState, useEffect } from 'react';
@@ -16,7 +15,7 @@ import './SourceComparisonView.css';
 
 interface SourceData {
   name: string;
-  category: 'left' | 'center' | 'right' | 'center-left' | 'center-right';
+  category: string;
   headline: string;
   url?: string;
   keySpins: string[];
@@ -38,6 +37,7 @@ interface ComparisonData {
     disputed: string[];
   };
   languageDiffs: LanguageDiff[];
+  allSources: Array<{ name: string; category: string; title: string; url?: string }>;
   generated_at: string;
 }
 
@@ -56,6 +56,23 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
   const [comparison, setComparison] = useState<ComparisonData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Collapsible section state
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(
+    new Set(['your-article', 'facts', 'contrast', 'language-diffs', 'all-sources'])
+  );
+
+  const toggleSection = (section: string) => {
+    setExpandedSections(prev => {
+      const next = new Set(prev);
+      if (next.has(section)) {
+        next.delete(section);
+      } else {
+        next.add(section);
+      }
+      return next;
+    });
+  };
 
   useEffect(() => {
     fetchComparison();
@@ -66,7 +83,6 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
     setError(null);
 
     try {
-      // First, get related sources
       const response = await fetch(`${API_CONFIG.BASE_URL}/api/ai/compare-sources`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -87,55 +103,58 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
         return;
       }
 
-      // Transform the API response into our comparison format
       const relatedSources = data.comparison.related_sources || [];
       const analysis = data.comparison.comparison_analysis || {};
 
       // Filter out sources that match the primary article
-      const otherSources = relatedSources.filter((s: any) => 
-        s.name !== primaryArticle.source && 
-        s.url !== primaryArticle.url &&
-        s.title !== primaryArticle.title
-      );
+      const otherSources = relatedSources.filter((s: any) => {
+        const nameMatch = s.name?.toLowerCase() === primaryArticle.source?.toLowerCase();
+        const urlMatch = s.url === primaryArticle.url;
+        const titleMatch = s.title === primaryArticle.title;
+        return !nameMatch && !urlMatch && !titleMatch;
+      });
 
       if (otherSources.length === 0) {
-        setError('No contrasting sources found');
+        setError('No contrasting sources found for comparison');
         return;
       }
 
       // Find a contrasting source - prefer different political lean
-      // Assume primary article is "center" if unknown, look for left or right
       const contrastingSource = 
         otherSources.find((s: any) => s.category === 'left') ||
         otherSources.find((s: any) => s.category === 'right') ||
         otherSources.find((s: any) => s.category === 'center-left') ||
         otherSources.find((s: any) => s.category === 'center-right') ||
+        otherSources.find((s: any) => s.category === 'international') ||
         otherSources[0];
 
-      // Get framing info for primary and contrasting source
+      // Get framing info - try multiple matching strategies
       const framingPrimary = analysis.framing_comparison?.find((f: any) => 
-        f.source === primaryArticle.source
+        f.source?.toLowerCase() === primaryArticle.source?.toLowerCase() ||
+        f.source?.includes(primaryArticle.source) ||
+        primaryArticle.source?.includes(f.source)
       );
+      
       const framingContrast = analysis.framing_comparison?.find((f: any) => 
-        f.source === contrastingSource?.name
+        f.source?.toLowerCase() === contrastingSource?.name?.toLowerCase() ||
+        f.source?.includes(contrastingSource?.name) ||
+        contrastingSource?.name?.includes(f.source)
       );
 
       // Build comparison data
-      // LEFT = Primary article (what user is reading)
-      // RIGHT = Contrasting source (different political lean)
       const comparisonData: ComparisonData = {
         sourceA: {
           name: primaryArticle.source || 'Current Article',
-          category: 'center', // Assume center for the article user is reading
+          category: 'your-source',
           headline: primaryArticle.title || '',
           url: primaryArticle.url,
           keySpins: framingPrimary ? [
             framingPrimary.emphasis && `Emphasizes: ${framingPrimary.emphasis}`,
             framingPrimary.downplayed && `Downplays: ${framingPrimary.downplayed}`,
             framingPrimary.unique_angle && `Unique angle: ${framingPrimary.unique_angle}`
-          ].filter(Boolean) : ['This is the article you are currently reading'],
+          ].filter(Boolean) as string[] : [],
           loadedWords: [],
-          framing: framingPrimary?.headline_framing || 'Your current article'
+          framing: framingPrimary?.headline_framing || ''
         },
         sourceB: {
           name: contrastingSource?.name || 'Contrasting Source',
@@ -146,18 +165,24 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
             framingContrast.emphasis && `Emphasizes: ${framingContrast.emphasis}`,
             framingContrast.downplayed && `Downplays: ${framingContrast.downplayed}`,
             framingContrast.unique_angle && `Unique angle: ${framingContrast.unique_angle}`
-          ].filter(Boolean) : [],
+          ].filter(Boolean) as string[] : [],
           loadedWords: [],
           framing: framingContrast?.headline_framing || ''
         },
         neutralFacts: {
           coreFacts: analysis.story_core?.common_facts || [
-            'Both sources agree on the basic facts of the story.'
+            'Both sources cover the same underlying story.'
           ],
           context: analysis.reader_takeaway?.recommendation || '',
           disputed: analysis.story_core?.disputed_facts || []
         },
         languageDiffs: analysis.language_differences || [],
+        allSources: otherSources.map((s: any) => ({
+          name: s.name,
+          category: s.category,
+          title: s.title,
+          url: s.url
+        })),
         generated_at: data.comparison.generated_at || new Date().toISOString()
       };
 
@@ -172,14 +197,17 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
   };
 
   const getCategoryLabel = (category: string): string => {
-    switch (category) {
-      case 'left': return 'LEFT';
-      case 'center-left': return 'CENTER-LEFT';
-      case 'center': return 'CENTER';
-      case 'center-right': return 'CENTER-RIGHT';
-      case 'right': return 'RIGHT';
-      default: return category.toUpperCase();
-    }
+    const labels: Record<string, string> = {
+      'left': 'LEFT',
+      'center-left': 'CENTER-LEFT',
+      'center': 'CENTER',
+      'center-right': 'CENTER-RIGHT',
+      'right': 'RIGHT',
+      'international': 'INTERNATIONAL',
+      'your-source': 'YOUR SOURCE',
+      'unknown': 'UNKNOWN'
+    };
+    return labels[category] || category.toUpperCase();
   };
 
   if (isLoading) {
@@ -187,8 +215,8 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
       <div className="source-comparison-view loading">
         <div className="comparison-loading-content">
           <div className="comparison-spinner" />
-          <p>[ANALYZING MULTIPLE SOURCES...]</p>
-          <p className="loading-sub">[SYNTHESIZING NEUTRAL FACTS...]</p>
+          <p>[SEARCHING SOURCES...]</p>
+          <p className="loading-sub">[ANALYZING FRAMING DIFFERENCES...]</p>
         </div>
       </div>
     );
@@ -213,31 +241,41 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
     <div className="source-comparison-view">
       <header className="comparison-header">
         <h2 className="comparison-title">[SOURCE COMPARISON]</h2>
-        {onClose && (
-          <button className="close-button" onClick={onClose}>[CLOSE]</button>
-        )}
+        <div className="header-actions">
+          <span className="source-count">{comparison.allSources.length + 1} SOURCES</span>
+          {onClose && (
+            <button className="close-button" onClick={onClose}>[CLOSE]</button>
+          )}
+        </div>
       </header>
 
-      <div className="comparison-grid">
-        {/* LEFT COLUMN - Your Article */}
-        <div className="source-column source-a">
-          <div className="column-header">
-            <span className="source-name">{comparison.sourceA.name}</span>
-            <span className="source-lean">[YOUR ARTICLE]</span>
-          </div>
-          
-          <div className="column-content">
-            <h3 className="source-headline">{comparison.sourceA.headline}</h3>
+      {/* YOUR ARTICLE SECTION */}
+      <section className="comparison-section">
+        <header 
+          className="section-header clickable"
+          onClick={() => toggleSection('your-article')}
+        >
+          <h3 className="section-title">
+            [YOUR ARTICLE] {comparison.sourceA.name}
+          </h3>
+          <span className="section-toggle">
+            {expandedSections.has('your-article') ? '[-]' : '[+]'}
+          </span>
+        </header>
+        
+        {expandedSections.has('your-article') && (
+          <div className="section-content">
+            <h4 className="source-headline">{comparison.sourceA.headline}</h4>
             
             {comparison.sourceA.framing && (
-              <div className="framing-block">
+              <div className="info-block">
                 <span className="block-label">[FRAMING]</span>
                 <p>{comparison.sourceA.framing}</p>
               </div>
             )}
             
             {comparison.sourceA.keySpins.length > 0 && (
-              <div className="spin-block">
+              <div className="info-block">
                 <span className="block-label">[KEY SPIN]</span>
                 <ul>
                   {comparison.sourceA.keySpins.map((spin, i) => (
@@ -246,29 +284,25 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
                 </ul>
               </div>
             )}
-            
-            {comparison.sourceA.url && (
-              <a 
-                href={comparison.sourceA.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="source-link"
-              >
-                [READ FULL ARTICLE]
-              </a>
-            )}
           </div>
-        </div>
+        )}
+      </section>
 
-        {/* CENTER COLUMN - Neutral Facts */}
-        <div className="source-column neutral-facts">
-          <div className="column-header">
-            <span className="source-name">[THE FACTS]</span>
-            <span className="source-lean">[AI SYNTHESIZED]</span>
-          </div>
-          
-          <div className="column-content">
-            <div className="facts-block">
+      {/* THE FACTS SECTION */}
+      <section className="comparison-section facts-section">
+        <header 
+          className="section-header clickable"
+          onClick={() => toggleSection('facts')}
+        >
+          <h3 className="section-title">[THE FACTS] AI SYNTHESIZED</h3>
+          <span className="section-toggle">
+            {expandedSections.has('facts') ? '[-]' : '[+]'}
+          </span>
+        </header>
+        
+        {expandedSections.has('facts') && (
+          <div className="section-content">
+            <div className="info-block">
               <span className="block-label">[AGREED FACTS]</span>
               <ul>
                 {comparison.neutralFacts.coreFacts.map((fact, i) => (
@@ -278,7 +312,7 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
             </div>
             
             {comparison.neutralFacts.disputed.length > 0 && (
-              <div className="disputed-block">
+              <div className="info-block disputed">
                 <span className="block-label">[DISPUTED]</span>
                 <ul>
                   {comparison.neutralFacts.disputed.map((fact, i) => (
@@ -289,33 +323,43 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
             )}
             
             {comparison.neutralFacts.context && (
-              <div className="context-block">
-                <span className="block-label">[CONTEXT]</span>
+              <div className="info-block context">
+                <span className="block-label">[RECOMMENDATION]</span>
                 <p>{comparison.neutralFacts.context}</p>
               </div>
             )}
           </div>
-        </div>
+        )}
+      </section>
 
-        {/* RIGHT COLUMN - Contrasting Source */}
-        <div className="source-column source-b">
-          <div className="column-header">
-            <span className="source-name">{comparison.sourceB.name}</span>
-            <span className="source-lean">[{getCategoryLabel(comparison.sourceB.category)} CONTRAST]</span>
-          </div>
-          
-          <div className="column-content">
-            <h3 className="source-headline">{comparison.sourceB.headline}</h3>
+      {/* CONTRASTING SOURCE SECTION */}
+      <section className="comparison-section contrast-section">
+        <header 
+          className="section-header clickable"
+          onClick={() => toggleSection('contrast')}
+        >
+          <h3 className="section-title">
+            [CONTRAST] {comparison.sourceB.name} 
+            <span className="category-badge">[{getCategoryLabel(comparison.sourceB.category)}]</span>
+          </h3>
+          <span className="section-toggle">
+            {expandedSections.has('contrast') ? '[-]' : '[+]'}
+          </span>
+        </header>
+        
+        {expandedSections.has('contrast') && (
+          <div className="section-content">
+            <h4 className="source-headline">{comparison.sourceB.headline}</h4>
             
             {comparison.sourceB.framing && (
-              <div className="framing-block">
+              <div className="info-block">
                 <span className="block-label">[FRAMING]</span>
                 <p>{comparison.sourceB.framing}</p>
               </div>
             )}
             
             {comparison.sourceB.keySpins.length > 0 && (
-              <div className="spin-block">
+              <div className="info-block">
                 <span className="block-label">[KEY SPIN]</span>
                 <ul>
                   {comparison.sourceB.keySpins.map((spin, i) => (
@@ -336,30 +380,89 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
               </a>
             )}
           </div>
-        </div>
-      </div>
+        )}
+      </section>
 
-      {/* WORD DIFF SECTION */}
+      {/* LANGUAGE DIFFERENCES SECTION */}
       {comparison.languageDiffs && comparison.languageDiffs.length > 0 && (
-        <section className="word-diff-section">
-          <h3 className="diff-title">[LANGUAGE DIFFERENCES]</h3>
-          <p className="diff-subtitle">Same concept, different words:</p>
+        <section className="comparison-section">
+          <header 
+            className="section-header clickable"
+            onClick={() => toggleSection('language-diffs')}
+          >
+            <h3 className="section-title">
+              [LANGUAGE DIFFERENCES] 
+              <span className="count-badge">{comparison.languageDiffs.length}</span>
+            </h3>
+            <span className="section-toggle">
+              {expandedSections.has('language-diffs') ? '[-]' : '[+]'}
+            </span>
+          </header>
           
-          <div className="diff-grid">
-            {comparison.languageDiffs.map((diff, i) => (
-              <div key={i} className="diff-item">
-                <span className="diff-concept">{diff.concept}</span>
-                <div className="diff-variations">
-                  {Object.entries(diff.variations).map(([source, word], j) => (
-                    <div key={j} className="variation">
-                      <span className="variation-source">{source}:</span>
-                      <span className="variation-word">"{word}"</span>
+          {expandedSections.has('language-diffs') && (
+            <div className="section-content">
+              <p className="section-subtitle">Same concept, different words:</p>
+              <div className="diff-grid">
+                {comparison.languageDiffs.map((diff, i) => (
+                  <div key={i} className="diff-item">
+                    <span className="diff-concept">{diff.concept}</span>
+                    <div className="diff-variations">
+                      {Object.entries(diff.variations).map(([source, word], j) => (
+                        <div key={j} className="variation">
+                          <span className="variation-source">{source}:</span>
+                          <span className="variation-word">"{word}"</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* ALL SOURCES FOUND */}
+      {comparison.allSources.length > 1 && (
+        <section className="comparison-section">
+          <header 
+            className="section-header clickable"
+            onClick={() => toggleSection('all-sources')}
+          >
+            <h3 className="section-title">
+              [OTHER SOURCES FOUND]
+              <span className="count-badge">{comparison.allSources.length}</span>
+            </h3>
+            <span className="section-toggle">
+              {expandedSections.has('all-sources') ? '[-]' : '[+]'}
+            </span>
+          </header>
+          
+          {expandedSections.has('all-sources') && (
+            <div className="section-content">
+              <div className="sources-list">
+                {comparison.allSources.map((source, i) => (
+                  <div key={i} className="source-item">
+                    <div className="source-meta">
+                      <span className="source-name">{source.name}</span>
+                      <span className="source-category">[{getCategoryLabel(source.category)}]</span>
+                    </div>
+                    <p className="source-title">{source.title}</p>
+                    {source.url && (
+                      <a 
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="source-link-small"
+                      >
+                        [READ]
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </section>
       )}
 
