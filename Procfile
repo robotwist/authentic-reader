@@ -1,2 +1,2 @@
-web: npm start
-release: node scripts/run-migrations.js
+web: cd authentic-reader-backend && node index.js
+release: cd authentic-reader-backend && npm run daily-briefing
