@@ -232,34 +232,6 @@ const ReaderView: React.FC<ReaderViewProps> = ({
   return (
     <div className="reader-view" ref={containerRef}>
       <div className="reader-content-wrapper">
-        {/* Analysis Summary Header - Receipt Style */}
-        {analysis && (
-          <div className="analysis-receipt-header">
-            <div className="receipt-header-row">
-              <span className="receipt-label">ANALYSIS_ID</span>
-              <span className="receipt-value">{analysis.bias_rating || 'N/A'}</span>
-            </div>
-            {analysis.tone && (
-              <div className="receipt-header-row">
-                <span className="receipt-label">TONE</span>
-                <span className="receipt-value">{analysis.tone.toUpperCase()}</span>
-              </div>
-            )}
-            {analysis.confidence_score !== undefined && (
-              <div className="receipt-header-row">
-                <span className="receipt-label">CONFIDENCE</span>
-                <span className="receipt-value">{Math.round(analysis.confidence_score)}%</span>
-              </div>
-            )}
-            {analysis.bias_rating && (
-              <div className="receipt-header-row">
-                <span className="receipt-label">BIAS_RATING</span>
-                <span className="receipt-value">{analysis.bias_rating.toUpperCase()}</span>
-              </div>
-            )}
-          </div>
-        )}
-
         <div 
           className="reader-content prose"
           dangerouslySetInnerHTML={{ __html: processedHtml }}
@@ -297,7 +269,7 @@ const ReaderView: React.FC<ReaderViewProps> = ({
         >
           <div className="fallacy-sidebar-header">
             <h2 id="fallacy-sidebar-title" className="fallacy-sidebar-title">
-              [BIAS_DETECTED]
+              [PATTERN_DETECTED]
             </h2>
             <button
               className="fallacy-sidebar-close"
@@ -334,18 +306,6 @@ const ReaderView: React.FC<ReaderViewProps> = ({
               </div>
             )}
 
-            {/* Score Breakdown - Math Section */}
-            {activeFallacy.severity && (
-              <div className="fallacy-section fallacy-score-breakdown">
-                <h3 className="fallacy-section-title">SCORE_BREAKDOWN</h3>
-                <div className="score-math">
-                  <div className="score-math-line">100</div>
-                  <div className="score-math-line">- {activeFallacy.severity === 'high' ? '10' : activeFallacy.severity === 'medium' ? '5' : '2'}</div>
-                  <div className="score-math-line">= {activeFallacy.severity === 'high' ? '90' : activeFallacy.severity === 'medium' ? '95' : '98'}</div>
-                </div>
-              </div>
-            )}
-
             {/* Missing Context - Warning Box */}
             {activeFallacy.missingContext && (
               <div className="fallacy-section fallacy-missing-context">
@@ -362,14 +322,6 @@ const ReaderView: React.FC<ReaderViewProps> = ({
               <div className="fallacy-section fallacy-neutral-rewrite">
                 <h3 className="fallacy-section-title neutral-rewrite-label">NEUTRAL REWRITE:</h3>
                 <p className="neutral-rewrite-text">{activeFallacy.betterAlternative}</p>
-              </div>
-            )}
-
-            {activeFallacy.severity && (
-              <div className="fallacy-meta">
-                <span className={`severity-badge severity-${activeFallacy.severity}`}>
-                  SEVERITY: {activeFallacy.severity.toUpperCase()}
-                </span>
               </div>
             )}
           </div>

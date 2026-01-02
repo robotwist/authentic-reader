@@ -272,19 +272,6 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
     }
   };
 
-  const getCategoryLabel = (category: string): string => {
-    const labels: Record<string, string> = {
-      'left': 'LEFT',
-      'center-left': 'CENTER-LEFT',
-      'center': 'CENTER',
-      'center-right': 'CENTER-RIGHT',
-      'right': 'RIGHT',
-      'international': 'INTERNATIONAL',
-      'your-source': 'YOUR SOURCE',
-      'unknown': 'UNKNOWN'
-    };
-    return labels[category] || category.toUpperCase();
-  };
 
   if (isLoading) {
     return (
@@ -325,7 +312,7 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
         </div>
       </header>
 
-      {/* YOUR ARTICLE SECTION */}
+      {/* SIDE-BY-SIDE COMPARISON: YOUR ARTICLE */}
       <section className="comparison-section">
         <header 
           className="section-header clickable"
@@ -373,59 +360,14 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
         )}
       </section>
 
-      {/* THE FACTS SECTION */}
-      <section className="comparison-section facts-section">
-        <header 
-          className="section-header clickable"
-          onClick={() => toggleSection('facts')}
-        >
-          <h3 className="section-title">[THE FACTS] AI SYNTHESIZED</h3>
-          <span className="section-toggle">
-            {expandedSections.has('facts') ? '[-]' : '[+]'}
-          </span>
-        </header>
-        
-        {expandedSections.has('facts') && (
-          <div className="section-content">
-            <div className="info-block">
-              <span className="block-label">[AGREED FACTS]</span>
-              <ul>
-                {comparison.neutralFacts.coreFacts.map((fact, i) => (
-                  <li key={i}>{fact}</li>
-                ))}
-              </ul>
-            </div>
-            
-            {comparison.neutralFacts.disputed.length > 0 && (
-              <div className="info-block disputed">
-                <span className="block-label">[DISPUTED]</span>
-                <ul>
-                  {comparison.neutralFacts.disputed.map((fact, i) => (
-                    <li key={i}>{fact}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            
-            {comparison.neutralFacts.context && (
-              <div className="info-block context">
-                <span className="block-label">[RECOMMENDATION]</span>
-                <p>{comparison.neutralFacts.context}</p>
-              </div>
-            )}
-          </div>
-        )}
-      </section>
-
-      {/* CONTRASTING SOURCE SECTION */}
+      {/* SIDE-BY-SIDE COMPARISON: CONTRASTING SOURCE */}
       <section className="comparison-section contrast-section">
         <header 
           className="section-header clickable"
           onClick={() => toggleSection('contrast')}
         >
           <h3 className="section-title">
-            [CONTRAST] {comparison.sourceB.name} 
-            <span className="category-badge">[{getCategoryLabel(comparison.sourceB.category)}]</span>
+            [CONTRAST] {comparison.sourceB.name}
           </h3>
           <span className="section-toggle">
             {expandedSections.has('contrast') ? '[-]' : '[+]'}
@@ -477,9 +419,9 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
         )}
       </section>
 
-      {/* LANGUAGE DIFFERENCES SECTION */}
+      {/* LANGUAGE DIFFERENCES SECTION - ELEVATED PROMINENCE */}
       {comparison.languageDiffs && comparison.languageDiffs.length > 0 && (
-        <section className="comparison-section">
+        <section className="comparison-section language-diffs-section">
           <header 
             className="section-header clickable"
             onClick={() => toggleSection('language-diffs')}
@@ -516,6 +458,50 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
         </section>
       )}
 
+      {/* THE FACTS SECTION - CONSENSUS FACTS */}
+      <section className="comparison-section facts-section">
+        <header 
+          className="section-header clickable"
+          onClick={() => toggleSection('facts')}
+        >
+          <h3 className="section-title">[THE FACTS] AI SYNTHESIZED</h3>
+          <span className="section-toggle">
+            {expandedSections.has('facts') ? '[-]' : '[+]'}
+          </span>
+        </header>
+        
+        {expandedSections.has('facts') && (
+          <div className="section-content">
+            <div className="info-block">
+              <span className="block-label">[AGREED FACTS]</span>
+              <ul>
+                {comparison.neutralFacts.coreFacts.map((fact, i) => (
+                  <li key={i}>{fact}</li>
+                ))}
+              </ul>
+            </div>
+            
+            {comparison.neutralFacts.disputed.length > 0 && (
+              <div className="info-block disputed">
+                <span className="block-label">[DISPUTED]</span>
+                <ul>
+                  {comparison.neutralFacts.disputed.map((fact, i) => (
+                    <li key={i}>{fact}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            {comparison.neutralFacts.context && (
+              <div className="info-block context">
+                <span className="block-label">[RECOMMENDATION]</span>
+                <p>{comparison.neutralFacts.context}</p>
+              </div>
+            )}
+          </div>
+        )}
+      </section>
+
       {/* ALL SOURCES FOUND */}
       {comparison.allSources.length > 1 && (
         <section className="comparison-section">
@@ -539,7 +525,6 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
                   <div key={i} className="source-item">
                     <div className="source-meta">
                       <span className="source-name">{source.name}</span>
-                      <span className="source-category">[{getCategoryLabel(source.category)}]</span>
                     </div>
                     <p className="source-title">{source.title}</p>
                     {source.url && (
