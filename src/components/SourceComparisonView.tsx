@@ -348,14 +348,10 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
               </div>
             )}
             
-            {comparison.sourceA.content && (
-              <div className="info-block article-content">
-                <span className="block-label">[FULL ARTICLE]</span>
-                <div className="article-text">
-                  {formatArticleContent(comparison.sourceA.content)}
-                </div>
-              </div>
-            )}
+            <div className="info-block article-note">
+              <span className="block-label">[NOTE]</span>
+              <p>The full article content is displayed above in the main reader view.</p>
+            </div>
           </div>
         )}
       </section>

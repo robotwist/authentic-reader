@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import ReaderView from '../components/ReaderView';
-import NarrativeThermometer from '../components/NarrativeThermometer';
 import DeepAnalysisPanel from '../components/DeepAnalysisPanel';
 import SourceComparisonView from '../components/SourceComparisonView';
 import { FallacyData } from '../utils/llmParser';
@@ -8,7 +7,6 @@ import { API_CONFIG } from '../config/api.config';
 import { fallbackBriefing } from '../data/fallbackBriefing';
 import useEnhancedAnalysis from '../hooks/useEnhancedAnalysis';
 import { AnalysisResult } from '../services/enhancedCognitiveAnalysisService';
-import { calculateLogicScore, calculateLogicScoreFromFallacies, getScoreColorClass, formatScoreBreakdown } from '../utils/scoring';
 import './DailyBriefingPage.css';
 
 interface DailyBriefingTopic {
@@ -831,20 +829,10 @@ const DailyBriefingPage: React.FC = () => {
         )}
       </div>
       
-      {/* Narrative Thermometer - 7-Day Trend */}
-      <NarrativeThermometer />
-      
       <div className="topic-grid">
         {TOPIC_KEYS.map((key) => {
           const topic = briefing.topics[key];
           if (!topic) return null;
-          
-          // Calculate logic score from fallacies
-          const fallacies = getFallacies(topic);
-          const logicScoreResult = calculateLogicScoreFromFallacies(fallacies);
-          const logicScore = logicScoreResult.totalScore;
-          const scoreColorClass = getScoreColorClass(logicScore);
-          const scoreBreakdown = formatScoreBreakdown(logicScoreResult);
           
           return (
             <button
@@ -857,14 +845,6 @@ const DailyBriefingPage: React.FC = () => {
               <p className="card-headline">{topic.article.title}</p>
               <div className="card-meta">
                 <span className="card-source">{topic.article.source}</span>
-                <div className="card-scores">
-                  <span 
-                    className={`card-logic-score ${scoreColorClass}`}
-                    title={scoreBreakdown}
-                  >
-                    SCORE: {logicScore}
-                  </span>
-                </div>
               </div>
             </button>
           );
