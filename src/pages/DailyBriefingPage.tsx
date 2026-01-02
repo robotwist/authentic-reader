@@ -73,7 +73,7 @@ const DailyBriefingPage: React.FC = () => {
   const [isLoadingDeep, setIsLoadingDeep] = useState(false);
   const [crossSourceComparison, setCrossSourceComparison] = useState<any>(null);
   const [isLoadingComparison, setIsLoadingComparison] = useState(false);
-  const [showFullComparison, setShowFullComparison] = useState(false);
+  const [showFullComparison, setShowFullComparison] = useState(true);
   
   // Enhanced LLM Analysis Hook
   const {
@@ -594,73 +594,6 @@ const DailyBriefingPage: React.FC = () => {
                 )}
               </div>
               
-              {/* Cross-Source Comparison - PRIMARY ACTION: Immediately visible below metadata */}
-              <div className="comparison-cta-section primary-action">
-                <div className="comparison-help-link">
-                  <button
-                    className="help-link"
-                    onClick={() => {
-                      alert('Cross-Source Comparison: See how different news sources (left, center, right) cover the same story. Compare framing, language, and what each source emphasizes or omits.');
-                    }}
-                    aria-label="What is cross-source comparison?"
-                  >
-                    [WHAT IS THIS?]
-                  </button>
-                </div>
-                {crossSourceComparison?.found && crossSourceComparison.related_sources ? (
-                  <div className="comparison-preview">
-                    <div className="comparison-preview-stats">
-                      <span className="comparison-count">
-                        {crossSourceComparison.related_sources.length} sources found
-                      </span>
-                      <span className="comparison-breakdown">
-                        ({(() => {
-                          const breakdown = crossSourceComparison.related_sources.reduce((acc: any, s: any) => {
-                            const cat = s.category || 'unknown';
-                            acc[cat] = (acc[cat] || 0) + 1;
-                            return acc;
-                          }, {});
-                          const parts = [];
-                          if (breakdown.left) parts.push(`${breakdown.left} left`);
-                          if (breakdown.center) parts.push(`${breakdown.center} center`);
-                          if (breakdown.right) parts.push(`${breakdown.right} right`);
-                          return parts.join(', ') || 'various perspectives';
-                        })()})
-                      </span>
-                    </div>
-                    <button 
-                      className="comparison-cta-button primary"
-                      onClick={() => setShowFullComparison(true)}
-                      title="View side-by-side comparison with all sources"
-                      aria-label={`View full comparison with ${crossSourceComparison.related_sources.length} sources`}
-                    >
-                      [VIEW FULL COMPARISON]
-                    </button>
-                  </div>
-                ) : (
-                  <div className="comparison-cta-buttons">
-                    <button 
-                      className="comparison-cta-button primary"
-                      onClick={handleCompareSource}
-                      disabled={isLoadingComparison}
-                      title="Find and compare this article with other sources"
-                      aria-label="Compare this article with other news sources"
-                      aria-busy={isLoadingComparison}
-                    >
-                      {isLoadingComparison ? '[SEARCHING...]' : '[COMPARE WITH OTHER SOURCES]'}
-                    </button>
-                    <button 
-                      className="comparison-cta-button secondary"
-                      onClick={() => setShowFullComparison(true)}
-                      title="Open full comparison view (will search for sources)"
-                      aria-label="Open full side-by-side comparison view"
-                    >
-                      [FULL COMPARISON VIEW]
-                    </button>
-                  </div>
-                )}
-              </div>
-              
               {/* Enhanced Bias Meter */}
               {enhancedAnalysis && (
                 <div className="bias-meter-container">
@@ -835,97 +768,6 @@ const DailyBriefingPage: React.FC = () => {
               />
             )}
 
-            {/* CROSS-SOURCE COMPARISON - Inline Results (Secondary/Detailed View) */}
-            {!showFullComparison && crossSourceComparison && crossSourceComparison.found && (
-            <section className="cross-source-section">
-              <div className="cross-source-header">
-                <h2 className="cross-source-title">[DETAILED COMPARISON RESULTS]</h2>
-                <button 
-                  className="compare-button full-view"
-                  onClick={() => setShowFullComparison(true)}
-                  title="Open full comparison view with side-by-side analysis"
-                >
-                  [VIEW FULL COMPARISON]
-                </button>
-              </div>
-              
-              <div className="comparison-results">
-                  <div className="related-sources">
-                    <h3 className="comparison-subtitle">[RELATED COVERAGE]</h3>
-                    {crossSourceComparison.related_sources?.map((source: any, i: number) => (
-                      <div key={i} className="related-source-item">
-                        <div className="source-meta">
-                          <span className="source-name">{source.name}</span>
-                          <span className="source-category">[{source.category?.toUpperCase()}]</span>
-                        </div>
-                        <p className="source-headline">{source.title}</p>
-                        {source.url && (
-                          <a 
-                            href={source.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="source-link"
-                          >
-                            [READ]
-                          </a>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {crossSourceComparison.comparison_analysis && (
-                    <div className="comparison-analysis">
-                      {crossSourceComparison.comparison_analysis.framing_comparison && (
-                        <div className="framing-comparison">
-                          <h3 className="comparison-subtitle">[FRAMING DIFFERENCES]</h3>
-                          {crossSourceComparison.comparison_analysis.framing_comparison.map((frame: any, i: number) => (
-                            <div key={i} className="framing-item">
-                              <div className="framing-header">
-                                <span className="framing-source">{frame.source}</span>
-                                <span className="framing-lean">[{frame.political_lean?.toUpperCase()}]</span>
-                              </div>
-                              {frame.emphasis && (
-                                <p className="framing-detail">
-                                  <span className="framing-label">[EMPHASIS]</span> {frame.emphasis}
-                                </p>
-                              )}
-                              {frame.downplayed && (
-                                <p className="framing-detail">
-                                  <span className="framing-label">[DOWNPLAYED]</span> {frame.downplayed}
-                                </p>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                      
-                      {crossSourceComparison.comparison_analysis.reader_takeaway && (
-                        <div className="reader-takeaway">
-                          <h3 className="comparison-subtitle">[READER TAKEAWAY]</h3>
-                          {crossSourceComparison.comparison_analysis.reader_takeaway.most_balanced && (
-                            <p className="takeaway-item">
-                              <span className="takeaway-label">[MOST BALANCED]</span>
-                              {crossSourceComparison.comparison_analysis.reader_takeaway.most_balanced}
-                            </p>
-                          )}
-                          {crossSourceComparison.comparison_analysis.reader_takeaway.recommendation && (
-                            <p className="takeaway-item">
-                              <span className="takeaway-label">[RECOMMENDATION]</span>
-                              {crossSourceComparison.comparison_analysis.reader_takeaway.recommendation}
-                            </p>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              
-              {crossSourceComparison && !crossSourceComparison.found && (
-                <p className="no-comparison">[NO RELATED COVERAGE FOUND FROM OTHER SOURCES]</p>
-              )}
-            </section>
-            )}
-            
             <footer className="article-footer">
               {!isOffline && topicData.article.url && (
                 <a 
