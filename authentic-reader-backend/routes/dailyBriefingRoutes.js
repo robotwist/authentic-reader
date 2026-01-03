@@ -4,6 +4,44 @@ import { DailyBriefingArticle } from '../models/index.js';
 const router = express.Router();
 
 /**
+ * Helper: Determine if error is a database connection/availability issue
+ * Returns true for database connection errors, false for other errors
+ */
+function isDatabaseError(error) {
+  if (!error) return false;
+  
+  // Sequelize connection errors
+  if (error.name === 'SequelizeConnectionError' || 
+      error.name === 'SequelizeConnectionRefusedError' ||
+      error.name === 'SequelizeHostNotFoundError' ||
+      error.name === 'SequelizeHostNotReachableError' ||
+      error.name === 'SequelizeInvalidConnectionError' ||
+      error.name === 'SequelizeConnectionTimedOutError') {
+    return true;
+  }
+  
+  // Generic connection errors
+  if (error.code === 'ECONNREFUSED' || 
+      error.code === 'ETIMEDOUT' ||
+      error.code === 'ENOTFOUND' ||
+      error.code === 'EHOSTUNREACH') {
+    return true;
+  }
+  
+  // Database unavailable errors
+  if (error.message && (
+      error.message.includes('Connection refused') ||
+      error.message.includes('database') && error.message.includes('does not exist') ||
+      error.message.includes('timeout') && error.message.includes('connection') ||
+      error.message.includes('Unable to connect')
+  )) {
+    return true;
+  }
+  
+  return false;
+}
+
+/**
  * Helper: Convert DB articles to API format
  * Transforms fallacies from JSONB to match frontend expectations
  */
@@ -106,6 +144,15 @@ router.get('/', async (req, res) => {
     res.json(toApiFormat(dbArticles, false));
   } catch (error) {
     console.error('Error fetching daily briefing:', error);
+    
+    // Return 503 (Service Unavailable) for database errors, 500 for other errors
+    if (isDatabaseError(error)) {
+      return res.status(503).json({ 
+        error: 'Service unavailable',
+        message: 'Database connection failed. Please try again later.'
+      });
+    }
+    
     res.status(500).json({ 
       error: 'Failed to fetch daily briefing',
       message: error.message
@@ -140,6 +187,15 @@ router.get('/latest', async (req, res) => {
     res.json(toApiFormat(articles, false));
   } catch (error) {
     console.error('Error fetching latest briefing:', error);
+    
+    // Return 503 (Service Unavailable) for database errors, 500 for other errors
+    if (isDatabaseError(error)) {
+      return res.status(503).json({ 
+        error: 'Service unavailable',
+        message: 'Database connection failed. Please try again later.'
+      });
+    }
+    
     res.status(500).json({ 
       error: 'Failed to fetch latest briefing',
       message: error.message
@@ -176,6 +232,15 @@ router.get('/archive', async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching archive dates:', error);
+    
+    // Return 503 (Service Unavailable) for database errors, 500 for other errors
+    if (isDatabaseError(error)) {
+      return res.status(503).json({ 
+        error: 'Service unavailable',
+        message: 'Database connection failed. Please try again later.'
+      });
+    }
+    
     res.status(500).json({ 
       error: 'Failed to fetch archive',
       message: error.message
@@ -214,6 +279,15 @@ router.get('/archive/:date', async (req, res) => {
     res.json(toApiFormat(articles, true));
   } catch (error) {
     console.error('Error fetching archive briefing:', error);
+    
+    // Return 503 (Service Unavailable) for database errors, 500 for other errors
+    if (isDatabaseError(error)) {
+      return res.status(503).json({ 
+        error: 'Service unavailable',
+        message: 'Database connection failed. Please try again later.'
+      });
+    }
+    
     res.status(500).json({ 
       error: 'Failed to fetch archive briefing',
       message: error.message
@@ -266,6 +340,15 @@ router.post('/save', async (req, res) => {
     });
   } catch (error) {
     console.error('Error saving briefing:', error);
+    
+    // Return 503 (Service Unavailable) for database errors, 500 for other errors
+    if (isDatabaseError(error)) {
+      return res.status(503).json({ 
+        error: 'Service unavailable',
+        message: 'Database connection failed. Unable to save briefing.'
+      });
+    }
+    
     res.status(500).json({ 
       error: 'Failed to save briefing',
       message: error.message
