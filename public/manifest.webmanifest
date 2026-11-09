@@ -1,7 +1,7 @@
 {
-  "name": "Authentic Reader",
-  "short_name": "AuthReader",
-  "description": "AI-powered media literacy and bias detection platform",
+  "name": "The Daily Authentic",
+  "short_name": "Daily Authentic",
+  "description": "The day's most-covered stories, read closely for logic, rhetoric, and framing.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

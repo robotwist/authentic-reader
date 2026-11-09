@@ -58,5 +58,9 @@ export default async (req) => {
 };
 
 export const config = {
-  path: ['/api/ai/analyze-deep', '/api/ai/compare-sources', '/api/ai/analyze', '/api/ai/health']
+  // The /api/ai/ paths remain for pages cached by older service workers.
+  path: [
+    '/api/analysis/analyze-deep', '/api/analysis/compare-sources', '/api/analysis/analyze', '/api/analysis/health',
+    '/api/ai/analyze-deep', '/api/ai/compare-sources', '/api/ai/analyze', '/api/ai/health'
+  ]
 };

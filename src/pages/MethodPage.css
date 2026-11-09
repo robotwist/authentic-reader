@@ -164,3 +164,39 @@
     font-size: 2rem;
   }
 }
+
+.method-params {
+  margin: 1rem 0 1.5rem;
+  border-top: 2px solid var(--text-ink, #1A1A1A);
+}
+
+.method-params div {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--text-ink, #1A1A1A);
+}
+
+.method-params dt {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding-top: 0.2rem;
+}
+
+.method-params dd {
+  margin: 0;
+  font-family: var(--font-body, 'Georgia', serif);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .method-params div {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}

@@ -137,7 +137,7 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
     setError(null);
 
     try {
-      const response = await fetch(`${API_CONFIG.BASE_URL}/api/ai/compare-sources`, {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/api/analysis/compare-sources`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -460,7 +460,7 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
           className="section-header clickable"
           onClick={() => toggleSection('facts')}
         >
-          <h3 className="section-title">[THE FACTS] AI SYNTHESIZED</h3>
+          <h3 className="section-title">[THE FACTS] WHAT THE SOURCES SHARE</h3>
           <span className="section-toggle">
             {expandedSections.has('facts') ? '[-]' : '[+]'}
           </span>

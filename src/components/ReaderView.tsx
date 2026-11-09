@@ -7,7 +7,7 @@ import './ReaderView.css';
 interface ReaderViewProps {
   articleContent: string; // HTML content
   fallacyData?: FallacyData[];
-  analysis?: Analysis; // Rich LLM analysis payload from Postgres
+  analysis?: Analysis; // Stored analysis payload
 }
 
 const ReaderView: React.FC<ReaderViewProps> = ({ 

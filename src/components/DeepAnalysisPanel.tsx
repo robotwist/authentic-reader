@@ -232,7 +232,6 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
     <div className="deep-analysis-panel">
       <header className="panel-header">
         <h2 className="panel-title">[THE CLOSE READ]</h2>
-        {analysis.metadata?.model && <span className="panel-version">{analysis.metadata.model.split('/').pop()?.toUpperCase()}</span>}
       </header>
 
       {/* CONTEXT YOU NEED */}
@@ -283,7 +282,7 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
               )}
 
               <p className="context-note">
-                Background is AI-generated from the article and general knowledge, and is not independently verified.
+                Background draws on the article, our archive, and general reference knowledge. General background is not independently verified.
               </p>
             </div>
           )}
@@ -330,7 +329,7 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
                 </div>
               ))}
               <p className="context-note">
-                Claims are checked by an AI fact-checker using web search. Follow the sources to judge for yourself.
+                Each claim is quoted exactly and checked against independent sources. Follow the links to judge for yourself.
               </p>
             </div>
           )}

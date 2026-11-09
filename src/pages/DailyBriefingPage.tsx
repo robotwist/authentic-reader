@@ -112,7 +112,7 @@ const DailyBriefingPage: React.FC = () => {
     if (!story) return;
     let cancelled = false;
     setIsLoadingDeep(true);
-    fetch(`${API_CONFIG.BASE_URL}/api/ai/analyze-deep`, {
+    fetch(`${API_CONFIG.BASE_URL}/api/analysis/analyze-deep`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ article: { title: story.article.title } })
