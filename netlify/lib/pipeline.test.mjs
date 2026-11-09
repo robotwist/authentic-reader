@@ -126,3 +126,17 @@ test('visits are counted from page flags only, and bots and bad input are ignore
   assert.deepEqual({ visitors: day.visitors, returning: day.returning, home: day.views.home, story: day.views.story }, { visitors: 2, returning: 1, home: 2, story: 1 });
   assert.equal(day.stories['egypt-train-collision'], 1);
 });
+
+test('contradictions need a source about the same measure and period', async () => {
+  const { contradictionProblem, urlPeriod } = await import('./analysis.mjs');
+  assert.deepEqual(urlPeriod('https://www.reuters.com/markets/x-2024-11-12/'), new Date(Date.UTC(2024, 10, 1)));
+  assert.deepEqual(urlPeriod('https://example.com/2026/10/article'), new Date(Date.UTC(2026, 9, 1)));
+  assert.equal(urlPeriod('https://example.com/article'), null);
+  const article = '2026-11-09T00:00:00Z';
+  const old = [{ url: 'https://www.reuters.com/markets/inflation-2024-11-12/' }];
+  const recent = [{ url: 'https://www.reuters.com/markets/inflation-2026-10-14/' }];
+  assert.match(contradictionProblem({ same_measure_and_period: false }, recent, article), /different measure or period/);
+  assert.match(contradictionProblem({ same_measure_and_period: true }, old, article), /earlier period/);
+  assert.match(contradictionProblem({ same_measure_and_period: true, source_period: '2025-01' }, [], article), /earlier period/);
+  assert.equal(contradictionProblem({ same_measure_and_period: true, source_period: '2026-10' }, recent, article), null);
+});

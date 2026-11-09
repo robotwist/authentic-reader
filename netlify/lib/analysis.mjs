@@ -260,10 +260,33 @@ Status rules:
 - "disputed": credible sources disagree with each other.
 - "needs_context": the statement is accurate but missing context that changes its meaning, such as what a percentage is compared against, a timeframe, or a counter-claim.
 - "unverified": no source found that addresses this specific statement.
-Check the statement exactly as the article words it. Never mark it contradicted based on a different study or event, or on a paraphrase the article did not make. The article itself does not count as an independent source, and neither do syndicated or republished copies of it (e.g. on Yahoo, MSN, or news aggregators). Predictions and opinions cannot be supported; mark them "unverified".
+Check the statement exactly as the article words it. Never mark it contradicted based on a different study or event, or on a paraphrase the article did not make. A forecast, projection, estimate, or target never contradicts a reported figure, and figures for different time periods do not conflict; if that is all you find, use "needs_context" or "unverified". The article itself does not count as an independent source, and neither do syndicated or republished copies of it (e.g. on Yahoo, MSN, or news aggregators). Predictions and opinions cannot be supported; mark them "unverified".
 
 Reply with only a JSON object (not a tool call):
-{"checks":[{"index":1,"status":"","explanation":"1-2 sentences on what the sources say, naming them","sources":[{"title":"","url":""}]}]}`;
+{"checks":[{"index":1,"status":"","explanation":"1-2 sentences on what the sources say, naming them","source_period":"YYYY-MM that the source's figure or event refers to, or empty","same_measure_and_period":true,"sources":[{"title":"","url":""}]}]}
+"same_measure_and_period" must be true only when the source describes exactly the same measure, for the same period, as the statement.`;
+
+const CONTRADICTION_MAX_SOURCE_AGE_DAYS = 183;
+
+/** Year and month from a URL path such as /2024-11-12/ or /2024/11/, if present. */
+export function urlPeriod(url) {
+  const match = String(url || '').match(/[/-](20\d{2})[/-](\d{2})(?:[/-]\d{2})?(?:[/-]|$)/);
+  return match ? new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, 1)) : null;
+}
+
+/**
+ * A contradiction needs a source about the same measure and period. Returns
+ * the reason it falls short, or null when the contradiction stands.
+ */
+export function contradictionProblem(check, sources, articleDate) {
+  if (check.same_measure_and_period !== true) return 'the sources describe a different measure or period';
+  const reference = articleDate ? new Date(articleDate) : new Date();
+  const oldest = reference.getTime() - CONTRADICTION_MAX_SOURCE_AGE_DAYS * 86400000;
+  const stated = /^\d{4}-\d{2}$/.test(check.source_period || '') ? new Date(`${check.source_period}-01T00:00:00Z`) : null;
+  const dated = [stated, ...sources.map((s) => urlPeriod(s.url))].filter(Boolean);
+  if (dated.some((d) => d.getTime() < oldest)) return 'the conflicting source is from an earlier period than the article';
+  return null;
+}
 
 const FACTCHECK_STATUS_MAP = {
   supported: 'verified',
@@ -299,9 +322,13 @@ export async function factCheckClaims(article, deep, ai) {
       .map((s) => ({ title: stripCitationMarkers(s.title), url: s.url }))
       .slice(0, 3);
     const status = FACTCHECK_STATUS_MAP[check.status] || 'unverified';
+    const problem = status === 'false' ? contradictionProblem(check, sources, article.publishDate) : null;
     if (sources.length === 0 && status !== 'unverified') {
       claim.verification_status = 'unverified';
       claim.notes = 'The fact-checker found no independent source outside the original outlet.';
+    } else if (problem) {
+      claim.verification_status = 'needs_context';
+      claim.notes = `Sources report different figures, but ${problem}, so this is not treated as a contradiction. ${stripCitationMarkers(check.explanation)}`.trim();
     } else {
       claim.verification_status = status;
       claim.notes = stripCitationMarkers(check.explanation) || claim.notes;
