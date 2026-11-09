@@ -23,9 +23,9 @@ const SubscribeBox: React.FC = () => {
     <section className="subscribe-box" aria-labelledby="subscribe-title">
       <h2 id="subscribe-title" className="subscribe-title">[GET IT EVERY MORNING]</h2>
       <p className="subscribe-copy">
-        A new briefing is published every morning around 5 AM Central. Follow it by{' '}
-        <a href="/feed.xml">RSS</a>, or join the email list for the email edition, launching soon.
-        Your address is used for nothing else.
+        A new briefing is published every morning around 5 AM Central. Follow it today by{' '}
+        <a href="/feed.xml">RSS</a>. There is no email edition yet; leave your address and you will get one
+        message when it starts. Your address is used for nothing else.
       </p>
 
       {status === 'done' ? (
