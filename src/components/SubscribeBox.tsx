@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { API_CONFIG } from '../config/api.config';
 import { submitForm } from '../lib/forms';
 import './SubscribeBox.css';
 
@@ -9,6 +10,14 @@ const SubscribeBox: React.FC = () => {
   const [website, setWebsite] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState('');
+  const [emailEdition, setEmailEdition] = useState(false);
+
+  useEffect(() => {
+    fetch(`${API_CONFIG.BASE_URL}/api/subscribe`)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => setEmailEdition(Boolean(data?.emailEdition)))
+      .catch(() => undefined);
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -25,14 +34,24 @@ const SubscribeBox: React.FC = () => {
   return (
     <section className="subscribe-box" aria-labelledby="subscribe-title">
       <h2 id="subscribe-title" className="subscribe-title">[GET IT EVERY MORNING]</h2>
-      <p className="subscribe-copy">
-        A new briefing is published every morning around 5 AM Central. Follow it today by{' '}
-        <a href="/feed.xml">RSS</a>. There is no email edition yet; leave your address and you will get one
-        message when it starts. Your address is used for nothing else.
-      </p>
+      {emailEdition ? (
+        <p className="subscribe-copy">
+          Get the briefing in your inbox every morning, around 5 AM Central. You will get one confirmation email first,
+          and every issue has an unsubscribe link. Your address is used for nothing else. Prefer a feed reader?{' '}
+          <a href="/feed.xml">RSS</a>.
+        </p>
+      ) : (
+        <p className="subscribe-copy">
+          A new briefing is published every morning around 5 AM Central. Follow it today by{' '}
+          <a href="/feed.xml">RSS</a>. There is no email edition yet; leave your address and you will get one
+          message when it starts. Your address is used for nothing else.
+        </p>
+      )}
 
       {status === 'done' ? (
-        <p className="subscribe-done" role="status">You&apos;re on the list. Thank you.</p>
+        <p className="subscribe-done" role="status">
+          {emailEdition ? 'Check your inbox for a confirmation email to start receiving the briefing.' : 'You\u2019re on the list. Thank you.'}
+        </p>
       ) : (
         <form className="subscribe-form" onSubmit={handleSubmit}>
           <label htmlFor="subscribe-email" className="visually-hidden">Email address</label>

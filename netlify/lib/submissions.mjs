@@ -43,10 +43,12 @@ export async function overRateLimit(store, ip) {
   return count > MAX_PER_HOUR;
 }
 
-export async function saveSubscriber(store, email) {
+/** Saves the address once; `emailService` records whether it reached the email service. */
+export async function saveSubscriber(store, email, emailService = 'pending') {
   const key = `subscribers/${hash(email)}`;
-  if (await store.get(key, { type: 'json' })) return;
-  await store.setJSON(key, { email, createdAt: new Date().toISOString() });
+  const existing = await store.get(key, { type: 'json' });
+  if (existing && (existing.emailService === 'added' || emailService === 'pending')) return;
+  await store.setJSON(key, { email, createdAt: existing?.createdAt || new Date().toISOString(), emailService });
 }
 
 export async function saveReport(store, { story, message, email }) {

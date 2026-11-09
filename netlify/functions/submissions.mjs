@@ -1,4 +1,5 @@
 import { normalizeEmail, overRateLimit, saveReport, saveSubscriber, submissionsStore, validateSubmission } from '../lib/submissions.mjs';
+import { addSubscriber, emailEnabled } from '../lib/email.mjs';
 
 function json(body, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -8,8 +9,9 @@ function json(body, status = 200) {
 }
 
 export default async (req, context) => {
-  if (req.method !== 'POST') return json({ ok: false, error: 'Method not allowed' }, 405);
   const kind = new URL(req.url).pathname.endsWith('/subscribe') ? 'subscribe' : 'report';
+  if (req.method === 'GET' && kind === 'subscribe') return json({ ok: true, emailEdition: emailEnabled() });
+  if (req.method !== 'POST') return json({ ok: false, error: 'Method not allowed' }, 405);
 
   let body;
   try {
@@ -28,8 +30,21 @@ export default async (req, context) => {
     return json({ ok: false, error: 'Too many submissions. Please try again later.' }, 429);
   }
 
-  if (kind === 'subscribe') await saveSubscriber(store, normalizeEmail(body.email));
-  else await saveReport(store, body);
+  if (kind === 'subscribe') {
+    const email = normalizeEmail(body.email);
+    let emailService = 'pending';
+    if (emailEnabled()) {
+      try {
+        await addSubscriber(email);
+        emailService = 'added';
+      } catch (error) {
+        console.warn('Could not add subscriber to the email service:', error.message);
+      }
+    }
+    await saveSubscriber(store, email, emailService);
+  } else {
+    await saveReport(store, body);
+  }
   return json({ ok: true });
 };
 

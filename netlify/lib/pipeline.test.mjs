@@ -156,3 +156,23 @@ test('opinion views are counted by side', async () => {
   assert.deepEqual(parseHit({ view: 'opinion', story: 'left' }), { view: 'opinion', story: 'opinion-left', firstToday: false, returning: false });
   assert.equal(parseHit({ view: 'opinion', story: 'center' }), null);
 });
+
+test('the email edition lists every story and opinion with links, and waits until it is ready', async () => {
+  const { editionMarkdown, readyToSend } = await import('./email.mjs');
+  const day = {
+    briefingDate: '2026-11-09',
+    order: ['egypt-train-collision'],
+    topics: { 'egypt-train-collision': { topic: 'Egypt Train Crash', category: 'World', why: 'Two trains collided.', outlets: ['BBC News', 'PBS'], dayCount: 2, article: { title: 'Seven dead after trains collide', source: 'BBC News' } } },
+    opinions: { right: { side: 'right', article: { title: 'A column', source: 'Fox News Opinion' }, argumentScore: { overall: 70 } } }
+  };
+  const md = editionMarkdown(day, 'https://example.org');
+  assert.match(md, /## 1\. Egypt Train Crash/);
+  assert.match(md, /\[Seven dead after trains collide\]\(https:\/\/example\.org\/\?date=2026-11-09&story=egypt-train-collision\)/);
+  assert.match(md, /covered by 2 outlets · day 2/);
+  assert.match(md, /\*\*From the right:\*\* \[A column\]\(https:\/\/example\.org\/\?date=2026-11-09&opinion=right\)/);
+  const at = (hour) => new Date(Date.UTC(2026, 10, 9, hour));
+  assert.equal(readyToSend({ storiesPublished: 5, storiesPlanned: 5 }, at(11)), true);
+  assert.equal(readyToSend({ storiesPublished: 3, storiesPlanned: 5 }, at(11)), false);
+  assert.equal(readyToSend({ storiesPublished: 3, storiesPlanned: 5 }, at(16)), true);
+  assert.equal(readyToSend({ storiesPublished: 0, storiesPlanned: 5 }, at(21)), false);
+});
