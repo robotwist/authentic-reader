@@ -25,17 +25,6 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
   </head>
   <body>
-    <!-- Static copies of the React forms so Netlify Forms can detect them at deploy time. -->
-    <form name="subscribe" data-netlify="true" netlify-honeypot="bot-field" hidden>
-      <input type="email" name="email" />
-      <input name="bot-field" />
-    </form>
-    <form name="corrections" data-netlify="true" netlify-honeypot="bot-field" hidden>
-      <input name="story" />
-      <textarea name="message"></textarea>
-      <input type="email" name="email" />
-      <input name="bot-field" />
-    </form>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -415,3 +415,13 @@ hr.dashed {
     box-shadow: none !important;
   }
 }
+
+/* Hidden visually but kept for screen readers and form handling. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

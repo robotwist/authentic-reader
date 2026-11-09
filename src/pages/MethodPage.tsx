@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { submitNetlifyForm } from '../lib/forms';
+import { submitForm } from '../lib/forms';
 import './MethodPage.css';
 
 // Keep in sync with FEEDS in netlify/lib/sources.mjs.
@@ -37,19 +37,22 @@ const STATUSES: Array<[string, string]> = [
 
 const CorrectionsForm: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
+  const [error, setError] = useState('');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     setStatus('sending');
     try {
-      await submitNetlifyForm('corrections', {
+      await submitForm('report', {
         story: String(data.get('story') || ''),
         message: String(data.get('message') || ''),
-        email: String(data.get('email') || '')
+        email: String(data.get('email') || ''),
+        website: String(data.get('website') || '')
       });
       setStatus('done');
-    } catch {
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'That did not go through. Please try again.');
       setStatus('error');
     }
   };
@@ -57,7 +60,8 @@ const CorrectionsForm: React.FC = () => {
   if (status === 'done') return <p className="method-note" role="status">Thank you. Every report is read.</p>;
 
   return (
-    <form name="corrections" className="corrections-form" onSubmit={handleSubmit}>
+    <form className="corrections-form" onSubmit={handleSubmit}>
+      <input className="visually-hidden" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <label>
         <span>Story or link</span>
         <input name="story" required placeholder="Headline or URL" />
@@ -71,7 +75,7 @@ const CorrectionsForm: React.FC = () => {
         <input type="email" name="email" />
       </label>
       <button type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'SENDING…' : 'SEND REPORT'}</button>
-      {status === 'error' && <p className="method-note" role="alert">That didn&apos;t go through. Please try again.</p>}
+      {status === 'error' && <p className="method-note" role="alert">{error}</p>}
     </form>
   );
 };

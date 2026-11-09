@@ -97,3 +97,15 @@ test('article text keeps paragraphs and drops promotional lines', async () => {
     '<figure><figcaption>Photo: AP</figcaption></figure><p>Talks begin Tuesday.</p><p>A free press is a cornerstone of a healthy democracy.</p>';
   assert.equal(htmlToParagraphs(html), 'Herzog gave Eisenkot the "first chance".\n\nTalks begin Tuesday.');
 });
+
+test('reader submissions are validated and bots are caught by the honeypot', async () => {
+  const { normalizeEmail, validateSubmission } = await import('./submissions.mjs');
+  assert.equal(normalizeEmail('  Reader@Example.COM '), 'reader@example.com');
+  assert.equal(normalizeEmail('not-an-email'), null);
+  assert.equal(validateSubmission('subscribe', { email: 'reader@example.com' }), null);
+  assert.match(validateSubmission('subscribe', { email: 'nope' }), /valid email/);
+  assert.equal(validateSubmission('subscribe', { email: 'reader@example.com', website: 'spam.biz' }), 'Invalid request.');
+  assert.equal(validateSubmission('report', { story: 'Egypt crash', message: 'Wrong death toll' }), null);
+  assert.match(validateSubmission('report', { story: 'Egypt crash', message: '' }), /fill in/);
+  assert.match(validateSubmission('report', { story: 'x', message: 'y', email: 'bad' }), /valid email/);
+});

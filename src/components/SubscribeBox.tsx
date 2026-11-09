@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
-import { submitNetlifyForm } from '../lib/forms';
+import { submitForm } from '../lib/forms';
 import './SubscribeBox.css';
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
 
 const SubscribeBox: React.FC = () => {
   const [email, setEmail] = useState('');
+  const [website, setWebsite] = useState('');
   const [status, setStatus] = useState<Status>('idle');
+  const [error, setError] = useState('');
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setStatus('sending');
     try {
-      await submitNetlifyForm('subscribe', { email });
+      await submitForm('subscribe', { email, website });
       setStatus('done');
-    } catch {
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'That did not go through. Please try again.');
       setStatus('error');
     }
   };
@@ -31,7 +34,7 @@ const SubscribeBox: React.FC = () => {
       {status === 'done' ? (
         <p className="subscribe-done" role="status">You&apos;re on the list. Thank you.</p>
       ) : (
-        <form name="subscribe" className="subscribe-form" onSubmit={handleSubmit}>
+        <form className="subscribe-form" onSubmit={handleSubmit}>
           <label htmlFor="subscribe-email" className="visually-hidden">Email address</label>
           <input
             id="subscribe-email"
@@ -43,12 +46,21 @@ const SubscribeBox: React.FC = () => {
             onChange={(e) => setEmail(e.target.value)}
             disabled={status === 'sending'}
           />
+          <input
+            className="visually-hidden"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+          />
           <button type="submit" disabled={status === 'sending'}>
             {status === 'sending' ? 'JOINING…' : 'JOIN THE LIST'}
           </button>
         </form>
       )}
-      {status === 'error' && <p className="subscribe-error" role="alert">That didn&apos;t go through. Please try again.</p>}
+      {status === 'error' && <p className="subscribe-error" role="alert">{error}</p>}
     </section>
   );
 };
