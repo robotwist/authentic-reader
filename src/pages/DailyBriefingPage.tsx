@@ -586,8 +586,8 @@ const DailyBriefingPage: React.FC = () => {
                   </span>
                 )}
                 {enhancedAnalysis?.biasConfidence && (
-                  <span className="analysis-quality-badge" title="Analysis confidence score">
-                    Quality: {Math.round(enhancedAnalysis.biasConfidence)}%
+                  <span className="analysis-quality-badge" title="How confident the analysis is about the article's political lean">
+                    Bias confidence: {Math.round(enhancedAnalysis.biasConfidence)}%
                   </span>
                 )}
               </div>

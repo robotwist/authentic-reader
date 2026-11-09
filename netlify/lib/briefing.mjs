@@ -96,71 +96,75 @@ const KEYWORD_STOPWORDS = new Set([
   'than', 'that', 'their', 'there', 'they', 'this', 'with', 'would', 'year', 'years', 'what', 'when', 'will'
 ]);
 
-const DEEP_SYSTEM_PROMPT = `You are an expert media literacy analyst and cognitive bias researcher. Your analysis is used by journalists, fact-checkers, and educators.
+export const ANALYSIS_VERSION = '4.0';
 
-Analyze the article thoroughly and return a JSON object with exactly this structure:
+// Facts newer than the model's training data that it otherwise gets wrong.
+// Override with the CURRENT_CONTEXT env var when they change.
+const DEFAULT_CURRENT_CONTEXT = 'Donald Trump has been President of the United States since January 20, 2025 (his second term); JD Vance is Vice President.';
+
+const DEEP_SYSTEM_PROMPT = `You are a senior media-literacy analyst. Readers use your analysis to understand a news story more deeply than the article alone allows: what is established, what is framing, and what context is missing. Precision and fairness matter more than finding problems.
+
+Return a JSON object with exactly this structure:
 
 {
   "executive_summary": {
-    "one_sentence": "The core claim in one neutral sentence",
-    "key_claims": ["Claim 1", "Claim 2", "Claim 3"],
+    "one_sentence": "The core news in one neutral sentence",
+    "key_claims": ["The 3-4 most important factual claims, paraphrased neutrally"],
     "what_happened": "Factual summary of events (2-3 sentences)",
     "why_it_matters": "Significance and implications"
   },
+  "context_explainer": {
+    "background": "3-5 sentences a reader new to this story needs: long-running history and how we got here, with recent developments taken only from the article",
+    "key_facts": ["2-4 points on how to interpret this story: concepts, methods, or processes, e.g. what an observational study can and cannot show, what a percentage is compared against, how coalition formation works. No statistics, current events, or people's roles from memory"],
+    "key_terms": [{ "term": "Jargon, acronym, institution, or person named in the article", "definition": "One plain-language sentence" }]
+  },
+  "tone": "One or two words for the article's tone, e.g. Measured, Urgent, Sympathetic, Alarmist, Dismissive, Celebratory",
   "logic_score": {
     "overall": 0-100,
-    "breakdown": {
-      "factual_accuracy": 0-100,
-      "logical_coherence": 0-100,
-      "source_quality": 0-100,
-      "emotional_neutrality": 0-100,
-      "completeness": 0-100
-    },
-    "grade": "A/B/C/D/F",
-    "explanation": "Why this score"
+    "breakdown": { "factual_accuracy": 0-100, "logical_coherence": 0-100, "source_quality": 0-100, "emotional_neutrality": 0-100, "completeness": 0-100 },
+    "explanation": "Why this score, citing specifics"
   },
   "bias_analysis": {
     "political_lean": "left | center-left | center | center-right | right",
     "confidence": 0-100,
-    "evidence": ["Specific evidence 1", "Evidence 2"],
-    "framing": "How the story is framed (hero/villain narrative, conflict framing, etc.)",
-    "what_perspectives_missing": ["Missing viewpoint 1", "Missing viewpoint 2"]
+    "evidence": ["Specific word choices, story selection, or omissions that indicate lean"],
+    "framing": "How the story is framed (conflict, human interest, hero/villain, economic, etc.)",
+    "what_perspectives_missing": ["Stakeholders or viewpoints not represented"]
   },
   "emotional_manipulation": {
     "score": 0-100,
     "techniques_used": [
-      { "technique": "Fear Mongering | Outrage Bait | etc.", "quote": "Exact text", "impact": "How this affects the reader", "severity": "low | medium | high" }
+      { "technique": "Name", "quote": "Exact sentence or phrase copied from the article", "speaker": "outlet | name of the quoted person", "impact": "How this affects the reader", "severity": "low | medium | high" }
     ],
-    "emotional_words": ["word1", "word2"],
-    "intended_emotional_response": "What the reader is meant to feel"
+    "emotional_words": ["Loaded words the outlet itself chose"],
+    "intended_emotional_response": "What the reader is meant to feel, in under 12 words"
   },
   "rhetorical_analysis": {
     "manipulation_techniques": [
-      { "type": "Technique name", "category": "logical | emotional | rhetorical | propaganda", "quote": "Exact text from article", "explanation": "Why this is manipulative", "neutral_rewrite": "How to say this fairly", "severity": "low | medium | high" }
+      { "type": "Technique name", "category": "logical | emotional | rhetorical | propaganda", "quote": "Exact sentence or phrase copied from the article", "speaker": "outlet | name of the quoted person", "explanation": "Why this misleads, specifically", "neutral_rewrite": "How to say this fairly", "severity": "low | medium | high" }
     ],
-    "headline_accuracy": { "matches_content": true, "clickbait_score": 0-100, "issues": "Description of any headline problems" },
-    "source_transparency": { "named_sources": 0, "anonymous_sources": 0, "documents_cited": 0, "concerns": "Any source quality issues" }
+    "headline_accuracy": { "matches_content": true, "clickbait_score": 0-100, "issues": "Any gap between headline and body, or empty string" },
+    "source_transparency": { "named_sources": 0, "anonymous_sources": 0, "documents_cited": 0, "concerns": "Source quality issues, or empty string" }
   },
-  "claim_verification": [
-    { "claim": "Specific claim from article", "verification_status": "verified | unverified | disputed | false | needs_context", "confidence": 0-100, "notes": "What readers should know" }
+  "claims_to_check": [
+    { "claim": "Neutral paraphrase", "quote": "The exact sentence from the article that makes this claim", "why_it_matters": "Why the story depends on this claim" }
   ],
   "stakeholder_analysis": {
-    "who_benefits": ["Entity 1"],
-    "who_is_harmed": ["Entity 1"],
-    "author_perspective": "Where does the author seem to stand?",
-    "potential_conflicts": "Any conflicts of interest?"
+    "who_benefits": ["Entity"],
+    "who_is_harmed": ["Entity"],
+    "author_perspective": "Where the outlet seems to stand, or 'Straight news, no clear stance'",
+    "potential_conflicts": "Conflicts of interest, or empty string"
   },
   "missing_context": {
-    "critical_omissions": ["What's missing 1"],
-    "historical_context_needed": "Background readers need",
-    "alternative_interpretations": "Other ways to view this story",
-    "questions_unanswered": ["Question 1"]
+    "critical_omissions": ["Facts or perspectives whose absence changes how a reader would understand the story"],
+    "alternative_interpretations": "Other reasonable readings of the same facts",
+    "questions_unanswered": ["Questions the article raises but does not answer"]
   },
   "reader_guidance": {
-    "critical_questions": ["Question to ask 1", "Question 2", "Question 3"],
-    "what_to_verify": ["Claim to check 1"],
-    "recommended_sources": "Where to get more balanced info",
-    "media_literacy_lesson": "What this article teaches about reading news critically"
+    "critical_questions": ["3 questions a sharp reader should ask about this story"],
+    "what_to_verify": ["Specific claims worth checking elsewhere"],
+    "recommended_sources": "Kinds of sources that would give a fuller picture",
+    "media_literacy_lesson": "One transferable lesson about reading news, grounded in this article"
   },
   "overall_assessment": {
     "reliability": "high | medium | low",
@@ -172,10 +176,13 @@ Analyze the article thoroughly and return a JSON object with exactly this struct
 
 Rules:
 1. Output only valid JSON.
-2. Quote exactly from the article for every "quote" field.
-3. Be fair: say so when an article is well written, and return empty arrays when there is nothing to report.
-4. Score honestly.
-5. Focus on helping readers become better media consumers.`;
+2. Every "quote" must be copied character-for-character from the article text, without adding quotation marks. If you cannot quote it exactly, leave the item out.
+3. Distinguish the outlet from the people it quotes. Attributing a statement to a named official or expert is normal reporting, not an "Appeal to Authority". Rhetoric inside a quotation belongs to the speaker; only blame the outlet if it adopts that framing in its own voice, headline, or story structure. Set "speaker" accordingly.
+4. List only techniques that genuinely mislead. Zero is a valid answer for careful reporting; never pad the list.
+5. Calibrate scores: 90-100 exemplary, well-sourced reporting; 70-89 solid with minor issues; 50-69 notable slant, weak sourcing, or important omissions; below 50 misleading. Bias confidence should be low (under 50) for straight news with little evidence of lean.
+6. "claims_to_check" should hold the 2-4 factual claims the story most depends on, preferring specific figures, dates, and attributions that outside sources could confirm.
+7. Your training data ends well before the article's publication date, so the world may have changed. For context_explainer and missing_context, draw recent facts (who holds an office, election results, current policies) only from the article itself; from memory, give only long-established background such as history, institutions, and how processes work. Never describe someone's current role from memory.
+8. Do not state specific numbers, dates, or quotes from memory unless they are long-established and you are certain of them. Leave a key fact out rather than guess.`;
 
 const COMPARISON_SYSTEM_PROMPT = `You are a media bias expert analyzing how different news sources cover the same story.
 
@@ -323,10 +330,32 @@ function storyTokens(keywords) {
   return [...new Set(tokens)];
 }
 
-export async function callGroqJson({ system, user, maxTokens = 8000 }) {
+/** Thrown when Groq's per-day quota for a model is used up; retrying within this run is pointless. */
+export class DailyLimitError extends Error {}
+
+/** Tokens used per model during one pipeline run. */
+export function createUsageTracker() {
+  const totals = {};
+  return {
+    add(model, usage) { totals[model] = (totals[model] || 0) + (usage?.total_tokens || 0); },
+    get(model) { return totals[model] || 0; },
+    totals
+  };
+}
+
+function parseJsonLoose(text) {
+  try {
+    return JSON.parse(text);
+  } catch {
+    const match = String(text).match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('Model response contained no JSON object');
+    return JSON.parse(match[0]);
+  }
+}
+
+export async function callGroqJson({ system, user, maxTokens = 8000, model = process.env.GROQ_MODEL || DEFAULT_MODEL, reasoningEffort = 'low', tools, usageTracker }) {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) throw new Error('GROQ_API_KEY is not set');
-  const model = process.env.GROQ_MODEL || DEFAULT_MODEL;
 
   const body = {
     model,
@@ -335,44 +364,251 @@ export async function callGroqJson({ system, user, maxTokens = 8000 }) {
       { role: 'user', content: user }
     ],
     temperature: 0.2,
-    max_completion_tokens: maxTokens,
-    response_format: { type: 'json_object' }
+    max_completion_tokens: maxTokens
   };
-  if (model.startsWith('openai/gpt-oss')) body.reasoning_effort = 'low';
+  // Groq rejects JSON mode combined with built-in tools, so tool calls are parsed loosely instead.
+  if (tools) {
+    body.tools = tools;
+    body.tool_choice = 'auto';
+  } else {
+    body.response_format = { type: 'json_object' };
+  }
+  if (model.startsWith('openai/gpt-oss')) body.reasoning_effort = reasoningEffort;
 
   for (let attempt = 1; attempt <= 5; attempt++) {
     const response = await fetch(GROQ_URL, {
       method: 'POST',
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-      signal: AbortSignal.timeout(120000)
+      signal: AbortSignal.timeout(180000)
     });
 
     if (response.status === 429 || response.status >= 500) {
+      const errorText = await response.text();
+      if (/per day/i.test(errorText)) {
+        throw new DailyLimitError(`Groq daily limit reached for ${model}`);
+      }
       const retryAfter = Number(response.headers.get('retry-after'));
       const waitMs = Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : attempt * 15000;
-      console.warn(`[briefing] Groq ${response.status}, retrying in ${Math.round(waitMs / 1000)}s (attempt ${attempt})`);
+      console.warn(`[briefing] Groq ${response.status} on ${model}, retrying in ${Math.round(waitMs / 1000)}s (attempt ${attempt})`);
       await new Promise((resolve) => setTimeout(resolve, Math.min(waitMs, 90000)));
       continue;
     }
 
     const data = await response.json();
     if (!response.ok) throw new Error(`Groq ${response.status}: ${data?.error?.message || 'unknown error'}`);
+    usageTracker?.add(model, data.usage);
     const content = data.choices?.[0]?.message?.content;
     if (!content) throw new Error('Groq returned an empty response');
-    return { json: JSON.parse(content), model, usage: data.usage };
+    return { json: parseJsonLoose(content), model, usage: data.usage };
   }
   throw new Error('Groq rate limit retries exhausted');
 }
 
-export async function analyzeArticleDeep(article) {
+// Character-level normalization that keeps an index back into the original
+// text, so a model quote can be mapped to the article's exact wording.
+function normalizeWithMap(text) {
+  let normalized = '';
+  const map = [];
+  let lastWasSpace = false;
+  for (let i = 0; i < text.length; i++) {
+    let ch = text[i];
+    if (/\s/.test(ch)) {
+      if (lastWasSpace) continue;
+      ch = ' ';
+      lastWasSpace = true;
+    } else {
+      lastWasSpace = false;
+      if ('‘’‛′'.includes(ch)) ch = "'";
+      else if ('“”„″'.includes(ch)) ch = '"';
+      else if ('‐‑‒–—―'.includes(ch)) ch = '-';
+      ch = ch.toLowerCase();
+    }
+    normalized += ch;
+    map.push(i);
+  }
+  return { normalized, map };
+}
+
+function words(text) {
+  return String(text).toLowerCase().match(/[a-z0-9]+(?:'[a-z]+)?/g) || [];
+}
+
+/**
+ * Returns the article's own wording for a model-supplied quote: an exact
+ * match, otherwise the sentence that best matches it, otherwise null.
+ */
+function groundQuote(quote, article) {
+  if (!quote) return null;
+  const cleaned = String(quote).trim().replace(/^["'“”‘’]+|["'“”‘’.,;:]+$/g, '').trim();
+  if (cleaned.length < 8) return null;
+
+  const needle = normalizeWithMap(cleaned).normalized;
+  const start = article.normalized.indexOf(needle);
+  if (start !== -1) {
+    const from = article.map[start];
+    const to = article.map[start + needle.length - 1] + 1;
+    return { text: article.text.slice(from, to), exact: true };
+  }
+
+  const quoteWords = words(cleaned);
+  if (quoteWords.length < 4) return null;
+  let best = null;
+  for (const sentence of article.sentences) {
+    const sentenceWords = new Set(words(sentence));
+    const overlap = quoteWords.filter((w) => sentenceWords.has(w)).length / quoteWords.length;
+    if (!best || overlap > best.overlap) best = { sentence, overlap };
+  }
+  return best && best.overlap >= 0.75 ? { text: best.sentence.trim(), exact: false } : null;
+}
+
+/** Replaces every quote in the analysis with article text, dropping items that cannot be grounded. */
+export function groundAnalysisQuotes(deep, content) {
+  const { normalized, map } = normalizeWithMap(content);
+  const article = {
+    text: content,
+    normalized,
+    map,
+    sentences: content.split(/(?<=[.!?…]["”’]?)\s+|\n+/).filter((s) => s.trim().length > 20)
+  };
+  const stats = { total: 0, exact: 0, repaired: 0, dropped: 0 };
+
+  const groundList = (items, quoteField = 'quote') => (items || []).filter((item) => {
+    stats.total++;
+    const grounded = groundQuote(item[quoteField], article);
+    if (!grounded) {
+      stats.dropped++;
+      return false;
+    }
+    stats[grounded.exact ? 'exact' : 'repaired']++;
+    item[quoteField] = grounded.text;
+    return true;
+  });
+
+  if (deep.rhetorical_analysis) {
+    deep.rhetorical_analysis.manipulation_techniques = groundList(deep.rhetorical_analysis.manipulation_techniques);
+  }
+  if (deep.emotional_manipulation) {
+    deep.emotional_manipulation.techniques_used = groundList(deep.emotional_manipulation.techniques_used);
+  }
+  const seenClaims = new Set();
+  deep.claims_to_check = groundList(deep.claims_to_check).filter((c) => !seenClaims.has(c.quote) && seenClaims.add(c.quote));
+  return stats;
+}
+
+function letterGrade(score) {
+  if (score >= 90) return 'A';
+  if (score >= 80) return 'B';
+  if (score >= 70) return 'C';
+  if (score >= 60) return 'D';
+  return 'F';
+}
+
+export async function analyzeArticleDeep(article, usageTracker) {
   const text = article.content.length > 9000 ? `${article.content.slice(0, 9000)}...` : article.content;
   const { json, model } = await callGroqJson({
     system: DEEP_SYSTEM_PROMPT,
-    user: `TITLE: ${article.title}\nSOURCE: ${article.source}\n\nARTICLE TEXT:\n${text}`
+    user: `TODAY: ${utcDate()}\nCURRENT FACTS: ${process.env.CURRENT_CONTEXT || DEFAULT_CURRENT_CONTEXT}\nTITLE: ${article.title}\nSOURCE: ${article.source}\nPUBLISHED: ${article.publishDate || 'unknown'}\n\nARTICLE TEXT:\n${text}`,
+    reasoningEffort: 'medium',
+    maxTokens: 12000,
+    usageTracker
   });
-  json.metadata = { analyzed_at: new Date().toISOString(), model, service: 'industry-leading', analysis_version: '3.0' };
+
+  const quoteStats = groundAnalysisQuotes(json, article.content);
+  if (json.logic_score && Number.isFinite(json.logic_score.overall)) {
+    json.logic_score.grade = letterGrade(json.logic_score.overall);
+  }
+  json.claim_verification = (json.claims_to_check || []).map((c) => ({
+    claim: c.claim,
+    quote: c.quote,
+    why_it_matters: c.why_it_matters,
+    verification_status: 'unverified',
+    checked: false,
+    notes: 'Not yet checked against outside sources.'
+  }));
+  json.metadata = { analyzed_at: new Date().toISOString(), model, analysis_version: ANALYSIS_VERSION, quotes: quoteStats };
   return json;
+}
+
+const FACTCHECK_SYSTEM_PROMPT = `You are a careful fact-checker for a media-literacy site. Check each quoted statement from a news article against independent sources.
+
+Use browser_search at most 2 times in total and rely on the search result snippets; do not open pages.
+
+Status rules:
+- "supported": an independent source confirms the statement as worded.
+- "contradicted": a source about the SAME event, study, or figure directly conflicts with it.
+- "disputed": credible sources disagree with each other.
+- "needs_context": the statement is accurate but missing context that changes its meaning, such as what a percentage is compared against, a timeframe, or a counter-claim.
+- "unverified": no source found that addresses this specific statement.
+Check the statement exactly as the article words it. Never mark it contradicted based on a different study or event, or on a paraphrase the article did not make. The article itself does not count as an independent source.
+
+Reply with only a JSON object (not a tool call):
+{"checks":[{"index":1,"status":"","explanation":"1-2 sentences on what the sources say, naming them","sources":[{"title":"","url":""}]}]}`;
+
+const FACTCHECK_STATUS_MAP = {
+  supported: 'verified',
+  contradicted: 'false',
+  disputed: 'disputed',
+  needs_context: 'needs_context',
+  unverified: 'unverified'
+};
+
+/** "bbc" for both bbc.co.uk and bbc.com, so an outlet's own pages are not counted as independent. */
+function outletName(url) {
+  try {
+    const parts = new URL(url).hostname.replace(/^www\./, '').split('.');
+    const secondLevel = ['co', 'com', 'org', 'net', 'gov', 'ac'];
+    return parts.length >= 3 && secondLevel.includes(parts[parts.length - 2]) ? parts[parts.length - 3] : parts[parts.length - 2];
+  } catch {
+    return null;
+  }
+}
+
+function stripCitationMarkers(text) {
+  return String(text || '').replace(/【[^】]*】/g, '').replace(/\s+([.,;:])/g, '$1').replace(/\s{2,}/g, ' ').trim();
+}
+
+/** Checks the analysis' claims with web search and writes results into deep.claim_verification. */
+export async function factCheckClaims(article, deep, usageTracker) {
+  const claims = (deep.claim_verification || []).slice(0, 3);
+  if (claims.length === 0) return deep;
+
+  const model = process.env.GROQ_FACTCHECK_MODEL || 'openai/gpt-oss-20b';
+  const { json } = await callGroqJson({
+    system: FACTCHECK_SYSTEM_PROMPT,
+    user: `ARTICLE: "${article.title}" (${article.source}, published ${article.publishDate || 'recently'})\n\nSTATEMENTS:\n${claims.map((c, i) => `${i + 1}. "${c.quote || c.claim}"`).join('\n')}`,
+    model,
+    tools: [{ type: 'browser_search' }],
+    maxTokens: 6000,
+    usageTracker
+  });
+
+  const ownOutlet = outletName(article.url);
+  for (const check of json.checks || []) {
+    const claim = claims[Number(check.index) - 1];
+    if (!claim) continue;
+    const sources = (check.sources || [])
+      .filter((s) => /^https?:\/\//.test(s?.url || '') && outletName(s.url) !== ownOutlet)
+      .map((s) => ({ title: stripCitationMarkers(s.title), url: s.url }))
+      .slice(0, 3);
+    const status = FACTCHECK_STATUS_MAP[check.status] || 'unverified';
+    if (sources.length === 0 && status !== 'unverified') {
+      claim.verification_status = 'unverified';
+      claim.notes = 'The fact-checker found no independent source outside the original outlet.';
+    } else {
+      claim.verification_status = status;
+      claim.notes = stripCitationMarkers(check.explanation) || claim.notes;
+    }
+    claim.sources = sources;
+    claim.checked = true;
+  }
+  for (const claim of claims.filter((c) => !c.checked)) {
+    claim.notes = 'The fact-checker found no independent source addressing this statement.';
+    claim.checked = true;
+  }
+  deep.metadata.fact_checked_at = new Date().toISOString();
+  deep.metadata.fact_check_model = model;
+  return deep;
 }
 
 async function findRelatedCoverage(article, keywords, feedCache) {
@@ -408,7 +644,7 @@ async function findRelatedCoverage(article, keywords, feedCache) {
   }));
 }
 
-export async function compareCoverage(article, keywords, feedCache) {
+export async function compareCoverage(article, keywords, feedCache, usageTracker) {
   const related = await findRelatedCoverage(article, keywords, feedCache);
   if (related.length === 0) {
     return { found: false, message: 'No comparable coverage found from other sources' };
@@ -423,9 +659,11 @@ export async function compareCoverage(article, keywords, feedCache) {
     ({ json: analysis } = await callGroqJson({
       system: COMPARISON_SYSTEM_PROMPT,
       user: `PRIMARY ARTICLE:\nSOURCE: ${article.source}\nHEADLINE: ${article.title}\nCONTENT: ${article.content.slice(0, 3000)}\n\nRELATED COVERAGE FROM OTHER SOURCES:\n${context}\n\nAnalyze how these sources frame the same story.`,
-      maxTokens: 6000
+      maxTokens: 6000,
+      usageTracker
     }));
   } catch (error) {
+    if (error instanceof DailyLimitError) throw error;
     console.warn(`[briefing] Comparison analysis failed: ${error.message}`);
     return { found: false, message: 'Source comparison is unavailable for this story' };
   }
@@ -473,7 +711,7 @@ export function toBriefingAnalysis(deep) {
 export function toLegacyAnalysis(deep) {
   return {
     summary: deep.executive_summary?.one_sentence || '',
-    tone_rating: deep.emotional_manipulation?.intended_emotional_response || 'Objective',
+    tone_rating: deep.tone || 'Measured',
     bias_rating: deep.bias_analysis?.political_lean || 'center',
     bias_explanation: deep.bias_analysis?.framing || '',
     biasConfidence: deep.bias_analysis?.confidence ?? 50,
@@ -541,66 +779,121 @@ async function pickArticleForTopic(topic, usedUrls) {
   return fallback;
 }
 
+const MIN_TOPICS_TO_PUBLISH = 3;
+
 /**
- * Builds today's briefing and writes it to the blob store:
- *   day/YYYY-MM-DD       briefing in the shape DailyBriefingPage expects
- *   article/<title hash> deep analysis + cross-source comparison for one article
+ * Builds or completes today's briefing. Safe to run several times a day: each
+ * run only does work that is still missing, and stops a step for the rest of
+ * the run when Groq reports that model's daily quota is used up.
+ *
+ * Blob layout:
+ *   draft/YYYY-MM-DD     articles chosen for the day, so retries keep the same stories
+ *   article/<title hash> deep analysis, fact-checks, and cross-source comparison
+ *   day/YYYY-MM-DD       published briefing in the shape DailyBriefingPage expects
+ *   meta/last-run        report from the most recent run
  */
-export async function generateBriefing(store, { date = utcDate() } = {}) {
-  const usedUrls = await recentlyUsedUrls(store, date);
+export async function generateBriefing(store, { date = utcDate(), deadline = Date.now() + 13 * 60 * 1000 } = {}) {
+  const usage = createUsageTracker();
+  const analysisModel = process.env.GROQ_MODEL || DEFAULT_MODEL;
+  const factCheckModel = process.env.GROQ_FACTCHECK_MODEL || 'openai/gpt-oss-20b';
+  const factCheckBudget = Number(process.env.FACTCHECK_TOKEN_BUDGET || 150000);
+  const exhausted = new Set();
   const feedCache = new Map();
-  const topics = {};
   const report = [];
 
+  const published = await store.get(`day/${date}`, { type: 'json' });
+  let draft = await store.get(`draft/${date}`, { type: 'json' });
+  if (!draft) {
+    draft = { date, topics: {} };
+    for (const [key, topic] of Object.entries(published?.topics || {})) draft.topics[key] = topic.article;
+  }
+  const usedUrls = await recentlyUsedUrls(store, date);
+  for (const article of Object.values(draft.topics)) usedUrls.add(article.url);
+
   for (const topic of TOPICS) {
-    const started = Date.now();
+    const entry = { topic: topic.key };
+    report.push(entry);
     try {
-      const article = await pickArticleForTopic(topic, usedUrls);
+      let article = draft.topics[topic.key];
       if (!article) {
-        report.push({ topic: topic.key, ok: false, reason: 'no usable article' });
-        continue;
+        article = await pickArticleForTopic(topic, usedUrls);
+        if (!article) {
+          entry.status = 'no usable article';
+          continue;
+        }
+        usedUrls.add(article.url);
+        draft.topics[topic.key] = article;
+        await store.setJSON(`draft/${date}`, draft);
       }
-      usedUrls.add(article.url);
+      entry.title = article.title;
+      entry.source = article.source;
 
-      let deep = null;
-      try {
-        deep = await analyzeArticleDeep(article);
-      } catch (error) {
-        console.warn(`[briefing] Deep analysis failed for ${topic.key}: ${error.message}`);
+      const key = articleKey(article.title);
+      const record = (await store.get(key, { type: 'json' })) || { date, title: article.title, url: article.url };
+
+      if (record.deep?.metadata?.analysis_version !== ANALYSIS_VERSION) {
+        if (exhausted.has(analysisModel) || Date.now() > deadline) {
+          entry.pending = 'analysis';
+          continue;
+        }
+        record.deep = await analyzeArticleDeep(article, usage);
+        await store.setJSON(key, record);
       }
+      entry.quotes = record.deep.metadata.quotes;
 
-      const storyKeywords = storyTokens(deep?.search_keywords || []);
-      const keywords = storyKeywords.length >= 2 ? storyKeywords : storyTokens([article.title]);
-      const comparison = await compareCoverage(article, keywords, feedCache);
+      if (!record.comparison && !exhausted.has(analysisModel) && Date.now() < deadline) {
+        const storyKeywords = storyTokens(record.deep.search_keywords || []);
+        const keywords = storyKeywords.length >= 2 ? storyKeywords : storyTokens([article.title]);
+        record.comparison = await compareCoverage(article, keywords, feedCache, usage);
+        await store.setJSON(key, record);
+      }
+      entry.relatedSources = record.comparison?.found ? record.comparison.related_sources.length : 0;
 
-      await store.setJSON(articleKey(article.title), { date, title: article.title, url: article.url, deep, comparison });
-
-      topics[topic.key] = {
-        topic: topic.label,
-        icon: topic.icon,
-        article,
-        analysis: toBriefingAnalysis(deep)
-      };
-      report.push({
-        topic: topic.key,
-        ok: true,
-        title: article.title,
-        source: article.source,
-        chars: article.content.length,
-        analyzed: Boolean(deep),
-        relatedSources: comparison.found ? comparison.related_sources.length : 0,
-        seconds: Math.round((Date.now() - started) / 1000)
-      });
+      const needsFactCheck = !record.deep.metadata.fact_checked_at && record.deep.claim_verification?.length > 0;
+      if (needsFactCheck && !exhausted.has(factCheckModel) && usage.get(factCheckModel) < factCheckBudget && Date.now() < deadline) {
+        try {
+          await factCheckClaims(article, record.deep, usage);
+          await store.setJSON(key, record);
+        } catch (error) {
+          if (error instanceof DailyLimitError) exhausted.add(factCheckModel);
+          console.warn(`[briefing] Fact-check failed for ${topic.key}: ${error.message}`);
+        }
+      }
+      entry.factChecked = Boolean(record.deep.metadata.fact_checked_at);
+      if (!entry.factChecked && needsFactCheck) entry.pending = 'fact-check';
     } catch (error) {
-      report.push({ topic: topic.key, ok: false, reason: error.message });
+      if (error instanceof DailyLimitError) {
+        exhausted.add(analysisModel);
+        entry.pending = 'analysis (daily limit)';
+      } else {
+        entry.error = error.message;
+      }
     }
   }
 
-  if (Object.keys(topics).length === 0) {
-    throw new Error(`No topics produced an article: ${JSON.stringify(report)}`);
+  const topics = {};
+  for (const topic of TOPICS) {
+    const article = draft.topics[topic.key];
+    if (!article) continue;
+    const record = await store.get(articleKey(article.title), { type: 'json' });
+    if (!record?.deep) continue;
+    topics[topic.key] = { topic: topic.label, icon: topic.icon, article, analysis: toBriefingAnalysis(record.deep) };
   }
 
-  const briefing = { generatedAt: new Date().toISOString(), version: '3.0', briefingDate: date, topics };
-  await store.setJSON(`day/${date}`, briefing);
-  return { date, report };
+  const shouldPublish = Object.keys(topics).length >= MIN_TOPICS_TO_PUBLISH || (published && Object.keys(topics).length > 0);
+  if (shouldPublish) {
+    await store.setJSON(`day/${date}`, { generatedAt: new Date().toISOString(), version: ANALYSIS_VERSION, briefingDate: date, topics });
+  }
+
+  const summary = {
+    date,
+    finishedAt: new Date().toISOString(),
+    published: shouldPublish,
+    topicsPublished: Object.keys(topics).length,
+    exhaustedModels: [...exhausted],
+    tokens: usage.totals,
+    report
+  };
+  await store.setJSON('meta/last-run', summary);
+  return summary;
 }

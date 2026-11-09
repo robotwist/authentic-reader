@@ -26,6 +26,11 @@ export default async (req, context) => {
   const { pathname } = new URL(req.url);
 
   try {
+    if (pathname.replace(/\/$/, '') === '/api/daily-briefing/status') {
+      const lastRun = await store.get('meta/last-run', { type: 'json' });
+      return json(lastRun || { message: 'No runs recorded yet.' }, 200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+    }
+
     if (pathname.replace(/\/$/, '') === '/api/daily-briefing/archive') {
       const dates = (await listDates(store)).map((date) => ({ date, formatted: formatDate(date) }));
       return json({ count: dates.length, dates });
@@ -50,5 +55,5 @@ export default async (req, context) => {
 };
 
 export const config = {
-  path: ['/api/daily-briefing', '/api/daily-briefing/archive', '/api/daily-briefing/archive/:date']
+  path: ['/api/daily-briefing', '/api/daily-briefing/status', '/api/daily-briefing/archive', '/api/daily-briefing/archive/:date']
 };

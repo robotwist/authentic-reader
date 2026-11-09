@@ -13,8 +13,8 @@ export default async (req) => {
   const started = Date.now();
   try {
     const store = getStore({ name: 'briefings', consistency: 'strong' });
-    const { date, report } = await generateBriefing(store);
-    console.log(`Briefing ${date} generated in ${Math.round((Date.now() - started) / 1000)}s`, JSON.stringify(report));
+    const summary = await generateBriefing(store, { deadline: started + 13 * 60 * 1000 });
+    console.log(`Briefing ${summary.date} run finished in ${Math.round((Date.now() - started) / 1000)}s`, JSON.stringify(summary));
   } catch (error) {
     console.error('Briefing generation failed:', error);
   }

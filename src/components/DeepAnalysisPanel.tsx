@@ -28,6 +28,7 @@ interface ManipulationTechnique {
   type: string;
   category: string;
   quote: string;
+  speaker?: string;
   explanation: string;
   neutral_rewrite: string;
   severity: 'low' | 'medium' | 'high';
@@ -35,9 +36,33 @@ interface ManipulationTechnique {
 
 interface ClaimVerification {
   claim: string;
+  quote?: string;
+  why_it_matters?: string;
   verification_status: 'verified' | 'unverified' | 'disputed' | 'false' | 'needs_context';
-  confidence: number;
+  confidence?: number;
   notes: string;
+  checked?: boolean;
+  sources?: Array<{ title: string; url: string }>;
+}
+
+interface ContextExplainer {
+  background?: string;
+  key_facts?: string[];
+  key_terms?: Array<{ term: string; definition: string }>;
+}
+
+interface MissingContext {
+  critical_omissions?: string[];
+  alternative_interpretations?: string;
+  questions_unanswered?: string[];
+}
+
+interface BiasAnalysis {
+  political_lean: string;
+  confidence: number;
+  evidence?: string[];
+  framing?: string;
+  what_perspectives_missing?: string[];
 }
 
 interface EmotionalManipulation {
@@ -45,6 +70,7 @@ interface EmotionalManipulation {
   techniques_used: Array<{
     technique: string;
     quote: string;
+    speaker?: string;
     impact: string;
     severity: 'low' | 'medium' | 'high';
   }>;
@@ -98,6 +124,9 @@ interface DeepAnalysis {
     };
   };
   claim_verification?: ClaimVerification[];
+  context_explainer?: ContextExplainer;
+  missing_context?: MissingContext;
+  bias_analysis?: BiasAnalysis;
   stakeholder_analysis?: StakeholderAnalysis;
   reader_guidance?: ReaderGuidance;
   overall_assessment?: OverallAssessment;
@@ -119,7 +148,7 @@ interface Props {
 const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySummary = false }) => {
   // Expand Executive Summary by default - most important section for quick scan
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
-    new Set(['executive-summary'])
+    new Set(['executive-summary', 'context', 'claims'])
   );
 
   const toggleSection = (section: string) => {
@@ -147,14 +176,19 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
     return null;
   }
 
-  const getVerificationLabel = (status: string) => {
-    switch (status) {
-      case 'verified': return '[VERIFIED]';
+  const getVerificationLabel = (claim: ClaimVerification) => {
+    switch (claim.verification_status) {
+      case 'verified': return '[SUPPORTED BY SOURCES]';
       case 'disputed': return '[DISPUTED]';
-      case 'false': return '[FALSE]';
+      case 'false': return '[CONTRADICTED BY SOURCES]';
       case 'needs_context': return '[NEEDS CONTEXT]';
-      default: return '[UNVERIFIED]';
+      default: return claim.checked ? '[NO SOURCE FOUND]' : '[NOT YET CHECKED]';
     }
+  };
+
+  const speakerLabel = (speaker?: string) => {
+    if (!speaker) return null;
+    return speaker.toLowerCase() === 'outlet' ? 'OUTLET\'S OWN WORDS' : `QUOTED: ${speaker.toUpperCase()}`;
   };
 
   // If showOnlySummary is true, only render Executive Summary
@@ -197,7 +231,7 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
     <div className="deep-analysis-panel">
       <header className="panel-header">
         <h2 className="panel-title">[DEEP ANALYSIS]</h2>
-        <span className="panel-version">V2.0</span>
+        <span className="panel-version">V4.0</span>
       </header>
 
       {/* LOGIC SCORE */}
@@ -289,14 +323,118 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
         </section>
       )}
 
-      {/* CLAIM VERIFICATION */}
+      {/* CONTEXT YOU NEED */}
+      {analysis.context_explainer && (
+        <section className="analysis-section">
+          <header
+            className="section-header"
+            onClick={() => toggleSection('context')}
+          >
+            <h3 className="section-title">[CONTEXT YOU NEED]</h3>
+            <span className="section-toggle">
+              {expandedSections.has('context') ? '[-]' : '[+]'}
+            </span>
+          </header>
+
+          {expandedSections.has('context') && (
+            <div className="section-content">
+              {analysis.context_explainer.background && (
+                <div className="summary-block">
+                  <h4 className="block-title">[BACKGROUND]</h4>
+                  <p>{analysis.context_explainer.background}</p>
+                </div>
+              )}
+
+              {analysis.context_explainer.key_facts && analysis.context_explainer.key_facts.length > 0 && (
+                <div className="summary-block">
+                  <h4 className="block-title">[HOW TO READ THIS STORY]</h4>
+                  <ul>
+                    {analysis.context_explainer.key_facts.map((fact, i) => (
+                      <li key={i}>{fact}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {analysis.context_explainer.key_terms && analysis.context_explainer.key_terms.length > 0 && (
+                <div className="summary-block">
+                  <h4 className="block-title">[KEY TERMS]</h4>
+                  <dl className="term-list">
+                    {analysis.context_explainer.key_terms.map((item, i) => (
+                      <div key={i} className="term-row">
+                        <dt>{item.term}</dt>
+                        <dd>{item.definition}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              )}
+
+              <p className="context-note">
+                Background is AI-generated from the article and general knowledge, and is not independently verified.
+              </p>
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* WHAT'S MISSING */}
+      {analysis.missing_context && (analysis.missing_context.critical_omissions?.length || analysis.missing_context.questions_unanswered?.length) ? (
+        <section className="analysis-section">
+          <header
+            className="section-header"
+            onClick={() => toggleSection('missing')}
+          >
+            <h3 className="section-title">[WHAT THE ARTICLE LEAVES OUT]</h3>
+            <span className="section-count">{analysis.missing_context.critical_omissions?.length || 0}</span>
+            <span className="section-toggle">
+              {expandedSections.has('missing') ? '[-]' : '[+]'}
+            </span>
+          </header>
+
+          {expandedSections.has('missing') && (
+            <div className="section-content">
+              {analysis.missing_context.critical_omissions && analysis.missing_context.critical_omissions.length > 0 && (
+                <div className="guidance-block">
+                  <h4 className="block-title">[MISSING CONTEXT]</h4>
+                  <ul>
+                    {analysis.missing_context.critical_omissions.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {analysis.missing_context.questions_unanswered && analysis.missing_context.questions_unanswered.length > 0 && (
+                <div className="guidance-block">
+                  <h4 className="block-title">[UNANSWERED QUESTIONS]</h4>
+                  <ul>
+                    {analysis.missing_context.questions_unanswered.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {analysis.missing_context.alternative_interpretations && (
+                <div className="stakeholder-block">
+                  <h4 className="block-title">[OTHER WAYS TO READ IT]</h4>
+                  <p>{analysis.missing_context.alternative_interpretations}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </section>
+      ) : null}
+
+      {/* FACT CHECK */}
       {analysis.claim_verification && analysis.claim_verification.length > 0 && (
         <section className="analysis-section">
           <header 
             className="section-header"
             onClick={() => toggleSection('claims')}
           >
-            <h3 className="section-title">[CLAIM VERIFICATION]</h3>
+            <h3 className="section-title">[FACT CHECK]</h3>
             <span className="section-count">{analysis.claim_verification.length}</span>
             <span className="section-toggle">
               {expandedSections.has('claims') ? '[-]' : '[+]'}
@@ -308,13 +446,29 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
               {analysis.claim_verification.map((claim, i) => (
                 <div key={i} className={`claim-item status-${claim.verification_status}`}>
                   <div className="claim-header">
-                    <span className="claim-status">{getVerificationLabel(claim.verification_status)}</span>
-                    <span className="claim-confidence">{claim.confidence}% CONF</span>
+                    <span className="claim-status">{getVerificationLabel(claim)}</span>
+                    {typeof claim.confidence === 'number' && (
+                      <span className="claim-confidence">{claim.confidence}% CONF</span>
+                    )}
                   </div>
-                  <p className="claim-text">"{claim.claim}"</p>
+                  <p className="claim-text">"{claim.quote || claim.claim}"</p>
                   {claim.notes && <p className="claim-notes">{claim.notes}</p>}
+                  {claim.sources && claim.sources.length > 0 && (
+                    <ul className="claim-sources">
+                      {claim.sources.map((source, j) => (
+                        <li key={j}>
+                          <a href={source.url} target="_blank" rel="noopener noreferrer">
+                            {source.title || new URL(source.url).hostname}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               ))}
+              <p className="context-note">
+                Claims are checked by an AI fact-checker using web search. Follow the sources to judge for yourself.
+              </p>
             </div>
           )}
         </section>
@@ -374,6 +528,7 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
                         <span className="technique-name">{tech.technique.toUpperCase()}</span>
                         <span className="technique-severity">[{tech.severity.toUpperCase()}]</span>
                       </div>
+                      {speakerLabel(tech.speaker) && <span className="speaker-tag">{speakerLabel(tech.speaker)}</span>}
                       <blockquote className="technique-quote">"{tech.quote}"</blockquote>
                       <p className="technique-impact">{tech.impact}</p>
                     </div>
@@ -408,6 +563,7 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
                     <span className="manipulation-category">[{tech.category.toUpperCase()}]</span>
                     <span className="manipulation-severity">{tech.severity.toUpperCase()}</span>
                   </div>
+                  {speakerLabel(tech.speaker) && <span className="speaker-tag">{speakerLabel(tech.speaker)}</span>}
                   
                   <div className="manipulation-content">
                     <div className="quote-block">
@@ -424,6 +580,107 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* BIAS & FRAMING */}
+      {analysis.bias_analysis && (
+        <section className="analysis-section">
+          <header
+            className="section-header"
+            onClick={() => toggleSection('bias')}
+          >
+            <h3 className="section-title">[BIAS &amp; FRAMING]</h3>
+            <span className="section-score">{analysis.bias_analysis.political_lean.toUpperCase()}</span>
+            <span className="section-toggle">
+              {expandedSections.has('bias') ? '[-]' : '[+]'}
+            </span>
+          </header>
+
+          {expandedSections.has('bias') && (
+            <div className="section-content">
+              {analysis.bias_analysis.framing && (
+                <div className="stakeholder-block">
+                  <h4 className="block-title">[FRAMING]</h4>
+                  <p>{analysis.bias_analysis.framing}</p>
+                </div>
+              )}
+
+              {analysis.bias_analysis.evidence && analysis.bias_analysis.evidence.length > 0 && (
+                <div className="guidance-block">
+                  <h4 className="block-title">[EVIDENCE OF LEAN] {analysis.bias_analysis.confidence}% CONFIDENCE</h4>
+                  <ul>
+                    {analysis.bias_analysis.evidence.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {analysis.bias_analysis.what_perspectives_missing && analysis.bias_analysis.what_perspectives_missing.length > 0 && (
+                <div className="guidance-block">
+                  <h4 className="block-title">[PERSPECTIVES NOT HEARD]</h4>
+                  <ul>
+                    {analysis.bias_analysis.what_perspectives_missing.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* SOURCING */}
+      {analysis.rhetorical_analysis?.source_transparency && (
+        <section className="analysis-section">
+          <header
+            className="section-header"
+            onClick={() => toggleSection('sourcing')}
+          >
+            <h3 className="section-title">[SOURCING]</h3>
+            <span className="section-toggle">
+              {expandedSections.has('sourcing') ? '[-]' : '[+]'}
+            </span>
+          </header>
+
+          {expandedSections.has('sourcing') && (
+            <div className="section-content">
+              <div className="assessment-badges">
+                <div className="assessment-badge">
+                  <span className="badge-label">NAMED SOURCES</span>
+                  <span className="badge-value">{analysis.rhetorical_analysis.source_transparency.named_sources}</span>
+                </div>
+                <div className="assessment-badge">
+                  <span className="badge-label">ANONYMOUS</span>
+                  <span className="badge-value">{analysis.rhetorical_analysis.source_transparency.anonymous_sources}</span>
+                </div>
+                <div className="assessment-badge">
+                  <span className="badge-label">DOCUMENTS</span>
+                  <span className="badge-value">{analysis.rhetorical_analysis.source_transparency.documents_cited}</span>
+                </div>
+              </div>
+
+              {analysis.rhetorical_analysis.source_transparency.concerns && (
+                <div className="stakeholder-block">
+                  <h4 className="block-title">[SOURCING CONCERNS]</h4>
+                  <p>{analysis.rhetorical_analysis.source_transparency.concerns}</p>
+                </div>
+              )}
+
+              {analysis.rhetorical_analysis.headline_accuracy && (
+                <div className="stakeholder-block">
+                  <h4 className="block-title">
+                    [HEADLINE] {analysis.rhetorical_analysis.headline_accuracy.matches_content ? 'MATCHES THE STORY' : 'DOES NOT MATCH THE STORY'}
+                  </h4>
+                  {analysis.rhetorical_analysis.headline_accuracy.issues && (
+                    <p>{analysis.rhetorical_analysis.headline_accuracy.issues}</p>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </section>

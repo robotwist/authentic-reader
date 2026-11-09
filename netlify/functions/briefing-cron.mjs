@@ -1,5 +1,6 @@
 // Scheduled functions are capped at 30 seconds, so this only kicks off the
-// background function that does the real work.
+// background function that does the real work. Later runs in the day only
+// fill in steps that earlier runs could not finish (e.g. Groq daily limits).
 export default async () => {
   const siteUrl = process.env.URL;
   const response = await fetch(`${siteUrl}/.netlify/functions/generate-briefing-background`, {
@@ -10,5 +11,5 @@ export default async () => {
 };
 
 export const config = {
-  schedule: '0 11 * * *'
+  schedule: '0 11,16,21 * * *'
 };
