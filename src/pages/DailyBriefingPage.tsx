@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import ReaderView from '../components/ReaderView';
 import DeepAnalysisPanel from '../components/DeepAnalysisPanel';
 import SourceComparisonView from '../components/SourceComparisonView';
+import StorySoFar from '../components/StorySoFar';
 import { FallacyData } from '../utils/llmParser';
 import { API_CONFIG } from '../config/api.config';
 import { fallbackBriefing } from '../data/fallbackBriefing';
@@ -628,6 +629,8 @@ const DailyBriefingPage: React.FC = () => {
               </div>
             )}
             
+            <StorySoFar topicKey={selectedTopic} currentUrl={topicData.article.url} />
+
             {/* VISUAL SEPARATOR: Thick border between Quick Scan and Deep Dive */}
             <div className="quick-scan-divider"></div>
             

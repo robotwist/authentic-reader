@@ -26,6 +26,18 @@ export default async (req, context) => {
   const { pathname } = new URL(req.url);
 
   try {
+    if (pathname.startsWith('/api/story/')) {
+      const topic = context.params?.topic;
+      if (!/^[a-z]+$/.test(topic || '')) {
+        return json({ error: 'Invalid topic' }, 400);
+      }
+      const dossier = await store.get(`dossier/${topic}`, { type: 'json' });
+      if (!dossier) {
+        return json({ error: 'No story yet', message: 'This topic has no archived coverage yet.' }, 404);
+      }
+      return json(dossier);
+    }
+
     if (pathname.replace(/\/$/, '') === '/api/daily-briefing/status') {
       const lastRun = await store.get('meta/last-run', { type: 'json' });
       return json(lastRun || { message: 'No runs recorded yet.' }, 200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
@@ -55,5 +67,5 @@ export default async (req, context) => {
 };
 
 export const config = {
-  path: ['/api/daily-briefing', '/api/daily-briefing/status', '/api/daily-briefing/archive', '/api/daily-briefing/archive/:date']
+  path: ['/api/daily-briefing', '/api/daily-briefing/status', '/api/daily-briefing/archive', '/api/daily-briefing/archive/:date', '/api/story/:topic']
 };

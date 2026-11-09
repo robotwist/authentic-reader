@@ -180,9 +180,10 @@ Rules:
 3. Distinguish the outlet from the people it quotes. Attributing a statement to a named official or expert is normal reporting, not an "Appeal to Authority". Rhetoric inside a quotation belongs to the speaker; only blame the outlet if it adopts that framing in its own voice, headline, or story structure. Set "speaker" accordingly.
 4. List only techniques that genuinely mislead. Zero is a valid answer for careful reporting; never pad the list.
 5. Calibrate scores: 90-100 exemplary, well-sourced reporting; 70-89 solid with minor issues; 50-69 notable slant, weak sourcing, or important omissions; below 50 misleading. Bias confidence should be low (under 50) for straight news with little evidence of lean.
-6. "claims_to_check" should hold the 2-4 factual claims the story most depends on, preferring specific figures, dates, and attributions that outside sources could confirm.
-7. Your training data ends well before the article's publication date, so the world may have changed. For context_explainer and missing_context, draw recent facts (who holds an office, election results, current policies) only from the article itself; from memory, give only long-established background such as history, institutions, and how processes work. Never describe someone's current role from memory.
-8. Do not state specific numbers, dates, or quotes from memory unless they are long-established and you are certain of them. Leave a key fact out rather than guess.`;
+6. "claims_to_check" should hold the 2-4 factual claims the story most depends on, preferring specific figures, dates, and attributions that outside sources could confirm. Only include statements of fact about things that already happened; never predictions, opinions, or analysis.
+7. Your training data ends well before the article's publication date, so the world may have changed. For context_explainer and missing_context, draw recent facts (who holds an office, election results, current policies) only from the article itself or from OUR ARCHIVE when it is provided; from memory, give only long-established background such as history, institutions, and how processes work. Never describe someone's current role from memory. OUR ARCHIVE holds this site's earlier analyzed briefings on the topic: use it as the preferred source for recent history, mention the dates of earlier developments, and ignore archive entries about a different story.
+8. Do not state specific numbers, dates, or quotes from memory unless they are long-established and you are certain of them. Leave a key fact out rather than guess.
+9. When restating percentages, risks, or other comparisons, keep exactly what the article says they are compared against. If the article does not say (e.g. "a 55% reduction" without a baseline), do not supply one; instead list the missing baseline in missing_context.critical_omissions.`;
 
 const COMPARISON_SYSTEM_PROMPT = `You are a media bias expert analyzing how different news sources cover the same story.
 
@@ -504,11 +505,11 @@ function letterGrade(score) {
   return 'F';
 }
 
-export async function analyzeArticleDeep(article, usageTracker) {
+export async function analyzeArticleDeep(article, usageTracker, archiveContext = '') {
   const text = article.content.length > 9000 ? `${article.content.slice(0, 9000)}...` : article.content;
   const { json, model } = await callGroqJson({
     system: DEEP_SYSTEM_PROMPT,
-    user: `TODAY: ${utcDate()}\nCURRENT FACTS: ${process.env.CURRENT_CONTEXT || DEFAULT_CURRENT_CONTEXT}\nTITLE: ${article.title}\nSOURCE: ${article.source}\nPUBLISHED: ${article.publishDate || 'unknown'}\n\nARTICLE TEXT:\n${text}`,
+    user: `TODAY: ${utcDate()}\nCURRENT FACTS: ${process.env.CURRENT_CONTEXT || DEFAULT_CURRENT_CONTEXT}\n${archiveContext ? `\n${archiveContext}\n` : ''}\nTITLE: ${article.title}\nSOURCE: ${article.source}\nPUBLISHED: ${article.publishDate || 'unknown'}\n\nARTICLE TEXT:\n${text}`,
     reasoningEffort: 'medium',
     maxTokens: 12000,
     usageTracker
@@ -526,8 +527,135 @@ export async function analyzeArticleDeep(article, usageTracker) {
     checked: false,
     notes: 'Not yet checked against outside sources.'
   }));
-  json.metadata = { analyzed_at: new Date().toISOString(), model, analysis_version: ANALYSIS_VERSION, quotes: quoteStats };
+  json.metadata = { analyzed_at: new Date().toISOString(), model, analysis_version: ANALYSIS_VERSION, quotes: quoteStats, used_archive: Boolean(archiveContext) };
   return json;
+}
+
+// ---------------------------------------------------------------------------
+// Topic dossiers ("The Story So Far"): knowledge that accumulates across days.
+// The timeline and confirmed facts are copied deterministically from stored
+// analyses; only the narrative, open questions, and framing patterns are
+// synthesized, and only from the dossier and the day's analysis.
+// ---------------------------------------------------------------------------
+
+const MAX_TIMELINE_ENTRIES = 120;
+const MAX_CONFIRMED_FACTS = 30;
+
+const DOSSIER_SYSTEM_PROMPT = `You maintain the running "story so far" file for one news topic on a media-literacy site. You receive the current file and today's analyzed article. Update the file using ONLY that material, never outside knowledge.
+
+Return a JSON object:
+{
+  "narrative": "4-6 plain sentences for a reader catching up: how the story has developed across the dated entries, naming dates. If the entries cover different stories, describe the main threads separately instead of forcing one narrative.",
+  "open_questions": [
+    { "question": "", "raised": "YYYY-MM-DD", "status": "open | answered", "answer": "Short answer from today's article, or empty string", "answered_on": "YYYY-MM-DD or empty string" }
+  ],
+  "framing_patterns": [
+    { "source": "Outlet name", "pattern": "How this outlet has tended to frame the topic, based only on the comparisons provided" }
+  ]
+}
+
+Rules:
+- Carry existing open questions forward unchanged unless today's article answers them; then set status "answered" with the answer and today's date.
+- Add at most 3 new open questions, taken from today's unanswered questions, and keep at most 8 open questions in total (drop the oldest open ones first). Keep answered questions for the record.
+- Keep framing patterns only for outlets that appear in the comparisons, refining existing patterns with today's evidence.
+- Be plain and factual. No speculation.
+- Keep every figure exactly as reported, including what it is compared against (e.g. "compared with unvaccinated people"). If the source material is unclear about a comparison, leave the figure out.
+- Attribute claims to their source ("The Guardian reported...", "officials said...") rather than stating them as settled fact.`;
+
+export async function loadDossier(store, topicKey) {
+  return (await store.get(`dossier/${topicKey}`, { type: 'json' })) || {
+    topic: topicKey,
+    timeline: [],
+    confirmed_facts: [],
+    open_questions: [],
+    framing_patterns: [],
+    narrative: null,
+    synthesized_through: null,
+    updated_at: null
+  };
+}
+
+/** Adds the day's article and any independently confirmed claims. Idempotent. */
+export function addArticleToDossier(dossier, date, article, deep) {
+  const existing = dossier.timeline.find((entry) => entry.url === article.url);
+  const entry = {
+    date,
+    headline: article.title,
+    summary: deep?.executive_summary?.one_sentence || '',
+    source: article.source,
+    url: article.url
+  };
+  if (existing) Object.assign(existing, entry);
+  else dossier.timeline.push(entry);
+  dossier.timeline.sort((a, b) => b.date.localeCompare(a.date));
+  dossier.timeline = dossier.timeline.slice(0, MAX_TIMELINE_ENTRIES);
+
+  for (const claim of deep?.claim_verification || []) {
+    const sources = (claim.sources || []).filter((s) => !SYNDICATORS.has(outletName(s.url)));
+    if (claim.verification_status !== 'verified' || sources.length === 0) continue;
+    if (dossier.confirmed_facts.some((fact) => fact.quote === claim.quote)) continue;
+    dossier.confirmed_facts.unshift({
+      fact: claim.claim,
+      quote: claim.quote,
+      date,
+      source: article.source,
+      article_url: article.url,
+      sources
+    });
+  }
+  dossier.confirmed_facts = dossier.confirmed_facts.slice(0, MAX_CONFIRMED_FACTS);
+}
+
+/** Archive excerpt passed to the analysis prompt; excludes the article being analyzed. */
+export function dossierContext(dossier, excludeUrl) {
+  const timeline = dossier.timeline.filter((entry) => entry.url !== excludeUrl).slice(0, 10);
+  if (timeline.length === 0) return '';
+  const lines = ['OUR ARCHIVE ON THIS TOPIC (earlier briefings on this site):'];
+  if (dossier.narrative) lines.push(`Story so far: ${dossier.narrative}`);
+  lines.push('Timeline:', ...timeline.map((e) => `- ${e.date} (${e.source}): ${e.headline}. ${e.summary}`));
+  const facts = dossier.confirmed_facts.filter((f) => f.article_url !== excludeUrl).slice(0, 8);
+  if (facts.length > 0) {
+    lines.push('Independently confirmed earlier:', ...facts.map((f) => `- ${f.date}: ${f.fact} (sources: ${f.sources.map((s) => s.title || s.url).join('; ')})`));
+  }
+  return lines.join('\n');
+}
+
+export async function synthesizeDossier(dossier, date, article, record, usageTracker) {
+  const deep = record.deep;
+  const comparison = record.comparison?.found ? record.comparison.comparison_analysis : null;
+  const current = {
+    narrative: dossier.narrative,
+    open_questions: dossier.open_questions,
+    framing_patterns: dossier.framing_patterns,
+    timeline: dossier.timeline.slice(0, 12).map((e) => `${e.date} (${e.source}): ${e.headline}. ${e.summary}`)
+  };
+  const today = {
+    date,
+    headline: article.title,
+    source: article.source,
+    summary: deep.executive_summary,
+    unanswered_questions: deep.missing_context?.questions_unanswered || [],
+    comparison: comparison ? {
+      framing: (comparison.framing_comparison || []).map((f) => ({ source: f.source, headline_framing: f.headline_framing, emphasis: f.emphasis, downplayed: f.downplayed })),
+      language_differences: comparison.language_differences || []
+    } : 'No other outlets covered this story today.'
+  };
+
+  const { json } = await callGroqJson({
+    system: DOSSIER_SYSTEM_PROMPT,
+    user: `CURRENT FILE:\n${JSON.stringify(current, null, 1)}\n\nTODAY'S ANALYZED ARTICLE:\n${JSON.stringify(today, null, 1)}`,
+    maxTokens: 4000,
+    usageTracker
+  });
+
+  if (typeof json.narrative === 'string' && json.narrative.trim()) dossier.narrative = json.narrative.trim();
+  if (Array.isArray(json.open_questions)) {
+    const answered = json.open_questions.filter((q) => q.status === 'answered');
+    const open = json.open_questions.filter((q) => q.status !== 'answered').slice(0, 8);
+    dossier.open_questions = [...open, ...answered].filter((q) => q.question);
+  }
+  if (Array.isArray(json.framing_patterns)) dossier.framing_patterns = json.framing_patterns.filter((p) => p.source && p.pattern);
+  dossier.synthesized_through = date;
 }
 
 const FACTCHECK_SYSTEM_PROMPT = `You are a careful fact-checker for a media-literacy site. Check each quoted statement from a news article against independent sources.
@@ -540,7 +668,7 @@ Status rules:
 - "disputed": credible sources disagree with each other.
 - "needs_context": the statement is accurate but missing context that changes its meaning, such as what a percentage is compared against, a timeframe, or a counter-claim.
 - "unverified": no source found that addresses this specific statement.
-Check the statement exactly as the article words it. Never mark it contradicted based on a different study or event, or on a paraphrase the article did not make. The article itself does not count as an independent source.
+Check the statement exactly as the article words it. Never mark it contradicted based on a different study or event, or on a paraphrase the article did not make. The article itself does not count as an independent source, and neither do syndicated or republished copies of it (e.g. on Yahoo, MSN, or news aggregators). Predictions and opinions cannot be supported; mark them "unverified".
 
 Reply with only a JSON object (not a tool call):
 {"checks":[{"index":1,"status":"","explanation":"1-2 sentences on what the sources say, naming them","sources":[{"title":"","url":""}]}]}`;
@@ -552,6 +680,9 @@ const FACTCHECK_STATUS_MAP = {
   needs_context: 'needs_context',
   unverified: 'unverified'
 };
+
+// Sites that republish other outlets' articles, so they never count as independent confirmation.
+const SYNDICATORS = new Set(['yahoo', 'msn', 'aol', 'newsbreak', 'flipboard', 'ground']);
 
 /** "bbc" for both bbc.co.uk and bbc.com, so an outlet's own pages are not counted as independent. */
 function outletName(url) {
@@ -588,7 +719,7 @@ export async function factCheckClaims(article, deep, usageTracker) {
     const claim = claims[Number(check.index) - 1];
     if (!claim) continue;
     const sources = (check.sources || [])
-      .filter((s) => /^https?:\/\//.test(s?.url || '') && outletName(s.url) !== ownOutlet)
+      .filter((s) => /^https?:\/\//.test(s?.url || '') && outletName(s.url) !== ownOutlet && !SYNDICATORS.has(outletName(s.url)))
       .map((s) => ({ title: stripCitationMarkers(s.title), url: s.url }))
       .slice(0, 3);
     const status = FACTCHECK_STATUS_MAP[check.status] || 'unverified';
@@ -782,23 +913,50 @@ async function pickArticleForTopic(topic, usedUrls) {
 const MIN_TOPICS_TO_PUBLISH = 3;
 
 /**
- * Builds or completes today's briefing. Safe to run several times a day: each
- * run only does work that is still missing, and stops a step for the rest of
- * the run when Groq reports that model's daily quota is used up.
+ * Builds or completes the briefing. Safe to run several times a day: each run
+ * first finishes anything still pending from yesterday, then works on today,
+ * only doing steps that are missing, and stops a step for the rest of the run
+ * when Groq reports that model's daily quota is used up.
  *
  * Blob layout:
  *   draft/YYYY-MM-DD     articles chosen for the day, so retries keep the same stories
  *   article/<title hash> deep analysis, fact-checks, and cross-source comparison
  *   day/YYYY-MM-DD       published briefing in the shape DailyBriefingPage expects
+ *   dossier/<topic>      "The Story So Far": timeline, confirmed facts, open questions
  *   meta/last-run        report from the most recent run
  */
 export async function generateBriefing(store, { date = utcDate(), deadline = Date.now() + 13 * 60 * 1000 } = {}) {
-  const usage = createUsageTracker();
-  const analysisModel = process.env.GROQ_MODEL || DEFAULT_MODEL;
-  const factCheckModel = process.env.GROQ_FACTCHECK_MODEL || 'openai/gpt-oss-20b';
-  const factCheckBudget = Number(process.env.FACTCHECK_TOKEN_BUDGET || 150000);
-  const exhausted = new Set();
-  const feedCache = new Map();
+  const run = {
+    store,
+    deadline,
+    usage: createUsageTracker(),
+    analysisModel: process.env.GROQ_MODEL || DEFAULT_MODEL,
+    factCheckModel: process.env.GROQ_FACTCHECK_MODEL || 'openai/gpt-oss-20b',
+    factCheckBudget: Number(process.env.FACTCHECK_TOKEN_BUDGET || 150000),
+    exhausted: new Set(),
+    feedCache: new Map()
+  };
+
+  const days = [];
+  const yesterday = utcDate(new Date(new Date(`${date}T12:00:00Z`).getTime() - 24 * 3600 * 1000));
+  if ((await store.get(`draft/${yesterday}`, { type: 'json' })) || (await store.get(`day/${yesterday}`, { type: 'json' }))) {
+    days.push(await processDay(run, yesterday, { pickNewArticles: false }));
+  }
+  days.push(await processDay(run, date, { pickNewArticles: true }));
+
+  const summary = {
+    date,
+    finishedAt: new Date().toISOString(),
+    exhaustedModels: [...run.exhausted],
+    tokens: run.usage.totals,
+    days
+  };
+  await store.setJSON('meta/last-run', summary);
+  return summary;
+}
+
+async function processDay(run, date, { pickNewArticles }) {
+  const { store, usage, exhausted, analysisModel, factCheckModel } = run;
   const report = [];
 
   const published = await store.get(`day/${date}`, { type: 'json' });
@@ -806,6 +964,7 @@ export async function generateBriefing(store, { date = utcDate(), deadline = Dat
   if (!draft) {
     draft = { date, topics: {} };
     for (const [key, topic] of Object.entries(published?.topics || {})) draft.topics[key] = topic.article;
+    if (Object.keys(draft.topics).length > 0) await store.setJSON(`draft/${date}`, draft);
   }
   const usedUrls = await recentlyUsedUrls(store, date);
   for (const article of Object.values(draft.topics)) usedUrls.add(article.url);
@@ -815,6 +974,10 @@ export async function generateBriefing(store, { date = utcDate(), deadline = Dat
     report.push(entry);
     try {
       let article = draft.topics[topic.key];
+      if (!article && !pickNewArticles) {
+        report.pop();
+        continue;
+      }
       if (!article) {
         article = await pickArticleForTopic(topic, usedUrls);
         if (!article) {
@@ -830,27 +993,33 @@ export async function generateBriefing(store, { date = utcDate(), deadline = Dat
 
       const key = articleKey(article.title);
       const record = (await store.get(key, { type: 'json' })) || { date, title: article.title, url: article.url };
+      const dossier = await loadDossier(store, topic.key);
+      const hasTime = () => Date.now() < run.deadline;
 
       if (record.deep?.metadata?.analysis_version !== ANALYSIS_VERSION) {
-        if (exhausted.has(analysisModel) || Date.now() > deadline) {
+        if (exhausted.has(analysisModel) || !hasTime()) {
           entry.pending = 'analysis';
+          if (record.deep) {
+            addArticleToDossier(dossier, date, article, record.deep);
+            await store.setJSON(`dossier/${topic.key}`, dossier);
+          }
           continue;
         }
-        record.deep = await analyzeArticleDeep(article, usage);
+        record.deep = await analyzeArticleDeep(article, usage, dossierContext(dossier, article.url));
         await store.setJSON(key, record);
       }
       entry.quotes = record.deep.metadata.quotes;
 
-      if (!record.comparison && !exhausted.has(analysisModel) && Date.now() < deadline) {
+      if (!record.comparison && !exhausted.has(analysisModel) && hasTime()) {
         const storyKeywords = storyTokens(record.deep.search_keywords || []);
         const keywords = storyKeywords.length >= 2 ? storyKeywords : storyTokens([article.title]);
-        record.comparison = await compareCoverage(article, keywords, feedCache, usage);
+        record.comparison = await compareCoverage(article, keywords, run.feedCache, usage);
         await store.setJSON(key, record);
       }
       entry.relatedSources = record.comparison?.found ? record.comparison.related_sources.length : 0;
 
       const needsFactCheck = !record.deep.metadata.fact_checked_at && record.deep.claim_verification?.length > 0;
-      if (needsFactCheck && !exhausted.has(factCheckModel) && usage.get(factCheckModel) < factCheckBudget && Date.now() < deadline) {
+      if (needsFactCheck && !exhausted.has(factCheckModel) && usage.get(factCheckModel) < run.factCheckBudget && hasTime()) {
         try {
           await factCheckClaims(article, record.deep, usage);
           await store.setJSON(key, record);
@@ -861,6 +1030,20 @@ export async function generateBriefing(store, { date = utcDate(), deadline = Dat
       }
       entry.factChecked = Boolean(record.deep.metadata.fact_checked_at);
       if (!entry.factChecked && needsFactCheck) entry.pending = 'fact-check';
+
+      addArticleToDossier(dossier, date, article, record.deep);
+      const needsSynthesis = !dossier.synthesized_through || dossier.synthesized_through < date;
+      if (needsSynthesis && !exhausted.has(analysisModel) && hasTime()) {
+        try {
+          await synthesizeDossier(dossier, date, article, record, usage);
+        } catch (error) {
+          if (error instanceof DailyLimitError) exhausted.add(analysisModel);
+          console.warn(`[briefing] Story-so-far update failed for ${topic.key}: ${error.message}`);
+        }
+      }
+      dossier.updated_at = new Date().toISOString();
+      await store.setJSON(`dossier/${topic.key}`, dossier);
+      entry.storyUpdated = dossier.synthesized_through === date;
     } catch (error) {
       if (error instanceof DailyLimitError) {
         exhausted.add(analysisModel);
@@ -885,15 +1068,5 @@ export async function generateBriefing(store, { date = utcDate(), deadline = Dat
     await store.setJSON(`day/${date}`, { generatedAt: new Date().toISOString(), version: ANALYSIS_VERSION, briefingDate: date, topics });
   }
 
-  const summary = {
-    date,
-    finishedAt: new Date().toISOString(),
-    published: shouldPublish,
-    topicsPublished: Object.keys(topics).length,
-    exhaustedModels: [...exhausted],
-    tokens: usage.totals,
-    report
-  };
-  await store.setJSON('meta/last-run', summary);
-  return summary;
+  return { date, published: shouldPublish, topicsPublished: Object.keys(topics).length, report };
 }
