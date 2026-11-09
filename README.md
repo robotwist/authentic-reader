@@ -16,7 +16,7 @@ Stories are chosen by coverage, not by preference.
 
 | Parameter | Value |
 |---|---|
-| Sources | 28 feeds from 20 outlets, rated left, center-left, center, right, or international |
+| Sources | 35 feeds from 27 outlets, rated left, center-left, center, right, or international; seven permit republishing with attribution |
 | Window | Headlines from the previous 36 hours; opinion and commentary excluded |
 | Grouping | Headlines that share distinctive terms (rarer terms weighted more) join the group they most resemble at a similarity of 0.30 or higher |
 | Ranking | One point per distinct outlet, plus half a point per distinct part of the spectrum; groups need at least two outlets |

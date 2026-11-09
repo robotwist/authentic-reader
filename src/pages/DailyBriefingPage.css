@@ -2053,3 +2053,18 @@
     font-size: 1rem;
   }
 }
+
+.full-text-note {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  color: var(--text-muted, #4A4A4A);
+  max-width: 640px;
+  margin: 1rem auto 0;
+  text-align: center;
+}
+
+.full-text-note a {
+  color: var(--text-ink, #1A1A1A);
+}

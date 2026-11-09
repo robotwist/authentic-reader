@@ -8,7 +8,8 @@ const USER_AGENT = 'Mozilla/5.0 (compatible; AuthenticReaderBot/1.0; +https://au
 /*
  * Outlets the daily briefing draws from. Lean ratings are approximate, adapted
  * from widely used media-bias charts (AllSides, Ad Fontes Media), and are used
- * only to pick a spread of perspectives for comparisons. The methodology page
+ * only to pick a spread of perspectives for comparisons. `republishable` marks
+ * outlets whose terms allow republishing full articles with attribution. The methodology page
  * (src/pages/MethodPage.tsx) lists the same outlets; keep the two in sync.
  */
 export const FEEDS = [
@@ -39,7 +40,14 @@ export const FEEDS = [
   { name: 'Al Jazeera', lean: 'international', url: 'https://www.aljazeera.com/xml/rss/all.xml' },
   { name: 'Deutsche Welle', lean: 'international', url: 'https://rss.dw.com/xml/rss-en-all' },
   { name: 'France 24', lean: 'international', url: 'https://www.france24.com/en/rss' },
-  { name: 'Sky News', lean: 'international', url: 'https://feeds.skynews.com/feeds/rss/world.xml' }
+  { name: 'Sky News', lean: 'international', url: 'https://feeds.skynews.com/feeds/rss/world.xml' },
+  { name: 'ProPublica', lean: 'center-left', republishable: true, url: 'https://feeds.propublica.org/propublica/main' },
+  { name: 'The 19th', lean: 'center-left', republishable: true, url: 'https://19thnews.org/feed/' },
+  { name: 'Inside Climate News', lean: 'center-left', republishable: true, url: 'https://insideclimatenews.org/feed/' },
+  { name: 'KFF Health News', lean: 'center', republishable: true, url: 'https://kffhealthnews.org/feed/' },
+  { name: 'CalMatters', lean: 'center', republishable: true, url: 'https://calmatters.org/feed/' },
+  { name: 'The Conversation', lean: 'center', republishable: true, url: 'https://theconversation.com/us/articles.atom' },
+  { name: 'Global Voices', lean: 'international', republishable: true, url: 'https://globalvoices.org/feed/' }
 ];
 
 export const MIN_FULL_ARTICLE_CHARS = 1500;
@@ -110,7 +118,8 @@ export async function fetchFeedItems(feed) {
       author: item.creator || item.author || null,
       publishDate: item.isoDate || item.pubDate || null,
       sourceName: feed.name,
-      lean: feed.lean
+      lean: feed.lean,
+      republishable: Boolean(feed.republishable)
     })).filter((item) => item.title && item.link);
   } catch (error) {
     console.warn(`[briefing] Feed failed: ${feed.name} (${error.message})`);

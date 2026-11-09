@@ -25,7 +25,14 @@ const OUTLETS: Array<[string, string]> = [
   ['Al Jazeera', 'International'],
   ['Deutsche Welle', 'International'],
   ['France 24', 'International'],
-  ['Sky News', 'International']
+  ['Sky News', 'International'],
+  ['ProPublica', 'Center-left (permits republishing)'],
+  ['The 19th', 'Center-left (permits republishing)'],
+  ['Inside Climate News', 'Center-left (permits republishing)'],
+  ['KFF Health News', 'Center (permits republishing)'],
+  ['CalMatters', 'Center (permits republishing)'],
+  ['The Conversation', 'Center (permits republishing)'],
+  ['Global Voices', 'International (permits republishing)']
 ];
 
 const STATUSES: Array<[string, string]> = [
@@ -112,7 +119,7 @@ const MethodPage: React.FC = () => {
           across the spectrum, decided it was news.
         </p>
         <dl className="method-params">
-          <div><dt>Sources</dt><dd>28 feeds from the 20 outlets listed below, collected around 5 AM Central.</dd></div>
+          <div><dt>Sources</dt><dd>35 feeds from the 27 outlets listed below, collected around 5 AM Central.</dd></div>
           <div><dt>Window</dt><dd>Headlines published in the previous 36 hours. Opinion and commentary pieces are excluded.</dd></div>
           <div><dt>Grouping</dt><dd>Headlines are grouped when they share enough distinctive terms (names, places, specific
             nouns), with rarer terms weighted more heavily than common ones. Each headline joins the group it most resembles
@@ -125,7 +132,8 @@ const MethodPage: React.FC = () => {
           <div><dt>Continuity</dt><dd>A story that continues one covered in the past 30 days keeps its name and adds to its
             running record (see section 6).</dd></div>
           <div><dt>Article</dt><dd>For each story, one article is analyzed in full: from the most neutral-rated outlet in the
-            group that published at least 1,500 characters and 250 words of text. Roundups and live blogs are skipped.</dd></div>
+            group that published at least 1,500 characters and 250 words of text, preferring, within the same
+            rating, an outlet that permits republishing. Roundups and live blogs are skipped.</dd></div>
           <div><dt>Comparison</dt><dd>Up to four other outlets from the same group, spread across the spectrum before any
             part of it is repeated.</dd></div>
         </dl>
@@ -246,8 +254,22 @@ const MethodPage: React.FC = () => {
         </ul>
       </section>
 
+      <section className="method-section" id="full-text">
+        <h2>[8] Articles shown in full</h2>
+        <p>
+          Each analyzed article is shown in full, without ads, trackers, or page clutter, because reading a whole piece in
+          plain form is part of reading it well. Every article credits its outlet and links to the original, which remains
+          the authoritative version with its photos and full context. When an outlet that permits republishing with
+          attribution covers a story, we prefer its article.
+        </p>
+        <p>
+          Publishers who want an article removed can say so through the report form below. Removal requests are
+          honored promptly.
+        </p>
+      </section>
+
       <section className="method-section" id="privacy">
-        <h2>[8] Privacy</h2>
+        <h2>[9] Privacy</h2>
         <p>
           We count visits without cookies or identifiers. Your browser keeps one thing on your device, the date of your
           last visit, so we can tell new readers from returning ones. What reaches us is only which page was viewed and
@@ -257,7 +279,7 @@ const MethodPage: React.FC = () => {
       </section>
 
       <section className="method-section" id="report">
-        <h2>[9] Report an error</h2>
+        <h2>[10] Report an error</h2>
         <p>If something on the site is wrong, tell us. Corrections are made openly.</p>
         <CorrectionsForm />
       </section>

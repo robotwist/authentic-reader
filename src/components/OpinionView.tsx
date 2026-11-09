@@ -164,6 +164,11 @@ const OpinionView: React.FC<Props> = ({ opinion, relatedLabel, onBack, onOpenSto
           <a href={article.url} target="_blank" rel="noopener noreferrer" className="original-link">
             [READ THE ORIGINAL AT {article.source.toUpperCase()}]
           </a>
+          <p className="full-text-note">
+            Shown in full for reading and analysis, without ads or page clutter. The article belongs to {article.source}, and
+            the original remains the authoritative version.{article.republishable ? ' This outlet permits republishing with attribution.' : ''}{' '}
+            Publishers can <Link to="/method#full-text">request removal</Link>.
+          </p>
         </footer>
       </article>
     </div>

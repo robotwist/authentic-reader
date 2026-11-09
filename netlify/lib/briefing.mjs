@@ -16,8 +16,9 @@ const MAX_PRIMARY_ATTEMPTS = 6;
 const MAX_RELATED = 4;
 const OPINION_SIDES = ['left', 'right'];
 
-// The analyzed article comes from the most neutral outlet that has a full text;
-// the comparison then shows how the rest of the spectrum covered it.
+// The analyzed article comes from the most neutral outlet that has a full text,
+// preferring, within the same lean, an outlet that permits republishing; the
+// comparison then shows how the rest of the spectrum covered it.
 const PRIMARY_LEAN_ORDER = ['center', 'international', 'center-left', 'right', 'left'];
 const ROUNDUP = /biggest news|what to know|live updates?|newsletter|morning brief|week in review|recap/i;
 
@@ -50,6 +51,7 @@ function toArticle(item, extracted) {
     url: item.link,
     source: item.sourceName,
     lean: item.lean,
+    republishable: Boolean(item.republishable),
     publishDate: item.publishDate ? new Date(item.publishDate).toISOString() : null,
     author: extracted?.byline || item.author || undefined,
     content: text
@@ -61,6 +63,7 @@ async function choosePrimaryArticle(story, usedUrls) {
     .filter((item) => !usedUrls.has(item.link) && !ROUNDUP.test(item.title))
     .sort((a, b) =>
       PRIMARY_LEAN_ORDER.indexOf(a.lean) - PRIMARY_LEAN_ORDER.indexOf(b.lean) ||
+      Number(b.republishable) - Number(a.republishable) ||
       new Date(b.publishDate || 0) - new Date(a.publishDate || 0));
 
   let fallback = null;

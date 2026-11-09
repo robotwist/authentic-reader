@@ -27,7 +27,7 @@ For a site whose purpose is careful reading, these were the real problems to sol
 
 The fix was a process with stated parameters and hard checks, published in full on the site's [methodology page](https://authentic-reader.netlify.app/method).
 
-**Selection by coverage, not preference.** Each morning the pipeline collects 36 hours of headlines from 28 feeds across 20 outlets, each rated left, center-left, center, right, or international. Headlines are grouped when they share distinctive terms, with rarer terms weighted more heavily. Groups score one point per outlet plus half a point per part of the spectrum, and five stories on different subjects are chosen. Fixed topics had produced stale, grab-bag stories; this produces the day's actual news, and every story comes with its own comparison set.
+**Selection by coverage, not preference.** Each morning the pipeline collects 36 hours of headlines from 35 feeds across 27 outlets, each rated left, center-left, center, right, or international. Headlines are grouped when they share distinctive terms, with rarer terms weighted more heavily. Groups score one point per outlet plus half a point per part of the spectrum, and five stories on different subjects are chosen. Fixed topics had produced stale, grab-bag stories; this produces the day's actual news, and every story comes with its own comparison set.
 
 **Rules that cannot be argued with:**
 

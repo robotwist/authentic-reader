@@ -16,6 +16,7 @@ export interface BriefingArticle {
   url: string;
   source: string;
   lean?: string;
+  republishable?: boolean;
   publishDate: string | null;
   author?: string;
   content: string;
