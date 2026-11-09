@@ -109,3 +109,20 @@ test('reader submissions are validated and bots are caught by the honeypot', asy
   assert.match(validateSubmission('report', { story: 'Egypt crash', message: '' }), /fill in/);
   assert.match(validateSubmission('report', { story: 'x', message: 'y', email: 'bad' }), /valid email/);
 });
+
+test('visits are counted from page flags only, and bots and bad input are ignored', async () => {
+  const { applyHit, emptyDay, isBot, parseHit } = await import('./stats.mjs');
+  assert.equal(isBot('Mozilla/5.0 (compatible; Googlebot/2.1)'), true);
+  assert.equal(isBot('LinkedInBot/1.0 (compatible; Mozilla/5.0)'), true);
+  assert.equal(isBot('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) Safari/604.1'), false);
+  assert.equal(parseHit({ view: 'admin' }), null);
+  assert.equal(parseHit({ view: 'story', story: '../etc' }), null);
+  assert.deepEqual(parseHit({ view: 'home', firstToday: false, returning: true }), { view: 'home', story: null, firstToday: false, returning: false });
+
+  let day = emptyDay('2026-11-09');
+  day = applyHit(day, parseHit({ view: 'home', firstToday: true, returning: true }));
+  day = applyHit(day, parseHit({ view: 'story', story: 'egypt-train-collision' }));
+  day = applyHit(day, parseHit({ view: 'home', firstToday: true }));
+  assert.deepEqual({ visitors: day.visitors, returning: day.returning, home: day.views.home, story: day.views.story }, { visitors: 2, returning: 1, home: 2, story: 1 });
+  assert.equal(day.stories['egypt-train-collision'], 1);
+});

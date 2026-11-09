@@ -12,7 +12,8 @@
     "test": "npm run test:pipeline",
     "test:pipeline": "node --test netlify/lib/",
     "export:subscribers": "node scripts/export-submissions.mjs subscribers",
-    "export:reports": "node scripts/export-submissions.mjs reports"
+    "export:reports": "node scripts/export-submissions.mjs reports",
+    "stats": "node scripts/stats.mjs"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { submitForm } from '../lib/forms';
+import { recordView } from '../lib/stats';
 import './MethodPage.css';
 
 // Keep in sync with FEEDS in netlify/lib/sources.mjs.
@@ -83,6 +84,7 @@ const CorrectionsForm: React.FC = () => {
 const MethodPage: React.FC = () => {
   useEffect(() => {
     document.title = 'How it works | The Daily Authentic';
+    recordView('method');
     const target = window.location.hash ? document.querySelector(window.location.hash) : null;
     if (target) target.scrollIntoView();
     return () => {
@@ -221,8 +223,18 @@ const MethodPage: React.FC = () => {
         </ul>
       </section>
 
+      <section className="method-section" id="privacy">
+        <h2>[7] Privacy</h2>
+        <p>
+          We count visits without cookies or identifiers. Your browser keeps one thing on your device, the date of your
+          last visit, so we can tell new readers from returning ones. What reaches us is only which page was viewed and
+          whether it was your first view that day. If your browser sends Do Not Track or Global Privacy Control, you are
+          not counted at all. An email address you give us is used only for the email edition.
+        </p>
+      </section>
+
       <section className="method-section" id="report">
-        <h2>[7] Report an error</h2>
+        <h2>[8] Report an error</h2>
         <p>If something on the site is wrong, tell us. Corrections are made openly.</p>
         <CorrectionsForm />
       </section>

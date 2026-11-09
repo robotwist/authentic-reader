@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import ReaderView from '../components/ReaderView';
 import DeepAnalysisPanel from '../components/DeepAnalysisPanel';
@@ -6,6 +6,7 @@ import SourceComparisonView from '../components/SourceComparisonView';
 import StorySoFar from '../components/StorySoFar';
 import SubscribeBox from '../components/SubscribeBox';
 import { API_CONFIG } from '../config/api.config';
+import { recordView } from '../lib/stats';
 import { BriefingStory, DailyBriefing, FallacyData } from '../types/briefing';
 import './DailyBriefingPage.css';
 
@@ -132,6 +133,17 @@ const DailyBriefingPage: React.FC = () => {
   }, [story]);
 
   const highlights = useMemo(() => (story ? highlightsFor(story, deepAnalysis) : []), [story, deepAnalysis]);
+
+  const lastRecordedView = useRef<string | null>(null);
+  useEffect(() => {
+    if (loading) return;
+    const view = showArchive || briefing?.isArchive ? 'archive' : story && selectedKey ? 'story' : briefing ? 'home' : null;
+    if (!view) return;
+    const signature = `${view}:${selectedKey || ''}:${requestedDate || ''}`;
+    if (lastRecordedView.current === signature) return;
+    lastRecordedView.current = signature;
+    recordView(view, view === 'story' ? selectedKey || undefined : undefined);
+  }, [loading, showArchive, briefing, story, selectedKey, requestedDate]);
 
   const navigate = (params: Record<string, string | null>) => {
     const next = new URLSearchParams(searchParams);
