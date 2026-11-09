@@ -1,502 +1,114 @@
-# The Authentic Reader 📰
+# The Daily Authentic
 
-> *An autonomous AI pipeline that analyzes news for bias, logical fallacies, and emotional manipulation.*
+**The day's most-covered stories, read closely for logic, rhetoric, and framing.**
 
-[![Backend](https://img.shields.io/badge/Backend-Heroku-430098?style=flat&logo=heroku)](https://heroku.com)
-[![Frontend](https://img.shields.io/badge/Frontend-Netlify-00C7B7?style=flat&logo=netlify)](https://netlify.com)
-[![AI](https://img.shields.io/badge/AI-Llama--3.3--70b-FF6B35?style=flat&logo=meta)](https://groq.com)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18.2-61DAFB?style=flat&logo=react)](https://reactjs.org/)
+[authentic-reader.netlify.app](https://authentic-reader.netlify.app) · [How it works](https://authentic-reader.netlify.app/method) · [RSS](https://authentic-reader.netlify.app/feed.xml)
+
+Every morning the Daily Authentic selects the five stories that the most outlets, across the political spectrum, chose to cover. For each one it reads a single article line by line, checks its key claims against independent sources, and sets it beside other outlets' versions of the same event. Each article is analyzed once, the result is stored, and every reader sees the same analysis.
 
 ---
 
-## 🚀 The Architecture
+## The process
 
-| Layer | Technology | Deployment |
-|-------|------------|------------|
-| **Backend** | Node.js / Express / TypeScript | Heroku |
-| **Frontend** | React / TypeScript / Vite | Netlify |
-| **Database** | PostgreSQL + JSON File Storage | Heroku Postgres + Local `/data` |
-| **AI Engine** | Llama-3.3-70b via Groq API | Primary |
-| **Resilience** | Custom Heuristic Fallback Engine | Safety Net |
-| **Vector DB** | ChromaDB (Optional) | Local/Docker |
+### 1. Selection
+
+Stories are chosen by coverage, not by preference.
+
+| Parameter | Value |
+|---|---|
+| Sources | 28 feeds from 20 outlets, rated left, center-left, center, right, or international |
+| Window | Headlines from the previous 36 hours; opinion and commentary excluded |
+| Grouping | Headlines that share distinctive terms (rarer terms weighted more) join the group they most resemble at a similarity of 0.30 or higher |
+| Ranking | One point per distinct outlet, plus half a point per distinct part of the spectrum; groups need at least two outlets |
+| Selection | Five stories on five different subjects; at most one may have fewer than three outlets |
+| Continuity | A story that continues one covered in the past 30 days keeps its name and record |
+| Article | From the most neutral-rated outlet in the group with at least 1,500 characters and 250 words; roundups skipped |
+| Comparison | Up to four other outlets from the group, spread across the spectrum |
+
+### 2. Reading
+
+Each article is read against the same rubric every day, and the output is held to fixed rules:
+
+- **Exact quotes only.** Every quoted passage is matched against the article text. Near-misses are replaced with the sentence sharing at least 75% of its words; anything not found is removed.
+- **The outlet, not its sources.** Rhetoric inside a quotation belongs to the speaker unless the outlet adopts it in its own voice.
+- **Nothing is padded.** Careful reporting can come back with no techniques found.
+- **Calibrated scores.** 90–100 exemplary · 70–89 solid · 50–69 notable slant or omissions · below 50 misleading.
+- **Numbers keep their baseline.** A missing comparison group is reported as an omission, never filled in.
+- **Background is labeled.** Recent history comes only from the article or the archive.
+
+### 3. Fact checks
+
+Up to three factual claims per story are quoted exactly and searched for in independent coverage and primary sources. The original outlet and syndicated copies of the same article do not count as confirmation, and predictions and opinions are not checked. Results are *supported*, *contradicted*, *disputed*, *needs context*, or *no source found*, each with links.
+
+### 4. The story so far
+
+Each continuing story keeps a running record built only from the archive: a dated timeline, claims that independent sources confirmed, open questions that are marked answered when a later article answers them, and how outlets have framed it.
+
+The full methodology, including limits, is published at [/method](https://authentic-reader.netlify.app/method).
+
+---
+
+## How it runs
+
+The site is a React front end with the briefing pipeline in Netlify Functions. There is no server to maintain.
+
+- **Schedule.** `briefing-cron` runs at 5 AM, 10 AM, and 3 PM Central and starts `generate-briefing-background`, which has up to 15 minutes per run.
+- **Staged runs.** Each run finishes anything pending from the previous day, then completes whatever is missing for today. A step that cannot finish waits for the next run; an edition publishes once at least three stories are complete.
+- **Storage.** Results live in Netlify Blobs. Visitor requests only read stored results, so traffic never triggers new analysis.
 
 ```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│   Netlify CDN   │────▶│  Heroku Backend │────▶│  Groq API       │
-│   (React SPA)   │     │  (Express API)  │     │  (Llama-3.3-70b)│
-└─────────────────┘     └────────┬────────┘     └─────────────────┘
-                                 │                       │
-                                 ▼                       │ fallback
-                        ┌─────────────────┐              ▼
-                        │ Heroku Postgres │     ┌─────────────────┐
-                        │ (Article Store) │     │ Heuristic Engine│
-                        └─────────────────┘     └─────────────────┘
-                                 │
-                                 ▼
-                        ┌─────────────────┐
-                        │  JSON Storage   │
-                        │  (/data/*.json) │
-                        └─────────────────┘
+netlify/
+  lib/
+    sources.mjs      feeds, outlet ratings, article extraction
+    stories.mjs      headline grouping, ranking, and daily selection
+    analysis.mjs     article reading, quote grounding, fact checks, comparisons
+    dossier.mjs      the story-so-far record
+    briefing.mjs     the staged daily run
+    pipeline.test.mjs
+  functions/
+    briefing-cron.mjs, generate-briefing-background.mjs
+    daily-briefing.mjs   /api/daily-briefing, /api/story/:key, archive, status
+    ai-analysis.mjs      /api/analysis/* (stored analyses only)
+    feed.mjs             /feed.xml
+src/
+  pages/        DailyBriefingPage, MethodPage
+  components/   reader view, analysis panel, comparison, story so far, subscribe
 ```
 
----
+`/api/daily-briefing/status` reports the most recent run.
 
-## ⚡ Key Features
-
-### 1. Autonomous "Daily Briefing" Agent
-
-- Runs automatically at **6:00 AM UTC** via `node-cron` scheduler
-- Scrapes high-reliability RSS feeds (BBC, CNBC, Al Jazeera, Reuters, NPR, and more)
-- Deduplicates articles using URL hashing to prevent database bloat
-- Processes up to 50 articles per run with intelligent rate limiting
-- Stores articles in PostgreSQL with rich analysis payloads
-
-### 2. Fault-Tolerant AI Pipeline ("Graceful Degradation")
-
-| Layer | Service | Purpose |
-|-------|---------|---------|
-| **Primary** | Llama-3.3-70b (Groq) | Deep analysis: Bias Rating, Tone Check, Neutral Rewrite, Logical Fallacies |
-| **Safety** | Heuristic Engine | Regex-based fallback for API outages |
-
-**How it works:**
-1. Article text is sent to **Llama-3.3-70b** for comprehensive analysis
-2. If the AI fails (Rate Limit 429, Timeout, or Error), the system **automatically falls back** to the Heuristic Engine
-3. **Result:** 100% data availability. Users never see empty screens, even during API outages.
-
-### 3. Comprehensive Analysis Features
-
-#### Bias Detection & Tagging
-- Multi-dimensional bias scoring (0-100)
-- Political lean detection (left, center-left, center, center-right, right)
-- Interactive bias tagging with visual highlights
-- Bias type categorization (loaded language, name-calling, exaggeration, etc.)
-
-#### Dark Pattern Detection
-- Identifies manipulative design patterns in news content
-- Detects emotional manipulation techniques
-- Highlights fear mongering, outrage bait, and clickbait patterns
-
-#### Fact-Checking Assistant
-- AI-powered claim verification
-- Evidence analysis (supporting, contradicting, neutral)
-- Source reliability assessment
-- Confidence scoring for each claim
-- Recent fact-check history
-
-#### Source Comparison View
-- Side-by-side comparison of articles from different sources
-- AI-synthesized neutral "facts" column
-- Visual diff highlighting spin differences
-- Contrasting source recommendations
-
-#### Sentiment Analysis Dashboard
-- Emotional content analysis (joy, sadness, anger, fear, surprise, disgust)
-- Tone detection (formal, informal, aggressive, passive, objective, subjective)
-- Keyword extraction (positive, negative, emotional)
-- Sentiment trends over time
-
-#### Source Credibility Assessment
-- Multi-dimensional credibility scoring (accuracy, transparency, objectivity, fact-checking, corrections, bias)
-- Historical performance tracking
-- Fact-check record analysis
-- Correction rate monitoring
-- Personalized recommendations
-
-#### Comparative Analysis
-- Compare multiple articles on the same subject
-- Bias variation detection
-- Conflicting claims identification
-- Cross-source recommendations
-
-#### Network Analysis
-- Article relationship mapping
-- Citation network visualization
-- Shared topic detection
-- Bias similarity clustering
-
-### 4. Advanced AI Features
-
-#### AI Agent Orchestrator
-- Multi-agent system with 6 specialized agents:
-  - Bias Detection Agent
-  - Logical Fallacy Agent
-  - Rhetorical Analysis Agent
-  - Fact-Checking Agent
-  - Sentiment Analysis Agent
-  - Source Credibility Agent
-
-#### Autonomous Learning Agent
-- Self-improving AI models
-- Continuous learning from user feedback
-- Performance optimization
-- Model versioning and tracking
-
-#### Collaborative AI Network
-- Multi-agent collaboration
-- Consensus building
-- Cross-validation of analysis results
-
-### 5. Analytics & Insights
-
-#### Analytics Dashboard
-- Comprehensive metrics and statistics
-- Real-time data visualization
-- AI-powered insights
-- Reading session tracking
-- Bias exposure analysis
-- Source diversity metrics
-
-#### Feedback System
-- User feedback collection on AI analysis
-- Feedback dashboard for administrators
-- ChromaDB integration for vector storage (optional)
-- localStorage fallback
-
-### 6. The "Neutral Rewrite" Engine
-
-- Detects emotionally charged language (e.g., "slam," "blast," "destroy")
-- Generates a **Neutral Alternative** summary to strip away the spin
-- Highlights specific phrases that triggered bias detection
-
-### 7. Progressive Web App (PWA)
-
-- Offline support with service workers
-- Installable on mobile and desktop
-- Cached API responses for offline reading
-- Auto-update capabilities
-
-### 8. ONNX Model Support
-
-- Local ONNX model inference
-- Model conversion tools
-- ONNX model status monitoring
-- Fallback to cloud AI services
-
----
-
-## 🛠️ Setup & Installation
-
-### Prerequisites
-
-- Node.js v20+
-- PostgreSQL 14+
-- Groq API Key ([Get one free](https://console.groq.com))
-- (Optional) ChromaDB for vector storage
-
-### 1. Clone the Repository
+## Development
 
 ```bash
-git clone https://github.com/your-org/authentic-reader.git
-cd authentic-reader
-```
-
-### 2. Install Dependencies
-
-```bash
-# Backend
-cd authentic-reader-backend
 npm install
-
-# Frontend
-cd ../
-npm install
+npm run dev             # front end at localhost:5173
+npm run test:pipeline   # pipeline unit tests
+npm run typecheck
+npm run build
 ```
 
-### 3. Environment Variables
+Netlify builds run the tests and the typecheck before building, so a failing check never deploys.
 
-Create `.env` in `authentic-reader-backend/`:
+### Configuration
+
+Set in Netlify's environment variables:
+
+| Variable | Purpose |
+|---|---|
+| `GROQ_API_KEY` | Key for the analysis service |
+| `BRIEFING_SECRET` | Shared secret that protects the generation endpoint |
+| `CURRENT_CONTEXT` | Optional. Current facts (such as who holds major offices) given to every reading |
+| `BRIEFINGS_STORE` | Optional. Alternate storage name, used by preview deploys |
+
+To start a run by hand:
 
 ```bash
-# Server
-PORT=8080
-NODE_ENV=development
-
-# Database
-DATABASE_URL=postgres://user:pass@localhost:5432/authentic_reader
-
-# AI Service
-GROQ_API_KEY=gsk_your_api_key_here
-GROQ_MODEL=llama-3.3-70b-versatile
-
-# Scheduler
-RUN_BRIEFING_ON_STARTUP=false  # Set to true for dev testing
-
-# Optional: ChromaDB
-CHROMA_HOST=localhost
-CHROMA_PORT=8000
-ENABLE_CHROMA=false  # Set to true if using ChromaDB
+curl -X POST -H "x-briefing-secret: $BRIEFING_SECRET" \
+  https://authentic-reader.netlify.app/.netlify/functions/generate-briefing-background
 ```
 
-### 4. Database Setup
+The `authentic-reader-backend/` directory is the previous server-based version and is not deployed.
 
-```bash
-cd authentic-reader-backend
-npx sequelize-cli db:migrate
-npx sequelize-cli db:seed:all
-```
+## License
 
-### 5. Initialize Data Directory
-
-The application uses JSON file storage for sources and analysis data:
-
-```bash
-# Ensure /data directory exists
-mkdir -p data
-
-# Initial data files will be created automatically on first run
-```
-
-### 6. Run Locally
-
-```bash
-# Terminal 1: Backend
-cd authentic-reader-backend
-npm start
-
-# Terminal 2: Frontend
-cd authentic-reader
-npm run dev
-```
-
-- **Frontend:** http://localhost:5173
-- **Backend:** http://localhost:8080
-
----
-
-## 📡 API Endpoints
-
-### Public Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/health` | Health check |
-| `GET` | `/api/sources/public` | List all news sources |
-| `GET` | `/api/articles` | Get analyzed articles |
-| `GET` | `/api/balanced-feed` | Curated balanced news feed |
-| `GET` | `/api/daily-briefing` | Get daily briefing articles |
-
-### Analysis Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/api/analyze-article` | Analyze a single article |
-| `POST` | `/api/analyze-url` | Analyze article from URL |
-| `GET` | `/api/analysis/:id` | Get analysis by ID |
-| `POST` | `/api/ai-analysis/comprehensive` | Comprehensive AI analysis |
-| `POST` | `/api/fact-check` | Fact-check claims |
-| `GET` | `/api/source-credibility/:sourceId` | Get source credibility assessment |
-| `GET` | `/api/network-analysis` | Get article network relationships |
-| `GET` | `/api/trends` | Get trending topics and analysis |
-
-### Admin Endpoints (Auth Required)
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/api/auth/login` | Admin login |
-| `POST` | `/api/sources` | Add new RSS source |
-| `DELETE` | `/api/sources/:id` | Remove source |
-| `POST` | `/api/briefing/trigger` | Manually trigger briefing |
-| `GET` | `/api/admin/monitor` | System monitoring dashboard |
-| `GET` | `/api/admin/onnx/status` | ONNX model status |
-
-### Feedback Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/api/feedback` | Submit feedback on analysis |
-| `GET` | `/api/feedback/dashboard` | Get feedback statistics |
-
----
-
-## 🚢 Deployment
-
-### Backend (Heroku)
-
-```bash
-cd authentic-reader-backend
-git push heroku main
-```
-
-**Required Config Vars:**
-```bash
-heroku config:set GROQ_API_KEY=gsk_...
-heroku config:set NODE_ENV=production
-heroku config:set RUN_BRIEFING_ON_STARTUP=true
-heroku config:set DATABASE_URL=postgres://...
-```
-
-### Frontend (Netlify)
-
-The frontend auto-deploys from the `main` branch.
-
-**Build Settings:**
-- Build command: `npm run build`
-- Publish directory: `dist`
-- Node version: `20.x`
-
-**Environment Variables:**
-```bash
-VITE_API_URL=https://your-backend.herokuapp.com
-VITE_ENABLE_CHROMA=false  # Set to true if using ChromaDB
-```
-
----
-
-## 📊 Monitoring
-
-### Check Article Status
-
-```bash
-heroku pg:psql -c "SELECT analysis_payload->>'service' as service, COUNT(*) FROM articles GROUP BY 1;"
-```
-
-### View Logs
-
-```bash
-heroku logs --tail --app authentic-reader-backend
-```
-
-### Manual Briefing Trigger
-
-```bash
-heroku run npm run daily-briefing --app authentic-reader-backend
-```
-
-### System Monitoring
-
-Access the monitoring dashboard at `/api/admin/monitor` (admin auth required)
-
----
-
-## 🔧 Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| **Groq Rate Limit (429)** | Wait for token reset (rolling 24h) or reduce `GROQ_MODEL` to `llama-3.1-8b-instant` |
-| **No articles saving** | Check database column names match model (`snake_case`) |
-| **Heuristic fallback only** | Verify `GROQ_API_KEY` is set in Heroku config |
-| **Logs not visible** | Logger outputs to console in all environments |
-| **ChromaDB connection failed** | System automatically falls back to localStorage |
-| **Frontend not connecting** | Verify `VITE_API_URL` is set correctly in Netlify |
-| **Port conflicts** | Frontend uses 5173, backend uses 8080 by default |
-
----
-
-## 📁 Project Structure
-
-```
-authentic-reader/
-├── authentic-reader-backend/    # Express API Server
-│   ├── controllers/             # Route handlers
-│   ├── models/                  # Sequelize models
-│   ├── routes/                  # API routes
-│   ├── services/                # Business logic
-│   │   ├── productionAIService.js      # Groq + Heuristic engine
-│   │   ├── industryLeadingAnalysisService.js  # Comprehensive analysis
-│   │   ├── jsonStorageService.js       # JSON file operations
-│   │   └── ...
-│   ├── scripts/
-│   │   └── dailyReliableFetch.js  # Autonomous agent
-│   ├── data/                    # JSON data storage
-│   │   ├── sources.json
-│   │   ├── articles.json
-│   │   └── analysis.json
-│   └── index.js                 # Server entry point
-├── src/                         # React Frontend
-│   ├── components/              # UI components
-│   │   ├── BiasTagger.tsx
-│   │   ├── DarkPatternDetection.tsx
-│   │   ├── FactCheckingAssistant.tsx
-│   │   ├── SourceComparisonView.tsx
-│   │   ├── AnalyticsDashboard.tsx
-│   │   ├── SentimentAnalysisDashboard.tsx
-│   │   ├── SourceCredibilityAssessment.tsx
-│   │   ├── ComparativeAnalysis.tsx
-│   │   ├── AutonomousLearningAgent.tsx
-│   │   └── ...
-│   ├── pages/                   # Page components
-│   ├── hooks/                   # Custom React hooks
-│   ├── services/                # API client
-│   └── styles/                  # CSS modules
-├── data/                        # JSON data files
-│   ├── sources.json
-│   ├── articles.json
-│   └── analysis.json
-└── README.md                    # You are here
-```
-
----
-
-## 🧪 Testing
-
-### Run Tests
-
-```bash
-# Backend tests
-cd authentic-reader-backend
-npm test
-
-# Frontend tests
-cd authentic-reader
-npm test
-
-# E2E tests
-npm run test:e2e
-```
-
-### Test Coverage
-
-```bash
-npm run test:coverage
-```
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Development Guidelines
-
-- Use TypeScript for all new code
-- Follow ESLint rules for consistent style
-- Write tests for new features
-- Update documentation as needed
-- Follow the existing code structure
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- [Groq](https://groq.com) for blazing-fast LLM inference
-- [Heroku](https://heroku.com) for reliable backend hosting
-- [Netlify](https://netlify.com) for seamless frontend deployment
-- [Meta](https://meta.ai) for Llama models
-- [ChromaDB](https://www.trychroma.com/) for vector database capabilities
-
----
-
-## 📚 Additional Documentation
-
-- [Architecture Documentation](ARCHITECTURE.md)
-- [Deployment Guide](DEPLOYMENT.md)
-- [SWOT Analysis](SWOT_ANALYSIS.md)
-- [UX Assessment](UX_ASSESSMENT.md)
-- [AI Feedback Loop System](README-FEEDBACK-LOOP.md)
-
----
-
-<p align="center">
-  <strong>Built with ❤️ for media literacy</strong>
-</p>
+MIT. See [LICENSE](LICENSE).
