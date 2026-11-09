@@ -20,7 +20,7 @@ export default async (req) => {
   const route = pathname.replace(/\/$/, '').split('/').pop();
 
   if (route === 'health') {
-    return json({ success: true, health: { model: process.env.GROQ_MODEL || 'openai/gpt-oss-120b', mode: 'precomputed' } });
+    return json({ success: true, health: { mode: 'precomputed' } });
   }
   if (req.method !== 'POST') {
     return json({ success: false, error: 'Method not allowed' }, 405);
