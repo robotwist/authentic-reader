@@ -1418,8 +1418,22 @@
 }
 
 /* Bias Direction Indicators - Brutalist: Weight & Border, Not Color */
-.bias-value.bias-left,
-.bias-indicator.bias-left {
+/* The meter marker stays a plain black triangle in every position; generic
+   .bias-* classes from other stylesheets would otherwise color it. */
+.bias-indicator.bias-left,
+.bias-indicator.bias-centerleft,
+.bias-indicator.bias-center,
+.bias-indicator.bias-centerright,
+.bias-indicator.bias-right {
+  background: none;
+  color: inherit;
+  padding: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 8px solid var(--text-ink, #1A1A1A);
+}
+
+.bias-value.bias-left {
   color: var(--text-ink, #1A1A1A);
   font-weight: 700;
   border-left: 4px solid var(--text-ink, #1A1A1A);
