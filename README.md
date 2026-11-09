@@ -70,6 +70,7 @@ netlify/
     daily-briefing.mjs   /api/daily-briefing, /api/story/:key, archive, status
     analysis.mjs         /api/analysis/* (stored analyses only)
     feed.mjs             /feed.xml
+    submissions.mjs      /api/subscribe, /api/report
 src/
   pages/        DailyBriefingPage, MethodPage
   components/   reader view, analysis panel, comparison, story so far, subscribe
@@ -105,6 +106,15 @@ To start a run by hand:
 ```bash
 curl -X POST -H "x-briefing-secret: $BRIEFING_SECRET" \
   https://authentic-reader.netlify.app/.netlify/functions/generate-briefing-background
+```
+
+### Reader submissions
+
+Email signups (`/api/subscribe`) and error reports (`/api/report`) are validated, rate-limited, and stored in a private Netlify Blobs store, `reader-submissions`. To export them as CSV with your Netlify CLI login:
+
+```bash
+npm run export:subscribers > subscribers.csv
+npm run export:reports > reports.csv
 ```
 
 The `authentic-reader-backend/` directory is the previous server-based version and is not deployed.
