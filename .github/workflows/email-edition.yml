@@ -1,0 +1,30 @@
+name: Email edition
+
+on:
+  schedule:
+    # Shortly after the 5 AM and 10 AM Central pipeline runs. The first run
+    # sends a complete edition; the second sends whatever is ready.
+    - cron: '25 11 * * *'
+    - cron: '25 16 * * *'
+  workflow_dispatch:
+    inputs:
+      preview_to:
+        description: Send one preview copy to this address instead of the list
+        required: false
+
+concurrency:
+  group: email-edition
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node scripts/send-email-edition.mjs
+        env:
+          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
+          PREVIEW_TO: ${{ inputs.preview_to }}

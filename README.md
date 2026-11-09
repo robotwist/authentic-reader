@@ -118,6 +118,10 @@ npm run export:subscribers > subscribers.csv
 npm run export:reports > reports.csv
 ```
 
+### Email edition
+
+The morning edition is emailed through [Buttondown](https://buttondown.com/wistrand) by the `Email edition` GitHub Actions workflow, which runs after the 5 AM and 10 AM Central pipeline runs, reads the published edition from the site, and sends it once (Buttondown's record of sent emails prevents duplicates). It needs a `BUTTONDOWN_API_KEY` repository secret. To send yourself a preview, run the workflow manually with an address in `preview_to`. Signups from the site are added to Buttondown with a confirmation email; `npm run email:sync` pushes any that were stored before the email service was connected.
+
 ### Reader counts
 
 Visits are counted without cookies or identifiers (see the methodology page). `npm run stats` prints daily readers, returning readers, page views, and the most-read stories; `npm run stats -- 60` covers 60 days.

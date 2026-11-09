@@ -78,27 +78,52 @@ export function readyToSend({ storiesPublished, storiesPlanned }, now = new Date
   return storiesPublished >= storiesPlanned || now.getUTCHours() >= SEND_PARTIAL_AFTER_UTC_HOUR;
 }
 
-/**
- * Sends the day's edition once. A marker in the store prevents a second send,
- * even if several runs publish the same day.
- */
-export async function sendEdition(store, day, siteUrl) {
-  if (!emailEnabled()) return { sent: false, reason: 'email not configured' };
-  const marker = `meta/emailed/${day.briefingDate}`;
-  if (await store.get(marker, { type: 'json' })) return { sent: false, reason: 'already sent' };
+export const editionSubject = (date) => `The Daily Authentic: ${formatDate(date)}`;
 
-  const response = await fetch(`${API}/emails`, {
-    method: 'POST',
-    headers: headers({ 'X-Buttondown-Live-Dangerously': 'true' }),
-    body: JSON.stringify({
-      subject: `The Daily Authentic: ${formatDate(day.briefingDate)}`,
-      body: editionMarkdown(day, siteUrl),
-      status: 'about_to_send'
-    }),
+async function buttondown(path, { method = 'GET', body, extraHeaders } = {}) {
+  const response = await fetch(`${API}${path}`, {
+    method,
+    headers: headers(extraHeaders),
+    body: body ? JSON.stringify(body) : undefined,
     signal: AbortSignal.timeout(20000)
   });
-  const body = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(`Buttondown ${response.status}: ${JSON.stringify(body).slice(0, 300)}`);
-  await store.setJSON(marker, { sentAt: new Date().toISOString(), emailId: body.id || null });
-  return { sent: true, emailId: body.id || null };
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(`Buttondown ${response.status} on ${method} ${path}: ${JSON.stringify(data).slice(0, 300)}`);
+  return data;
+}
+
+/** Whether an edition with this subject has already gone to the list (drafts and previews do not count). */
+export async function editionAlreadySent(subject) {
+  const data = await buttondown(`/emails?subject=${encodeURIComponent(subject)}`);
+  return (data.results || []).some((e) => e.subject === subject && e.status !== 'draft');
+}
+
+/**
+ * Sends the day's edition to the list, once: Buttondown's own record of sent
+ * emails is checked first, so repeated or overlapping runs cannot double-send.
+ * With `previewTo`, a single copy goes to that address and nothing is sent to
+ * the list.
+ */
+export async function sendEdition(day, siteUrl, { previewTo } = {}) {
+  if (!emailEnabled()) return { sent: false, reason: 'email not configured' };
+  const subject = editionSubject(day.briefingDate);
+  const body = editionMarkdown(day, siteUrl);
+
+  if (previewTo) {
+    const draft = await buttondown('/emails', { method: 'POST', body: { subject: `[Preview] ${subject}`, body, status: 'draft' } });
+    try {
+      await buttondown(`/emails/${draft.id}/send-draft`, { method: 'POST', body: { recipients: [previewTo] } });
+    } finally {
+      await fetch(`${API}/emails/${draft.id}`, { method: 'DELETE', headers: headers(), signal: AbortSignal.timeout(20000) }).catch(() => undefined);
+    }
+    return { sent: true, preview: previewTo };
+  }
+
+  if (await editionAlreadySent(subject)) return { sent: false, reason: 'already sent' };
+  const email = await buttondown('/emails', {
+    method: 'POST',
+    body: { subject, body, status: 'about_to_send' },
+    extraHeaders: { 'X-Buttondown-Live-Dangerously': 'true' }
+  });
+  return { sent: true, emailId: email.id || null };
 }

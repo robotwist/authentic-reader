@@ -4,7 +4,6 @@ import { ANALYSIS_VERSION, analyzeArticleDeep, compareCoverage, factCheckClaims,
 import { addArticleToDossier, coverageDays, dossierContext, loadDossier, synthesizeDossier, updateStoryIndex } from './dossier.mjs';
 import { selectStories } from './stories.mjs';
 import { analyzeOpinion, OPINION_VERSION, pickOpinion, toBriefingOpinion } from './opinion.mjs';
-import { readyToSend, sendEdition } from './email.mjs';
 
 export { articleKey, utcDate } from './sources.mjs';
 export { toLegacyAnalysis } from './analysis.mjs';
@@ -158,24 +157,11 @@ export async function generateBriefing(store, { date = utcDate(), deadline = Dat
   }
   days.push(await processDay(run, date, { createIfMissing: true }));
 
-  // Email the edition once it is ready, only for the current day.
-  let email = null;
-  const today = days[days.length - 1];
-  if (date === utcDate() && today.published && readyToSend(today)) {
-    try {
-      email = await sendEdition(store, await store.get(`day/${date}`, { type: 'json' }), (process.env.URL || 'https://authentic-reader.netlify.app').replace(/\/$/, ''));
-    } catch (error) {
-      email = { sent: false, error: error.message };
-      console.warn(`[briefing] Email edition failed: ${error.message}`);
-    }
-  }
-
   const summary = {
     date,
     finishedAt: new Date().toISOString(),
     exhaustedModels: [...run.ai.exhausted],
     tokens: run.ai.tokens,
-    email,
     days
   };
   await store.setJSON('meta/last-run', summary);
