@@ -2,7 +2,7 @@
 
 **The day's most-covered stories, read closely for logic, rhetoric, and framing.**
 
-[authentic-reader.netlify.app](https://authentic-reader.netlify.app) · [How it works](https://authentic-reader.netlify.app/method) · [RSS](https://authentic-reader.netlify.app/feed.xml)
+[authentic-reader.netlify.app](https://authentic-reader.netlify.app) · [How it works](https://authentic-reader.netlify.app/method) · [RSS](https://authentic-reader.netlify.app/feed.xml) · [Case study](docs/CASE_STUDY.md)
 
 Every morning the Daily Authentic selects the five stories that the most outlets, across the political spectrum, chose to cover. For each one it reads a single article line by line, checks its key claims against independent sources, and sets it beside other outlets' versions of the same event. Each article is analyzed once, the result is stored, and every reader sees the same analysis.
 
@@ -71,6 +71,7 @@ netlify/
     analysis.mjs         /api/analysis/* (stored analyses only)
     feed.mjs             /feed.xml
     submissions.mjs      /api/subscribe, /api/report
+    hit.mjs              /api/hit (reader counts)
 src/
   pages/        DailyBriefingPage, MethodPage
   components/   reader view, analysis panel, comparison, story so far, subscribe
@@ -116,6 +117,10 @@ Email signups (`/api/subscribe`) and error reports (`/api/report`) are validated
 npm run export:subscribers > subscribers.csv
 npm run export:reports > reports.csv
 ```
+
+### Reader counts
+
+Visits are counted without cookies or identifiers (see the methodology page). `npm run stats` prints daily readers, returning readers, page views, and the most-read stories; `npm run stats -- 60` covers 60 days.
 
 The `authentic-reader-backend/` directory is the previous server-based version and is not deployed.
 
