@@ -1,6 +1,6 @@
 import { API_CONFIG } from '../config/api.config';
 
-type View = 'home' | 'story' | 'method' | 'archive';
+type View = 'home' | 'story' | 'opinion' | 'method' | 'archive';
 
 const LAST_VISIT_KEY = 'daily-authentic:last-visit';
 let visitReported = false;

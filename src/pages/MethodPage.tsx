@@ -123,7 +123,7 @@ const MethodPage: React.FC = () => {
             conflict, the economy, public health, science, courts, and major disasters. Sports, celebrity, and lifestyle
             stories are left out unless they dominate the day. At most one story may have fewer than three outlets.</dd></div>
           <div><dt>Continuity</dt><dd>A story that continues one covered in the past 30 days keeps its name and adds to its
-            running record (see section 5).</dd></div>
+            running record (see section 6).</dd></div>
           <div><dt>Article</dt><dd>For each story, one article is analyzed in full: from the most neutral-rated outlet in the
             group that published at least 1,500 characters and 250 words of text. Roundups and live blogs are skipped.</dd></div>
           <div><dt>Comparison</dt><dd>Up to four other outlets from the same group, spread across the spectrum before any
@@ -183,8 +183,31 @@ const MethodPage: React.FC = () => {
         </dl>
       </section>
 
+      <section className="method-section" id="opinion">
+        <h2>[4] Opinion, weighed</h2>
+        <p>
+          Each day one opinion column from each side of the spectrum is read on the quality of its argument, not on its
+          conclusion. Both are held to the same rubric. Advocacy is the point of an opinion piece and is never counted
+          against it; what counts is how well the case is made.
+        </p>
+        <dl className="method-params">
+          <div><dt>Sources</dt><dd>From the left: The Guardian Opinion, The Nation, The New Republic. From the right: Fox News
+            Opinion, New York Post Opinion, Washington Examiner Opinion, The Federalist.</dd></div>
+          <div><dt>Selection</dt><dd>Columns from the previous 36 hours with at least 1,500 characters and 250 words, preferring
+            the one that shares the most distinctive terms with the day&apos;s stories. It is linked to a story only when they
+            share at least three.</dd></div>
+          <div><dt>Score</dt><dd>Evidence, logic, fairness to opponents, and clarity, each 0 to 100, on the same scale as
+            the news analysis.</dd></div>
+          <div><dt>Credit</dt><dd>One to three specific strengths, each tied to an exact passage.</dd></div>
+          <div><dt>Weaknesses</dt><dd>Only techniques that genuinely weaken the argument, each with a fairer way to make the
+            same point. None is a valid result.</dd></div>
+          <div><dt>Reply</dt><dd>The strongest counterargument the column does not answer, stated fairly.</dd></div>
+          <div><dt>Facts</dt><dd>Up to three factual claims the argument relies on, checked like the news stories.</dd></div>
+        </dl>
+      </section>
+
       <section className="method-section" id="bias">
-        <h2>[4] What the bias label means</h2>
+        <h2>[5] What the bias label means</h2>
         <p>
           The left-to-right meter describes the article in front of you, not the outlet: its word choices, which facts it
           leads with, whose perspectives it includes, and what it leaves out. The confidence number is how strong that
@@ -197,7 +220,7 @@ const MethodPage: React.FC = () => {
       </section>
 
       <section className="method-section">
-        <h2>[5] The comparison and the story so far</h2>
+        <h2>[6] The comparison and the story so far</h2>
         <p>
           The comparison sets the analyzed article beside other outlets&apos; coverage of the same event and notes common facts,
           disputed facts, and where the same thing is described in different words. Articles that turn out to be about a
@@ -211,7 +234,7 @@ const MethodPage: React.FC = () => {
       </section>
 
       <section className="method-section">
-        <h2>[6] Limits</h2>
+        <h2>[7] Limits</h2>
         <ul>
           <li>Automated reading can misjudge tone, miss context, or weigh things differently than you would. Treat the analysis
             as a reading aid, not a verdict.</li>
@@ -224,7 +247,7 @@ const MethodPage: React.FC = () => {
       </section>
 
       <section className="method-section" id="privacy">
-        <h2>[7] Privacy</h2>
+        <h2>[8] Privacy</h2>
         <p>
           We count visits without cookies or identifiers. Your browser keeps one thing on your device, the date of your
           last visit, so we can tell new readers from returning ones. What reaches us is only which page was viewed and
@@ -234,7 +257,7 @@ const MethodPage: React.FC = () => {
       </section>
 
       <section className="method-section" id="report">
-        <h2>[8] Report an error</h2>
+        <h2>[9] Report an error</h2>
         <p>If something on the site is wrong, tell us. Corrections are made openly.</p>
         <CorrectionsForm />
       </section>

@@ -5,6 +5,7 @@ import DeepAnalysisPanel from '../components/DeepAnalysisPanel';
 import SourceComparisonView from '../components/SourceComparisonView';
 import StorySoFar from '../components/StorySoFar';
 import SubscribeBox from '../components/SubscribeBox';
+import OpinionView from '../components/OpinionView';
 import { API_CONFIG } from '../config/api.config';
 import { recordView } from '../lib/stats';
 import { BriefingStory, DailyBriefing, FallacyData } from '../types/briefing';
@@ -67,6 +68,8 @@ const DailyBriefingPage: React.FC = () => {
   const requestedDate = searchParams.get('date');
   const selectedKey = searchParams.get('story');
   const showArchive = searchParams.get('view') === 'archive';
+  const opinionParam = searchParams.get('opinion');
+  const selectedSide = opinionParam === 'left' || opinionParam === 'right' ? opinionParam : null;
 
   const [briefing, setBriefing] = useState<DailyBriefing | null>(null);
   const [loading, setLoading] = useState(true);
@@ -107,6 +110,11 @@ const DailyBriefingPage: React.FC = () => {
   }, [showArchive, archiveDates]);
 
   const story = briefing && selectedKey ? briefing.topics[selectedKey] : null;
+  const opinion = briefing && selectedSide ? briefing.opinions?.[selectedSide] ?? null : null;
+
+  useEffect(() => {
+    if (opinion) window.scrollTo(0, 0);
+  }, [opinion]);
 
   useEffect(() => {
     setDeepAnalysis(null);
@@ -137,13 +145,14 @@ const DailyBriefingPage: React.FC = () => {
   const lastRecordedView = useRef<string | null>(null);
   useEffect(() => {
     if (loading) return;
-    const view = showArchive || briefing?.isArchive ? 'archive' : story && selectedKey ? 'story' : briefing ? 'home' : null;
+    const view = showArchive || briefing?.isArchive ? 'archive' : opinion && selectedSide ? 'opinion' : story && selectedKey ? 'story' : briefing ? 'home' : null;
     if (!view) return;
-    const signature = `${view}:${selectedKey || ''}:${requestedDate || ''}`;
+    const detail = view === 'story' ? selectedKey : view === 'opinion' ? selectedSide : null;
+    const signature = `${view}:${detail || ''}:${requestedDate || ''}`;
     if (lastRecordedView.current === signature) return;
     lastRecordedView.current = signature;
-    recordView(view, view === 'story' ? selectedKey || undefined : undefined);
-  }, [loading, showArchive, briefing, story, selectedKey, requestedDate]);
+    recordView(view, detail || undefined);
+  }, [loading, showArchive, briefing, story, opinion, selectedKey, selectedSide, requestedDate]);
 
   const navigate = (params: Record<string, string | null>) => {
     const next = new URLSearchParams(searchParams);
@@ -218,7 +227,21 @@ const DailyBriefingPage: React.FC = () => {
     );
   }
 
-  if (selectedKey && !story) {
+  if (selectedSide && opinion) {
+    const related = opinion.relatedStory ? briefing.topics[opinion.relatedStory] : null;
+    return (
+      <OpinionView
+        opinion={opinion}
+        relatedLabel={related?.topic}
+        onBack={() => navigate({ opinion: null })}
+        onOpenStory={related ? () => navigate({ opinion: null, story: opinion.relatedStory }) : undefined}
+        onCopyLink={copyLink}
+        copied={copied}
+      />
+    );
+  }
+
+  if ((selectedKey && !story) || (selectedSide && !opinion)) {
     return (
       <div className="daily-briefing-page dashboard-mode">
         <div className="dashboard-header">
@@ -357,6 +380,33 @@ const DailyBriefingPage: React.FC = () => {
           );
         })}
       </div>
+
+      {briefing.opinions && (briefing.opinions.left || briefing.opinions.right) && (
+        <section className="opinion-section" aria-labelledby="opinion-title">
+          <h2 id="opinion-title" className="opinion-section-title">[OPINION, WEIGHED]</h2>
+          <p className="opinion-section-dek">
+            One column from each side of the spectrum, judged on how well it makes its case, not on its conclusion.
+          </p>
+          <div className="opinion-grid">
+            {(['left', 'right'] as const).map((side) => {
+              const item = briefing.opinions?.[side];
+              if (!item) return null;
+              const related = item.relatedStory ? briefing.topics[item.relatedStory] : null;
+              return (
+                <button key={side} className="topic-card" onClick={() => navigate({ opinion: side })} aria-label={`Read: ${item.article.title}`}>
+                  <h3 className="card-topic">[FROM THE {side.toUpperCase()}] {item.article.source}</h3>
+                  <p className="card-headline">{item.article.title}</p>
+                  <p className="card-dek">{item.thesis}</p>
+                  <div className="card-meta">
+                    <span className="card-flag">ARGUMENT {item.argumentScore.overall}/100</span>
+                    {related && <span className="card-source">On: {related.topic}</span>}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       <div className="dashboard-actions">
         <button className="archive-button" onClick={() => navigate({ view: 'archive' })}>[ARCHIVE] BROWSE PAST BRIEFINGS</button>

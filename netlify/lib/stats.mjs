@@ -4,7 +4,7 @@ import { getStore } from '@netlify/blobs';
 // browser reports whether this is its first view today and whether it has
 // visited before, based on a last-visit date it keeps locally.
 
-export const VIEWS = ['home', 'story', 'method', 'archive'];
+export const VIEWS = ['home', 'story', 'opinion', 'method', 'archive'];
 const STORY_KEY = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const BOT = /bot|crawl|spider|slurp|preview|facebookexternalhit|embedly|headless|lighthouse|pingdom|curl|wget|python-requests/i;
 const MAX_WRITE_ATTEMPTS = 8;
@@ -20,8 +20,10 @@ export function isBot(userAgent) {
 /** Returns a clean hit, or null when the request is malformed. */
 export function parseHit(body) {
   if (!body || !VIEWS.includes(body.view)) return null;
-  const story = body.view === 'story' && STORY_KEY.test(String(body.story || '')) ? body.story : null;
-  if (body.view === 'story' && !story) return null;
+  let story = null;
+  if (body.view === 'story') story = STORY_KEY.test(String(body.story || '')) ? body.story : null;
+  if (body.view === 'opinion') story = body.story === 'left' || body.story === 'right' ? `opinion-${body.story}` : null;
+  if ((body.view === 'story' || body.view === 'opinion') && !story) return null;
   return { view: body.view, story, firstToday: body.firstToday === true, returning: body.returning === true && body.firstToday === true };
 }
 

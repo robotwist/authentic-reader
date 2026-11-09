@@ -183,7 +183,12 @@ function groundQuote(quote, article) {
 }
 
 /** Replaces every quote in the analysis with article text, dropping items that cannot be grounded. */
-export function groundAnalysisQuotes(deep, content) {
+/**
+ * Returns a function that keeps only list items whose quote can be found in
+ * the content (rewriting each quote to the content's exact wording), and the
+ * running counts of exact, repaired, and dropped quotes.
+ */
+export function createQuoteGrounder(content) {
   const { normalized, map } = normalizeWithMap(content);
   const article = {
     text: content,
@@ -192,7 +197,6 @@ export function groundAnalysisQuotes(deep, content) {
     sentences: content.split(/(?<=[.!?…]["”’]?)\s+|\n+/).filter((s) => s.trim().length > 20)
   };
   const stats = { total: 0, exact: 0, repaired: 0, dropped: 0 };
-
   const groundList = (items, quoteField = 'quote') => (items || []).filter((item) => {
     stats.total++;
     const grounded = groundQuote(item[quoteField], article);
@@ -204,6 +208,24 @@ export function groundAnalysisQuotes(deep, content) {
     item[quoteField] = grounded.text;
     return true;
   });
+  return { groundList, stats };
+}
+
+/** Grounded, de-duplicated claims, each starting as not yet checked. */
+export function toClaimVerification(claims) {
+  const seen = new Set();
+  return (claims || []).filter((c) => !seen.has(c.quote) && seen.add(c.quote)).map((c) => ({
+    claim: c.claim,
+    quote: c.quote,
+    why_it_matters: c.why_it_matters,
+    verification_status: 'unverified',
+    checked: false,
+    notes: 'Not yet checked against outside sources.'
+  }));
+}
+
+export function groundAnalysisQuotes(deep, content) {
+  const { groundList, stats } = createQuoteGrounder(content);
 
   if (deep.rhetorical_analysis) {
     deep.rhetorical_analysis.manipulation_techniques = groundList(deep.rhetorical_analysis.manipulation_techniques);
@@ -238,14 +260,7 @@ export async function analyzeArticleDeep(article, ai, archiveContext = '') {
   if (json.logic_score && Number.isFinite(json.logic_score.overall)) {
     json.logic_score.grade = letterGrade(json.logic_score.overall);
   }
-  json.claim_verification = (json.claims_to_check || []).map((c) => ({
-    claim: c.claim,
-    quote: c.quote,
-    why_it_matters: c.why_it_matters,
-    verification_status: 'unverified',
-    checked: false,
-    notes: 'Not yet checked against outside sources.'
-  }));
+  json.claim_verification = toClaimVerification(json.claims_to_check);
   json.metadata = { analyzed_at: new Date().toISOString(), model, analysis_version: ANALYSIS_VERSION, quotes: quoteStats, used_archive: Boolean(archiveContext) };
   return json;
 }

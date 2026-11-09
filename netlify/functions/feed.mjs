@@ -23,12 +23,17 @@ function itemFor(siteUrl, day) {
 ${summary ? `<p>${escapeXml(summary)}</p>` : ''}`;
   }).join('\n');
 
+  const opinions = ['left', 'right'].map((side) => day.opinions?.[side]).filter(Boolean).map((o) => {
+    const link = `${siteUrl}/?date=${date}&opinion=${o.side}`;
+    return `<p><strong>[FROM THE ${o.side.toUpperCase()}]</strong> <a href="${escapeXml(link)}">${escapeXml(o.article.title)}</a><br/><small>${escapeXml(o.article.source)} · argument ${o.argumentScore.overall}/100</small></p>`;
+  }).join('\n');
+
   return `<item>
   <title>${escapeXml(`The Daily Authentic: ${formatDate(date)}`)}</title>
   <link>${escapeXml(`${siteUrl}/?date=${date}`)}</link>
   <guid isPermaLink="false">daily-authentic-${date}</guid>
   <pubDate>${new Date(day.generatedAt).toUTCString()}</pubDate>
-  <description>${cdata(`<p>Today's most-covered stories, read closely for logic, rhetoric, and framing.</p>\n${stories}\n<p><a href="${siteUrl}/method">How this works</a></p>`)}</description>
+  <description>${cdata(`<p>Today's most-covered stories, read closely for logic, rhetoric, and framing.</p>\n${stories}\n${opinions ? `<h3>[OPINION, WEIGHED]</h3>\n${opinions}` : ''}\n<p><a href="${siteUrl}/method">How this works</a></p>`)}</description>
 </item>`;
 }
 

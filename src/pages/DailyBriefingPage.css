@@ -1951,11 +1951,11 @@
   min-height: 0;
 }
 
-.dashboard-mode .topic-card:first-child {
+.dashboard-mode .topic-grid > .topic-card:first-child {
   grid-column: 1 / -1;
 }
 
-.dashboard-mode .topic-card:first-child .card-headline {
+.dashboard-mode .topic-grid > .topic-card:first-child .card-headline {
   font-size: 2rem;
   -webkit-line-clamp: unset;
 }
@@ -2041,7 +2041,7 @@
     gap: 1rem;
   }
 
-  .dashboard-mode .topic-card:first-child .card-headline {
+  .dashboard-mode .topic-grid > .topic-card:first-child .card-headline {
     font-size: 1.5rem;
   }
 

@@ -18,7 +18,7 @@ videos via was watch way we were what when where which while who whom why will w
 week weeks month months monday tuesday wednesday thursday friday saturday sunday first three four five
 `.split(/\s+/).filter(Boolean));
 
-function tokenize(text) {
+export function tokenize(text) {
   return String(text || '')
     .toLowerCase()
     .replace(/[’']/g, "'")

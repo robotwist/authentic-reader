@@ -1,0 +1,138 @@
+.opinion-related {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  margin: 1rem 0 0;
+}
+
+.opinion-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--text-ink, #1A1A1A);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.opinion-block {
+  padding: 1.75rem 2rem;
+  border-bottom: 1px solid var(--text-ink, #1A1A1A);
+}
+
+.opinion-heading {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0 0 1rem;
+}
+
+.opinion-thesis {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0 0 1.5rem;
+}
+
+.opinion-score {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.opinion-score-parts {
+  min-width: 0;
+}
+
+.opinion-verdict,
+.opinion-point,
+.opinion-fair {
+  font-family: var(--font-body, 'Georgia', serif);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 0.75rem;
+}
+
+.opinion-item {
+  padding: 1rem 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.opinion-item:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.opinion-type,
+.opinion-fair span {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.5rem;
+}
+
+.opinion-quote {
+  margin: 0 0 0.75rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--text-ink, #1A1A1A);
+  font-family: var(--font-body, 'Georgia', serif);
+  font-style: italic;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+/* Front page section */
+.opinion-section {
+  max-width: 1100px;
+  margin: 2rem auto 0;
+  padding: 2rem;
+  border: 2px solid var(--text-ink, #1A1A1A);
+  background: var(--bg-paper, #F9F7F1);
+}
+
+.opinion-section-title {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.5rem;
+}
+
+.opinion-section-dek {
+  font-family: var(--font-body, 'Georgia', serif);
+  font-size: 1rem;
+  line-height: 1.55;
+  margin: 0 0 1.5rem;
+}
+
+.opinion-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .opinion-block {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .opinion-score {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .opinion-section {
+    margin: 1.5rem 1rem 0;
+    padding: 1.25rem;
+  }
+
+  .opinion-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

@@ -21,9 +21,9 @@ if (rows.length === 0) {
 }
 
 const pad = (value, width) => String(value).padStart(width);
-console.log(`${'date'.padEnd(10)} ${pad('readers', 8)} ${pad('returning', 9)} ${pad('home', 6)} ${pad('stories', 8)} ${pad('method', 7)} ${pad('archive', 8)}`);
+console.log(`${'date'.padEnd(10)} ${pad('readers', 8)} ${pad('returning', 9)} ${pad('home', 6)} ${pad('stories', 8)} ${pad('opinion', 8)} ${pad('method', 7)} ${pad('archive', 8)}`);
 for (const d of rows) {
-  console.log(`${d.date} ${pad(d.visitors, 8)} ${pad(d.returning, 9)} ${pad(d.views.home, 6)} ${pad(d.views.story, 8)} ${pad(d.views.method, 7)} ${pad(d.views.archive, 8)}`);
+  console.log(`${d.date} ${pad(d.visitors, 8)} ${pad(d.returning, 9)} ${pad(d.views.home, 6)} ${pad(d.views.story, 8)} ${pad(d.views.opinion || 0, 8)} ${pad(d.views.method, 7)} ${pad(d.views.archive, 8)}`);
 }
 
 const totals = rows.reduce((t, d) => ({ visitors: t.visitors + d.visitors, returning: t.returning + d.returning }), { visitors: 0, returning: 0 });

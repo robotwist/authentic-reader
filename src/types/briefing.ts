@@ -42,6 +42,29 @@ export interface BriefingStory {
   dayCount?: number;
 }
 
+export interface CheckedClaim {
+  claim: string;
+  quote?: string;
+  verification_status: 'verified' | 'unverified' | 'disputed' | 'false' | 'needs_context';
+  checked?: boolean;
+  notes: string;
+  sources?: Array<{ title: string; url: string }>;
+}
+
+/** An opinion column weighed on the quality of its argument (see toBriefingOpinion in netlify/lib/opinion.mjs). */
+export interface BriefingOpinion {
+  side: 'left' | 'right';
+  relatedStory: string | null;
+  article: BriefingArticle;
+  thesis: string;
+  argumentScore: { overall: number; evidence: number; logic: number; fairness: number; clarity: number; explanation: string };
+  strengths: Array<{ point: string; quote: string }>;
+  weaknesses: Array<{ type: string; quote: string; explanation: string; fair_version?: string; severity?: 'low' | 'medium' | 'high' }>;
+  strongestCounterargument: string;
+  claims: CheckedClaim[];
+  verdict: string;
+}
+
 export interface DailyBriefing {
   generatedAt: string;
   version: string;
@@ -50,4 +73,5 @@ export interface DailyBriefing {
   selection?: { headlineCount: number; clusterCount: number; outletCount?: number; selectedAt: string } | null;
   order?: string[];
   topics: Record<string, BriefingStory>;
+  opinions?: Partial<Record<'left' | 'right', BriefingOpinion>>;
 }

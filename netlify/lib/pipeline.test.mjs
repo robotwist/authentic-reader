@@ -140,3 +140,19 @@ test('contradictions need a source about the same measure and period', async () 
   assert.match(contradictionProblem({ same_measure_and_period: true, source_period: '2025-01' }, [], article), /earlier period/);
   assert.equal(contradictionProblem({ same_measure_and_period: true, source_period: '2026-10' }, recent, article), null);
 });
+
+test('opinion columns are matched to the day story they discuss', async () => {
+  const { relatedStory, storyVocabulary } = await import('./opinion.mjs');
+  const vocabulary = storyVocabulary([
+    { key: 'egypt-train-collision', label: 'Egypt Train Crash', article: { title: 'Seven dead after trains collide in Egypt' }, related: [] },
+    { key: 'trump-immigration-policy', label: 'Trump Immigration Stance', article: { title: 'Trump says deportation policy might be too tough' }, related: [{ title: 'Trump backs away from hardline immigration policy' }] }
+  ]);
+  assert.deepEqual(relatedStory({ title: 'Trump’s immigration retreat is a cynical deportation dodge', description: '' }, vocabulary), { key: 'trump-immigration-policy', overlap: 3 });
+  assert.equal(relatedStory({ title: 'The case for four-day school weeks', description: '' }, vocabulary).overlap, 0);
+});
+
+test('opinion views are counted by side', async () => {
+  const { parseHit } = await import('./stats.mjs');
+  assert.deepEqual(parseHit({ view: 'opinion', story: 'left' }), { view: 'opinion', story: 'opinion-left', firstToday: false, returning: false });
+  assert.equal(parseHit({ view: 'opinion', story: 'center' }), null);
+});

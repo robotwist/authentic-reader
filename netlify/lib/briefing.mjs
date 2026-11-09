@@ -3,6 +3,7 @@ import { articleKey, extractArticle, looksLikeFullArticle, utcDate } from './sou
 import { ANALYSIS_VERSION, analyzeArticleDeep, compareCoverage, factCheckClaims, toBriefingAnalysis } from './analysis.mjs';
 import { addArticleToDossier, coverageDays, dossierContext, loadDossier, synthesizeDossier, updateStoryIndex } from './dossier.mjs';
 import { selectStories } from './stories.mjs';
+import { analyzeOpinion, OPINION_VERSION, pickOpinion, toBriefingOpinion } from './opinion.mjs';
 
 export { articleKey, utcDate } from './sources.mjs';
 export { toLegacyAnalysis } from './analysis.mjs';
@@ -13,6 +14,7 @@ const RECENT_DAYS_TO_SKIP = 3;
 const MIN_FALLBACK_ARTICLE_CHARS = 700;
 const MAX_PRIMARY_ATTEMPTS = 6;
 const MAX_RELATED = 4;
+const OPINION_SIDES = ['left', 'right'];
 
 // The analyzed article comes from the most neutral outlet that has a full text;
 // the comparison then shows how the rest of the spectrum covered it.
@@ -34,8 +36,8 @@ async function recentlyUsedUrls(store, today) {
   const urls = new Set();
   for (const key of recentKeys) {
     const day = await store.get(key, { type: 'json' });
-    for (const topic of Object.values(day?.topics || {})) {
-      if (topic.article?.url) urls.add(topic.article.url);
+    for (const item of [...Object.values(day?.topics || {}), ...Object.values(day?.opinions || {})]) {
+      if (item?.article?.url) urls.add(item.article.url);
     }
   }
   return urls;
@@ -190,6 +192,29 @@ async function processDay(run, date, { createIfMissing }) {
   }
   const save = (key) => store.setJSON(articleKey(draft.stories[key].article.title), records[key]);
 
+  // Opinion columns are chosen after the stories so they can be matched to them.
+  if (createIfMissing && !draft.opinions && hasTime()) {
+    const usedUrls = await recentlyUsedUrls(store, date);
+    const stories = draft.order.map((key) => ({ key, ...draft.stories[key] }));
+    draft.opinions = {};
+    for (const side of OPINION_SIDES) {
+      try {
+        draft.opinions[side] = await pickOpinion(side, stories, usedUrls);
+      } catch (error) {
+        console.warn(`[briefing] Opinion selection failed for ${side}: ${error.message}`);
+        draft.opinions[side] = null;
+      }
+    }
+    await store.setJSON(`draft/${date}`, draft);
+  }
+  const opinionRecords = {};
+  for (const [side, pick] of Object.entries(draft.opinions || {})) {
+    if (!pick) continue;
+    report[`opinion-${side}`] = { source: pick.article.source };
+    opinionRecords[side] = (await store.get(articleKey(pick.article.title), { type: 'json' })) || { date, title: pick.article.title, url: pick.article.url, kind: 'opinion' };
+  }
+  const saveOpinion = (side) => store.setJSON(articleKey(draft.opinions[side].article.title), opinionRecords[side]);
+
   // Pass 1: analysis and comparison for every story, so the core briefing is
   // complete before quota is spent on fact-checks.
   for (const key of draft.order) {
@@ -220,6 +245,25 @@ async function processDay(run, date, { createIfMissing }) {
     report[key].relatedSources = record.comparison?.found ? record.comparison.related_sources.length : 0;
   }
 
+  // Pass 1b: opinion columns, after the stories.
+  for (const [side, record] of Object.entries(opinionRecords)) {
+    const entry = report[`opinion-${side}`];
+    if (record.opinion?.metadata?.opinion_version !== OPINION_VERSION) {
+      if (!ai.canUse(ai.analysisModels) || !hasTime()) {
+        entry.pending = 'analysis';
+        continue;
+      }
+      try {
+        record.opinion = await analyzeOpinion(draft.opinions[side].article, ai);
+        await saveOpinion(side);
+      } catch (error) {
+        entry.pending = error instanceof DailyLimitError ? 'analysis (daily limit)' : undefined;
+        if (!(error instanceof DailyLimitError)) entry.error = error.message;
+      }
+    }
+    entry.score = record.opinion?.argument_score?.overall;
+  }
+
   // Pass 2: web-searched fact-checks.
   for (const key of draft.order) {
     const record = records[key];
@@ -234,6 +278,20 @@ async function processDay(run, date, { createIfMissing }) {
     }
     report[key].factChecked = Boolean(record.deep?.metadata?.fact_checked_at);
     if (needsFactCheck && !report[key].factChecked) report[key].pending = report[key].pending || 'fact-check';
+  }
+
+  // Pass 2b: fact-checks for opinion columns, after the stories'.
+  for (const [side, record] of Object.entries(opinionRecords)) {
+    const needsFactCheck = record.opinion && !record.opinion.metadata.fact_checked_at && record.opinion.claim_verification?.length > 0;
+    if (needsFactCheck && ai.canUse(ai.searchModels) && hasTime()) {
+      try {
+        await factCheckClaims(draft.opinions[side].article, record.opinion, ai);
+        await saveOpinion(side);
+      } catch (error) {
+        console.warn(`[briefing] Fact-check failed for opinion-${side}: ${error.message}`);
+      }
+    }
+    report[`opinion-${side}`].factChecked = Boolean(record.opinion?.metadata?.fact_checked_at);
   }
 
   // Pass 3: fold the day into each story's running record.
@@ -280,6 +338,11 @@ async function processDay(run, date, { createIfMissing }) {
     };
   }
 
+  const opinions = {};
+  for (const [side, record] of Object.entries(opinionRecords)) {
+    if (record.opinion) opinions[side] = toBriefingOpinion(draft.opinions[side], record.opinion);
+  }
+
   const shouldPublish = order.length >= MIN_STORIES_TO_PUBLISH || (published && order.length > 0);
   if (shouldPublish) {
     await store.setJSON(`day/${date}`, {
@@ -288,7 +351,8 @@ async function processDay(run, date, { createIfMissing }) {
       briefingDate: date,
       selection: draft.selection || null,
       order,
-      topics
+      topics,
+      opinions
     });
   }
 
