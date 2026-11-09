@@ -6,6 +6,7 @@ import SourceComparisonView from '../components/SourceComparisonView';
 import StorySoFar from '../components/StorySoFar';
 import SubscribeBox from '../components/SubscribeBox';
 import OpinionView from '../components/OpinionView';
+import LessonView from '../components/LessonView';
 import { API_CONFIG } from '../config/api.config';
 import { recordView } from '../lib/stats';
 import { BriefingStory, DailyBriefing, FallacyData } from '../types/briefing';
@@ -68,6 +69,7 @@ const DailyBriefingPage: React.FC = () => {
   const requestedDate = searchParams.get('date');
   const selectedKey = searchParams.get('story');
   const showArchive = searchParams.get('view') === 'archive';
+  const showLesson = searchParams.get('lesson') === '1';
   const opinionParam = searchParams.get('opinion');
   const selectedSide = opinionParam === 'left' || opinionParam === 'right' ? opinionParam : null;
 
@@ -254,6 +256,17 @@ const DailyBriefingPage: React.FC = () => {
     );
   }
 
+  if (story && showLesson) {
+    return (
+      <LessonView
+        story={story}
+        date={briefing.briefingDate || briefing.generatedAt.slice(0, 10)}
+        deep={isLoadingDeep ? null : deepAnalysis}
+        onBack={() => navigate({ lesson: null })}
+      />
+    );
+  }
+
   if (story) {
     const lean = deepAnalysis?.bias_analysis?.political_lean || story.analysis?.biasAnalysis?.direction;
     const leanConfidence = deepAnalysis?.bias_analysis?.confidence ?? (story.analysis?.biasAnalysis ? Math.round(story.analysis.biasAnalysis.confidence * 100) : null);
@@ -264,6 +277,7 @@ const DailyBriefingPage: React.FC = () => {
         <div className="reader-nav">
           <button className="back-button" onClick={() => navigate({ story: null })}>← All stories</button>
           <button className="back-button" onClick={copyLink}>{copied ? 'Link copied' : 'Copy link'}</button>
+          <button className="back-button" onClick={() => navigate({ lesson: '1' })}>Classroom lesson</button>
           {briefing.isArchive && <span className="archive-badge">Archive</span>}
         </div>
 

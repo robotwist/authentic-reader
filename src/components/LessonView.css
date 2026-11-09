@@ -1,0 +1,195 @@
+.lesson-page {
+  max-width: 780px;
+  margin: 2rem auto 3rem;
+  padding: 2.5rem;
+  background: var(--bg-white, #FFFFFF);
+  border: 2px solid var(--text-ink, #1A1A1A);
+  color: var(--text-ink, #1A1A1A);
+  font-family: var(--font-body, 'Georgia', serif);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.lesson-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.lesson-header {
+  border-bottom: 3px solid var(--text-ink, #1A1A1A);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.lesson-kicker,
+.lesson-section h2,
+.lesson-section h3,
+.lesson-table th,
+.lesson-footer {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  letter-spacing: 0.08em;
+}
+
+.lesson-kicker {
+  font-size: 0.625rem;
+  margin: 0 0 0.5rem;
+}
+
+.lesson-title {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 2rem;
+  line-height: 1.15;
+  margin: 0 0 0.75rem;
+}
+
+.lesson-article,
+.lesson-goal {
+  margin: 0 0 0.5rem;
+}
+
+.lesson-url {
+  font-size: 0.75rem;
+  color: var(--text-muted, #4A4A4A);
+  word-break: break-all;
+}
+
+.lesson-section {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.lesson-section h2 {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  margin: 0.5rem 0 0.75rem;
+  text-transform: uppercase;
+}
+
+.lesson-section h3 {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  margin: 1rem 0 0.5rem;
+  text-transform: uppercase;
+}
+
+.lesson-section p,
+.lesson-section ul,
+.lesson-section ol {
+  margin: 0 0 0.75rem;
+}
+
+.lesson-terms div {
+  margin-bottom: 0.375rem;
+}
+
+.lesson-terms dt {
+  display: inline;
+  font-weight: 700;
+}
+
+.lesson-terms dt::after {
+  content: ': ';
+}
+
+.lesson-terms dd {
+  display: inline;
+  margin: 0;
+}
+
+.lesson-tasks > li {
+  margin-bottom: 0.75rem;
+}
+
+.lesson-quotes {
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.lesson-quotes li {
+  margin-bottom: 0.375rem;
+}
+
+.lesson-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.lesson-table th,
+.lesson-table td {
+  border: 1px solid var(--text-ink, #1A1A1A);
+  padding: 0.375rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.lesson-table th {
+  font-size: 0.625rem;
+}
+
+.lesson-takeaway {
+  padding: 0.75rem;
+  border: 2px solid var(--text-ink, #1A1A1A);
+}
+
+.lesson-key {
+  border-bottom: none;
+}
+
+.lesson-key li {
+  margin-bottom: 0.5rem;
+}
+
+.lesson-footer {
+  font-size: 0.625rem;
+  color: var(--text-muted, #4A4A4A);
+  margin: 1.5rem 0 0;
+}
+
+.lesson-note {
+  font-style: italic;
+}
+
+@media (max-width: 640px) {
+  .lesson-page {
+    margin: 1rem;
+    padding: 1.25rem;
+  }
+
+  .lesson-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Print: the handout only, with the answer key on its own page. */
+@media print {
+  .simple-header,
+  .site-footer,
+  .no-print {
+    display: none !important;
+  }
+
+  body,
+  .app,
+  .main-content {
+    background: #FFFFFF !important;
+  }
+
+  .lesson-page {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-size: 11pt;
+  }
+
+  .lesson-key {
+    break-before: page;
+  }
+
+  .lesson-section,
+  .lesson-table tr {
+    break-inside: avoid;
+  }
+}
