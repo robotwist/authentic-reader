@@ -68,7 +68,7 @@ netlify/
   functions/
     briefing-cron.mjs, generate-briefing-background.mjs
     daily-briefing.mjs   /api/daily-briefing, /api/story/:key, archive, status
-    ai-analysis.mjs      /api/analysis/* (stored analyses only)
+    analysis.mjs         /api/analysis/* (stored analyses only)
     feed.mjs             /feed.xml
 src/
   pages/        DailyBriefingPage, MethodPage
