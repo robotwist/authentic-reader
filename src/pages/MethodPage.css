@@ -1,0 +1,166 @@
+.method-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 4rem;
+  color: var(--text-ink, #1A1A1A);
+}
+
+.method-header {
+  border-bottom: 3px solid var(--text-ink, #1A1A1A);
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+}
+
+.method-kicker,
+.method-back,
+.method-section h2,
+.method-statuses dt,
+.method-table th,
+.corrections-form span,
+.corrections-form button {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  letter-spacing: 0.1em;
+}
+
+.method-kicker {
+  font-size: 0.6875rem;
+  margin: 0 0 0.75rem;
+}
+
+.method-header h1 {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 2.75rem;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+}
+
+.method-lede,
+.method-section p,
+.method-section li,
+.method-statuses dd {
+  font-family: var(--font-body, 'Georgia', serif);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.method-lede {
+  margin: 0 0 1.25rem;
+}
+
+.method-back {
+  font-size: 0.6875rem;
+  color: var(--text-ink, #1A1A1A);
+}
+
+.method-section {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--text-ink, #1A1A1A);
+}
+
+.method-section h2 {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+.method-section ul {
+  padding-left: 1.25rem;
+}
+
+.method-section li {
+  margin-bottom: 0.75rem;
+}
+
+.method-note {
+  font-size: 0.875rem !important;
+  font-style: italic;
+  color: var(--text-muted, #4A4A4A);
+}
+
+.method-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-family: var(--font-body, 'Georgia', serif);
+  font-size: 0.9375rem;
+}
+
+.method-table th,
+.method-table td {
+  text-align: left;
+  padding: 0.375rem 0.5rem;
+  border-bottom: 1px solid var(--text-ink, #1A1A1A);
+}
+
+.method-table th {
+  font-size: 0.625rem;
+  border-bottom-width: 2px;
+}
+
+.method-statuses {
+  margin: 1rem 0 0;
+}
+
+.method-statuses div {
+  margin-bottom: 0.75rem;
+}
+
+.method-statuses dt {
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.method-statuses dd {
+  margin: 0.25rem 0 0;
+}
+
+.corrections-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 520px;
+}
+
+.corrections-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.corrections-form span {
+  font-size: 0.625rem;
+  font-weight: 700;
+}
+
+.corrections-form input,
+.corrections-form textarea {
+  padding: 0.625rem;
+  font-family: var(--font-body, 'Georgia', serif);
+  font-size: 1rem;
+  border: 2px solid var(--text-ink, #1A1A1A);
+  border-radius: 0;
+  background: var(--bg-white, #FFFFFF);
+  color: var(--text-ink, #1A1A1A);
+}
+
+.corrections-form button {
+  align-self: flex-start;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 2px solid var(--text-ink, #1A1A1A);
+  border-radius: 0;
+  background: var(--text-ink, #1A1A1A);
+  color: var(--bg-paper, #F9F7F1);
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .method-page {
+    padding: 2rem 1.25rem 3rem;
+  }
+
+  .method-header h1 {
+    font-size: 2rem;
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import DOMPurify from 'dompurify';
-import { FallacyData } from '../utils/llmParser';
+import { FallacyData } from '../types/briefing';
 import { Analysis } from '../types/Article';
 import './ReaderView.css';
 
@@ -20,7 +20,7 @@ const ReaderView: React.FC<ReaderViewProps> = ({
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   // Convert Analysis fallacies to FallacyData format for display
-  const analysisFallacies = useMemo(() => {
+  const analysisFallacies = useMemo((): FallacyData[] => {
     if (!analysis?.fallacies) return [];
     return analysis.fallacies.map((fallacy, index) => ({
       id: `analysis-fallacy-${index}`,

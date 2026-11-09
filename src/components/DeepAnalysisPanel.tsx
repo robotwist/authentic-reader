@@ -127,6 +127,7 @@ interface DeepAnalysis {
   context_explainer?: ContextExplainer;
   missing_context?: MissingContext;
   bias_analysis?: BiasAnalysis;
+  metadata?: { model?: string; analyzed_at?: string };
   stakeholder_analysis?: StakeholderAnalysis;
   reader_guidance?: ReaderGuidance;
   overall_assessment?: OverallAssessment;
@@ -230,98 +231,9 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
   return (
     <div className="deep-analysis-panel">
       <header className="panel-header">
-        <h2 className="panel-title">[DEEP ANALYSIS]</h2>
-        <span className="panel-version">V4.0</span>
+        <h2 className="panel-title">[THE CLOSE READ]</h2>
+        {analysis.metadata?.model && <span className="panel-version">{analysis.metadata.model.split('/').pop()?.toUpperCase()}</span>}
       </header>
-
-      {/* LOGIC SCORE */}
-      {analysis.logic_score && (
-        <section className="analysis-section">
-          <header 
-            className="section-header"
-            onClick={() => toggleSection('logic-score')}
-          >
-            <h3 className="section-title">[LOGIC SCORE]</h3>
-            <span className="section-toggle">
-              {expandedSections.has('logic-score') ? '[-]' : '[+]'}
-            </span>
-          </header>
-          
-          {expandedSections.has('logic-score') && (
-            <div className="section-content">
-              <div className="score-hero">
-                <div className="score-display">
-                  <span className="score-value">{analysis.logic_score.overall}</span>
-                  <span className="score-max">/100</span>
-                </div>
-                <div className="score-grade">
-                  <span className="grade-label">GRADE:</span>
-                  <span className="grade-value">{analysis.logic_score.grade}</span>
-                </div>
-              </div>
-              
-              <p className="score-explanation">{analysis.logic_score.explanation}</p>
-              
-              <div className="score-breakdown">
-                <h4 className="breakdown-title">[BREAKDOWN]</h4>
-                {Object.entries(analysis.logic_score.breakdown).map(([key, value]) => (
-                  <div key={key} className="breakdown-row">
-                    <span className="breakdown-label">
-                      {key.replace(/_/g, ' ').toUpperCase()}
-                    </span>
-                    <div className="breakdown-bar-track">
-                      <div 
-                        className="breakdown-bar-fill" 
-                        style={{ width: `${value}%` }}
-                      />
-                    </div>
-                    <span className="breakdown-value">{value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </section>
-      )}
-
-      {/* EXECUTIVE SUMMARY */}
-      {analysis.executive_summary && (
-        <section className="analysis-section">
-          <header 
-            className="section-header"
-            onClick={() => toggleSection('executive-summary')}
-          >
-            <h3 className="section-title">[SUMMARY]</h3>
-            <span className="section-toggle">
-              {expandedSections.has('executive-summary') ? '[-]' : '[+]'}
-            </span>
-          </header>
-          
-          {expandedSections.has('executive-summary') && (
-            <div className="section-content">
-              <p className="summary-main">{analysis.executive_summary.one_sentence}</p>
-              
-              {analysis.executive_summary.key_claims && (
-                <div className="summary-block">
-                  <h4 className="block-title">[KEY CLAIMS]</h4>
-                  <ul className="claims-list">
-                    {analysis.executive_summary.key_claims.map((claim, i) => (
-                      <li key={i}>{claim}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              
-              {analysis.executive_summary.why_it_matters && (
-                <div className="summary-block">
-                  <h4 className="block-title">[SIGNIFICANCE]</h4>
-                  <p>{analysis.executive_summary.why_it_matters}</p>
-                </div>
-              )}
-            </div>
-          )}
-        </section>
-      )}
 
       {/* CONTEXT YOU NEED */}
       {analysis.context_explainer && (
@@ -378,55 +290,6 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
         </section>
       )}
 
-      {/* WHAT'S MISSING */}
-      {analysis.missing_context && (analysis.missing_context.critical_omissions?.length || analysis.missing_context.questions_unanswered?.length) ? (
-        <section className="analysis-section">
-          <header
-            className="section-header"
-            onClick={() => toggleSection('missing')}
-          >
-            <h3 className="section-title">[WHAT THE ARTICLE LEAVES OUT]</h3>
-            <span className="section-count">{analysis.missing_context.critical_omissions?.length || 0}</span>
-            <span className="section-toggle">
-              {expandedSections.has('missing') ? '[-]' : '[+]'}
-            </span>
-          </header>
-
-          {expandedSections.has('missing') && (
-            <div className="section-content">
-              {analysis.missing_context.critical_omissions && analysis.missing_context.critical_omissions.length > 0 && (
-                <div className="guidance-block">
-                  <h4 className="block-title">[MISSING CONTEXT]</h4>
-                  <ul>
-                    {analysis.missing_context.critical_omissions.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {analysis.missing_context.questions_unanswered && analysis.missing_context.questions_unanswered.length > 0 && (
-                <div className="guidance-block">
-                  <h4 className="block-title">[UNANSWERED QUESTIONS]</h4>
-                  <ul>
-                    {analysis.missing_context.questions_unanswered.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {analysis.missing_context.alternative_interpretations && (
-                <div className="stakeholder-block">
-                  <h4 className="block-title">[OTHER WAYS TO READ IT]</h4>
-                  <p>{analysis.missing_context.alternative_interpretations}</p>
-                </div>
-              )}
-            </div>
-          )}
-        </section>
-      ) : null}
-
       {/* FACT CHECK */}
       {analysis.claim_verification && analysis.claim_verification.length > 0 && (
         <section className="analysis-section">
@@ -474,6 +337,100 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
         </section>
       )}
 
+      {/* BIAS & FRAMING */}
+      {analysis.bias_analysis && (
+        <section className="analysis-section">
+          <header
+            className="section-header"
+            onClick={() => toggleSection('bias')}
+          >
+            <h3 className="section-title">[BIAS &amp; FRAMING]</h3>
+            <span className="section-score">{analysis.bias_analysis.political_lean.toUpperCase()}</span>
+            <span className="section-toggle">
+              {expandedSections.has('bias') ? '[-]' : '[+]'}
+            </span>
+          </header>
+
+          {expandedSections.has('bias') && (
+            <div className="section-content">
+              {analysis.bias_analysis.framing && (
+                <div className="stakeholder-block">
+                  <h4 className="block-title">[FRAMING]</h4>
+                  <p>{analysis.bias_analysis.framing}</p>
+                </div>
+              )}
+
+              {analysis.bias_analysis.evidence && analysis.bias_analysis.evidence.length > 0 && (
+                <div className="guidance-block">
+                  <h4 className="block-title">[EVIDENCE OF LEAN] {analysis.bias_analysis.confidence}% CONFIDENCE</h4>
+                  <ul>
+                    {analysis.bias_analysis.evidence.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {analysis.bias_analysis.what_perspectives_missing && analysis.bias_analysis.what_perspectives_missing.length > 0 && (
+                <div className="guidance-block">
+                  <h4 className="block-title">[PERSPECTIVES NOT HEARD]</h4>
+                  <ul>
+                    {analysis.bias_analysis.what_perspectives_missing.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* MANIPULATION TECHNIQUES */}
+      {analysis.rhetorical_analysis?.manipulation_techniques?.length > 0 && (
+        <section className="analysis-section">
+          <header 
+            className="section-header"
+            onClick={() => toggleSection('manipulation')}
+          >
+            <h3 className="section-title">[RHETORICAL TECHNIQUES]</h3>
+            <span className="section-count">{analysis.rhetorical_analysis.manipulation_techniques.length}</span>
+            <span className="section-toggle">
+              {expandedSections.has('manipulation') ? '[-]' : '[+]'}
+            </span>
+          </header>
+          
+          {expandedSections.has('manipulation') && (
+            <div className="section-content">
+              {analysis.rhetorical_analysis.manipulation_techniques.map((tech, i) => (
+                <div key={i} className="manipulation-item">
+                  <div className="manipulation-header">
+                    <span className="manipulation-type">{tech.type.toUpperCase()}</span>
+                    <span className="manipulation-category">[{tech.category.toUpperCase()}]</span>
+                    <span className="manipulation-severity">{tech.severity.toUpperCase()}</span>
+                  </div>
+                  {speakerLabel(tech.speaker) && <span className="speaker-tag">{speakerLabel(tech.speaker)}</span>}
+                  
+                  <div className="manipulation-content">
+                    <div className="quote-block">
+                      <span className="quote-label">[ORIGINAL]</span>
+                      <blockquote>"{tech.quote}"</blockquote>
+                    </div>
+                    
+                    <p className="manipulation-explanation">{tech.explanation}</p>
+                    
+                    <div className="rewrite-block">
+                      <span className="rewrite-label">[NEUTRAL ALTERNATIVE]</span>
+                      <p>{tech.neutral_rewrite}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+
       {/* EMOTIONAL MANIPULATION */}
       {analysis.emotional_manipulation && (
         <section className="analysis-section">
@@ -481,7 +438,7 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
             className="section-header"
             onClick={() => toggleSection('emotional')}
           >
-            <h3 className="section-title">[EMOTIONAL MANIPULATION]</h3>
+            <h3 className="section-title">[EMOTIONAL APPEALS]</h3>
             <span className="section-score">{analysis.emotional_manipulation.score}/100</span>
             <span className="section-toggle">
               {expandedSections.has('emotional') ? '[-]' : '[+]'}
@@ -540,277 +497,297 @@ const DeepAnalysisPanel: React.FC<Props> = ({ analysis, isLoading, showOnlySumma
         </section>
       )}
 
-      {/* MANIPULATION TECHNIQUES */}
-      {analysis.rhetorical_analysis?.manipulation_techniques?.length > 0 && (
-        <section className="analysis-section">
-          <header 
-            className="section-header"
-            onClick={() => toggleSection('manipulation')}
-          >
-            <h3 className="section-title">[RHETORICAL MANIPULATION]</h3>
-            <span className="section-count">{analysis.rhetorical_analysis.manipulation_techniques.length}</span>
-            <span className="section-toggle">
-              {expandedSections.has('manipulation') ? '[-]' : '[+]'}
-            </span>
-          </header>
-          
-          {expandedSections.has('manipulation') && (
-            <div className="section-content">
-              {analysis.rhetorical_analysis.manipulation_techniques.map((tech, i) => (
-                <div key={i} className="manipulation-item">
-                  <div className="manipulation-header">
-                    <span className="manipulation-type">{tech.type.toUpperCase()}</span>
-                    <span className="manipulation-category">[{tech.category.toUpperCase()}]</span>
-                    <span className="manipulation-severity">{tech.severity.toUpperCase()}</span>
-                  </div>
-                  {speakerLabel(tech.speaker) && <span className="speaker-tag">{speakerLabel(tech.speaker)}</span>}
-                  
-                  <div className="manipulation-content">
-                    <div className="quote-block">
-                      <span className="quote-label">[ORIGINAL]</span>
-                      <blockquote>"{tech.quote}"</blockquote>
-                    </div>
-                    
-                    <p className="manipulation-explanation">{tech.explanation}</p>
-                    
-                    <div className="rewrite-block">
-                      <span className="rewrite-label">[NEUTRAL ALTERNATIVE]</span>
-                      <p>{tech.neutral_rewrite}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+      {!(analysis.rhetorical_analysis?.manipulation_techniques?.length) && !(analysis.emotional_manipulation?.techniques_used?.length) && (
+        <p className="clean-note">[NO MISLEADING TECHNIQUES FOUND] The outlet's own wording did not use the rhetorical or emotional techniques we check for.</p>
       )}
 
-      {/* BIAS & FRAMING */}
-      {analysis.bias_analysis && (
+      {/* WHAT'S MISSING */}
+      {analysis.missing_context && (analysis.missing_context.critical_omissions?.length || analysis.missing_context.questions_unanswered?.length) ? (
         <section className="analysis-section">
           <header
             className="section-header"
-            onClick={() => toggleSection('bias')}
+            onClick={() => toggleSection('missing')}
           >
-            <h3 className="section-title">[BIAS &amp; FRAMING]</h3>
-            <span className="section-score">{analysis.bias_analysis.political_lean.toUpperCase()}</span>
+            <h3 className="section-title">[WHAT THE ARTICLE LEAVES OUT]</h3>
+            <span className="section-count">{analysis.missing_context.critical_omissions?.length || 0}</span>
             <span className="section-toggle">
-              {expandedSections.has('bias') ? '[-]' : '[+]'}
+              {expandedSections.has('missing') ? '[-]' : '[+]'}
             </span>
           </header>
 
-          {expandedSections.has('bias') && (
+          {expandedSections.has('missing') && (
             <div className="section-content">
-              {analysis.bias_analysis.framing && (
+              {analysis.missing_context.critical_omissions && analysis.missing_context.critical_omissions.length > 0 && (
+                <div className="guidance-block">
+                  <h4 className="block-title">[MISSING CONTEXT]</h4>
+                  <ul>
+                    {analysis.missing_context.critical_omissions.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {analysis.missing_context.questions_unanswered && analysis.missing_context.questions_unanswered.length > 0 && (
+                <div className="guidance-block">
+                  <h4 className="block-title">[UNANSWERED QUESTIONS]</h4>
+                  <ul>
+                    {analysis.missing_context.questions_unanswered.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {analysis.missing_context.alternative_interpretations && (
                 <div className="stakeholder-block">
-                  <h4 className="block-title">[FRAMING]</h4>
-                  <p>{analysis.bias_analysis.framing}</p>
-                </div>
-              )}
-
-              {analysis.bias_analysis.evidence && analysis.bias_analysis.evidence.length > 0 && (
-                <div className="guidance-block">
-                  <h4 className="block-title">[EVIDENCE OF LEAN] {analysis.bias_analysis.confidence}% CONFIDENCE</h4>
-                  <ul>
-                    {analysis.bias_analysis.evidence.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {analysis.bias_analysis.what_perspectives_missing && analysis.bias_analysis.what_perspectives_missing.length > 0 && (
-                <div className="guidance-block">
-                  <h4 className="block-title">[PERSPECTIVES NOT HEARD]</h4>
-                  <ul>
-                    {analysis.bias_analysis.what_perspectives_missing.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
+                  <h4 className="block-title">[OTHER WAYS TO READ IT]</h4>
+                  <p>{analysis.missing_context.alternative_interpretations}</p>
                 </div>
               )}
             </div>
           )}
         </section>
-      )}
+      ) : null}
 
-      {/* SOURCING */}
-      {analysis.rhetorical_analysis?.source_transparency && (
-        <section className="analysis-section">
-          <header
-            className="section-header"
-            onClick={() => toggleSection('sourcing')}
-          >
-            <h3 className="section-title">[SOURCING]</h3>
-            <span className="section-toggle">
-              {expandedSections.has('sourcing') ? '[-]' : '[+]'}
-            </span>
-          </header>
-
-          {expandedSections.has('sourcing') && (
+      {/* FULL FORENSICS */}
+      <section className="analysis-section full-forensics">
+        <header className="section-header" onClick={() => toggleSection('full')}>
+          <h3 className="section-title">[FULL FORENSICS] SCORES, SOURCING, STAKEHOLDERS</h3>
+          <span className="section-toggle">{expandedSections.has('full') ? '[-]' : '[+]'}</span>
+        </header>
+        {expandedSections.has('full') && (
+          <div className="full-forensics-body">
+        {/* OVERALL ASSESSMENT */}
+        {analysis.overall_assessment && (
+          <section className="analysis-section assessment">
+            <header className="section-header">
+              <h3 className="section-title">[OVERALL ASSESSMENT]</h3>
+            </header>
+            
             <div className="section-content">
               <div className="assessment-badges">
                 <div className="assessment-badge">
-                  <span className="badge-label">NAMED SOURCES</span>
-                  <span className="badge-value">{analysis.rhetorical_analysis.source_transparency.named_sources}</span>
-                </div>
-                <div className="assessment-badge">
-                  <span className="badge-label">ANONYMOUS</span>
-                  <span className="badge-value">{analysis.rhetorical_analysis.source_transparency.anonymous_sources}</span>
-                </div>
-                <div className="assessment-badge">
-                  <span className="badge-label">DOCUMENTS</span>
-                  <span className="badge-value">{analysis.rhetorical_analysis.source_transparency.documents_cited}</span>
-                </div>
-              </div>
-
-              {analysis.rhetorical_analysis.source_transparency.concerns && (
-                <div className="stakeholder-block">
-                  <h4 className="block-title">[SOURCING CONCERNS]</h4>
-                  <p>{analysis.rhetorical_analysis.source_transparency.concerns}</p>
-                </div>
-              )}
-
-              {analysis.rhetorical_analysis.headline_accuracy && (
-                <div className="stakeholder-block">
-                  <h4 className="block-title">
-                    [HEADLINE] {analysis.rhetorical_analysis.headline_accuracy.matches_content ? 'MATCHES THE STORY' : 'DOES NOT MATCH THE STORY'}
-                  </h4>
-                  {analysis.rhetorical_analysis.headline_accuracy.issues && (
-                    <p>{analysis.rhetorical_analysis.headline_accuracy.issues}</p>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-        </section>
-      )}
-
-      {/* STAKEHOLDER ANALYSIS */}
-      {analysis.stakeholder_analysis && (
-        <section className="analysis-section">
-          <header 
-            className="section-header"
-            onClick={() => toggleSection('stakeholders')}
-          >
-            <h3 className="section-title">[STAKEHOLDER ANALYSIS]</h3>
-            <span className="section-toggle">
-              {expandedSections.has('stakeholders') ? '[-]' : '[+]'}
-            </span>
-          </header>
-          
-          {expandedSections.has('stakeholders') && (
-            <div className="section-content">
-              <div className="stakeholder-grid">
-                <div className="stakeholder-column">
-                  <h4 className="column-title">[WHO BENEFITS]</h4>
-                  <ul>
-                    {analysis.stakeholder_analysis.who_benefits.map((entity, i) => (
-                      <li key={i}>{entity}</li>
-                    ))}
-                  </ul>
+                  <span className="badge-label">RELIABILITY</span>
+                  <span className="badge-value">{analysis.overall_assessment.reliability.toUpperCase()}</span>
                 </div>
                 
-                <div className="stakeholder-column">
-                  <h4 className="column-title">[WHO IS HARMED]</h4>
-                  <ul>
-                    {analysis.stakeholder_analysis.who_is_harmed.map((entity, i) => (
-                      <li key={i}>{entity}</li>
-                    ))}
-                  </ul>
+                <div className="assessment-badge">
+                  <span className="badge-label">ACTION</span>
+                  <span className="badge-value">{analysis.overall_assessment.recommended_action.toUpperCase()}</span>
                 </div>
               </div>
               
-              {analysis.stakeholder_analysis.author_perspective && (
-                <div className="stakeholder-block">
-                  <h4 className="block-title">[AUTHOR PERSPECTIVE]</h4>
-                  <p>{analysis.stakeholder_analysis.author_perspective}</p>
-                </div>
-              )}
-              
-              {analysis.stakeholder_analysis.potential_conflicts && (
-                <div className="stakeholder-block">
-                  <h4 className="block-title">[POTENTIAL CONFLICTS]</h4>
-                  <p>{analysis.stakeholder_analysis.potential_conflicts}</p>
-                </div>
-              )}
+              <p className="assessment-summary">{analysis.overall_assessment.summary}</p>
             </div>
-          )}
-        </section>
-      )}
+          </section>
+        )}
 
-      {/* READER GUIDANCE */}
-      {analysis.reader_guidance && (
-        <section className="analysis-section">
-          <header 
-            className="section-header"
-            onClick={() => toggleSection('guidance')}
-          >
-            <h3 className="section-title">[READER GUIDANCE]</h3>
-            <span className="section-toggle">
-              {expandedSections.has('guidance') ? '[-]' : '[+]'}
-            </span>
-          </header>
-          
-          {expandedSections.has('guidance') && (
-            <div className="section-content">
-              {analysis.reader_guidance.critical_questions?.length > 0 && (
-                <div className="guidance-block">
-                  <h4 className="block-title">[QUESTIONS TO ASK]</h4>
-                  <ul>
-                    {analysis.reader_guidance.critical_questions.map((q, i) => (
-                      <li key={i}>{q}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              
-              {analysis.reader_guidance.what_to_verify?.length > 0 && (
-                <div className="guidance-block">
-                  <h4 className="block-title">[WHAT TO VERIFY]</h4>
-                  <ul>
-                    {analysis.reader_guidance.what_to_verify.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              
-              {analysis.reader_guidance.media_literacy_lesson && (
-                <div className="guidance-block lesson">
-                  <h4 className="block-title">[MEDIA LITERACY LESSON]</h4>
-                  <p>{analysis.reader_guidance.media_literacy_lesson}</p>
-                </div>
-              )}
-            </div>
-          )}
-        </section>
-      )}
-
-      {/* OVERALL ASSESSMENT */}
-      {analysis.overall_assessment && (
-        <section className="analysis-section assessment">
-          <header className="section-header">
-            <h3 className="section-title">[OVERALL ASSESSMENT]</h3>
-          </header>
-          
-          <div className="section-content">
-            <div className="assessment-badges">
-              <div className="assessment-badge">
-                <span className="badge-label">RELIABILITY</span>
-                <span className="badge-value">{analysis.overall_assessment.reliability.toUpperCase()}</span>
-              </div>
-              
-              <div className="assessment-badge">
-                <span className="badge-label">ACTION</span>
-                <span className="badge-value">{analysis.overall_assessment.recommended_action.toUpperCase()}</span>
-              </div>
-            </div>
+        {/* LOGIC SCORE */}
+        {analysis.logic_score && (
+          <section className="analysis-section">
+            <header 
+              className="section-header"
+              onClick={() => toggleSection('logic-score')}
+            >
+              <h3 className="section-title">[LOGIC SCORE]</h3>
+              <span className="section-toggle">
+                {expandedSections.has('logic-score') ? '[-]' : '[+]'}
+              </span>
+            </header>
             
-            <p className="assessment-summary">{analysis.overall_assessment.summary}</p>
+            {expandedSections.has('logic-score') && (
+              <div className="section-content">
+                <div className="score-hero">
+                  <div className="score-display">
+                    <span className="score-value">{analysis.logic_score.overall}</span>
+                    <span className="score-max">/100</span>
+                  </div>
+                  <div className="score-grade">
+                    <span className="grade-label">GRADE:</span>
+                    <span className="grade-value">{analysis.logic_score.grade}</span>
+                  </div>
+                </div>
+                
+                <p className="score-explanation">{analysis.logic_score.explanation}</p>
+                
+                <div className="score-breakdown">
+                  <h4 className="breakdown-title">[BREAKDOWN]</h4>
+                  {Object.entries(analysis.logic_score.breakdown).map(([key, value]) => (
+                    <div key={key} className="breakdown-row">
+                      <span className="breakdown-label">
+                        {key.replace(/_/g, ' ').toUpperCase()}
+                      </span>
+                      <div className="breakdown-bar-track">
+                        <div 
+                          className="breakdown-bar-fill" 
+                          style={{ width: `${value}%` }}
+                        />
+                      </div>
+                      <span className="breakdown-value">{value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* SOURCING */}
+        {analysis.rhetorical_analysis?.source_transparency && (
+          <section className="analysis-section">
+            <header
+              className="section-header"
+              onClick={() => toggleSection('sourcing')}
+            >
+              <h3 className="section-title">[SOURCING]</h3>
+              <span className="section-toggle">
+                {expandedSections.has('sourcing') ? '[-]' : '[+]'}
+              </span>
+            </header>
+
+            {expandedSections.has('sourcing') && (
+              <div className="section-content">
+                <div className="assessment-badges">
+                  <div className="assessment-badge">
+                    <span className="badge-label">NAMED SOURCES</span>
+                    <span className="badge-value">{analysis.rhetorical_analysis.source_transparency.named_sources}</span>
+                  </div>
+                  <div className="assessment-badge">
+                    <span className="badge-label">ANONYMOUS</span>
+                    <span className="badge-value">{analysis.rhetorical_analysis.source_transparency.anonymous_sources}</span>
+                  </div>
+                  <div className="assessment-badge">
+                    <span className="badge-label">DOCUMENTS</span>
+                    <span className="badge-value">{analysis.rhetorical_analysis.source_transparency.documents_cited}</span>
+                  </div>
+                </div>
+
+                {analysis.rhetorical_analysis.source_transparency.concerns && (
+                  <div className="stakeholder-block">
+                    <h4 className="block-title">[SOURCING CONCERNS]</h4>
+                    <p>{analysis.rhetorical_analysis.source_transparency.concerns}</p>
+                  </div>
+                )}
+
+                {analysis.rhetorical_analysis.headline_accuracy && (
+                  <div className="stakeholder-block">
+                    <h4 className="block-title">
+                      [HEADLINE] {analysis.rhetorical_analysis.headline_accuracy.matches_content ? 'MATCHES THE STORY' : 'DOES NOT MATCH THE STORY'}
+                    </h4>
+                    {analysis.rhetorical_analysis.headline_accuracy.issues && (
+                      <p>{analysis.rhetorical_analysis.headline_accuracy.issues}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* STAKEHOLDER ANALYSIS */}
+        {analysis.stakeholder_analysis && (
+          <section className="analysis-section">
+            <header 
+              className="section-header"
+              onClick={() => toggleSection('stakeholders')}
+            >
+              <h3 className="section-title">[STAKEHOLDER ANALYSIS]</h3>
+              <span className="section-toggle">
+                {expandedSections.has('stakeholders') ? '[-]' : '[+]'}
+              </span>
+            </header>
+            
+            {expandedSections.has('stakeholders') && (
+              <div className="section-content">
+                <div className="stakeholder-grid">
+                  <div className="stakeholder-column">
+                    <h4 className="column-title">[WHO BENEFITS]</h4>
+                    <ul>
+                      {analysis.stakeholder_analysis.who_benefits.map((entity, i) => (
+                        <li key={i}>{entity}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <div className="stakeholder-column">
+                    <h4 className="column-title">[WHO IS HARMED]</h4>
+                    <ul>
+                      {analysis.stakeholder_analysis.who_is_harmed.map((entity, i) => (
+                        <li key={i}>{entity}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                
+                {analysis.stakeholder_analysis.author_perspective && (
+                  <div className="stakeholder-block">
+                    <h4 className="block-title">[AUTHOR PERSPECTIVE]</h4>
+                    <p>{analysis.stakeholder_analysis.author_perspective}</p>
+                  </div>
+                )}
+                
+                {analysis.stakeholder_analysis.potential_conflicts && (
+                  <div className="stakeholder-block">
+                    <h4 className="block-title">[POTENTIAL CONFLICTS]</h4>
+                    <p>{analysis.stakeholder_analysis.potential_conflicts}</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* READER GUIDANCE */}
+        {analysis.reader_guidance && (
+          <section className="analysis-section">
+            <header 
+              className="section-header"
+              onClick={() => toggleSection('guidance')}
+            >
+              <h3 className="section-title">[READER GUIDANCE]</h3>
+              <span className="section-toggle">
+                {expandedSections.has('guidance') ? '[-]' : '[+]'}
+              </span>
+            </header>
+            
+            {expandedSections.has('guidance') && (
+              <div className="section-content">
+                {analysis.reader_guidance.critical_questions?.length > 0 && (
+                  <div className="guidance-block">
+                    <h4 className="block-title">[QUESTIONS TO ASK]</h4>
+                    <ul>
+                      {analysis.reader_guidance.critical_questions.map((q, i) => (
+                        <li key={i}>{q}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                
+                {analysis.reader_guidance.what_to_verify?.length > 0 && (
+                  <div className="guidance-block">
+                    <h4 className="block-title">[WHAT TO VERIFY]</h4>
+                    <ul>
+                      {analysis.reader_guidance.what_to_verify.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                
+                {analysis.reader_guidance.media_literacy_lesson && (
+                  <div className="guidance-block lesson">
+                    <h4 className="block-title">[MEDIA LITERACY LESSON]</h4>
+                    <p>{analysis.reader_guidance.media_literacy_lesson}</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </section>
+        )}
           </div>
-        </section>
-      )}
+        )}
+      </section>
     </div>
   );
 };

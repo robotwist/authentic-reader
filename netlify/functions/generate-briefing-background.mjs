@@ -1,4 +1,4 @@
-import { getStore } from '@netlify/blobs';
+import { briefingsStore } from '../lib/store.mjs';
 import { generateBriefing } from '../lib/briefing.mjs';
 
 // Background function (15 minute limit). Triggered daily by briefing-cron, or
@@ -12,7 +12,7 @@ export default async (req) => {
 
   const started = Date.now();
   try {
-    const store = getStore({ name: 'briefings', consistency: 'strong' });
+    const store = briefingsStore();
     const summary = await generateBriefing(store, { deadline: started + 13 * 60 * 1000 });
     console.log(`Briefing ${summary.date} run finished in ${Math.round((Date.now() - started) / 1000)}s`, JSON.stringify(summary));
   } catch (error) {

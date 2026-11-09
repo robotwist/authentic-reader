@@ -1,4 +1,4 @@
-import { getStore } from '@netlify/blobs';
+import { briefingsStore } from '../lib/store.mjs';
 
 const CACHE_HEADERS = {
   'Content-Type': 'application/json',
@@ -22,13 +22,13 @@ async function listDates(store) {
 }
 
 export default async (req, context) => {
-  const store = getStore({ name: 'briefings', consistency: 'strong' });
+  const store = briefingsStore();
   const { pathname } = new URL(req.url);
 
   try {
     if (pathname.startsWith('/api/story/')) {
       const topic = context.params?.topic;
-      if (!/^[a-z]+$/.test(topic || '')) {
+      if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(topic || '')) {
         return json({ error: 'Invalid topic' }, 400);
       }
       const dossier = await store.get(`dossier/${topic}`, { type: 'json' });

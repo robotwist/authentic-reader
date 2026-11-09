@@ -1,7 +1,7 @@
 [build]
   # Install dependencies including devDependencies, then build
   # Using npm install instead of npm ci to avoid timeout issues
-  command = "npm install --include=dev --prefer-offline --no-audit && npm run build"
+  command = "npm install --include=dev --prefer-offline --no-audit && npm run test:pipeline && npm run typecheck && npm run build"
   publish = "dist"
   
 [build.environment]

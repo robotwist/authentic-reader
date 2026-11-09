@@ -22,10 +22,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": false,
     
-    "noEmitOnError": false,
-    "ignoreDeprecations": "5.0",
-    "suppressExcessPropertyErrors": true,
-    "suppressImplicitAnyIndexErrors": true
+    "noEmitOnError": false
   },
   "include": ["src"]
 }

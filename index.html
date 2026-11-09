@@ -5,16 +5,38 @@
     <link rel="icon" type="image/png" href="/authentic-internet-logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content="#0f172a" />
-    <title>The Authentic Reader | AI-Powered News Analysis</title>
-    <meta name="description" content="The Authentic Reader - An autonomous AI pipeline that analyzes news for bias, logical fallacies, and emotional manipulation." />
+    <meta name="theme-color" content="#1A1A1A" />
+    <title>The Daily Authentic: the day's news, read closely</title>
+    <meta name="description" content="Every morning, the five most-covered news stories, analyzed once for logic, rhetoric, and framing, with sourced fact-checks and a side-by-side look at how outlets across the spectrum told the same story." />
+    <link rel="alternate" type="application/rss+xml" title="The Daily Authentic" href="/feed.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="The Daily Authentic" />
+    <meta property="og:title" content="The Daily Authentic: the day's news, read closely" />
+    <meta property="og:description" content="The five most-covered stories each morning, analyzed for logic, rhetoric, and framing, with sourced fact-checks and how outlets across the spectrum told the same story." />
+    <meta property="og:url" content="https://authentic-reader.netlify.app/" />
+    <meta property="og:image" content="https://authentic-reader.netlify.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
   </head>
   <body>
+    <!-- Static copies of the React forms so Netlify Forms can detect them at deploy time. -->
+    <form name="subscribe" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="email" name="email" />
+      <input name="bot-field" />
+    </form>
+    <form name="corrections" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input name="story" />
+      <textarea name="message"></textarea>
+      <input type="email" name="email" />
+      <input name="bot-field" />
+    </form>
     <div id="root"></div>
-    <script src="/env.js"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

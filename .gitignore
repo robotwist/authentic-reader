@@ -4,13 +4,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Frontend build files (exclude from Heroku)
+# Build output
 dist/
-src/
-public/
-vite.config.ts
-tsconfig*.json
-vitest.config.ts
 
 # Environment variables
 .env

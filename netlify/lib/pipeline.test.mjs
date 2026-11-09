@@ -1,0 +1,99 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { groundAnalysisQuotes, stripCitationMarkers } from './analysis.mjs';
+import { addArticleToDossier, coverageDays, dossierContext } from './dossier.mjs';
+import { isOpinionPiece, looksLikeFullArticle, outletName } from './sources.mjs';
+import { clusterHeadlines } from './stories.mjs';
+
+const ARTICLE = 'Officials said the bridge “was used to move weapons,” according to the ministry.\n\n' +
+  'The strikes damaged energy facilities across the Kyiv region overnight. Nine people were hurt, including a child.';
+
+test('quotes are replaced with the article’s exact wording despite quote marks and whitespace', () => {
+  const deep = { rhetorical_analysis: { manipulation_techniques: [{ quote: '"the bridge "was used to move   weapons,""' }] } };
+  const stats = groundAnalysisQuotes(deep, ARTICLE);
+  assert.equal(deep.rhetorical_analysis.manipulation_techniques[0].quote, 'the bridge “was used to move weapons,”');
+  assert.equal(stats.exact, 1);
+});
+
+test('near-miss quotes are repaired to the closest sentence and inventions are dropped', () => {
+  const deep = {
+    emotional_manipulation: {
+      techniques_used: [
+        { quote: 'The strikes damaged energy facilities across the Kyiv region last night' },
+        { quote: 'Russia promised to end the war by Friday at noon' }
+      ]
+    }
+  };
+  const stats = groundAnalysisQuotes(deep, ARTICLE);
+  assert.deepEqual(deep.emotional_manipulation.techniques_used.map((t) => t.quote), [
+    'The strikes damaged energy facilities across the Kyiv region overnight.'
+  ]);
+  assert.deepEqual({ repaired: stats.repaired, dropped: stats.dropped }, { repaired: 1, dropped: 1 });
+});
+
+test('duplicate claims are removed after grounding', () => {
+  const deep = { claims_to_check: [{ quote: 'Nine people were hurt, including a child.' }, { quote: 'Nine people were hurt, including a child' }] };
+  groundAnalysisQuotes(deep, ARTICLE);
+  assert.equal(deep.claims_to_check.length, 1);
+});
+
+test('outletName treats an outlet’s domains as one outlet', () => {
+  assert.equal(outletName('https://www.bbc.co.uk/news/a'), outletName('https://www.bbc.com/news/b'));
+  assert.equal(outletName('https://apnews.com/article/x'), 'apnews');
+  assert.equal(outletName('not a url'), null);
+});
+
+test('citation markers from search results are stripped', () => {
+  assert.equal(stripCitationMarkers('AP reported nine wounded【1†L4-L6】【3†L9】 .'), 'AP reported nine wounded.');
+});
+
+test('opinion pieces and short snippets are filtered out', () => {
+  assert.equal(isOpinionPiece({ link: 'https://www.theguardian.com/commentisfree/2026/x', title: 'A view' }), true);
+  assert.equal(isOpinionPiece({ link: 'https://x.com/a', title: 'Midterms reshape the AI debate | Heather Stewart' }), true);
+  assert.equal(isOpinionPiece({ link: 'https://x.com/a', title: 'Trains collide in Egypt' }), false);
+  assert.equal(looksLikeFullArticle('Too short.'), false);
+  assert.equal(looksLikeFullArticle('word '.repeat(400)), true);
+});
+
+test('headlines about the same story cluster together across outlets', () => {
+  const item = (sourceName, lean, title) => ({ sourceName, lean, title, description: '', publishDate: '2026-11-09T00:00:00Z', link: `${sourceName}/${title}` });
+  const clusters = clusterHeadlines([
+    item('BBC News', 'center', 'Seven dead after trains collide in Egypt'),
+    item('The Guardian', 'left', 'Collision of two trains in Egypt kills at least seven'),
+    item('Washington Times', 'right', 'Collision between 2 trains in Egypt kills 7'),
+    item('NPR', 'center-left', 'Pope Leo arrives in Argentina on historic visit'),
+    item('Al Jazeera', 'international', 'Pope Leo welcomed by Milei in Argentina'),
+    item('Fox News', 'right', 'Kyle Larson wins third NASCAR Cup title')
+  ]);
+  assert.deepEqual(clusters[0].outlets.sort(), ['BBC News', 'The Guardian', 'Washington Times']);
+  assert.deepEqual(clusters[1].outlets.sort(), ['Al Jazeera', 'NPR']);
+  assert.equal(clusters[2].outlets.length, 1);
+});
+
+test('story files add each article once and keep only independently confirmed facts', () => {
+  const dossier = { timeline: [], confirmed_facts: [] };
+  const article = { title: 'Strikes hit Kyiv', url: 'https://bbc.com/a', source: 'BBC News' };
+  const deep = {
+    executive_summary: { one_sentence: 'Strikes hit Kyiv.' },
+    claim_verification: [
+      { claim: 'Nine hurt', quote: 'Nine people were hurt', verification_status: 'verified', sources: [{ url: 'https://apnews.com/x', title: 'AP' }] },
+      { claim: 'Syndicated only', quote: 'Q2', verification_status: 'verified', sources: [{ url: 'https://www.yahoo.com/x', title: 'Yahoo' }] },
+      { claim: 'Unchecked', quote: 'Q3', verification_status: 'unverified', sources: [] }
+    ]
+  };
+  addArticleToDossier(dossier, '2026-11-09', article, deep);
+  addArticleToDossier(dossier, '2026-11-09', article, deep);
+  addArticleToDossier(dossier, '2026-11-10', { ...article, url: 'https://bbc.com/b' }, { executive_summary: { one_sentence: 'Talks begin.' } });
+  assert.equal(dossier.timeline.length, 2);
+  assert.equal(coverageDays(dossier), 2);
+  assert.deepEqual(dossier.confirmed_facts.map((f) => f.fact), ['Nine hurt']);
+  assert.match(dossierContext(dossier, 'https://bbc.com/b'), /2026-11-09 \(BBC News\): Strikes hit Kyiv/);
+  assert.doesNotMatch(dossierContext(dossier, 'https://bbc.com/b'), /Talks begin/);
+});
+
+test('article text keeps paragraphs and drops promotional lines', async () => {
+  const { htmlToParagraphs } = await import('./sources.mjs');
+  const html = '<p>Herzog gave Eisenkot the &quot;first chance&quot;.</p><p>READ MORE: Israel taps opposition</p>' +
+    '<figure><figcaption>Photo: AP</figcaption></figure><p>Talks begin Tuesday.</p><p>A free press is a cornerstone of a healthy democracy.</p>';
+  assert.equal(htmlToParagraphs(html), 'Herzog gave Eisenkot the "first chance".\n\nTalks begin Tuesday.');
+});

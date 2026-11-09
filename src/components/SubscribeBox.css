@@ -1,0 +1,98 @@
+.subscribe-box {
+  max-width: 1100px;
+  margin: 2rem auto 3rem;
+  padding: 2rem;
+  border: 2px solid var(--text-ink, #1A1A1A);
+  background: var(--bg-white, #FFFFFF);
+  color: var(--text-ink, #1A1A1A);
+}
+
+.subscribe-title {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.75rem;
+}
+
+.subscribe-copy,
+.subscribe-done,
+.subscribe-error {
+  font-family: var(--font-body, 'Georgia', serif);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 1rem;
+}
+
+.subscribe-copy a {
+  color: var(--text-ink, #1A1A1A);
+}
+
+.subscribe-form {
+  display: flex;
+  gap: 0;
+  max-width: 520px;
+}
+
+.subscribe-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.75rem;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.875rem;
+  border: 2px solid var(--text-ink, #1A1A1A);
+  border-right: none;
+  border-radius: 0;
+  background: var(--bg-paper, #F9F7F1);
+  color: var(--text-ink, #1A1A1A);
+}
+
+.subscribe-form button {
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border: 2px solid var(--text-ink, #1A1A1A);
+  border-radius: 0;
+  background: var(--text-ink, #1A1A1A);
+  color: var(--bg-paper, #F9F7F1);
+  cursor: pointer;
+}
+
+.subscribe-form button:disabled,
+.subscribe-form input:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.subscribe-form input:focus-visible,
+.subscribe-form button:focus-visible {
+  outline: 3px solid var(--text-ink, #1A1A1A);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .subscribe-box {
+    margin: 1.5rem 1rem 2rem;
+    padding: 1.25rem;
+  }
+
+  .subscribe-form {
+    flex-direction: column;
+  }
+
+  .subscribe-form input {
+    border-right: 2px solid var(--text-ink, #1A1A1A);
+    border-bottom: none;
+  }
+}

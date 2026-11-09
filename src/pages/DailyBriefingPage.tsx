@@ -1,496 +1,184 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import ReaderView from '../components/ReaderView';
 import DeepAnalysisPanel from '../components/DeepAnalysisPanel';
 import SourceComparisonView from '../components/SourceComparisonView';
 import StorySoFar from '../components/StorySoFar';
-import { FallacyData } from '../utils/llmParser';
+import SubscribeBox from '../components/SubscribeBox';
 import { API_CONFIG } from '../config/api.config';
-import { fallbackBriefing } from '../data/fallbackBriefing';
-import useEnhancedAnalysis from '../hooks/useEnhancedAnalysis';
-import { AnalysisResult } from '../services/enhancedCognitiveAnalysisService';
+import { BriefingStory, DailyBriefing, FallacyData } from '../types/briefing';
 import './DailyBriefingPage.css';
-
-interface DailyBriefingTopic {
-  topic: string;
-  icon: string;
-  article: {
-    title: string;
-    url: string;
-    source: string;
-    publishDate: string;
-    author?: string;
-    content: string;
-  };
-  analysis: {
-    keySentences?: Array<{
-      sentence: string;
-      manipulationTechniques?: string[];
-      biasIndicators?: string[];
-    }>;
-    manipulationAnalysis?: {
-      logicalFallacies?: Array<{
-        type: string;
-        location: string;
-        explanation: string;
-      }>;
-    };
-    overallAssessment?: {
-      reliabilityScore: number;
-    };
-  } | null;
-}
-
-interface DailyBriefing {
-  generatedAt: string;
-  version: string;
-  isOffline?: boolean;
-  isArchive?: boolean;
-  briefingDate?: string;
-  topics: {
-    [key: string]: DailyBriefingTopic;
-  };
-}
 
 interface ArchiveDate {
   date: string;
   formatted: string;
 }
 
-const TOPIC_KEYS = ['ukraine', 'gaza', 'epstein', 'diseases', 'trump'] as const;
-type TopicKey = typeof TOPIC_KEYS[number];
+const LEAN_POSITION: Record<string, string> = {
+  left: '10%',
+  'center-left': '30%',
+  center: '50%',
+  'center-right': '70%',
+  right: '90%'
+};
+
+const formatLongDate = (date: string) =>
+  new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
+const formatTime = (iso: string) =>
+  new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+
+function storyOrder(briefing: DailyBriefing): string[] {
+  return (briefing.order || Object.keys(briefing.topics)).filter((key) => briefing.topics[key]);
+}
+
+/** Highlights for the reader view: the stored deep analysis when loaded, else the briefing summary. */
+function highlightsFor(story: BriefingStory, deep: any): FallacyData[] {
+  if (deep) {
+    const rhetorical = (deep.rhetorical_analysis?.manipulation_techniques || []).map((t: any, i: number) => ({
+      id: `rhetoric-${i}`,
+      type: t.type,
+      excerpt: t.quote,
+      explanation: t.explanation,
+      betterAlternative: t.neutral_rewrite,
+      severity: t.severity
+    }));
+    const emotional = (deep.emotional_manipulation?.techniques_used || []).map((t: any, i: number) => ({
+      id: `emotion-${i}`,
+      type: t.technique,
+      excerpt: t.quote,
+      explanation: t.impact,
+      severity: t.severity
+    }));
+    return [...rhetorical, ...emotional].filter((f) => f.excerpt);
+  }
+  return (story.analysis?.manipulationAnalysis?.logicalFallacies || []).map((f, i) => ({
+    id: `fallacy-${i}`,
+    type: f.type,
+    excerpt: f.location,
+    explanation: f.explanation,
+    severity: 'medium' as const
+  }));
+}
 
 const DailyBriefingPage: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedDate = searchParams.get('date');
+  const selectedKey = searchParams.get('story');
+  const showArchive = searchParams.get('view') === 'archive';
+
   const [briefing, setBriefing] = useState<DailyBriefing | null>(null);
-  const [selectedTopic, setSelectedTopic] = useState<TopicKey | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isOffline, setIsOffline] = useState(false);
-  const [showArchive, setShowArchive] = useState(false);
-  const [archiveDates, setArchiveDates] = useState<ArchiveDate[]>([]);
-  const [loadingArchive, setLoadingArchive] = useState(false);
-  const [currentDate, setCurrentDate] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [archiveDates, setArchiveDates] = useState<ArchiveDate[] | null>(null);
   const [deepAnalysis, setDeepAnalysis] = useState<any>(null);
   const [isLoadingDeep, setIsLoadingDeep] = useState(false);
-  const [crossSourceComparison, setCrossSourceComparison] = useState<any>(null);
-  const [isLoadingComparison, setIsLoadingComparison] = useState(false);
-  const [showFullComparison, setShowFullComparison] = useState(true);
-  
-  // Enhanced LLM Analysis Hook
-  const {
-    analyzeArticle: runEnhancedAnalysis,
-    analysis: enhancedAnalysis,
-    fallacyData: enhancedFallacies,
-    isLoading: isAnalyzing,
-    isLLMAvailable,
-    clearAnalysis
-  } = useEnhancedAnalysis();
+  const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    loadDailyBriefing();
-  }, []);
-
-  const loadDailyBriefing = async (date?: string) => {
+  const loadBriefing = useCallback(async () => {
     setLoading(true);
-    
+    setLoadError(null);
     try {
-      const backendUrl = API_CONFIG.BASE_URL;
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000);
-      
-      const endpoint = date 
-        ? `${backendUrl}/api/daily-briefing/archive/${date}`
-        : `${backendUrl}/api/daily-briefing`;
-      
-      const response = await fetch(endpoint, {
-        signal: controller.signal
-      });
-      clearTimeout(timeoutId);
-      
-      if (!response.ok) {
-        throw new Error('API returned error status');
-      }
-      
-      const data = await response.json();
-      setBriefing(data);
-      setIsOffline(false);
-      setCurrentDate(data.briefingDate || null);
-    } catch (err) {
-      console.warn('API unavailable, using fallback data:', err);
-      setBriefing(fallbackBriefing as DailyBriefing);
-      setIsOffline(true);
-      setCurrentDate(null);
+      const endpoint = requestedDate
+        ? `${API_CONFIG.BASE_URL}/api/daily-briefing/archive/${requestedDate}`
+        : `${API_CONFIG.BASE_URL}/api/daily-briefing`;
+      const response = await fetch(endpoint, { signal: AbortSignal.timeout(10000) });
+      if (!response.ok) throw new Error(response.status === 404 ? 'No briefing was published for this date.' : `Server error ${response.status}`);
+      setBriefing(await response.json());
+    } catch (error) {
+      setBriefing(null);
+      setLoadError(error instanceof Error && error.name !== 'TimeoutError' ? error.message : 'The briefing took too long to load.');
     } finally {
       setLoading(false);
     }
-  };
+  }, [requestedDate]);
 
-  const loadArchiveDates = async () => {
-    setLoadingArchive(true);
-    try {
-      const backendUrl = API_CONFIG.BASE_URL;
-      const response = await fetch(`${backendUrl}/api/daily-briefing/archive`);
-      
-      if (response.ok) {
-        const data = await response.json();
-        setArchiveDates(data.dates || []);
-      }
-    } catch (err) {
-      console.error('Failed to load archive dates:', err);
-      setArchiveDates([]);
-    } finally {
-      setLoadingArchive(false);
-    }
-  };
+  useEffect(() => {
+    loadBriefing();
+  }, [loadBriefing]);
 
-  const handleOpenArchive = () => {
-    setShowArchive(true);
-    loadArchiveDates();
-  };
+  useEffect(() => {
+    if (!showArchive || archiveDates) return;
+    fetch(`${API_CONFIG.BASE_URL}/api/daily-briefing/archive`)
+      .then((response) => (response.ok ? response.json() : { dates: [] }))
+      .then((data) => setArchiveDates(data.dates || []))
+      .catch(() => setArchiveDates([]));
+  }, [showArchive, archiveDates]);
 
-  const handleSelectDate = (date: string) => {
-    setShowArchive(false);
-    setSelectedTopic(null);
-    loadDailyBriefing(date);
-  };
+  const story = briefing && selectedKey ? briefing.topics[selectedKey] : null;
 
-  const handleBackToToday = () => {
-    setCurrentDate(null);
-    loadDailyBriefing();
-  };
-
-  /**
-   * Data Normalizer: Extract fallacies from article data
-   * Checks multiple paths to handle both old and new data structures
-   */
-  const getFallacies = (article: DailyBriefingTopic): FallacyData[] => {
-    if (!article) return [];
-    
-    const fallacies: FallacyData[] = [];
-    const analysis = article.analysis;
-    
-    if (!analysis) return [];
-    
-    // Path 1: New nested format (analysis.manipulationAnalysis.logicalFallacies)
-    if (analysis.manipulationAnalysis?.logicalFallacies) {
-      const logicalFallacies = analysis.manipulationAnalysis.logicalFallacies;
-      if (Array.isArray(logicalFallacies)) {
-        logicalFallacies.forEach((fallacy, index) => {
-          fallacies.push({
-            id: `fallacy-${index}`,
-            type: fallacy.type || 'Unknown',
-            excerpt: fallacy.location || fallacy.excerpt || '',
-            explanation: fallacy.explanation || '',
-            mechanism: `The author uses ${fallacy.type || 'a fallacy'} by ${fallacy.location || 'manipulation'}`,
-            motive: 'To manipulate reader perception',
-            severity: 'medium' as const
-          });
-        });
-      }
-    }
-    
-    // Path 2: Direct fallacies array (if flattened)
-    if (Array.isArray((analysis as any).logicalFallacies)) {
-      (analysis as any).logicalFallacies.forEach((fallacy: any, index: number) => {
-        fallacies.push({
-          id: `fallacy-direct-${index}`,
-          type: fallacy.type || fallacy.name || 'Unknown',
-          excerpt: fallacy.location || fallacy.excerpt || fallacy.quote || '',
-          explanation: fallacy.explanation || fallacy.description || '',
-          mechanism: `The author uses ${fallacy.type || fallacy.name || 'a fallacy'}`,
-          motive: 'To manipulate reader perception',
-          severity: 'medium' as const
-        });
-      });
-    }
-    
-    // Path 3: Key sentences with manipulation techniques
-    if (analysis.keySentences && Array.isArray(analysis.keySentences)) {
-      analysis.keySentences.forEach((sentence, index) => {
-        if (sentence.manipulationTechniques && sentence.manipulationTechniques.length > 0) {
-          fallacies.push({
-            id: `sentence-${index}`,
-            type: sentence.manipulationTechniques[0],
-            excerpt: sentence.sentence || '',
-            explanation: `This sentence uses ${sentence.manipulationTechniques.join(', ')}`,
-            mechanism: 'Manipulative language detected',
-            motive: 'To influence reader perception',
-            severity: 'low' as const
-          });
-        }
-      });
-    }
-    
-    return fallacies;
-  };
-
-  /**
-   * Data Normalizer: Extract bias information from article data
-   * Checks multiple paths to handle both old and new data structures
-   */
-  const getBias = (article: DailyBriefingTopic): {
-    direction?: string;
-    score?: number;
-    confidence?: number;
-    explanation?: string;
-  } | null => {
-    if (!article || !article.analysis) return null;
-    
-    const analysis = article.analysis;
-    
-    // Path 1: New nested format (analysis.biasAnalysis)
-    if ((analysis as any).biasAnalysis) {
-      const biasAnalysis = (analysis as any).biasAnalysis;
-      return {
-        direction: biasAnalysis.direction || biasAnalysis.political?.direction,
-        score: biasAnalysis.score || biasAnalysis.scores?.overall || biasAnalysis.scores?.political?.leftRight,
-        confidence: biasAnalysis.confidence || biasAnalysis.scores?.political?.confidence,
-        explanation: biasAnalysis.explanation || biasAnalysis.summary?.explanation
-      };
-    }
-    
-    // Path 2: Direct bias object (if flattened)
-    if ((analysis as any).bias) {
-      const bias = (analysis as any).bias;
-      return {
-        direction: bias.direction,
-        score: bias.score,
-        confidence: bias.confidence,
-        explanation: bias.explanation
-      };
-    }
-    
-    // Path 3: Overall assessment (may contain bias info)
-    if (analysis.overallAssessment) {
-      return {
-        score: analysis.overallAssessment.reliabilityScore,
-        explanation: 'Reliability assessment available'
-      };
-    }
-    
-    return null;
-  };
-
-  /**
-   * Data Normalizer: Extract summary from article data
-   * Checks multiple paths to handle both old and new data structures
-   */
-  const getSummary = (article: DailyBriefingTopic): string | null => {
-    if (!article) return null;
-    
-    // Path 1: Direct summary on article
-    if ((article.article as any).summary) {
-      return (article.article as any).summary;
-    }
-    
-    // Path 2: Analysis summary
-    if (article.analysis) {
-      const analysis = article.analysis;
-      
-      // Check nested summary
-      if ((analysis as any).summary) {
-        return (analysis as any).summary;
-      }
-      
-      // Check summaryText
-      if ((analysis as any).summaryText) {
-        return (analysis as any).summaryText;
-      }
-      
-      // Check overallAssessment summary
-      if (analysis.overallAssessment && (analysis.overallAssessment as any).summary) {
-        return (analysis.overallAssessment as any).summary;
-      }
-    }
-    
-    return null;
-  };
-
-  /**
-   * Convert analysis to fallacies format (uses getFallacies helper)
-   */
-  const convertAnalysisToFallacies = (analysis: DailyBriefingTopic['analysis']): FallacyData[] => {
-    // Use the robust getFallacies helper
-    const topicData = { analysis } as DailyBriefingTopic;
-    return getFallacies(topicData);
-  };
-
-  const handleBackClick = () => {
-    setSelectedTopic(null);
-    clearAnalysis(); // Clear enhanced analysis when going back
-    setDeepAnalysis(null); // Clear deep analysis
-    setIsLoadingDeep(false);
-    setCrossSourceComparison(null); // Clear cross-source comparison
-    setIsLoadingComparison(false);
-    setShowFullComparison(false); // Reset comparison view
-  };
-
-  // Fetch cross-source comparison for the current article
-  const handleCompareSource = async () => {
-    if (!selectedTopic || !briefing?.topics[selectedTopic]) return;
-    
-    const topicData = briefing.topics[selectedTopic];
-    setIsLoadingComparison(true);
-    setCrossSourceComparison(null);
-    
-    // Extract keywords from the topic
-    const keywordMap: Record<string, string[]> = {
-      ukraine: ['ukraine', 'russia', 'war', 'zelensky', 'putin', 'peace'],
-      gaza: ['gaza', 'israel', 'hamas', 'palestine', 'ceasefire'],
-      diseases: ['health', 'disease', 'vaccine', 'medical', 'outbreak'],
-      epstein: ['court', 'justice', 'law', 'judge', 'trial', 'legal'],
-      trump: ['economy', 'market', 'inflation', 'trade', 'tariff']
-    };
-    
-    // Ensure we always have at least 2 keywords for the API
-    const baseKeywords = keywordMap[selectedTopic] || [selectedTopic];
-    const keywords = baseKeywords.length >= 2 
-      ? baseKeywords 
-      : [...baseKeywords, 'news', 'story']; // Add generic keywords if needed
-    
-    try {
-      const response = await fetch(`${API_CONFIG.BASE_URL}/api/ai/compare-sources`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          article: {
-            title: topicData.article.title,
-            content: topicData.article.content,
-            source: topicData.article.source,
-            url: topicData.article.url
-          },
-          keywords
-        })
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-          setCrossSourceComparison(data.comparison);
-        } else {
-          console.warn('Comparison API returned success=false:', data);
-        }
-      } else {
-        // Try to extract error message from response
-        let errorMessage = `Server error: ${response.status}`;
-        try {
-          const errorData = await response.json();
-          errorMessage = errorData.message || errorData.error || errorMessage;
-        } catch {
-          // Response is not JSON
-        }
-        console.error('Comparison API error:', errorMessage);
-      }
-    } catch (err) {
-      // Network error or other fetch failure
-      const errorMessage = err instanceof TypeError && err.message.includes('fetch')
-        ? 'Network error: Unable to connect to the server'
-        : err instanceof Error ? err.message : 'Unknown error';
-      console.error('Cross-source comparison failed:', errorMessage, err);
-    } finally {
-      setIsLoadingComparison(false);
-    }
-  };
-
-  const handleRetry = () => {
-    loadDailyBriefing();
-  };
-  
-  // Handle topic selection and trigger DEEP LLM analysis
-  const handleTopicSelect = useCallback(async (topic: TopicKey) => {
-    setSelectedTopic(topic);
+  useEffect(() => {
     setDeepAnalysis(null);
+    if (!story) return;
+    let cancelled = false;
     setIsLoadingDeep(true);
-    
-    // Get the topic data and trigger enhanced analysis
-    if (briefing?.topics[topic]) {
-      const topicData = briefing.topics[topic];
-      
-      // Strip HTML tags for analysis
-      const textContent = topicData.article.content
-        .replace(/<[^>]*>/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
-      
-      // Run enhanced LLM analysis in background
-      runEnhancedAnalysis(textContent, {
-        title: topicData.article.title,
-        source: topicData.article.source,
-        author: topicData.article.author
-      }).catch(err => {
-        console.warn('Enhanced analysis failed, using fallback:', err);
+    fetch(`${API_CONFIG.BASE_URL}/api/ai/analyze-deep`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ article: { title: story.article.title } })
+    })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.success) setDeepAnalysis(data.analysis);
+      })
+      .catch(() => undefined)
+      .finally(() => {
+        if (!cancelled) setIsLoadingDeep(false);
       });
-      
-      // Also fetch DEEP industry-leading analysis
-      try {
-        const response = await fetch(`${API_CONFIG.BASE_URL}/api/ai/analyze-deep`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            article: {
-              title: topicData.article.title,
-              content: textContent,
-              source: topicData.article.source,
-              author: topicData.article.author
-            }
-          })
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success && data.analysis) {
-            setDeepAnalysis(data.analysis);
-          }
-        }
-      } catch (err) {
-        console.warn('Deep analysis request failed:', err);
-      } finally {
-        setIsLoadingDeep(false);
-      }
-    }
-  }, [briefing, runEnhancedAnalysis]);
+    window.scrollTo(0, 0);
+    return () => {
+      cancelled = true;
+    };
+  }, [story]);
 
-  // Loading state
+  const highlights = useMemo(() => (story ? highlightsFor(story, deepAnalysis) : []), [story, deepAnalysis]);
+
+  const navigate = (params: Record<string, string | null>) => {
+    const next = new URLSearchParams(searchParams);
+    for (const [key, value] of Object.entries(params)) {
+      if (value) next.set(key, value);
+      else next.delete(key);
+    }
+    setSearchParams(next);
+  };
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="daily-briefing-page">
         <div className="loading-container">
           <div className="loading-spinner" />
-          <h2>Loading Briefing...</h2>
-          <p>Preparing your truth assessment</p>
+          <h2>Loading the briefing...</h2>
         </div>
       </div>
     );
   }
 
-  // Archive modal
   if (showArchive) {
     return (
       <div className="daily-briefing-page archive-mode">
         <div className="archive-modal">
           <div className="archive-header">
             <h2>BRIEFING ARCHIVE</h2>
-            <button className="close-button" onClick={() => setShowArchive(false)}>
-              (CLOSE)
-            </button>
+            <button className="close-button" onClick={() => navigate({ view: null })}>(CLOSE)</button>
           </div>
-          
-          {loadingArchive ? (
-            <div className="archive-loading">
-              <div className="loading-spinner small" />
-              <p>Loading archive...</p>
-            </div>
+          {archiveDates === null ? (
+            <div className="archive-loading"><div className="loading-spinner small" /><p>Loading archive...</p></div>
           ) : archiveDates.length === 0 ? (
-            <div className="archive-empty">
-              <p>NO ARCHIVED BRIEFINGS.</p>
-              <p className="archive-hint">Past briefings will appear here once saved.</p>
-            </div>
+            <div className="archive-empty"><p>NO ARCHIVED BRIEFINGS YET.</p></div>
           ) : (
             <div className="archive-list">
               {archiveDates.map(({ date, formatted }) => (
-                <button
-                  key={date}
-                  className="archive-date-button"
-                  onClick={() => handleSelectDate(date)}
-                >
+                <button key={date} className="archive-date-button" onClick={() => navigate({ view: null, story: null, date })}>
                   <span className="archive-date-icon">[DATE]</span>
                   <span className="archive-date-text">{formatted}</span>
                   <span className="archive-date-arrow">→</span>
@@ -503,362 +191,166 @@ const DailyBriefingPage: React.FC = () => {
     );
   }
 
-  // Ensure we have data
   if (!briefing) {
-    setBriefing(fallbackBriefing as DailyBriefing);
-    setIsOffline(true);
-    return null;
-  }
-
-  // Reader view (article selected)
-  if (selectedTopic) {
-    const topicData = briefing.topics[selectedTopic];
-    
-    // Use enhanced analysis if available, otherwise fall back to static data
-    const fallacies = enhancedFallacies.length > 0 
-      ? enhancedFallacies 
-      : (topicData ? getFallacies(topicData) : []);
-    const staticBias = topicData ? getBias(topicData) : null;
-    const staticSummary = topicData ? getSummary(topicData) : null;
-    
-    // Enhanced analysis values (from LLM)
-    const analysisSource = enhancedAnalysis ? 'LLM' : 'Static';
-    const displayBias = enhancedAnalysis ? {
-      direction: enhancedAnalysis.bias,
-      score: enhancedAnalysis.bias === 'center' ? 50 : 
-             enhancedAnalysis.bias.includes('center') ? 65 : 80,
-      confidence: enhancedAnalysis.biasConfidence / 100,
-      explanation: `${enhancedAnalysis.tone} tone detected. ${enhancedAnalysis.summary}`
-    } : staticBias;
-    const displaySummary = enhancedAnalysis?.summary || staticSummary;
-
     return (
-      <div className="daily-briefing-page reader-mode">
-        <div className="reader-nav">
-          <button className="back-button" onClick={handleBackClick}>
-            ← Back to Topics
-          </button>
-          {isOffline && <span className="offline-badge">Demo Data</span>}
-          {briefing.isArchive && <span className="archive-badge">Archive</span>}
-          {isAnalyzing && (
-            <span className="analyzing-badge">
-              <span className="analyzing-spinner" />
-              Analyzing...
-            </span>
-          )}
-          {enhancedAnalysis && !isAnalyzing && (
-            <span className="llm-badge" title="Analysis powered by LLM">
-              ✨ LLM Analysis
-            </span>
-          )}
-        </div>
-        
-        {topicData ? (
-          <article className="briefing-article">
-            <header className="article-header">
-              <div className="topic-badge">
-                <span className="topic-label">[{topicData.topic.toUpperCase()}]</span>
-              </div>
-              <h1 className="article-title">{topicData.article.title}</h1>
-              <div className="article-meta">
-                <span className="article-source">{topicData.article.source}</span>
-                {topicData.article.publishDate && (
-                  <span className="article-date">
-                    {new Date(topicData.article.publishDate).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric'
-                    })}
-                  </span>
-                )}
-                {enhancedAnalysis?.tone && (
-                  <span className="tone-badge">
-                    {enhancedAnalysis.tone}
-                  </span>
-                )}
-                {briefing?.generatedAt && (
-                  <span className="analysis-timestamp" title="Analysis last updated">
-                    Updated: {new Date(briefing.generatedAt).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      hour: 'numeric',
-                      minute: '2-digit'
-                    })}
-                  </span>
-                )}
-                {enhancedAnalysis?.biasConfidence && (
-                  <span className="analysis-quality-badge" title="How confident the analysis is about the article's political lean">
-                    Bias confidence: {Math.round(enhancedAnalysis.biasConfidence)}%
-                  </span>
-                )}
-              </div>
-              
-              {/* Enhanced Bias Meter */}
-              {enhancedAnalysis && (
-                <div className="bias-meter-container">
-                  <div className="bias-meter">
-                    <span className="bias-label-left">LEFT</span>
-                    <div className="bias-track">
-                      <div 
-                        className={`bias-indicator bias-${enhancedAnalysis.bias.replace('-', '')}`}
-                        style={{
-                          left: enhancedAnalysis.bias === 'left' ? '10%' :
-                                enhancedAnalysis.bias === 'center-left' ? '30%' :
-                                enhancedAnalysis.bias === 'center' ? '50%' :
-                                enhancedAnalysis.bias === 'center-right' ? '70%' : '90%'
-                        }}
-                      />
-                    </div>
-                    <span className="bias-label-right">RIGHT</span>
-                  </div>
-                  <span className="bias-confidence">
-                    {enhancedAnalysis.biasConfidence}% confidence
-                  </span>
-                </div>
-              )}
-            </header>
-            
-            {/* QUICK SCAN AREA: Executive Summary (if available) */}
-            {deepAnalysis?.executive_summary && (
-              <div className="quick-scan-area">
-                <DeepAnalysisPanel 
-                  analysis={deepAnalysis} 
-                  isLoading={false}
-                  showOnlySummary={true}
-                />
-              </div>
-            )}
-            
-            <StorySoFar topicKey={selectedTopic} currentUrl={topicData.article.url} />
-
-            {/* VISUAL SEPARATOR: Thick border between Quick Scan and Deep Dive */}
-            <div className="quick-scan-divider"></div>
-            
-            {/* DEEP DIVE AREA: Full Article Content */}
-            <div className="deep-dive-area">
-              <ReaderView
-                articleContent={topicData.article.content}
-                fallacyData={fallacies}
-              />
-              
-              {/* DEEP ANALYSIS PANEL - Industry Leading (Full Analysis) */}
-              {(deepAnalysis || isLoadingDeep) && (
-                <DeepAnalysisPanel 
-                  analysis={deepAnalysis} 
-                  isLoading={isLoadingDeep}
-                  showOnlySummary={false}
-                />
-              )}
-            </div>
-            
-            {/* Analysis Section: Enhanced with LLM data (fallback if no deep analysis) */}
-            {!deepAnalysis && !isLoadingDeep && (
-            <section className="article-analysis-section">
-              <h2 className="analysis-section-title">
-                Analysis
-                {isAnalyzing && <span className="analysis-loading"> (Analyzing with AI...)</span>}
-              </h2>
-              
-              {/* Manipulation Techniques (NEW from LLM) */}
-              {enhancedAnalysis?.manipulationTechniques && enhancedAnalysis.manipulationTechniques.length > 0 && (
-                <div className="analysis-subsection">
-                  <h3 className="subsection-title">Manipulation Techniques</h3>
-                  <div className="techniques-list">
-                    {enhancedAnalysis.manipulationTechniques.map((technique, i) => (
-                      <span key={i} className="technique-tag">{technique}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {/* Fallacies - Now with Better Alternatives */}
-              {fallacies.length > 0 && (
-                <div className="analysis-subsection">
-                  <h3 className="subsection-title">Logical Fallacies ({fallacies.length})</h3>
-                  <div className="fallacies-list">
-                    {fallacies.map((fallacy) => (
-                      <div key={fallacy.id} className="fallacy-item">
-                        <div className="fallacy-header">
-                          <span className="fallacy-type">{fallacy.type}</span>
-                          <span className={`severity-badge severity-${fallacy.severity}`}>
-                            {fallacy.severity}
-                          </span>
-                        </div>
-                        {fallacy.excerpt && (
-                          <p className="fallacy-excerpt">"{fallacy.excerpt}"</p>
-                        )}
-                        {fallacy.explanation && (
-                          <p className="fallacy-explanation">{fallacy.explanation}</p>
-                        )}
-                        {/* Better Alternative - from enhanced analysis */}
-                        {fallacy.motive && fallacy.motive.startsWith('A fair argument') && (
-                          <div className="better-alternative">
-                            <span className="alternative-label">✓ Better Approach:</span>
-                            <p className="alternative-text">{fallacy.motive.replace('A fair argument would instead: ', '')}</p>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {fallacies.length === 0 && !isAnalyzing && (
-                <div className="analysis-subsection">
-                  <h3 className="subsection-title">Logical Fallacies</h3>
-                  <p className="no-fallacies">No significant logical fallacies detected.</p>
-                </div>
-              )}
-              
-              {/* Bias Analysis */}
-              {displayBias && (
-                <div className="analysis-subsection">
-                  <h3 className="subsection-title">Bias Analysis</h3>
-                  <div className="bias-info">
-                    {displayBias.direction && (
-                      <div className="bias-item">
-                        <span className="bias-label">Direction:</span>
-                        <span className={`bias-value bias-${displayBias.direction.replace('-', '')}`}>
-                          {displayBias.direction.toUpperCase()}
-                        </span>
-                      </div>
-                    )}
-                    {displayBias.confidence !== undefined && (
-                      <div className="bias-item">
-                        <span className="bias-label">Confidence:</span>
-                        <span className="bias-value">{Math.round(displayBias.confidence * 100)}%</span>
-                      </div>
-                    )}
-                    {displayBias.explanation && (
-                      <p className="bias-explanation">{displayBias.explanation}</p>
-                    )}
-                  </div>
-                </div>
-              )}
-              
-              {/* Summary */}
-              {displaySummary && (
-                <div className="analysis-subsection">
-                  <h3 className="subsection-title">AI Summary</h3>
-                  <p className="summary-text">{displaySummary}</p>
-                </div>
-              )}
-            </section>
-            )}  {/* End fallback analysis section */}
-            
-            {/* CROSS-SOURCE COMPARISON - Full Modal View */}
-            {showFullComparison && (
-              <SourceComparisonView
-                primaryArticle={{
-                  title: topicData.article.title,
-                  content: topicData.article.content,
-                  source: topicData.article.source,
-                  url: topicData.article.url
-                }}
-                keywords={(() => {
-                  const keywordMap: Record<string, string[]> = {
-                    ukraine: ['ukraine', 'russia', 'war', 'zelensky', 'putin', 'peace'],
-                    gaza: ['gaza', 'israel', 'hamas', 'palestine', 'ceasefire'],
-                    diseases: ['health', 'disease', 'vaccine', 'medical', 'outbreak'],
-                    epstein: ['court', 'justice', 'law', 'judge', 'trial', 'legal'],
-                    trump: ['economy', 'market', 'inflation', 'trade', 'tariff']
-                  };
-                  return keywordMap[selectedTopic] || [selectedTopic];
-                })()}
-                onClose={() => setShowFullComparison(false)}
-              />
-            )}
-
-            <footer className="article-footer">
-              {!isOffline && topicData.article.url && (
-                <a 
-                  href={topicData.article.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="original-link"
-                >
-                  [READ ORIGINAL SOURCE]
-                </a>
-              )}
-            </footer>
-          </article>
-        ) : (
-          <div className="no-article">
-            <p>Article not available for this topic.</p>
+      <div className="daily-briefing-page dashboard-mode">
+        <div className="dashboard-header">
+          <h1 className="dashboard-subtitle">THE DAILY AUTHENTIC</h1>
+          <div className="error-banner" role="alert">
+            <span>[UNAVAILABLE] {loadError || 'The briefing could not be loaded.'}</span>
+            <button className="retry-link" onClick={loadBriefing}>(RETRY)</button>
           </div>
-        )}
+          {requestedDate && <button className="back-to-today" onClick={() => navigate({ date: null })}>← Back to today</button>}
+        </div>
       </div>
     );
   }
 
-  // Dashboard view (5-card grid)
+  if (selectedKey && !story) {
+    return (
+      <div className="daily-briefing-page dashboard-mode">
+        <div className="dashboard-header">
+          <div className="error-banner" role="alert">
+            <span>[NOT FOUND] That story is not in this briefing.</span>
+            <button className="retry-link" onClick={() => navigate({ story: null })}>(SEE ALL STORIES)</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (story) {
+    const lean = deepAnalysis?.bias_analysis?.political_lean || story.analysis?.biasAnalysis?.direction;
+    const leanConfidence = deepAnalysis?.bias_analysis?.confidence ?? (story.analysis?.biasAnalysis ? Math.round(story.analysis.biasAnalysis.confidence * 100) : null);
+    const tone = deepAnalysis?.tone;
+
+    return (
+      <div className="daily-briefing-page reader-mode">
+        <div className="reader-nav">
+          <button className="back-button" onClick={() => navigate({ story: null })}>← All stories</button>
+          <button className="back-button" onClick={copyLink}>{copied ? 'Link copied' : 'Copy link'}</button>
+          {briefing.isArchive && <span className="archive-badge">Archive</span>}
+        </div>
+
+        <article className="briefing-article">
+          <header className="article-header">
+            <div className="topic-badge">
+              <span className="topic-label">[{(story.category || 'NEWS').toUpperCase()}] {story.topic.toUpperCase()}</span>
+            </div>
+            <h1 className="article-title">{story.article.title}</h1>
+            <div className="article-meta">
+              <span className="article-source">{story.article.source}</span>
+              {story.article.publishDate && (
+                <span className="article-date">
+                  {new Date(story.article.publishDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </span>
+              )}
+              {tone && <span className="tone-badge">{tone}</span>}
+              {story.outlets && story.outlets.length > 1 && <span className="analysis-timestamp">Covered by {story.outlets.length} outlets</span>}
+            </div>
+
+            {lean && LEAN_POSITION[lean] && (
+              <div className="bias-meter-container" aria-label={`Political lean: ${lean}`}>
+                <div className="bias-meter">
+                  <span className="bias-label-left">LEFT</span>
+                  <div className="bias-track">
+                    <div className={`bias-indicator bias-${lean.replace('-', '')}`} style={{ left: LEAN_POSITION[lean] }} />
+                  </div>
+                  <span className="bias-label-right">RIGHT</span>
+                </div>
+                <span className="bias-confidence">
+                  Leans {lean}{leanConfidence !== null ? ` · ${leanConfidence}% confidence` : ''} · <Link to="/method#bias">how this is judged</Link>
+                </span>
+              </div>
+            )}
+          </header>
+
+          {deepAnalysis?.executive_summary && (
+            <div className="quick-scan-area">
+              <DeepAnalysisPanel analysis={deepAnalysis} isLoading={false} showOnlySummary={true} />
+            </div>
+          )}
+
+          {selectedKey && <StorySoFar topicKey={selectedKey} currentUrl={story.article.url} />}
+
+          <div className="quick-scan-divider"></div>
+
+          <div className="deep-dive-area">
+            <ReaderView articleContent={story.article.content} fallacyData={highlights} />
+            {(deepAnalysis || isLoadingDeep) && (
+              <DeepAnalysisPanel analysis={deepAnalysis} isLoading={isLoadingDeep} showOnlySummary={false} />
+            )}
+          </div>
+
+          <SourceComparisonView
+            primaryArticle={{
+              title: story.article.title,
+              content: story.article.content,
+              source: story.article.source,
+              url: story.article.url
+            }}
+            keywords={[]}
+          />
+
+          <footer className="article-footer">
+            <a href={story.article.url} target="_blank" rel="noopener noreferrer" className="original-link">
+              [READ THE ORIGINAL AT {story.article.source.toUpperCase()}]
+            </a>
+          </footer>
+        </article>
+      </div>
+    );
+  }
+
+  const keys = storyOrder(briefing);
+  const date = briefing.briefingDate || briefing.generatedAt.slice(0, 10);
+
   return (
     <div className="daily-briefing-page dashboard-mode">
       <div className="dashboard-header">
-        <p className="briefing-date">
-          {briefing.briefingDate 
-            ? new Date(briefing.briefingDate + 'T12:00:00').toLocaleDateString('en-US', {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric'
-              })
-            : new Date(briefing.generatedAt).toLocaleDateString('en-US', {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric'
-              })
-          }
+        <p className="briefing-date">{formatLongDate(date)}</p>
+        <h1 className="dashboard-subtitle">{briefing.isArchive ? 'THE ARCHIVE' : 'THE DAILY AUTHENTIC'}</h1>
+        <p className="masthead-dek">
+          The day&apos;s most-covered stories, read closely for logic, rhetoric, and framing.
+          Analyzed once, the same for everyone. <Link to="/method">How this works</Link>
         </p>
-        <h1 className="dashboard-subtitle">
-          {briefing.isArchive ? 'THE ARCHIVE' : 'THE DAILY AUTHENTIC'}
-        </h1>
-        
+        <p className="masthead-meta">
+          {keys.length} STORIES
+          {briefing.selection ? ` · CHOSEN FROM ${briefing.selection.headlineCount} HEADLINES${briefing.selection.outletCount ? ` ACROSS ${briefing.selection.outletCount} OUTLETS` : ''}` : ''}
+          {` · UPDATED ${formatTime(briefing.generatedAt).toUpperCase()}`}
+        </p>
         {briefing.isArchive && (
-          <button className="back-to-today" onClick={handleBackToToday}>
-            ← Back to Today
-          </button>
-        )}
-        
-        {isOffline && (
-          <div className="offline-banner">
-            <span className="offline-icon">[OFFLINE]</span>
-            <span className="offline-text">DEMO DATA — BACKEND WARMING UP</span>
-            <button className="retry-link" onClick={handleRetry}>
-              (RETRY)
-            </button>
-          </div>
+          <button className="back-to-today" onClick={() => navigate({ date: null })}>← Back to today</button>
         )}
       </div>
-      
+
       <div className="topic-grid">
-        {TOPIC_KEYS.map((key) => {
-          const topic = briefing.topics[key];
-          if (!topic) return null;
-          
+        {keys.map((key) => {
+          const item = briefing.topics[key];
           return (
-            <button
-              key={key}
-              className="topic-card"
-              onClick={() => handleTopicSelect(key)}
-              aria-label={`Read about ${topic.topic}`}
-            >
-              <h3 className="card-topic">[{topic.topic.toUpperCase()}]</h3>
-              <p className="card-headline">{topic.article.title}</p>
+            <button key={key} className="topic-card" onClick={() => navigate({ story: key })} aria-label={`Read: ${item.article.title}`}>
+              <h3 className="card-topic">[{(item.category || 'NEWS').toUpperCase()}] {item.topic}</h3>
+              <p className="card-headline">{item.article.title}</p>
+              {item.why && <p className="card-dek">{item.why}</p>}
               <div className="card-meta">
-                <span className="card-source">{topic.article.source}</span>
+                <span className="card-source">{item.article.source}</span>
+                {item.outlets && item.outlets.length > 1 && <span className="card-flag">{item.outlets.length} OUTLETS</span>}
+                {item.dayCount && item.dayCount > 1 ? (
+                  <span className="card-flag">DAY {item.dayCount}</span>
+                ) : item.dayCount === 1 ? (
+                  <span className="card-flag">NEW STORY</span>
+                ) : null}
               </div>
             </button>
           );
         })}
       </div>
-      
+
       <div className="dashboard-actions">
-        <button className="archive-button" onClick={handleOpenArchive}>
-          [ARCHIVE] BROWSE HISTORY
-        </button>
+        <button className="archive-button" onClick={() => navigate({ view: 'archive' })}>[ARCHIVE] BROWSE PAST BRIEFINGS</button>
       </div>
+
+      <SubscribeBox />
     </div>
   );
 };

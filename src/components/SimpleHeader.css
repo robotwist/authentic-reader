@@ -39,7 +39,48 @@
   text-transform: uppercase;
 }
 
+.simple-header-home {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  min-width: 0;
+}
+
+.simple-header-nav {
+  margin-left: auto;
+  display: flex;
+  gap: 1.25rem;
+}
+
+.simple-header-nav a {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-ink, #1A1A1A);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+
+.simple-header-nav a:hover,
+.simple-header-nav a:focus-visible {
+  border-bottom-color: var(--text-ink, #1A1A1A);
+}
+
 @media (max-width: 768px) {
+  .simple-header-content {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+
+  .simple-header-nav {
+    margin-left: 0;
+    width: 100%;
+    gap: 1rem;
+  }
+
   .simple-header {
     padding: 0.75rem 1rem;
     border-bottom-width: 3px; /* Slightly thinner on mobile */

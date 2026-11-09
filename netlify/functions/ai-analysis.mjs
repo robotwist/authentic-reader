@@ -1,4 +1,4 @@
-import { getStore } from '@netlify/blobs';
+import { briefingsStore } from '../lib/store.mjs';
 import { articleKey, toLegacyAnalysis } from '../lib/briefing.mjs';
 
 // Analysis is generated once per day by generate-briefing-background; these
@@ -39,7 +39,7 @@ export default async (req) => {
     : body?.article?.title;
   if (!title) return notCached();
 
-  const store = getStore({ name: 'briefings', consistency: 'strong' });
+  const store = briefingsStore();
   const record = await store.get(articleKey(title), { type: 'json' });
 
   if (route === 'analyze-deep') {

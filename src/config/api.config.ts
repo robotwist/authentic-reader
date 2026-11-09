@@ -4,50 +4,13 @@
  * Centralized configuration for API endpoints and settings
  */
 
-// Debug logging for environment variables
-console.log('[API Config] Environment variables:', {
-  viteApiUrl: import.meta.env?.VITE_API_URL,
-  nodeEnv: import.meta.env?.MODE,
-  allEnv: import.meta.env
-});
-
-// Determine the API base URL from environment variables or default to production
+// The API is served by Netlify Functions on the same origin. VITE_API_URL
+// overrides this for local development against another server.
 export const API_BASE_URL = (() => {
-  // Check for environment variables in Vite format first
   const viteUrl = import.meta.env?.VITE_API_URL;
-  if (viteUrl) {
-    console.log('[API Config] Using Vite API URL:', viteUrl);
-    // Remove trailing slash if present
-    return viteUrl.replace(/\/$/, '');
-  }
-  
-  // Then check for CRA format environment variables
-  const craUrl = window.env?.REACT_APP_API_URL;
-  if (craUrl) {
-    console.log('[API Config] Using CRA API URL:', craUrl);
-    return craUrl.replace(/\/$/, '');
-  }
-  
-  // Check for Railway URL (will be set by Railway)
-  const railwayUrl = import.meta.env?.VITE_RAILWAY_URL;
-  if (railwayUrl) {
-    console.log('[API Config] Using Railway API URL:', railwayUrl);
-    return railwayUrl.replace(/\/$/, '');
-  }
-  
-  // Production: the API is served by Netlify Functions on the same origin
-  if (import.meta.env?.MODE === 'production' || window.location.hostname !== 'localhost') {
-    console.log('[API Config] Using same-origin Netlify Functions API');
-    return window.location.origin;
-  }
-  
-  // Default to local backend for development
-  console.log('[API Config] Using local backend for development');
-  return 'http://localhost:3000';
+  if (viteUrl) return viteUrl.replace(/\/$/, '');
+  return window.location.origin;
 })();
-
-// Log the final API base URL
-console.log('[API Config] Final API base URL:', API_BASE_URL);
 
 // API configuration object
 export const API_CONFIG = {

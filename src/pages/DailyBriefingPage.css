@@ -1937,4 +1937,119 @@
   box-shadow: var(--shadow-sm, 2px 2px 0px 0px #000000); /* Hard shadow shift */
   transform: translate(-2px, -2px); /* Hard offset */
 }
+
+/* ------------------------------------------------------------------
+   Daily stories layout: a lead story, then the rest in two columns.
+   ------------------------------------------------------------------ */
+.dashboard-mode .topic-grid {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.dashboard-mode .topic-card {
+  min-height: 0;
+}
+
+.dashboard-mode .topic-card:first-child {
+  grid-column: 1 / -1;
+}
+
+.dashboard-mode .topic-card:first-child .card-headline {
+  font-size: 2rem;
+  -webkit-line-clamp: unset;
+}
+
+.card-dek {
+  text-transform: none;
+  font-family: var(--font-body, 'Georgia', serif);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--text-muted, #4A4A4A);
+  margin: 0;
+}
+
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.5rem 1rem;
+  align-items: center;
+}
+
+.card-flag {
+  color: var(--text-ink, #1A1A1A);
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border: 1px solid currentColor;
+  padding: 0.125rem 0.375rem;
+}
+
+.topic-card:hover .card-dek,
+.topic-card:hover .card-flag {
+  color: var(--bg-white, #FFFFFF);
+}
+
+.masthead-dek {
+  font-family: var(--font-body, 'Georgia', serif);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  max-width: 640px;
+  margin: 1.25rem auto 0.75rem;
+  color: var(--text-ink, #1A1A1A);
+}
+
+.masthead-dek a,
+.bias-confidence a {
+  color: var(--text-ink, #1A1A1A);
+}
+
+.masthead-meta {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted, #4A4A4A);
+  margin: 0;
+}
+
+.error-banner {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.5rem;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--text-ink, #1A1A1A);
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+}
+
+.dashboard-mode .dashboard-actions {
+  max-width: 1100px;
+  margin: 2rem auto 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .dashboard-mode .topic-grid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .dashboard-mode .topic-card:first-child .card-headline {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-subtitle {
+    font-size: 2.25rem;
+  }
+
+  .masthead-dek {
+    font-size: 1rem;
+  }
 }

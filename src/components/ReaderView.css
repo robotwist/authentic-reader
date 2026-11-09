@@ -612,3 +612,12 @@
     animation: none;
   }
 }
+
+/* Justified text leaves wide word gaps in narrow columns. */
+@media (max-width: 768px) {
+  .reader-content.prose,
+  .reader-content.prose p {
+    text-align: left;
+    hyphens: auto;
+  }
+}
