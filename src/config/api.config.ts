@@ -35,10 +35,10 @@ export const API_BASE_URL = (() => {
     return railwayUrl.replace(/\/$/, '');
   }
   
-  // Production fallback - use Heroku backend
+  // Production: the API is served by Netlify Functions on the same origin
   if (import.meta.env?.MODE === 'production' || window.location.hostname !== 'localhost') {
-    console.log('[API Config] Using production Heroku API URL');
-    return 'https://authentic-reader-backend-c7754cf50ab2.herokuapp.com';
+    console.log('[API Config] Using same-origin Netlify Functions API');
+    return window.location.origin;
   }
   
   // Default to local backend for development
