@@ -1425,9 +1425,15 @@
 .bias-indicator.bias-center,
 .bias-indicator.bias-centerright,
 .bias-indicator.bias-right {
+  display: block;
+  width: 0;
+  min-width: 0;
+  height: 0;
+  flex: none;
   background: none;
   color: inherit;
   padding: 0;
+  border-radius: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
   border-bottom: 8px solid var(--text-ink, #1A1A1A);
