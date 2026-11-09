@@ -113,3 +113,6 @@ playwright-report/
 *.tmp
 *.temp
 .specstory/
+
+# Netlify CLI state and local build output
+.netlify/

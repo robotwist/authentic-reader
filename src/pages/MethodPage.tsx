@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { submitNetlifyForm } from '../components/SubscribeBox';
+import { submitNetlifyForm } from '../lib/forms';
 import './MethodPage.css';
 
 // Keep in sync with FEEDS in netlify/lib/sources.mjs.

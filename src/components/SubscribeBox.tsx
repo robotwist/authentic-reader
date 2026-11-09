@@ -1,18 +1,8 @@
 import React, { useState } from 'react';
+import { submitNetlifyForm } from '../lib/forms';
 import './SubscribeBox.css';
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
-
-/** Posts to Netlify Forms; the static copy of this form lives in index.html. */
-export async function submitNetlifyForm(formName: string, fields: Record<string, string>) {
-  const body = new URLSearchParams({ 'form-name': formName, ...fields });
-  const response = await fetch('/', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: body.toString()
-  });
-  if (!response.ok) throw new Error(`Form submission failed: ${response.status}`);
-}
 
 const SubscribeBox: React.FC = () => {
   const [email, setEmail] = useState('');

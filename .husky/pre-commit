@@ -1,23 +1,10 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-# Check if we're in a merge state
 if git rev-parse --verify MERGE_HEAD >/dev/null 2>&1; then
-  echo "Merge in progress, skipping pre-commit hooks"
+  echo "Merge in progress, skipping pre-commit checks"
   exit 0
 fi
 
-echo "Running pre-commit hooks..."
-
-# Lint server code and check route-controller consistency
-cd server || exit 1
-npm run lint || exit 1
-npm run check:routes || exit 1
-cd ..
-
-# Lint React code - uncomment if needed
-# npm run lint
-
-echo "✅ Pre-commit checks passed!"
-
-echo "✅ Pre-commit checks passed!"
+npm run test:pipeline --silent || exit 1
+npm run typecheck --silent || exit 1
