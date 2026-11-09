@@ -90,7 +90,7 @@ const COMPARISON_SYSTEM_PROMPT = `You are a media bias expert analyzing how diff
 
 Compare the coverage and return JSON with this structure:
 {
-  "same_story_sources": ["Names, exactly as given, of the related sources reporting the same specific story as the primary article"],
+  "same_story_sources": ["Names, exactly as given, of the related sources covering the same news event or ongoing story as the primary article"],
   "story_core": {
     "common_facts": ["Fact all sources agree on"],
     "disputed_facts": ["Fact where sources disagree"]
@@ -118,7 +118,7 @@ Compare the coverage and return JSON with this structure:
   }
 }
 
-Related sources were found by keyword search, so some may be about a different story. Leave those out of "same_story_sources" and out of every other field. If none cover the same story, return an empty "same_story_sources" array. Output only valid JSON.`;
+Related sources come from the same group of headlines as the primary article, so most cover the same story. Include a source if it reports the same event or the same ongoing story, even when it covers a different moment, stage, or angle of it (for example, another stop on the same trip, or a later development in the same case). Leave out only sources about a different event, and leave those out of every other field too. Output only valid JSON.`;
 
 // Character-level normalization that keeps an index back into the original
 // text, so a model quote can be mapped to the article's exact wording.
