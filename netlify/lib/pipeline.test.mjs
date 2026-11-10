@@ -176,3 +176,13 @@ test('the email edition lists every story and opinion with links, and waits unti
   assert.equal(readyToSend({ storiesPublished: 3, storiesPlanned: 5 }, at(16)), true);
   assert.equal(readyToSend({ storiesPublished: 0, storiesPlanned: 5 }, at(21)), false);
 });
+
+test('the sharpest point prefers the analysis finding, then headline, technique, sourcing, omission', async () => {
+  const { sharpestPoint } = await import('./analysis.mjs');
+  assert.equal(sharpestPoint({ sharpest_point: { finding: 'Leads with the most alarming figure.', kind: 'numbers' } }).kind, 'numbers');
+  assert.equal(sharpestPoint({ rhetorical_analysis: { headline_accuracy: { matches_content: false, issues: 'Says "collapse"; the body says "slowdown".' }, manipulation_techniques: [{ type: 'Loaded Language', explanation: 'x', severity: 'high' }] } }).kind, 'headline');
+  assert.match(sharpestPoint({ rhetorical_analysis: { manipulation_techniques: [{ type: 'Low One', explanation: 'a', severity: 'low' }, { type: 'False Choice', explanation: 'b', severity: 'high', quote: 'q' }] } }).finding, /^False Choice/);
+  assert.equal(sharpestPoint({ rhetorical_analysis: { manipulation_techniques: [], source_transparency: { named_sources: 1, anonymous_sources: 3 } } }).kind, 'sourcing');
+  assert.equal(sharpestPoint({ missing_context: { critical_omissions: ['The baseline year'] } }).finding, 'Leaves out: The baseline year');
+  assert.equal(sharpestPoint({}).kind, 'none');
+});

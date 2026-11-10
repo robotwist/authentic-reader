@@ -20,6 +20,11 @@ Return a JSON object with exactly this structure:
     "key_facts": ["2-4 points on how to interpret this story: concepts, methods, or processes, e.g. what an observational study can and cannot show, what a percentage is compared against, how coalition formation works. No statistics, current events, or people's roles from memory"],
     "key_terms": [{ "term": "Jargon, acronym, institution, or person named in the article", "definition": "One plain-language sentence" }]
   },
+  "sharpest_point": {
+    "finding": "The single most important thing a critical reader should notice about how this article is written, in one plain sentence. If the article is careful, say what it does well instead.",
+    "quote": "The exact passage the finding rests on, or an empty string",
+    "kind": "framing | omission | sourcing | logic | headline | numbers | none"
+  },
   "tone": "One or two words for the article's tone, e.g. Measured, Urgent, Sympathetic, Alarmist, Dismissive, Celebratory",
   "logic_score": {
     "overall": 0-100,
@@ -233,6 +238,10 @@ export function groundAnalysisQuotes(deep, content) {
   if (deep.emotional_manipulation) {
     deep.emotional_manipulation.techniques_used = groundList(deep.emotional_manipulation.techniques_used);
   }
+  if (deep.sharpest_point?.quote) {
+    const [grounded] = groundList([{ quote: deep.sharpest_point.quote }]);
+    deep.sharpest_point.quote = grounded ? grounded.quote : '';
+  }
   const seenClaims = new Set();
   deep.claims_to_check = groundList(deep.claims_to_check).filter((c) => !seenClaims.has(c.quote) && seenClaims.add(c.quote));
   return stats;
@@ -409,11 +418,42 @@ export async function compareCoverage(article, candidates, ai) {
 }
 
 /** Shape read by getFallacies/getBias/getSummary in DailyBriefingPage. */
+const SEVERITY_RANK = { high: 0, medium: 1, low: 2 };
+
+/**
+ * The one thing a critical reader should notice first: the analysis' own
+ * sharpest point when present, otherwise the most serious finding it has.
+ * Keep in step with sharpestPoint in src/components/CriticalRead.tsx.
+ */
+export function sharpestPoint(deep) {
+  if (!deep) return null;
+  if (deep.sharpest_point?.finding) {
+    return { finding: deep.sharpest_point.finding, quote: deep.sharpest_point.quote || '', kind: deep.sharpest_point.kind || 'logic' };
+  }
+  const headline = deep.rhetorical_analysis?.headline_accuracy;
+  if (headline && headline.matches_content === false && headline.issues) {
+    return { finding: `The headline goes beyond the story: ${headline.issues}`, quote: '', kind: 'headline' };
+  }
+  const techniques = [...(deep.rhetorical_analysis?.manipulation_techniques || [])]
+    .sort((a, b) => (SEVERITY_RANK[a.severity] ?? 1) - (SEVERITY_RANK[b.severity] ?? 1));
+  if (techniques[0]) {
+    return { finding: `${techniques[0].type}: ${techniques[0].explanation}`, quote: techniques[0].quote || '', kind: 'logic' };
+  }
+  const sources = deep.rhetorical_analysis?.source_transparency;
+  if (sources && sources.anonymous_sources > 0 && sources.anonymous_sources >= sources.named_sources) {
+    return { finding: `Rests mostly on anonymous sources (${sources.anonymous_sources} unnamed, ${sources.named_sources} named).`, quote: '', kind: 'sourcing' };
+  }
+  const omission = deep.missing_context?.critical_omissions?.[0];
+  if (omission) return { finding: `Leaves out: ${omission}`, quote: '', kind: 'omission' };
+  return { finding: 'No misleading techniques in the outlet\'s own words.', quote: '', kind: 'none' };
+}
+
 export function toBriefingAnalysis(deep) {
   if (!deep) return null;
   const lean = deep.bias_analysis?.political_lean;
   return {
     summary: deep.executive_summary?.one_sentence || null,
+    watchFor: sharpestPoint(deep),
     manipulationAnalysis: {
       logicalFallacies: (deep.rhetorical_analysis?.manipulation_techniques || []).map((t) => ({
         type: t.type || 'Unknown',

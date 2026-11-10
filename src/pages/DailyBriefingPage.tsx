@@ -7,6 +7,7 @@ import StorySoFar from '../components/StorySoFar';
 import SubscribeBox from '../components/SubscribeBox';
 import OpinionView from '../components/OpinionView';
 import LessonView from '../components/LessonView';
+import CriticalRead from '../components/CriticalRead';
 import { API_CONFIG } from '../config/api.config';
 import { recordView } from '../lib/stats';
 import { BriefingStory, DailyBriefing, FallacyData } from '../types/briefing';
@@ -30,6 +31,15 @@ const formatLongDate = (date: string) =>
 
 const formatTime = (iso: string) =>
   new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+
+/** One line for the front-page card; older editions lack watchFor, so fall back to the first flagged passage. */
+function cardWatchFor(story: BriefingStory): string {
+  const stored = story.analysis?.watchFor?.finding;
+  if (stored) return stored;
+  const first = story.analysis?.manipulationAnalysis?.logicalFallacies?.[0];
+  if (first) return `${first.type}: \u201c${first.location.length > 90 ? `${first.location.slice(0, 90)}\u2026` : first.location}\u201d`;
+  return 'No misleading techniques in the outlet\u2019s own words.';
+}
 
 function storyOrder(briefing: DailyBriefing): string[] {
   return (briefing.order || Object.keys(briefing.topics)).filter((key) => briefing.topics[key]);
@@ -277,7 +287,6 @@ const DailyBriefingPage: React.FC = () => {
         <div className="reader-nav">
           <button className="back-button" onClick={() => navigate({ story: null })}>← All stories</button>
           <button className="back-button" onClick={copyLink}>{copied ? 'Link copied' : 'Copy link'}</button>
-          <button className="back-button" onClick={() => navigate({ lesson: '1' })}>Classroom lesson</button>
           {briefing.isArchive && <span className="archive-badge">Archive</span>}
         </div>
 
@@ -313,6 +322,8 @@ const DailyBriefingPage: React.FC = () => {
               </div>
             )}
           </header>
+
+          {deepAnalysis && <CriticalRead deep={deepAnalysis} />}
 
           {deepAnalysis?.executive_summary && (
             <div className="quick-scan-area">
@@ -386,6 +397,7 @@ const DailyBriefingPage: React.FC = () => {
               <h3 className="card-topic">[{(item.category || 'NEWS').toUpperCase()}] {item.topic}</h3>
               <p className="card-headline">{item.article.title}</p>
               {item.why && <p className="card-dek">{item.why}</p>}
+              {item.analysis && <p className="card-watch"><span>WATCH FOR</span> {cardWatchFor(item)}</p>}
               <div className="card-meta">
                 <span className="card-source">{item.article.source}</span>
                 {item.outlets && item.outlets.length > 1 && <span className="card-flag">{item.outlets.length} OUTLETS</span>}

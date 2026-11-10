@@ -2068,3 +2068,28 @@
 .full-text-note a {
   color: var(--text-ink, #1A1A1A);
 }
+
+.card-watch {
+  margin: 0;
+  color: var(--text-ink, #1A1A1A);
+  font-family: var(--font-body, 'Georgia', serif);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-transform: none;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--text-ink, #1A1A1A);
+}
+
+.card-watch span {
+  display: block;
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.125rem;
+}
+
+.topic-card:hover .card-watch {
+  color: var(--bg-white, #FFFFFF);
+  border-left-color: var(--bg-white, #FFFFFF);
+}

@@ -25,6 +25,7 @@ export interface BriefingArticle {
 /** Summary analysis stored in the daily briefing (see toBriefingAnalysis in netlify/lib/analysis.mjs). */
 export interface BriefingAnalysis {
   summary?: string | null;
+  watchFor?: { finding: string; quote?: string; kind?: string } | null;
   manipulationAnalysis?: {
     logicalFallacies?: Array<{ type: string; location: string; explanation: string }>;
   };
