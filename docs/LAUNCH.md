@@ -66,19 +66,44 @@ Example from November 9:
 
 ## LinkedIn launch post
 
-Open with that morning's finding, then the story of the site.
+Ready to post on November 18, once the deploy is live and both column links show the verdict wording. The example is from the November 12 edition; both quotes were checked against what the site published.
 
-> [Today's "Watch for" example, as above.]
+Direct links for the example:
+
+- The New Republic column: https://authentic-reader.netlify.app/?date=2026-11-12&opinion=left
+- The Washington Examiner column: https://authentic-reader.netlify.app/?date=2026-11-12&opinion=right
+
+> On Nov 12, two opinion columns ran on the same news day, one from the left and one from the right.
 >
-> That is from The Daily Authentic, a free daily news briefing I built. A few months ago I found that 600 people had visited it from a LinkedIn post, and every one of them saw a broken page. So I rebuilt it.
+> The New Republic called a single Senate win in Mississippi "an astounding rebuke of the Republican Party," and treated it as proof of a nationwide blue wave.
+> Watch for: overgeneralization. One race, local factors, a national conclusion.
 >
-> Every morning it picks the five stories the most outlets, across the political spectrum, chose to cover. You read each article in full, in a quiet page with no ads or clutter, and before you start it tells you the one thing to watch for. It marks weak arguments with a fairer way to say the same thing, checks key claims against independent sources with links, and shows how other outlets worded the same event. One opinion column from each side is judged on how well it makes its case, not on its conclusion.
+> The Washington Examiner wrote that "Russian forces have lost nearly 500,000 soldiers," with no source.
+> Watch for: an unsourced number carrying the argument.
 >
-> The whole method, with its thresholds and limits, is published. Nothing to sign up for to read it. I would value your honest reaction, especially where you think it gets an article wrong.
+> Both got the same verdict: a case with notable gaps. Neither conclusion was the problem. The reasoning was.
+>
+> That's The Daily Authentic, a free daily news briefing I built, and rebuilt after 600 of you visited from a LinkedIn post and found it broken.
+>
+> Every morning:
+> • The five stories the most outlets, across the spectrum, chose to cover
+> • Each article in full, in a quiet page with no ads or clutter
+> • One line on what to watch for, quoted from the article
+> • Key claims checked against independent sources, with links
+> • How other outlets worded the same event
+> • A column from each side, judged on how well it argues, not on what it concludes
+>
+> Every week I hand-check a sample of its findings against the articles, and publish the results and every correction.
+>
+> As a former educator, this is the reading habit I always wanted to give people: notice the move, not just the message.
+>
+> Free, no ads, nothing to sign up for to read it. I'd especially value hearing where you think it gets an article wrong.
 >
 > https://authentic-reader.netlify.app
 
-Follow-up comment: "If you'd like it in your inbox each morning: https://buttondown.com/wistrand"
+First comment: "If you'd like it in your inbox each morning: https://buttondown.com/wistrand"
+
+Before posting: run the first \`npm run check\` so the hand-check line is true on launch day, and reply to comments for the first hour or two.
 
 ## Short version (Bluesky, Threads, Mastodon, X)
 
