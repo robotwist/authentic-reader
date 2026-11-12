@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => {
       react(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+        includeManifestIcons: false,
         manifest: {
           name: 'The Daily Authentic',
           short_name: 'Daily Authentic',
@@ -45,7 +45,8 @@ export default defineConfig(({ mode }) => {
         },
         workbox: {
           navigateFallback: '/index.html',
-          globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+          // Icons and images load on demand; only the app shell is cached for offline use.
+          globPatterns: ['**/*.{js,css,html}'],
           runtimeCaching: [
             {
               urlPattern: /^https?:\/\/.*\/api\//,

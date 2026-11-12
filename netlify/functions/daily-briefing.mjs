@@ -3,7 +3,7 @@ import { briefingsStore } from '../lib/store.mjs';
 const CACHE_HEADERS = {
   'Content-Type': 'application/json',
   'Cache-Control': 'public, max-age=60',
-  'Netlify-CDN-Cache-Control': 'public, s-maxage=600, stale-while-revalidate=3600'
+  'Netlify-CDN-Cache-Control': 'public, durable, s-maxage=600, stale-while-revalidate=3600'
 };
 
 function json(body, status = 200, headers = CACHE_HEADERS) {

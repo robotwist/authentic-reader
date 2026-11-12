@@ -32,11 +32,7 @@ const LessonView: React.FC<Props> = ({ story, date, deep, onBack }) => {
   const [comparison, setComparison] = useState<any>(null);
 
   useEffect(() => {
-    fetch(`${API_CONFIG.BASE_URL}/api/analysis/compare-sources`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ article: { title: story.article.title } })
-    })
+    fetch(`${API_CONFIG.BASE_URL}/api/analysis/compare-sources?title=${encodeURIComponent(story.article.title)}`)
       .then((response) => (response.ok ? response.json() : null))
       .then((data) => setComparison(data?.comparison?.found ? data.comparison : null))
       .catch(() => undefined);

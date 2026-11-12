@@ -8,6 +8,8 @@ export const VIEWS = ['home', 'story', 'opinion', 'method', 'archive'];
 const STORY_KEY = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const BOT = /bot|crawl|spider|slurp|preview|facebookexternalhit|embedly|headless|lighthouse|pingdom|curl|wget|python-requests/i;
 const MAX_WRITE_ATTEMPTS = 8;
+// Each day is split across shards so simultaneous visits rarely write the same record.
+const SHARDS = 16;
 
 export function statsStore() {
   return getStore({ name: process.env.STATS_STORE || 'site-stats', consistency: 'strong' });
@@ -40,9 +42,21 @@ export function applyHit(day, hit) {
   return next;
 }
 
+/** Adds shard records (and pre-shard whole-day records) for one date together. */
+export function mergeDays(date, records) {
+  const total = emptyDay(date);
+  for (const r of records) {
+    total.visitors += r.visitors || 0;
+    total.returning += r.returning || 0;
+    for (const [view, n] of Object.entries(r.views || {})) total.views[view] = (total.views[view] || 0) + n;
+    for (const [story, n] of Object.entries(r.stories || {})) total.stories[story] = (total.stories[story] || 0) + n;
+  }
+  return total;
+}
+
 /** Read-modify-write with an etag check, retried so simultaneous visits are not lost. */
-export async function recordHit(store, date, hit) {
-  const key = `day/${date}`;
+export async function recordHit(store, date, hit, shard = Math.floor(Math.random() * SHARDS)) {
+  const key = `day/${date}/${shard}`;
   for (let attempt = 0; attempt < MAX_WRITE_ATTEMPTS; attempt++) {
     const current = await store.getWithMetadata(key, { type: 'json' });
     const next = applyHit(current?.data || emptyDay(date), hit);

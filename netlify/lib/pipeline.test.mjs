@@ -111,7 +111,7 @@ test('reader submissions are validated and bots are caught by the honeypot', asy
 });
 
 test('visits are counted from page flags only, and bots and bad input are ignored', async () => {
-  const { applyHit, emptyDay, isBot, parseHit } = await import('./stats.mjs');
+  const { applyHit, emptyDay, isBot, mergeDays, parseHit } = await import('./stats.mjs');
   assert.equal(isBot('Mozilla/5.0 (compatible; Googlebot/2.1)'), true);
   assert.equal(isBot('LinkedInBot/1.0 (compatible; Mozilla/5.0)'), true);
   assert.equal(isBot('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) Safari/604.1'), false);
@@ -125,6 +125,10 @@ test('visits are counted from page flags only, and bots and bad input are ignore
   day = applyHit(day, parseHit({ view: 'home', firstToday: true }));
   assert.deepEqual({ visitors: day.visitors, returning: day.returning, home: day.views.home, story: day.views.story }, { visitors: 2, returning: 1, home: 2, story: 1 });
   assert.equal(day.stories['egypt-train-collision'], 1);
+
+  const merged = mergeDays('2026-11-09', [day, applyHit(emptyDay('2026-11-09'), parseHit({ view: 'opinion', story: 'left', firstToday: true }))]);
+  assert.deepEqual({ visitors: merged.visitors, home: merged.views.home, opinion: merged.views.opinion }, { visitors: 3, home: 2, opinion: 1 });
+  assert.equal(merged.stories['opinion-left'], 1);
 });
 
 test('contradictions need a source about the same measure and period', async () => {

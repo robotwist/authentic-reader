@@ -2,8 +2,8 @@ name: Email edition
 
 on:
   schedule:
-    # Shortly after the 5 AM and 10 AM Central pipeline runs. The first run
-    # sends a complete edition; the second sends whatever is ready.
+    # Backup for the send at the end of each pipeline run. GitHub often starts
+    # scheduled runs hours late; a day already sent is skipped.
     - cron: '25 11 * * *'
     - cron: '25 16 * * *'
   workflow_dispatch:

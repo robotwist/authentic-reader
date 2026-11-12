@@ -102,11 +102,10 @@ interface Props {
     source: string;
     url?: string;
   };
-  keywords: string[];
   onClose?: () => void;
 }
 
-const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClose }) => {
+const SourceComparisonView: React.FC<Props> = ({ primaryArticle, onClose }) => {
   const [comparison, setComparison] = useState<ComparisonData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -137,14 +136,7 @@ const SourceComparisonView: React.FC<Props> = ({ primaryArticle, keywords, onClo
     setError(null);
 
     try {
-      const response = await fetch(`${API_CONFIG.BASE_URL}/api/analysis/compare-sources`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          article: primaryArticle,
-          keywords
-        })
-      });
+      const response = await fetch(`${API_CONFIG.BASE_URL}/api/analysis/compare-sources?title=${encodeURIComponent(primaryArticle.title)}`);
 
       if (!response.ok) {
         // Try to extract error message from response

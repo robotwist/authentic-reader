@@ -61,7 +61,7 @@ export default async () => {
     headers: {
       'Content-Type': 'application/rss+xml; charset=utf-8',
       'Cache-Control': 'public, max-age=300',
-      'Netlify-CDN-Cache-Control': 'public, s-maxage=900, stale-while-revalidate=3600'
+      'Netlify-CDN-Cache-Control': 'public, durable, s-maxage=900, stale-while-revalidate=3600'
     }
   });
 };

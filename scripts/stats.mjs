@@ -5,6 +5,7 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import { getStore } from '@netlify/blobs';
+import { mergeDays } from '../netlify/lib/stats.mjs';
 
 const days = Number(process.argv[2]) || 14;
 const config = JSON.parse(fs.readFileSync(`${os.homedir()}/.config/netlify/config.json`, 'utf8'));
@@ -12,9 +13,15 @@ const token = Object.values(config.users)[0].auth.token;
 const { siteId } = JSON.parse(fs.readFileSync('.netlify/state.json', 'utf8'));
 const store = getStore({ name: 'site-stats', siteID: siteId, token });
 
+// Keys are day/<date> (before sharding) and day/<date>/<shard>.
 const { blobs } = await store.list({ prefix: 'day/' });
-const keys = blobs.map((b) => b.key).sort().slice(-days);
-const rows = (await Promise.all(keys.map((key) => store.get(key, { type: 'json' })))).filter(Boolean);
+const byDate = {};
+for (const { key } of blobs) (byDate[key.split('/')[1]] ||= []).push(key);
+const dates = Object.keys(byDate).sort().slice(-days);
+const rows = await Promise.all(dates.map(async (date) => {
+  const records = await Promise.all(byDate[date].map((key) => store.get(key, { type: 'json' })));
+  return mergeDays(date, records.filter(Boolean));
+}));
 
 if (rows.length === 0) {
   console.log('No visits recorded yet.');
