@@ -6,7 +6,7 @@
   
 [build.environment]
   # Specify Node.js version explicitly
-  NODE_VERSION = "20"
+  NODE_VERSION = "24"
   # Skip Husky install during CI builds
   HUSKY = "0"
   
