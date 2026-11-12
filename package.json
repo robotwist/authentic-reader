@@ -10,7 +10,7 @@
     "lint": "eslint src --report-unused-disable-directives",
     "preview": "vite preview",
     "test": "npm run test:pipeline",
-    "test:pipeline": "node --test netlify/lib/",
+    "test:pipeline": "node --test netlify/lib/*.test.mjs",
     "export:subscribers": "node scripts/export-submissions.mjs subscribers",
     "export:reports": "node scripts/export-submissions.mjs reports",
     "stats": "node scripts/stats.mjs",
