@@ -155,6 +155,23 @@ test('opinion columns are matched to the day story they discuss', async () => {
   assert.equal(relatedStory({ title: 'The case for four-day school weeks', description: '' }, vocabulary).overlap, 0);
 });
 
+test('opinion columns prefer a story both sides wrote about and skip unrelated columns', async () => {
+  const { planOpinions } = await import('./opinion.mjs');
+  const column = (title, key, overlap, publishDate = '2026-11-12T10:00:00Z') => ({ item: { title, publishDate }, key, overlap });
+  const plan = planOpinions({
+    left: [column('Australia recession', 'australia-ai', 1), column('Wall ruling is lawless', 'border-wall', 3), column('Tax the billionaires', 'billionaire-tax', 5)],
+    right: [column('Court gets the wall right', 'border-wall', 4), column('Unrelated column', null, 0)]
+  }, ['ukraine', 'border-wall', 'billionaire-tax']);
+  assert.equal(plan.shared, 'border-wall');
+  assert.deepEqual(plan.attempts.left.map((c) => c.item.title), ['Wall ruling is lawless', 'Tax the billionaires']);
+  assert.deepEqual(plan.attempts.right.map((c) => c.item.title), ['Court gets the wall right']);
+
+  const none = planOpinions({ left: [column('Tax the billionaires', 'billionaire-tax', 5)], right: [column('Unrelated', 'ukraine', 2)] }, ['ukraine', 'billionaire-tax']);
+  assert.equal(none.shared, null);
+  assert.equal(none.attempts.left.length, 1);
+  assert.equal(none.attempts.right.length, 0);
+});
+
 test('opinion views are counted by side', async () => {
   const { parseHit } = await import('./stats.mjs');
   assert.deepEqual(parseHit({ view: 'opinion', story: 'left' }), { view: 'opinion', story: 'opinion-left', firstToday: false, returning: false });

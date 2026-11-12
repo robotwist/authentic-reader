@@ -194,16 +194,17 @@ const MethodPage: React.FC = () => {
       <section className="method-section" id="opinion">
         <h2>[4] Opinion, weighed</h2>
         <p>
-          Each day one opinion column from each side of the spectrum is read on the quality of its argument, not on its
-          conclusion. Both are held to the same rubric. Advocacy is the point of an opinion piece and is never counted
+          Each day one opinion column from each side of the spectrum, about one of the day&apos;s stories, is read on the
+          quality of its argument, not on its conclusion. Both are held to the same rubric. Advocacy is the point of an opinion piece and is never counted
           against it; what counts is how well the case is made.
         </p>
         <dl className="method-params">
           <div><dt>Sources</dt><dd>From the left: The Guardian Opinion, The Nation, The New Republic. From the right: Fox News
             Opinion, New York Post Opinion, Washington Examiner Opinion, The Federalist.</dd></div>
-          <div><dt>Selection</dt><dd>Columns from the previous 36 hours with at least 1,500 characters and 250 words, preferring
-            the one that shares the most distinctive terms with the day&apos;s stories. It is linked to a story only when they
-            share at least three.</dd></div>
+          <div><dt>Selection</dt><dd>Columns from the previous 36 hours with at least 1,500 characters and 250 words that share
+            at least three distinctive terms with one of the day&apos;s stories. When both sides wrote about the same story,
+            those two columns are chosen so they can be read against each other. A side with no column about the day&apos;s
+            stories is left out that day rather than filled with an unrelated one.</dd></div>
           <div><dt>Score</dt><dd>Evidence, logic, fairness to opponents, and clarity, each 0 to 100, on the same scale as
             the news analysis.</dd></div>
           <div><dt>Credit</dt><dd>One to three specific strengths, each tied to an exact passage.</dd></div>

@@ -2054,6 +2054,20 @@
   }
 }
 
+@media (max-width: 640px) {
+  .daily-briefing-page.dashboard-mode {
+    padding: 1rem 0;
+  }
+
+  .dashboard-mode .topic-grid {
+    padding: 0.75rem;
+  }
+
+  .dashboard-mode .topic-card {
+    padding: 1.125rem;
+  }
+}
+
 .full-text-note {
   font-family: var(--font-tech, 'JetBrains Mono', monospace);
   font-size: 0.625rem;

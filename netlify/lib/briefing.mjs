@@ -3,7 +3,7 @@ import { articleKey, extractArticle, looksLikeFullArticle, utcDate } from './sou
 import { ANALYSIS_VERSION, analyzeArticleDeep, compareCoverage, factCheckClaims, toBriefingAnalysis } from './analysis.mjs';
 import { addArticleToDossier, coverageDays, dossierContext, loadDossier, synthesizeDossier, updateStoryIndex } from './dossier.mjs';
 import { selectStories } from './stories.mjs';
-import { analyzeOpinion, OPINION_VERSION, pickOpinion, toBriefingOpinion } from './opinion.mjs';
+import { analyzeOpinion, OPINION_VERSION, pickOpinions, toBriefingOpinion } from './opinion.mjs';
 
 export { articleKey, utcDate } from './sources.mjs';
 export { toLegacyAnalysis } from './analysis.mjs';
@@ -14,7 +14,6 @@ const RECENT_DAYS_TO_SKIP = 3;
 const MIN_FALLBACK_ARTICLE_CHARS = 700;
 const MAX_PRIMARY_ATTEMPTS = 6;
 const MAX_RELATED = 4;
-const OPINION_SIDES = ['left', 'right'];
 
 // The analyzed article comes from the most neutral outlet that has a full text,
 // preferring, within the same lean, an outlet that permits republishing; the
@@ -199,14 +198,11 @@ async function processDay(run, date, { createIfMissing }) {
   if (createIfMissing && !draft.opinions && hasTime()) {
     const usedUrls = await recentlyUsedUrls(store, date);
     const stories = draft.order.map((key) => ({ key, ...draft.stories[key] }));
-    draft.opinions = {};
-    for (const side of OPINION_SIDES) {
-      try {
-        draft.opinions[side] = await pickOpinion(side, stories, usedUrls);
-      } catch (error) {
-        console.warn(`[briefing] Opinion selection failed for ${side}: ${error.message}`);
-        draft.opinions[side] = null;
-      }
+    try {
+      draft.opinions = await pickOpinions(stories, usedUrls);
+    } catch (error) {
+      console.warn(`[briefing] Opinion selection failed: ${error.message}`);
+      draft.opinions = {};
     }
     await store.setJSON(`draft/${date}`, draft);
   }

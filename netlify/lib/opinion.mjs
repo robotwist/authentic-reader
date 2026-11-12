@@ -46,39 +46,69 @@ export function relatedStory(item, vocabulary) {
   return best;
 }
 
+const publishedAt = (candidate) => new Date(candidate.item.publishDate || 0).getTime();
+
 /**
- * One column per side: recent, full-length, preferring the one sharing the
- * most distinctive words with today's stories, then the newest.
+ * Orders each side's columns for extraction. Only columns about one of the
+ * day's stories qualify; those on a story both sides wrote about come first,
+ * so the two can be read against each other.
  */
-export async function pickOpinion(side, stories, usedUrls) {
+export function planOpinions(candidates, storyOrder) {
+  const related = Object.fromEntries(Object.entries(candidates)
+    .map(([side, list]) => [side, list.filter((c) => c.key && c.overlap >= RELATED_STORY_MIN_OVERLAP)]));
+  const sides = Object.keys(related);
+  const strongest = (side, key) => Math.max(0, ...related[side].filter((c) => c.key === key).map((c) => c.overlap));
+  const shared = storyOrder
+    .map((key, rank) => ({ key, rank, strength: Math.min(...sides.map((side) => strongest(side, key))) }))
+    .filter((s) => s.strength > 0)
+    .sort((a, b) => b.strength - a.strength || a.rank - b.rank)[0]?.key || null;
+  const order = (list) => [...list].sort((a, b) =>
+    Number(b.key === shared) - Number(a.key === shared) || b.overlap - a.overlap || publishedAt(b) - publishedAt(a));
+  return { shared, attempts: Object.fromEntries(sides.map((side) => [side, order(related[side])])) };
+}
+
+async function toPick(side, { item, key }) {
+  const extracted = await extractArticle(item.link);
+  if (!extracted || !looksLikeFullArticle(extracted.text)) return null;
+  // Some outlets append the byline to the headline: "Headline | Author Name".
+  const byline = item.title.match(/ \| ([^|]+)$/);
+  return {
+    side,
+    relatedStory: key,
+    article: {
+      title: byline ? item.title.slice(0, byline.index) : item.title,
+      url: item.link,
+      source: item.sourceName,
+      lean: side,
+      author: extracted.byline || byline?.[1] || item.author || undefined,
+      publishDate: item.publishDate ? new Date(item.publishDate).toISOString() : null,
+      content: extracted.text
+    }
+  };
+}
+
+/** One recent, full-length column per side about the day's news, or none for that side. */
+export async function pickOpinions(stories, usedUrls) {
   const cutoff = Date.now() - MAX_AGE_HOURS * 3600 * 1000;
   const vocabulary = storyVocabulary(stories);
-  const items = (await Promise.all(OPINION_FEEDS[side].map((feed) => fetchFeedItems({ ...feed, lean: side })))).flat()
-    .filter((item) => !usedUrls.has(item.link) && !NOT_A_COLUMN.test(item.title))
-    .filter((item) => !item.publishDate || new Date(item.publishDate).getTime() >= cutoff)
-    .map((item) => ({ item, ...relatedStory(item, vocabulary) }))
-    .sort((a, b) => b.overlap - a.overlap || new Date(b.item.publishDate || 0) - new Date(a.item.publishDate || 0));
-
-  for (const { item, key, overlap } of items.slice(0, MAX_ATTEMPTS)) {
-    const extracted = await extractArticle(item.link);
-    if (!extracted || !looksLikeFullArticle(extracted.text)) continue;
-    // Some outlets append the byline to the headline: "Headline | Author Name".
-    const byline = item.title.match(/ \| ([^|]+)$/);
-    return {
-      side,
-      relatedStory: overlap >= RELATED_STORY_MIN_OVERLAP ? key : null,
-      article: {
-        title: byline ? item.title.slice(0, byline.index) : item.title,
-        url: item.link,
-        source: item.sourceName,
-        lean: side,
-        author: extracted.byline || byline?.[1] || item.author || undefined,
-        publishDate: item.publishDate ? new Date(item.publishDate).toISOString() : null,
-        content: extracted.text
-      }
-    };
+  const candidates = {};
+  for (const [side, feeds] of Object.entries(OPINION_FEEDS)) {
+    candidates[side] = (await Promise.all(feeds.map((feed) => fetchFeedItems({ ...feed, lean: side })))).flat()
+      .filter((item) => !usedUrls.has(item.link) && !NOT_A_COLUMN.test(item.title))
+      .filter((item) => !item.publishDate || new Date(item.publishDate).getTime() >= cutoff)
+      .map((item) => ({ item, ...relatedStory(item, vocabulary) }));
   }
-  return null;
+
+  const { attempts } = planOpinions(candidates, stories.map((story) => story.key));
+  const picks = {};
+  for (const [side, list] of Object.entries(attempts)) {
+    picks[side] = null;
+    for (const candidate of list.slice(0, MAX_ATTEMPTS)) {
+      picks[side] = await toPick(side, candidate);
+      if (picks[side]) break;
+    }
+  }
+  return picks;
 }
 
 const OPINION_SYSTEM_PROMPT = `You evaluate the quality of an opinion piece's argument for a media-literacy site. Judge how well the case is made, never whether you agree with it, and apply exactly the same standard to every viewpoint.

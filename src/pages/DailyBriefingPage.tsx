@@ -41,6 +41,17 @@ function cardWatchFor(story: BriefingStory): string {
   return 'No misleading techniques in the outlet\u2019s own words.';
 }
 
+function opinionDek(briefing: DailyBriefing): string {
+  const { left, right } = briefing.opinions || {};
+  const judged = 'judged on how well it makes its case, not on its conclusion.';
+  if (left && right && left.relatedStory && left.relatedStory === right.relatedStory) {
+    const topic = briefing.topics[left.relatedStory]?.topic;
+    return `Both sides on ${topic || 'the same story'}, each ${judged}`;
+  }
+  if (left && right) return `A column from each side on today's stories, each ${judged}`;
+  return `A column on today's stories, ${judged}`;
+}
+
 function storyOrder(briefing: DailyBriefing): string[] {
   return (briefing.order || Object.keys(briefing.topics)).filter((key) => briefing.topics[key]);
 }
@@ -410,9 +421,7 @@ const DailyBriefingPage: React.FC = () => {
       {briefing.opinions && (briefing.opinions.left || briefing.opinions.right) && (
         <section className="opinion-section" aria-labelledby="opinion-title">
           <h2 id="opinion-title" className="opinion-section-title">[OPINION, WEIGHED]</h2>
-          <p className="opinion-section-dek">
-            One column from each side of the spectrum, judged on how well it makes its case, not on its conclusion.
-          </p>
+          <p className="opinion-section-dek">{opinionDek(briefing)}</p>
           <div className="opinion-grid">
             {(['left', 'right'] as const).map((side) => {
               const item = briefing.opinions?.[side];
