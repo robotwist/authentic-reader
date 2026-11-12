@@ -1,5 +1,6 @@
 // The email edition, sent through Buttondown's API. Everything here is a
 // no-op until BUTTONDOWN_API_KEY is set.
+import { argumentVerdict, storyWatchFor } from './verdicts.mjs';
 
 const API = 'https://api.buttondown.com/v1';
 const API_VERSION = '2026-04-01';
@@ -55,15 +56,16 @@ export function editionMarkdown(day, siteUrl) {
     const continuing = story.dayCount > 1 ? ` · day ${story.dayCount}` : '';
     lines.push(`## ${i + 1}. ${story.topic}`, '', `**[${story.article.title}](${link})**`, '');
     if (story.why) lines.push(story.why, '');
+    if (story.analysis) lines.push(`**Watch for:** ${storyWatchFor(story)}`, '');
     lines.push(`*${(story.category || 'News')} · ${story.article.source}${coverage}${continuing}*`, '');
   });
 
   const opinions = ['left', 'right'].map((side) => day.opinions?.[side]).filter(Boolean);
   if (opinions.length) {
-    lines.push('## Opinion, weighed', '', 'One column from each side, judged on how well it makes its case.', '');
+    lines.push('## Opinion, weighed', '', 'Columns on today\'s stories, judged on how well each makes its case, not on its conclusion.', '');
     for (const o of opinions) {
       const link = `${siteUrl}/?date=${date}&opinion=${o.side}`;
-      lines.push(`- **From the ${o.side}:** [${o.article.title}](${link}), ${o.article.source}. Argument ${o.argumentScore.overall}/100.`);
+      lines.push(`- **From the ${o.side}:** [${o.article.title}](${link}), ${o.article.source}. ${argumentVerdict(o.argumentScore.overall)}.`);
     }
     lines.push('');
   }

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ReaderView from './ReaderView';
 import { BriefingOpinion, CheckedClaim } from '../types/briefing';
+import { argumentVerdict, partVerdict } from '../lib/verdicts';
 import './OpinionView.css';
 
 const SIDE_LABEL = { left: 'FROM THE LEFT', right: 'FROM THE RIGHT' } as const;
@@ -75,25 +76,19 @@ const OpinionView: React.FC<Props> = ({ opinion, relatedLabel, onBack, onOpenSto
           <p className="opinion-thesis">{opinion.thesis}</p>
 
           <div className="opinion-score">
-            <div className="score-display">
-              <span className="score-value">{score.overall}</span>
-              <span className="score-max">/100</span>
-            </div>
-            <div className="opinion-score-parts">
+            <p className="opinion-verdict-label">{argumentVerdict(score.overall)}</p>
+            <dl className="opinion-score-parts">
               {SCORE_PARTS.map(([key, label]) => (
-                <div key={key} className="breakdown-row">
-                  <span className="breakdown-label">{label}</span>
-                  <div className="breakdown-bar-track">
-                    <div className="breakdown-bar-fill" style={{ width: `${score[key]}%` }} />
-                  </div>
-                  <span className="breakdown-value">{score[key]}</span>
+                <div key={key} className="opinion-part">
+                  <dt>{label}</dt>
+                  <dd className={`part-${partVerdict(score[key] as number)}`}>{partVerdict(score[key] as number)}</dd>
                 </div>
               ))}
-            </div>
+            </dl>
           </div>
           <p className="opinion-verdict">{opinion.verdict}</p>
           <p className="context-note">
-            Scored on how well the case is made, not on its conclusion. Both columns are held to the same rubric.{' '}
+            Judged on how well the case is made, not on its conclusion. Both columns are held to the same rubric.{' '}
             <Link to="/method#opinion">How this works</Link>
           </p>
         </section>

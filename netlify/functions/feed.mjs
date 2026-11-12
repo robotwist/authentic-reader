@@ -1,4 +1,5 @@
 import { briefingsStore } from '../lib/store.mjs';
+import { argumentVerdict } from '../lib/verdicts.mjs';
 
 const FEED_DAYS = 14;
 
@@ -25,7 +26,7 @@ ${summary ? `<p>${escapeXml(summary)}</p>` : ''}`;
 
   const opinions = ['left', 'right'].map((side) => day.opinions?.[side]).filter(Boolean).map((o) => {
     const link = `${siteUrl}/?date=${date}&opinion=${o.side}`;
-    return `<p><strong>[FROM THE ${o.side.toUpperCase()}]</strong> <a href="${escapeXml(link)}">${escapeXml(o.article.title)}</a><br/><small>${escapeXml(o.article.source)} · argument ${o.argumentScore.overall}/100</small></p>`;
+    return `<p><strong>[FROM THE ${o.side.toUpperCase()}]</strong> <a href="${escapeXml(link)}">${escapeXml(o.article.title)}</a><br/><small>${escapeXml(o.article.source)} · ${argumentVerdict(o.argumentScore.overall).toLowerCase()}</small></p>`;
   }).join('\n');
 
   return `<item>

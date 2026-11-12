@@ -8,9 +8,10 @@ import SubscribeBox from '../components/SubscribeBox';
 import OpinionView from '../components/OpinionView';
 import LessonView from '../components/LessonView';
 import CriticalRead from '../components/CriticalRead';
+import { argumentVerdict, leanLabel } from '../lib/verdicts';
 import { API_CONFIG } from '../config/api.config';
 import { recordView } from '../lib/stats';
-import { BriefingStory, DailyBriefing, FallacyData } from '../types/briefing';
+import { BriefingOpinion, BriefingStory, DailyBriefing, FallacyData } from '../types/briefing';
 import './DailyBriefingPage.css';
 
 interface ArchiveDate {
@@ -32,13 +33,22 @@ const formatLongDate = (date: string) =>
 const formatTime = (iso: string) =>
   new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 
-/** One line for the front-page card; older editions lack watchFor, so fall back to the first flagged passage. */
+/** One line for the front-page card; older editions lack watchFor, so fall back to the first flagged passage. Keep in step with storyWatchFor in netlify/lib/verdicts.mjs. */
 function cardWatchFor(story: BriefingStory): string {
   const stored = story.analysis?.watchFor?.finding;
   if (stored) return stored;
   const first = story.analysis?.manipulationAnalysis?.logicalFallacies?.[0];
   if (first) return `${first.type}: \u201c${first.location.length > 90 ? `${first.location.slice(0, 90)}\u2026` : first.location}\u201d`;
   return 'No misleading techniques in the outlet\u2019s own words.';
+}
+
+const SEVERITY_RANK = { high: 0, medium: 1, low: 2 } as const;
+
+/** The column's most serious weakness, in the same form as the story cards. */
+function opinionWatchFor(opinion: BriefingOpinion): string {
+  const [worst] = [...opinion.weaknesses].sort((a, b) => SEVERITY_RANK[a.severity || 'medium'] - SEVERITY_RANK[b.severity || 'medium']);
+  if (!worst) return 'No misleading techniques in the argument.';
+  return `${worst.type}: \u201c${worst.quote.length > 90 ? `${worst.quote.slice(0, 90)}\u2026` : worst.quote}\u201d`;
 }
 
 function opinionDek(briefing: DailyBriefing): string {
@@ -287,6 +297,7 @@ const DailyBriefingPage: React.FC = () => {
   if (story) {
     const lean = deepAnalysis?.bias_analysis?.political_lean || story.analysis?.biasAnalysis?.direction;
     const leanConfidence = deepAnalysis?.bias_analysis?.confidence ?? (story.analysis?.biasAnalysis ? Math.round(story.analysis.biasAnalysis.confidence * 100) : null);
+    const leanEvidence: string | undefined = deepAnalysis?.bias_analysis?.evidence?.[0];
     const tone = deepAnalysis?.tone;
 
     return (
@@ -324,8 +335,9 @@ const DailyBriefingPage: React.FC = () => {
                   <span className="bias-label-right">RIGHT</span>
                 </div>
                 <span className="bias-confidence">
-                  Leans {lean}{leanConfidence !== null ? ` · ${leanConfidence}% confidence` : ''} · <Link to="/method#bias">how this is judged</Link>
+                  {leanLabel(lean, leanConfidence)} · <Link to="/method#bias">how this is judged</Link>
                 </span>
+                {leanEvidence && <p className="bias-evidence"><span>WHY</span> {leanEvidence}</p>}
               </div>
             )}
           </header>
@@ -432,8 +444,9 @@ const DailyBriefingPage: React.FC = () => {
                   <h3 className="card-topic">[FROM THE {side.toUpperCase()}] {item.article.source}</h3>
                   <p className="card-headline">{item.article.title}</p>
                   <p className="card-dek">{item.thesis}</p>
+                  <p className="card-watch"><span>WATCH FOR</span> {opinionWatchFor(item)}</p>
                   <div className="card-meta">
-                    <span className="card-flag">ARGUMENT {item.argumentScore.overall}/100</span>
+                    <span className="card-flag">{argumentVerdict(item.argumentScore.overall).toUpperCase()}</span>
                     {related && <span className="card-source">On: {related.topic}</span>}
                   </div>
                 </button>

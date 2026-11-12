@@ -183,7 +183,7 @@ test('the email edition lists every story and opinion with links, and waits unti
   const day = {
     briefingDate: '2026-11-09',
     order: ['egypt-train-collision'],
-    topics: { 'egypt-train-collision': { topic: 'Egypt Train Crash', category: 'World', why: 'Two trains collided.', outlets: ['BBC News', 'PBS'], dayCount: 2, article: { title: 'Seven dead after trains collide', source: 'BBC News' } } },
+    topics: { 'egypt-train-collision': { topic: 'Egypt Train Crash', category: 'World', why: 'Two trains collided.', outlets: ['BBC News', 'PBS'], dayCount: 2, article: { title: 'Seven dead after trains collide', source: 'BBC News' }, analysis: { watchFor: { finding: 'The death toll is attributed to one unnamed official.' } } } },
     opinions: { right: { side: 'right', article: { title: 'A column', source: 'Fox News Opinion' }, argumentScore: { overall: 70 } } }
   };
   const md = editionMarkdown(day, 'https://example.org');
@@ -191,6 +191,9 @@ test('the email edition lists every story and opinion with links, and waits unti
   assert.match(md, /\[Seven dead after trains collide\]\(https:\/\/example\.org\/\?date=2026-11-09&story=egypt-train-collision\)/);
   assert.match(md, /covered by 2 outlets · day 2/);
   assert.match(md, /\*\*From the right:\*\* \[A column\]\(https:\/\/example\.org\/\?date=2026-11-09&opinion=right\)/);
+  assert.match(md, /\*\*Watch for:\*\* The death toll is attributed to one unnamed official\./);
+  assert.match(md, /Fox News Opinion\. A solid case, with gaps\./);
+  assert.doesNotMatch(md, /\/100/);
   const at = (hour) => new Date(Date.UTC(2026, 10, 9, hour));
   assert.equal(readyToSend({ storiesPublished: 5, storiesPlanned: 5 }, at(11)), true);
   assert.equal(readyToSend({ storiesPublished: 3, storiesPlanned: 5 }, at(11)), false);

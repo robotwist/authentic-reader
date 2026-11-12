@@ -205,8 +205,10 @@ const MethodPage: React.FC = () => {
             at least three distinctive terms with one of the day&apos;s stories. When both sides wrote about the same story,
             those two columns are chosen so they can be read against each other. A side with no column about the day&apos;s
             stories is left out that day rather than filled with an unrelated one.</dd></div>
-          <div><dt>Score</dt><dd>Evidence, logic, fairness to opponents, and clarity, each 0 to 100, on the same scale as
-            the news analysis.</dd></div>
+          <div><dt>Verdict</dt><dd>Evidence, logic, fairness to opponents, and clarity are each judged strong, mixed, or weak.
+            The overall verdict is one of: a rigorous case (well evidenced and fair to opponents), a solid case with gaps, a
+            case with notable gaps or unfair characterizations, or mostly rhetoric. Each verdict comes with the passages it
+            rests on.</dd></div>
           <div><dt>Credit</dt><dd>One to three specific strengths, each tied to an exact passage.</dd></div>
           <div><dt>Weaknesses</dt><dd>Only techniques that genuinely weaken the argument, each with a fairer way to make the
             same point. None is a valid result.</dd></div>
@@ -219,8 +221,9 @@ const MethodPage: React.FC = () => {
         <h2>[5] What the bias label means</h2>
         <p>
           The left-to-right meter describes the article in front of you, not the outlet: its word choices, which facts it
-          leads with, whose perspectives it includes, and what it leaves out. The confidence number is how strong that
-          evidence is. Straight news with little evidence of slant gets a low-confidence &quot;center&quot; rating.
+          leads with, whose perspectives it includes, and what it leaves out. The label says whether the signs are clear, some, or
+          few, and the main evidence is shown beneath it. Straight news with little evidence of slant reads as
+          center.
         </p>
         <p>
           A lean is not an accusation. Every story has to start somewhere. The useful question is what the framing
