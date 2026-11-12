@@ -121,5 +121,7 @@ Check weekly and write the numbers down; they are the case study's next chapter.
 
 ## Limits to keep in mind
 
+When to upgrade each service, and how many readers the free plans hold: [SCALING.md](SCALING.md). `npm run stats` prints the markers.
+
 - Netlify free plan: 300 credits a month; each production deploy costs 15, and traffic and the pipeline spend the rest. The site pauses at zero. Batch changes, test on preview deploys (free), and check the usage page on any day a post takes off.
 - Buttondown free plan: 100 subscribers. Reaching it is the signal to decide whether to pay.
