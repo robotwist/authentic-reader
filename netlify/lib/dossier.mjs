@@ -15,7 +15,7 @@ const DOSSIER_SYSTEM_PROMPT = `You maintain the running "story so far" file for 
 
 Return a JSON object:
 {
-  "narrative": "4-6 plain sentences for a reader catching up: how the story has developed across the dated entries, naming dates. If the entries cover different stories, describe the main threads separately instead of forcing one narrative.",
+  "narrative": "4-6 plain sentences for a reader catching up: how the story has developed across the dated entries, naming dates in the form Nov 9. If the entries cover different stories, describe the main threads separately instead of forcing one narrative.",
   "open_questions": [
     { "question": "", "raised": "YYYY-MM-DD", "status": "open | answered", "answer": "Short answer from today's article, or empty string", "answered_on": "YYYY-MM-DD or empty string" }
   ],

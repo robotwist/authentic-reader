@@ -48,6 +48,11 @@ const TIMELINE_PREVIEW = 6;
 const formatDate = (date: string) =>
   new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }).toUpperCase();
 
+/** Prose from older story files names dates as 2026-11-09; show them as Nov 9. */
+const readableDates = (text: string) =>
+  text.replace(/\b(20\d{2}-\d{2}-\d{2})\b/g, (date) =>
+    new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }));
+
 const StorySoFar: React.FC<Props> = ({ topicKey, currentUrl }) => {
   const [dossier, setDossier] = useState<Dossier | null>(null);
   const [showAll, setShowAll] = useState(false);
@@ -88,7 +93,7 @@ const StorySoFar: React.FC<Props> = ({ topicKey, currentUrl }) => {
           This is the first briefing on this topic in our archive. The record will build here, day by day.
         </p>
       ) : (
-        dossier.narrative && <p className="story-narrative">{dossier.narrative}</p>
+        dossier.narrative && <p className="story-narrative">{readableDates(dossier.narrative)}</p>
       )}
 
       <div className="story-block">
@@ -149,7 +154,7 @@ const StorySoFar: React.FC<Props> = ({ topicKey, currentUrl }) => {
               <li key={`answered-${i}`} className="is-answered">
                 {q.question}{' '}
                 <span className="story-cite">
-                  ANSWERED {q.answered_on ? formatDate(q.answered_on) : ''}: {q.answer}
+                  ANSWERED {q.answered_on ? formatDate(q.answered_on) : ''}: {readableDates(q.answer || '')}
                 </span>
               </li>
             ))}
