@@ -103,7 +103,7 @@ Direct links for the example:
 
 First comment: "If you'd like it in your inbox each morning: https://buttondown.com/wistrand"
 
-Before posting: run the first \`npm run check\` so the hand-check line is true on launch day, and reply to comments for the first hour or two.
+Before posting: run the first `npm run check` so the hand-check line is true on launch day, and reply to comments for the first hour or two.
 
 ## Short version (Bluesky, Threads, Mastodon, X)
 
