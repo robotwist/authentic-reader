@@ -2123,3 +2123,27 @@
   color: var(--bg-white, #FFFFFF);
   border-left-color: var(--bg-white, #FFFFFF);
 }
+
+.correction-note {
+  margin: 0;
+  padding: 1rem 2rem;
+  border-bottom: 2px solid var(--text-ink, #1A1A1A);
+  background: var(--text-ink, #1A1A1A);
+  color: var(--bg-white, #FFFFFF);
+  font-family: var(--font-body, 'Georgia', serif);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.correction-note span {
+  font-family: var(--font-tech, 'JetBrains Mono', monospace);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-right: 0.5rem;
+}
+
+.correction-note a {
+  color: var(--bg-white, #FFFFFF);
+  margin-left: 0.25rem;
+}

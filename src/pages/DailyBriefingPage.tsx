@@ -51,6 +51,9 @@ function opinionWatchFor(opinion: BriefingOpinion): string {
   return `${worst.type}: \u201c${worst.quote.length > 90 ? `${worst.quote.slice(0, 90)}\u2026` : worst.quote}\u201d`;
 }
 
+const formatShortDate = (date: string) =>
+  new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }).toUpperCase();
+
 function opinionDek(briefing: DailyBriefing): string {
   const { left, right } = briefing.opinions || {};
   const judged = 'judged on how well it makes its case, not on its conclusion.';
@@ -109,6 +112,7 @@ const DailyBriefingPage: React.FC = () => {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [archiveDates, setArchiveDates] = useState<ArchiveDate[] | null>(null);
   const [deepAnalysis, setDeepAnalysis] = useState<any>(null);
+  const [corrections, setCorrections] = useState<Array<{ id: string; date: string; editionDate: string; story: string; corrected: string }>>([]);
   const [isLoadingDeep, setIsLoadingDeep] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -148,6 +152,14 @@ const DailyBriefingPage: React.FC = () => {
   useEffect(() => {
     if (opinion) window.scrollTo(0, 0);
   }, [opinion]);
+
+  useEffect(() => {
+    if (!story || corrections.length) return;
+    fetch(`${API_CONFIG.BASE_URL}/api/corrections`)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => setCorrections(data?.corrections || []))
+      .catch(() => undefined);
+  }, [story, corrections.length]);
 
   useEffect(() => {
     setDeepAnalysis(null);
@@ -341,6 +353,14 @@ const DailyBriefingPage: React.FC = () => {
               </div>
             )}
           </header>
+
+          {corrections
+            .filter((c) => c.story === selectedKey && c.editionDate === briefing.briefingDate)
+            .map((c) => (
+              <p key={c.id} className="correction-note">
+                <span>CORRECTED {formatShortDate(c.date)}</span> {c.corrected} <Link to="/corrections">All corrections</Link>
+              </p>
+            ))}
 
           {deepAnalysis && <CriticalRead deep={deepAnalysis} />}
 

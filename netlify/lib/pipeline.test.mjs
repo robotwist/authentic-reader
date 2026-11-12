@@ -210,3 +210,15 @@ test('the sharpest point prefers the analysis finding, then headline, technique,
   assert.equal(sharpestPoint({ missing_context: { critical_omissions: ['The baseline year'] } }).finding, 'Leaves out: The baseline year');
   assert.equal(sharpestPoint({}).kind, 'none');
 });
+
+test('hand-check totals cover the last four weeks and all time, leaving out skips', async () => {
+  const { summarizeChecks } = await import('./record.mjs');
+  const item = (judgment) => ({ id: Math.random().toString(), judgment });
+  const summary = summarizeChecks([
+    { date: '2026-11-10', items: [item('agree'), item('agree'), item('partly'), item('skip')] },
+    { date: '2026-09-01', items: [item('disagree'), item('agree')] }
+  ], new Date('2026-11-12T12:00:00Z'));
+  assert.deepEqual(summary.recent, { since: '2026-10-15', total: 3, agreed: 2, partly: 1, disagreed: 0 });
+  assert.deepEqual(summary.allTime, { total: 5, agreed: 3, partly: 1, disagreed: 1 });
+  assert.equal(summary.lastChecked, '2026-11-10');
+});

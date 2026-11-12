@@ -13,6 +13,7 @@ const Footer: React.FC = () => {
         <nav className="footer-links" aria-label="Footer">
           <Link to="/method">How it works</Link>
           <a href="/feed.xml">RSS</a>
+          <Link to="/corrections">Corrections</Link>
           <Link to="/method#report">Report an error</Link>
         </nav>
       </div>

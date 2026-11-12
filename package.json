@@ -14,6 +14,8 @@
     "export:subscribers": "node scripts/export-submissions.mjs subscribers",
     "export:reports": "node scripts/export-submissions.mjs reports",
     "stats": "node scripts/stats.mjs",
+    "check": "node scripts/check.mjs",
+    "correction": "node scripts/correction.mjs",
     "email:sync": "node scripts/sync-subscribers.mjs"
   },
   "dependencies": {

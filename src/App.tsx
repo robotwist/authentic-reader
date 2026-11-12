@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
 import DailyBriefingPage from './pages/DailyBriefingPage';
 import MethodPage from './pages/MethodPage';
+import CorrectionsPage from './pages/CorrectionsPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Routes>
               <Route path="/" element={<DailyBriefingPage />} />
               <Route path="/method" element={<MethodPage />} />
+              <Route path="/corrections" element={<CorrectionsPage />} />
               <Route path="*" element={<DailyBriefingPage />} />
             </Routes>
           </main>

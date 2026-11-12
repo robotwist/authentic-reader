@@ -287,6 +287,15 @@ const MethodPage: React.FC = () => {
         <p>If something on the site is wrong, tell us. Corrections are made openly.</p>
         <CorrectionsForm />
       </section>
+
+      <section className="method-section" id="checks">
+        <h2>[11] Checks and corrections</h2>
+        <p>
+          Every week a person reads a random sample of recent findings and fact-check verdicts against the articles and
+          records whether each holds up. The running totals and every correction are published on the{' '}
+          <Link to="/corrections">corrections page</Link>, and a corrected story carries a note at the top.
+        </p>
+      </section>
     </div>
   );
 };
